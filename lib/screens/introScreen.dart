@@ -6,13 +6,15 @@ class IntroScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child: Center(
-            child: Text(
-              "SEVA APP",
-              style: TextStyle(color: ThemeColoursSeva().lgGreen),
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Seva",
+              style: TextStyle(
+                  color: ThemeColoursSeva().lgGreen,
+                  fontSize: 45.0,),
             ),
-          ),
+          ],
         ),
       ),
     );
