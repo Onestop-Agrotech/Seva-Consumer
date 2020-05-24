@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/graphics/Intro_greenTopLeft.dart';
+import 'package:mvp/graphics/greenIntro.dart';
 
 class IntroScreen extends StatelessWidget {
   @override
@@ -10,13 +9,12 @@ class IntroScreen extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             CustomPaint(
-              painter: GreenPaintTopLeft(),
-              child: Container(
-                child: Center(
-                  child: Text("SEVA")
-                ),
+              painter: GreenPaintBgIntro(),
+              child: Center(
+                child: null,
               ),
             ),
+            
           ],
         ),
       ),
