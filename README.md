@@ -1,4 +1,4 @@
-# Release - 31 May 2020
+# Release - 1st week June 2020
 ## version 0.0.1
 
 #### Features for this version: 
