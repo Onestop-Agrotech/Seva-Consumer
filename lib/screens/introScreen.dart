@@ -10,13 +10,58 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  int _index=0;
+  int _index = 0;
 
-  void changeIndex(){
+  void changeIndex() {
     setState(() {
-      if(_index==2)_index=0;
-      else _index++;
+      if (_index == 3)
+        _index = 0;
+      else
+        _index++;
     });
+  }
+
+  Container _lastContent() {
+    if (_index == 3) {
+      return Container(
+        child: Text(
+            "The more number of Orders from your area, the faster the Delivery!"),
+      );
+    } else
+      return Container(
+        child: null,
+      );
+  }
+
+  IndexedStack _buildStack() {
+    if (_index == 3)
+      return IndexedStack(
+        children: <Widget>[
+          Container(child: null)
+        ],
+      );
+    else {
+      return IndexedStack(
+        index: _index,
+        children: <Widget>[
+          DescriptionIntro(
+            img: 'images/ct1.png',
+            descText:
+                "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly, and deliver to your doorstep!",
+          ),
+          DescriptionIntro(
+            img: 'images/ct2.png',
+            descText:
+                "Standard delivery in under 12 hours from order time. Faster delivery available for select products at an extra price.",
+          ),
+          DescriptionIntro(
+            img: 'images/ct3.png',
+            descText:
+                "Pay online or Cash on Delivery. A farmer directly benefits from your payment. The more you order, the better the benefit!",
+          ),
+        ],
+      );
+    }
   }
 
   @override
@@ -68,34 +113,28 @@ class _IntroScreenState extends State<IntroScreen> {
               width: sWidth * 0.85,
               child: Column(
                 children: <Widget>[
-                  IndexedStack(
-                    index: _index,
-                    children: <Widget>[
-                      DescriptionIntro(
-                        img: 'images/ct1.png',
-                        descText:
-                            "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly, and deliver to your doorstep!",
-                      ),
-                      DescriptionIntro(
-                        img: 'images/ct2.png',
-                        descText:
-                            "Standard delivery in under 12 hours from order time. Faster delivery available for select products at an extra price.",
-                      ),
-                      DescriptionIntro(
-                        img: 'images/ct3.png',
-                        descText:
-                            "Pay online or Cash on Delivery. A farmer directly benefits from your payment. The more you order, the better the benefit!",
-                      ),
-                    ],
-                  ),
+                   _buildStack(),
+                  _lastContent(),
                   SizedBox(height: 40.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      SmallDotsIntro(bg: _index==0?ThemeColoursSeva().black : ThemeColoursSeva().grey),
-                      SmallDotsIntro(bg: _index==1?ThemeColoursSeva().black : ThemeColoursSeva().grey),
-                      SmallDotsIntro(bg: _index==2?ThemeColoursSeva().black : ThemeColoursSeva().grey),
-                      SmallDotsIntro(bg: _index==3?ThemeColoursSeva().black : ThemeColoursSeva().grey),
+                      SmallDotsIntro(
+                          bg: _index == 0
+                              ? ThemeColoursSeva().black
+                              : ThemeColoursSeva().grey),
+                      SmallDotsIntro(
+                          bg: _index == 1
+                              ? ThemeColoursSeva().black
+                              : ThemeColoursSeva().grey),
+                      SmallDotsIntro(
+                          bg: _index == 2
+                              ? ThemeColoursSeva().black
+                              : ThemeColoursSeva().grey),
+                      SmallDotsIntro(
+                          bg: _index == 3
+                              ? ThemeColoursSeva().black
+                              : ThemeColoursSeva().grey),
                     ],
                   ),
                   SizedBox(
