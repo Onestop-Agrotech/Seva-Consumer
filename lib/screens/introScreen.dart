@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenIntro.dart';
+import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/common/descriptionIntro.dart';
 import 'package:mvp/screens/common/smallDotsIntro.dart';
 
@@ -12,7 +13,7 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   int _index = 0;
 
-  void changeIndex() {
+  void _changeIndex() {
     setState(() {
       if (_index == 3)
         _index = 0;
@@ -27,26 +28,31 @@ class _IntroScreenState extends State<IntroScreen> {
       return Column(
         children: <Widget>[
           Container(
-          width: sWidth * 0.79,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 30.0),
-            child: Text(
-              "The more orders from your area, the faster the Delivery!",
-              style: TextStyle(
-                  fontSize: 28,
-                  fontFamily: "Raleway",
-                  color: ThemeColoursSeva().dkGreen),
+            width: sWidth * 0.79,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30.0),
+              child: Text(
+                "The more orders from your area, the faster the Delivery!",
+                style: TextStyle(
+                    fontSize: 28,
+                    fontFamily: "Raleway",
+                    color: ThemeColoursSeva().dkGreen),
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 80.0,),
-        Text("Delivering only in select areas of Bangalore", style: TextStyle(
-          color: ThemeColoursSeva().dkGreen,
-          fontFamily: "Raleway",
-          fontSize: 15.0
-        ),),
-        SizedBox(height: 83.0)
-        ],);
+          SizedBox(
+            height: 80.0,
+          ),
+          Text(
+            "Delivering only in select areas of Bangalore",
+            style: TextStyle(
+                color: ThemeColoursSeva().dkGreen,
+                fontFamily: "Raleway",
+                fontSize: 15.0),
+          ),
+          SizedBox(height: 83.0)
+        ],
+      );
     } else
       return Column(
         children: <Widget>[],
@@ -56,19 +62,17 @@ class _IntroScreenState extends State<IntroScreen> {
   IndexedStack _buildStack() {
     if (_index == 3)
       return IndexedStack(
-        children: <Widget>[
-          Container(child: null)
-        ],
+        children: <Widget>[Container(child: null)],
       );
     else {
       return IndexedStack(
         index: _index,
         children: <Widget>[
           DescriptionIntro(
-            img: 'images/ct1.png',
-            descText:
-                "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly, and deliver to your doorstep!",
-          ),
+              img: 'images/ct1.png',
+              descText:
+                  "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly, and deliver to your doorstep!",
+            ),
           DescriptionIntro(
             img: 'images/ct2.png',
             descText:
@@ -82,6 +86,27 @@ class _IntroScreenState extends State<IntroScreen> {
         ],
       );
     }
+  }
+
+  ButtonTheme _buildButton() {
+    return ButtonTheme(
+      minWidth: 90.0,
+      height: 40.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: RaisedButton(
+        onPressed: _index == 3
+            ? () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RegisterScreen()));
+              }
+            : _changeIndex,
+        color: ThemeColoursSeva().dkGreen,
+        textColor: Colors.white,
+        child: _index == 3 ? Text("Register") : Text("Next"),
+      ),
+    );
   }
 
   @override
@@ -133,46 +158,70 @@ class _IntroScreenState extends State<IntroScreen> {
               width: sWidth * 0.85,
               child: Column(
                 children: <Widget>[
-                   _buildStack(),
+                  _buildStack(),
                   _lastContent(context),
                   SizedBox(height: 40.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      SmallDotsIntro(
-                          bg: _index == 0
-                              ? ThemeColoursSeva().black
-                              : ThemeColoursSeva().grey),
-                      SmallDotsIntro(
-                          bg: _index == 1
-                              ? ThemeColoursSeva().black
-                              : ThemeColoursSeva().grey),
-                      SmallDotsIntro(
-                          bg: _index == 2
-                              ? ThemeColoursSeva().black
-                              : ThemeColoursSeva().grey),
-                      SmallDotsIntro(
-                          bg: _index == 3
-                              ? ThemeColoursSeva().black
-                              : ThemeColoursSeva().grey),
+                      Material(
+                        child: InkWell(
+                          onTap: (){
+                            setState(() {
+                              _index=0;
+                            });
+                          },
+                          child: SmallDotsIntro(
+                              bg: _index == 0
+                                  ? ThemeColoursSeva().black
+                                  : ThemeColoursSeva().grey),
+                        ),
+                      ),
+                      Material(
+                        child: InkWell(
+                          onTap: (){
+                            setState(() {
+                              _index=1;
+                            });
+                          },
+                          child: SmallDotsIntro(
+                              bg: _index == 1
+                                  ? ThemeColoursSeva().black
+                                  : ThemeColoursSeva().grey),
+                        ),
+                      ),
+                      Material(
+                        child: InkWell(
+                          onTap: (){
+                            setState(() {
+                              _index=2;
+                            });
+                          },
+                          child: SmallDotsIntro(
+                              bg: _index == 2
+                                  ? ThemeColoursSeva().black
+                                  : ThemeColoursSeva().grey),
+                        ),
+                      ),
+                      Material(
+                        child: InkWell(
+                          onTap: (){
+                            setState(() {
+                              _index=3;
+                            });
+                          },
+                          child: SmallDotsIntro(
+                              bg: _index == 3
+                                  ? ThemeColoursSeva().black
+                                  : ThemeColoursSeva().grey),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(
                     height: 30.0,
                   ),
-                  ButtonTheme(
-                    minWidth: 90.0,
-                    height: 40.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: RaisedButton(
-                      onPressed: changeIndex,
-                      color: ThemeColoursSeva().dkGreen,
-                      textColor: Colors.white,
-                      child: Text("Next"),
-                    ),
-                  ),
+                  _buildButton(),
                 ],
               ),
             ),
