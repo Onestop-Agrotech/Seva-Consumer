@@ -9,10 +9,55 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
+  int _index=0;
+
   TextEditingController fullName;
   TextEditingController emailAddress;
   TextEditingController password;
-  // FocusNode fcNode = new FocusNode();
+  TextEditingController mobile;
+  TextEditingController area;
+  TextEditingController address;
+
+  IndexedStack _buildStack() {
+    return IndexedStack(
+      index: _index,
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            InputTextField(eC: fullName, lt: "Full Name:"),
+            SizedBox(
+              height: 30.0,
+            ),
+            InputTextField(eC: emailAddress, lt: "Email Address:"),
+            SizedBox(
+              height: 30.0,
+            ),
+           
+            InputTextField(
+              eC: password,
+              lt: "Set Password:",
+              pwdType: true,
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+             InputTextField(
+              eC: mobile,
+              lt: "Mobile:",
+            ),
+            SizedBox(
+              height: 30.0,
+            ),
+            InputTextField(eC: area, lt: "Select Area:"),
+            
+          ],
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,30 +116,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: 40.0,
                     ),
-                    InputTextField(eC: fullName, lt: "Full Name:"),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    InputTextField(eC: emailAddress, lt: "Email Address:"),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    InputTextField(
-                      eC: password,
-                      lt: "Set Password:",
-                      pwdType: true,
-                    ),
+                    _buildStack(),
                     SizedBox(height: 30.0),
                     ButtonTheme(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0)),
                       child: RaisedButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          setState(() {
+                            if(_index==0)_index++;
+                            else _index--;
+                          });
                         },
                         color: ThemeColoursSeva().dkGreen,
                         textColor: Colors.white,
-                        child: Text("Next"),
+                        child: _index==1 ? Text("Sign Up") : Text("Next"),
                       ),
                     ),
                     SizedBox(

@@ -6,8 +6,9 @@ class InputTextField extends StatelessWidget {
   final TextEditingController eC;
   final String lt;
   final bool pwdType;
+  final String ht;
 
-  InputTextField({this.eC, this.lt, this.pwdType=false});  
+  InputTextField({this.eC, this.lt, this.pwdType=false, this.ht=''});  
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,7 @@ class InputTextField extends StatelessWidget {
                 enabledBorder: InputBorder.none,
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
+                labelText: ht,
               ),
               obscureText: pwdType,
             ),
