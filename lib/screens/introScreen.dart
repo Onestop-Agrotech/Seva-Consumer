@@ -21,15 +21,35 @@ class _IntroScreenState extends State<IntroScreen> {
     });
   }
 
-  Container _lastContent() {
+  Column _lastContent(context) {
+    double sWidth = MediaQuery.of(context).size.width;
     if (_index == 3) {
-      return Container(
-        child: Text(
-            "The more number of Orders from your area, the faster the Delivery!"),
-      );
+      return Column(
+        children: <Widget>[
+          Container(
+          width: sWidth * 0.79,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 30.0),
+            child: Text(
+              "The more orders from your area, the faster the Delivery!",
+              style: TextStyle(
+                  fontSize: 28,
+                  fontFamily: "Raleway",
+                  color: ThemeColoursSeva().dkGreen),
+            ),
+          ),
+        ),
+        SizedBox(height: 80.0,),
+        Text("Delivering only in select areas of Bangalore", style: TextStyle(
+          color: ThemeColoursSeva().dkGreen,
+          fontFamily: "Raleway",
+          fontSize: 15.0
+        ),),
+        SizedBox(height: 83.0)
+        ],);
     } else
-      return Container(
-        child: null,
+      return Column(
+        children: <Widget>[],
       );
   }
 
@@ -114,7 +134,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: Column(
                 children: <Widget>[
                    _buildStack(),
-                  _lastContent(),
+                  _lastContent(context),
                   SizedBox(height: 40.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
