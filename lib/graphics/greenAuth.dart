@@ -48,7 +48,7 @@ class GreenPaintBgLogin extends CustomPainter {
 
     // top left graphic
     ovalPath.lineTo(width*0.33, 0);
-    ovalPath.quadraticBezierTo(width*0.25, height*0.2, 0, height*0.23);
+    ovalPath.quadraticBezierTo(width*0.25, height*0.12, 0, height*0.15);
     ovalPath.close();
 
     // bottom left graphic
@@ -56,11 +56,11 @@ class GreenPaintBgLogin extends CustomPainter {
     ovalPath.lineTo(0, height*0.87);
     ovalPath.quadraticBezierTo(width*0.14, height*0.89, width*0.32, height);
     ovalPath.close();
-
-    // center right graphic
-    ovalPath.moveTo(width, height*0.18);
-    ovalPath.quadraticBezierTo(width*0.87, height*0.24, width*0.85, height*0.31);
-    ovalPath.quadraticBezierTo(width*0.81, height*0.49, width, height*0.59);
+    
+    // top right graphic
+    ovalPath.moveTo(width, 0);
+    ovalPath.lineTo(width*0.77, 0);
+    ovalPath.quadraticBezierTo(width*0.75, height*0.2, width, height*0.23);
     ovalPath.close();
 
     // paint

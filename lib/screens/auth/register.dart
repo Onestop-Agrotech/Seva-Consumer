@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
+import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -143,7 +144,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                              Navigator.pop(context);
+                               Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()));
                             },
                             child: Text(
                               "Sign in",
