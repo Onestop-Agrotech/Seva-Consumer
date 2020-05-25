@@ -10,7 +10,6 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-
   @override
   Widget build(BuildContext context) {
     double sWidth = MediaQuery.of(context).size.width;
@@ -60,31 +59,38 @@ class _IntroScreenState extends State<IntroScreen> {
               width: sWidth * 0.85,
               child: Column(
                 children: <Widget>[
-                  DescriptionIntro(
-                    img1: 'images/person.png',
-                    img2: 'images/mob.png',
-                    descText: "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly!",
-                  ),
-                  SizedBox(height: 50.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  IndexedStack(
+                    index: 0,
                     children: <Widget>[
-                      SmallDotsIntro(
-                        bg: ThemeColoursSeva().black
+                      DescriptionIntro(
+                        img: 'images/ct1.png',
+                        descText:
+                            "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly, and deliver to your doorstep!",
                       ),
-                      SmallDotsIntro(
-                        bg: ThemeColoursSeva().grey
+                      DescriptionIntro(
+                        img: 'images/ct2.png',
+                        descText:
+                            "Standard delivery in under 12 hours from order time. Faster delivery available for select products at an extra price.",
                       ),
-                      SmallDotsIntro(
-                        bg: ThemeColoursSeva().grey
-                      ),
-                      SmallDotsIntro(
-                        bg: ThemeColoursSeva().grey
+                      DescriptionIntro(
+                        img: 'images/ct3.png',
+                        descText:
+                            "Pay online or Cash on Delivery. A farmer directly benefits from your payment. The more you order, the better the benefit!",
                       ),
                     ],
                   ),
+                  SizedBox(height: 40.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      SmallDotsIntro(bg: ThemeColoursSeva().black),
+                      SmallDotsIntro(bg: ThemeColoursSeva().grey),
+                      SmallDotsIntro(bg: ThemeColoursSeva().grey),
+                      SmallDotsIntro(bg: ThemeColoursSeva().grey),
+                    ],
+                  ),
                   SizedBox(
-                    height: 50.0,
+                    height: 30.0,
                   ),
                   ButtonTheme(
                     minWidth: 90.0,
@@ -93,7 +99,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: RaisedButton(
-                      onPressed: (){},
+                      onPressed: () {},
                       color: ThemeColoursSeva().dkGreen,
                       textColor: Colors.white,
                       child: Text("Next"),
