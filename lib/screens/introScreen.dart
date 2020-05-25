@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenIntro.dart';
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
+  @override
+  _IntroScreenState createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     double sWidth = MediaQuery.of(context).size.width;
@@ -22,7 +27,7 @@ class IntroScreen extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "SEVA",
+                      "Seva",
                       style: TextStyle(
                           fontSize: 45.0,
                           color: ThemeColoursSeva().lgGreen,
@@ -71,9 +76,59 @@ class IntroScreen extends StatelessWidget {
                     child: Text(
                       "Order Fresh Fruits and Vegetables from the comfort of your home. We collect from farmers driectly!",
                       style: TextStyle(
-                          fontSize: 19,
+                          fontSize: 18,
                           fontFamily: "Raleway",
                           color: ThemeColoursSeva().dkGreen),
+                    ),
+                  ),
+                  SizedBox(height: 50.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Container(
+                        height: 20.0,
+                        width: 20.0,
+                        decoration: BoxDecoration(
+                            color: ThemeColoursSeva().black,
+                            shape: BoxShape.circle),
+                      ),
+                      Container(
+                        height: 20.0,
+                        width: 20.0,
+                        decoration: BoxDecoration(
+                            color: ThemeColoursSeva().grey,
+                            shape: BoxShape.circle),
+                      ),
+                      Container(
+                        height: 20.0,
+                        width: 20.0,
+                        decoration: BoxDecoration(
+                            color: ThemeColoursSeva().grey,
+                            shape: BoxShape.circle),
+                      ),
+                      Container(
+                        height: 20.0,
+                        width: 20.0,
+                        decoration: BoxDecoration(
+                            color: ThemeColoursSeva().grey,
+                            shape: BoxShape.circle),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50.0,
+                  ),
+                  ButtonTheme(
+                    minWidth: 90.0,
+                    height: 40.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: RaisedButton(
+                      onPressed: (){},
+                      color: ThemeColoursSeva().dkGreen,
+                      textColor: Colors.white,
+                      child: Text("Next"),
                     ),
                   ),
                 ],
