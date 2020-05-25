@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenIntro.dart';
+import 'package:mvp/screens/common/descriptionIntro.dart';
+import 'package:mvp/screens/common/smallDotsIntro.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
@@ -8,6 +10,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+
   @override
   Widget build(BuildContext context) {
     double sWidth = MediaQuery.of(context).size.width;
@@ -57,61 +60,26 @@ class _IntroScreenState extends State<IntroScreen> {
               width: sWidth * 0.85,
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Image(
-                        image: AssetImage('images/person.png'),
-                      ),
-                      Image(
-                        image: AssetImage('images/mob.png'),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    width: sWidth * 0.7,
-                    child: Text(
-                      "Order Fresh Fruits and Vegetables from the comfort of your home. We collect from farmers driectly!",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "Raleway",
-                          color: ThemeColoursSeva().dkGreen),
-                    ),
+                  DescriptionIntro(
+                    img1: 'images/person.png',
+                    img2: 'images/mob.png',
+                    descText: "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly!",
                   ),
                   SizedBox(height: 50.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      Container(
-                        height: 20.0,
-                        width: 20.0,
-                        decoration: BoxDecoration(
-                            color: ThemeColoursSeva().black,
-                            shape: BoxShape.circle),
+                      SmallDotsIntro(
+                        bg: ThemeColoursSeva().black
                       ),
-                      Container(
-                        height: 20.0,
-                        width: 20.0,
-                        decoration: BoxDecoration(
-                            color: ThemeColoursSeva().grey,
-                            shape: BoxShape.circle),
+                      SmallDotsIntro(
+                        bg: ThemeColoursSeva().grey
                       ),
-                      Container(
-                        height: 20.0,
-                        width: 20.0,
-                        decoration: BoxDecoration(
-                            color: ThemeColoursSeva().grey,
-                            shape: BoxShape.circle),
+                      SmallDotsIntro(
+                        bg: ThemeColoursSeva().grey
                       ),
-                      Container(
-                        height: 20.0,
-                        width: 20.0,
-                        decoration: BoxDecoration(
-                            color: ThemeColoursSeva().grey,
-                            shape: BoxShape.circle),
+                      SmallDotsIntro(
+                        bg: ThemeColoursSeva().grey
                       ),
                     ],
                   ),
