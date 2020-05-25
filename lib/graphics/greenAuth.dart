@@ -37,3 +37,39 @@ class GreenPaintingBgAuth extends CustomPainter {
     return oldDelegate != this;
   }
 }
+
+class GreenPaintBgLogin extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size){
+    final height = size.height;
+    final width = size.width;
+    Paint paint = Paint();
+    Path ovalPath = Path();
+
+    // top left graphic
+    ovalPath.lineTo(width*0.33, 0);
+    ovalPath.quadraticBezierTo(width*0.25, height*0.2, 0, height*0.23);
+    ovalPath.close();
+
+    // bottom left graphic
+    ovalPath.moveTo(0, height);
+    ovalPath.lineTo(0, height*0.87);
+    ovalPath.quadraticBezierTo(width*0.14, height*0.89, width*0.32, height);
+    ovalPath.close();
+
+    // center right graphic
+    ovalPath.moveTo(width, height*0.18);
+    ovalPath.quadraticBezierTo(width*0.87, height*0.24, width*0.85, height*0.31);
+    ovalPath.quadraticBezierTo(width*0.81, height*0.49, width, height*0.59);
+    ovalPath.close();
+
+    // paint
+    paint.color = ThemeColoursSeva().vlgGreen;
+    canvas.drawPath(ovalPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return oldDelegate != this;
+  }
+}

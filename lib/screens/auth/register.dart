@@ -16,7 +16,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailAddress;
   TextEditingController password;
   TextEditingController mobile;
-  TextEditingController area;
+  TextEditingController pincode;
   TextEditingController address;
 
   IndexedStack _buildStack() {
@@ -50,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(eC: area, lt: "Select Area:"),
+            InputTextField(eC: pincode, lt: "Enter Pincode:"),
             
           ],
         ),

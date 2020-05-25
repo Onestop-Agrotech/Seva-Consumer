@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/introScreen.dart';
 
 void main() {
@@ -10,7 +11,7 @@ class SevaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: IntroScreen()
+      home: LoginScreen()
     );
   }
 }
