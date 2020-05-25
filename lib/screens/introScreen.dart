@@ -10,6 +10,15 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  int _index=0;
+
+  void changeIndex(){
+    setState(() {
+      if(_index==2)_index=0;
+      else _index++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double sWidth = MediaQuery.of(context).size.width;
@@ -60,7 +69,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: Column(
                 children: <Widget>[
                   IndexedStack(
-                    index: 0,
+                    index: _index,
                     children: <Widget>[
                       DescriptionIntro(
                         img: 'images/ct1.png',
@@ -83,10 +92,10 @@ class _IntroScreenState extends State<IntroScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      SmallDotsIntro(bg: ThemeColoursSeva().black),
-                      SmallDotsIntro(bg: ThemeColoursSeva().grey),
-                      SmallDotsIntro(bg: ThemeColoursSeva().grey),
-                      SmallDotsIntro(bg: ThemeColoursSeva().grey),
+                      SmallDotsIntro(bg: _index==0?ThemeColoursSeva().black : ThemeColoursSeva().grey),
+                      SmallDotsIntro(bg: _index==1?ThemeColoursSeva().black : ThemeColoursSeva().grey),
+                      SmallDotsIntro(bg: _index==2?ThemeColoursSeva().black : ThemeColoursSeva().grey),
+                      SmallDotsIntro(bg: _index==3?ThemeColoursSeva().black : ThemeColoursSeva().grey),
                     ],
                   ),
                   SizedBox(
@@ -99,7 +108,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: changeIndex,
                       color: ThemeColoursSeva().dkGreen,
                       textColor: Colors.white,
                       child: Text("Next"),
