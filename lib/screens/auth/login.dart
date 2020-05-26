@@ -3,6 +3,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
+import 'package:mvp/screens/common/topText.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -30,14 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 20.0),
-                    Text(
-                      "Sign in",
-                      style: TextStyle(
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20.0,
-                          color: ThemeColoursSeva().dkGreen),
-                    ),
+                    TopText(txt: "Sign in"),
                     SizedBox(
                       height: 40.0,
                     ),

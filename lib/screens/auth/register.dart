@@ -3,6 +3,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
+import 'package:mvp/screens/common/topText.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -78,14 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Column(
                   children: <Widget>[
-                    Text(
-                      "Create Account",
-                      style: TextStyle(
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20.0,
-                          color: ThemeColoursSeva().dkGreen),
-                    ),
+                    TopText(txt:"Create Account"),
                     SizedBox(
                       height: 20.0,
                     ),

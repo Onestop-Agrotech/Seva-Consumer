@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenProducts.dart';
+import 'package:mvp/screens/common/topText.dart';
 
 class ProductScreen extends StatefulWidget {
   @override
@@ -27,14 +28,7 @@ class _ProductScreenState extends State<ProductScreen> {
                     return SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            "Products",
-                            style: TextStyle(
-                                fontFamily: "Raleway",
-                                fontWeight: FontWeight.w500,
-                                fontSize: 20.0,
-                                color: ThemeColoursSeva().dkGreen),
-                          )
+                          TopText(txt:"Products"),
                         ],
                       ),
                     );
