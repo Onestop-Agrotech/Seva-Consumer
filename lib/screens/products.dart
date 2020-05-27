@@ -2,6 +2,7 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenProducts.dart';
+import 'package:mvp/screens/common/customProductCard.dart';
 import 'package:mvp/screens/common/topText.dart';
 
 import 'common/smallDotsIntro.dart';
@@ -12,25 +13,25 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  ScrollController _scrollController = ScrollController(); 
   TextEditingController search;
   int _index = 0;
 
   _buildRow(int indexNumber) {
     return ListView.builder(
+      controller: _scrollController,
         itemCount: 10,
         itemBuilder: (BuildContext ctx, int index) {
           return Column(
             children: <Widget>[
-              SizedBox(height: 5.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  indexNumber == 0 ? Text("Veggies") : Text("Fruits"),
-                  SizedBox(width: 10.0),
-                  indexNumber == 0 ? Text("Veggies") : Text("Fruits"),
+                  indexNumber == 0 ? ProductCard(cc: Colors.lightBlue) : ProductCard(cc: Colors.lightGreen),
+                  indexNumber == 0 ? ProductCard(cc: Colors.lightBlue) : ProductCard(cc: Colors.lightGreen),
                 ],
               ),
-              SizedBox(height: 5.0)
+              SizedBox(height:15.0)
             ],
           );
         });
@@ -38,8 +39,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   IndexedStack _buildStack() {
     return IndexedStack(
-      index: _index == 0 ? 0 : 1,
-      children: <Widget>[_buildRow(_index), _buildRow(_index)],
+      index: _index==0?0:1,
+      children: <Widget>[_buildRow(_index),_buildRow(_index)],
     );
   }
 
@@ -89,6 +90,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       Material(
                         child: InkWell(
                           onTap: () {
+                            _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.ease);
                             setState(() {
                               _index = 0;
                             });
@@ -119,6 +121,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       Material(
                         child: InkWell(
                           onTap: () {
+                            _scrollController.animateTo(0.0, duration: const Duration(milliseconds: 300), curve: Curves.ease);
                             setState(() {
                               _index = 1;
                             });
@@ -156,7 +159,7 @@ class _ProductScreenState extends State<ProductScreen> {
             child: Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.only(top: 280.0),
+                padding: const EdgeInsets.only(top: 265.0),
                 child: _buildStack(),
               ),
             ),
