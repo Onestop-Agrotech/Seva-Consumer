@@ -15,10 +15,31 @@ class _ProductScreenState extends State<ProductScreen> {
   TextEditingController search;
   int _index = 0;
 
+  _buildRow(int indexNumber) {
+    return ListView.builder(
+        itemCount: 10,
+        itemBuilder: (BuildContext ctx, int index) {
+          return Column(
+            children: <Widget>[
+              SizedBox(height: 5.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  indexNumber == 0 ? Text("Veggies") : Text("Fruits"),
+                  SizedBox(width: 10.0),
+                  indexNumber == 0 ? Text("Veggies") : Text("Fruits"),
+                ],
+              ),
+              SizedBox(height: 5.0)
+            ],
+          );
+        });
+  }
+
   IndexedStack _buildStack() {
     return IndexedStack(
       index: _index == 0 ? 0 : 1,
-      children: <Widget>[Text("Vegetables"), Text("Fruits")],
+      children: <Widget>[_buildRow(_index), _buildRow(_index)],
     );
   }
 
@@ -37,13 +58,15 @@ class _ProductScreenState extends State<ProductScreen> {
             painter: GreenPaintProducts(),
             child: Center(child: null),
           ),
-          Positioned.fill(child: Align(
+          Positioned.fill(
+            child: Align(
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 60.0),
-                child: TopText(txt:"Products"),
+                child: TopText(txt: "Products"),
               ),
-            ),),
+            ),
+          ),
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 70),
@@ -53,85 +76,87 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
           ),
-          Positioned.fill(child: Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: const EdgeInsets.only( top: 200.0),
-              child: Container(
-                height: 64.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Material(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _index = 0;
-                                });
-                              },
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    'Vegetables',
-                                    style: TextStyle(
-                                        color: _index == 0
-                                            ? ThemeColoursSeva().dkGreen
-                                            : Colors.grey,
-                                        fontFamily: "Raleway",
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 20.0),
-                                  ),
-                                  SizedBox(
-                                    height: 18.0,
-                                  ),
-                                  SmallDotsIntro(
-                                      bg: _index == 0
-                                          ? ThemeColoursSeva().black
-                                          : ThemeColoursSeva().grey),
-                                ],
-                              ),
-                            ),
-                          ),
-                    Material(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _index = 1;
-                                });
-                              },
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    'Fruits',
-                                    style: TextStyle(
-                                        color: _index == 1
-                                            ? ThemeColoursSeva().dkGreen
-                                            : Colors.grey,
-                                        fontFamily: "Raleway",
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 20.0),
-                                  ),
-                                  SizedBox(
-                                    height: 18.0,
-                                  ),
-                                  SmallDotsIntro(
-                                      bg: _index == 1
-                                          ? ThemeColoursSeva().black
-                                          : ThemeColoursSeva().grey),
-                                ],
-                              ),
-                            ),
-                          ),
-                  ],
-                ),
-              ),
-            ),
-          ),),
           Positioned.fill(
             child: Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.only(top: 300.0),
+                padding: const EdgeInsets.only(top: 200.0),
+                child: Container(
+                  height: 64.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Material(
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _index = 0;
+                            });
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                'Vegetables',
+                                style: TextStyle(
+                                    color: _index == 0
+                                        ? ThemeColoursSeva().dkGreen
+                                        : Colors.grey,
+                                    fontFamily: "Raleway",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20.0),
+                              ),
+                              SizedBox(
+                                height: 18.0,
+                              ),
+                              SmallDotsIntro(
+                                  bg: _index == 0
+                                      ? ThemeColoursSeva().black
+                                      : ThemeColoursSeva().grey),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Material(
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              _index = 1;
+                            });
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                'Fruits',
+                                style: TextStyle(
+                                    color: _index == 1
+                                        ? ThemeColoursSeva().dkGreen
+                                        : Colors.grey,
+                                    fontFamily: "Raleway",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 20.0),
+                              ),
+                              SizedBox(
+                                height: 18.0,
+                              ),
+                              SmallDotsIntro(
+                                  bg: _index == 1
+                                      ? ThemeColoursSeva().black
+                                      : ThemeColoursSeva().grey),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 280.0),
                 child: _buildStack(),
               ),
             ),
