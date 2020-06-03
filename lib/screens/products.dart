@@ -13,6 +13,12 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   TextEditingController search;
 
+  ListView _buildItems(){
+    return ListView.builder(itemCount: 4, itemBuilder: (ctxt, index){
+      return Text("Hello");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +57,7 @@ class _ProductScreenState extends State<ProductScreen> {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 210.0),
-                child: Text("Hello"),
+                child: _buildItems(),
               ),
             ),
           ),
