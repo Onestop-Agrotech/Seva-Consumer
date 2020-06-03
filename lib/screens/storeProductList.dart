@@ -3,6 +3,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/shoppingCart.dart';
 import 'package:provider/provider.dart';
 
 class StoreProductsScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
         "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
     Map<String, String> requestHeaders = {
       'x-auth-token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE1NzMzNiwiZXhwIjoxNTkxMTYwOTM2fQ._KKD1kU7Vj1iytZnpbS8itIaMbQJqW8i1jXh1eQcyF0'
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE2MTAwMSwiZXhwIjoxNTkxMTY0NjAxfQ.cq8BfbaX6WQbT5VldAcc3gUngxFDiPtuIWFlEeXQqFo'
     };
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
@@ -79,7 +80,26 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     var cart = Provider.of<CartModel>(context);
     return Scaffold(
       body: SafeArea(
-        child: _buildArrayFromFuture(cart),
+        child: Column(
+          children: <Widget>[
+            Expanded(child: _buildArrayFromFuture(cart)),
+            ButtonTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShoppingCartScreen()));
+                },
+                color: ThemeColoursSeva().dkGreen,
+                textColor: Colors.white,
+                child: Text("To cart"),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
