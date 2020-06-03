@@ -36,18 +36,24 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
               ],
             );
           });
-    } else {
+    } else if (cLength == 0) {
       return Container(
         child: Center(
           child: Text("Shopping cart is empty!"),
         ),
       );
-    }
+    } else
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
   }
 
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<CartModel>(context);
+    cart.firstTimeAddition();
     return Scaffold(
       body: SafeArea(
         child: _listbuilder(cart),

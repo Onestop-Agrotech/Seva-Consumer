@@ -5,24 +5,28 @@ import 'package:mvp/models/storeProducts.dart';
 // Uses all the CRUD operations 
 class FirestoreCRUD {
 
-  // Get all documents from Firestore
-  // currently just printing everything
-  getDocsFromFirestore(){
-    String username = 'rahul';
-    Firestore.instance
-      .collection('$username')
-      .getDocuments()
-      .then((docs) { return docs;});
-  }
+  // // Get all documents from Firestore
+  // // currently just printing everything
+  // List<DocumentSnapshot> getDocsFromFirestore(){
+  //   String username = 'rahul';
+  //   Firestore.instance
+  //     .collection('$username')
+  //     .getDocuments()
+  //     .then((docs) { 
+  //       return docs.documents;});
+  // }
 
   // Add document to firestore
   void addToFirestore(StoreProduct obj, String quantity, String price){
     String username = 'rahul';
     Firestore.instance.collection('$username').document('p-${obj.uniqueId}').setData({
-      'product': obj.name,
+      'name': obj.name,
       'quantity': quantity,
       'price': price,
-      'pricePerQuantity': obj.pricePerQuantity
+      'pricePerQuantity': obj.pricePerQuantity,
+      'uniqueId': obj.uniqueId,
+      'id':obj.id,
+      'type':obj.type,
     });
   }
 
@@ -36,10 +40,8 @@ class FirestoreCRUD {
   void updateDocInFirestore(String docId, StoreProduct obj, String newq, String newp) {
     String username = 'rahul';
     Firestore.instance.collection('$username').document(docId).updateData({
-      'product': obj.name,
       'quantity': newq,
       'pricePerKg': newp,
-      'pricePerQuantity': obj.pricePerQuantity
     });
   }
 
@@ -50,7 +52,6 @@ class FirestoreCRUD {
       for (DocumentSnapshot ds in snapshot.documents) {
         ds.reference.delete();
       }
-      print('deleted from firestore');
     });
   }
 }

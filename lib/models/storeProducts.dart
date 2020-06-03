@@ -13,6 +13,8 @@ class StoreProduct {
         this.description,
         this.pricePerQuantity,
         this.pictureUrl,
+        this.totalPrice,
+        this.totalQuantity
     });
 
     String id;
@@ -22,6 +24,8 @@ class StoreProduct {
     String description;
     String pricePerQuantity;
     String pictureUrl;
+    String totalPrice;
+    String totalQuantity;
 
     factory StoreProduct.fromJson(Map<String, dynamic> json) => StoreProduct(
         id: json["_id"],
