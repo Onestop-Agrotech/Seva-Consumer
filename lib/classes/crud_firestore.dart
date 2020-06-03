@@ -5,19 +5,8 @@ import 'package:mvp/models/storeProducts.dart';
 // Uses all the CRUD operations 
 class FirestoreCRUD {
 
-  // // Get all documents from Firestore
-  // // currently just printing everything
-  // List<DocumentSnapshot> getDocsFromFirestore(){
-  //   String username = 'rahul';
-  //   Firestore.instance
-  //     .collection('$username')
-  //     .getDocuments()
-  //     .then((docs) { 
-  //       return docs.documents;});
-  // }
-
   // Add document to firestore
-  void addToFirestore(StoreProduct obj, String quantity, String price){
+  void addToFirestore(StoreProduct obj, int quantity, int price){
     String username = 'rahul';
     Firestore.instance.collection('$username').document('p-${obj.uniqueId}').setData({
       'name': obj.name,

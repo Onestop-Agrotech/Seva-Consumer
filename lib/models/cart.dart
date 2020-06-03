@@ -42,9 +42,9 @@ class CartModel extends ChangeNotifier {
   }
 
   // Add item to cart
-  void addItem(StoreProduct i) {
+  void addItem(StoreProduct i, int totalQuantity, int totalPrice) {
     _cartItems.add(i);
-    f.addToFirestore(i, "1 kg", "Rs 30");
+    f.addToFirestore(i, totalQuantity, totalPrice);
     notifyListeners();
   }
 
@@ -55,5 +55,27 @@ class CartModel extends ChangeNotifier {
     _cartItems.removeAt(itemIndex);
     f.deleteFromFirestore(uid);
     notifyListeners();
+  }
+
+  // update quantity by 1 for an item
+  void updateQtyByOne(StoreProduct i, q){
+    // int itemIndex = _cartItems.indexOf(i);
+    // _cartItems[itemIndex].totalQuantity++;
+    _cartItems.forEach((item) {
+      if(item.uniqueId == i.uniqueId){
+        item.totalQuantity=q;
+        notifyListeners();
+      }
+    });
+  }
+
+  // update quantity by -1 for an item
+  void minusQtyByOne(StoreProduct i, q){
+    _cartItems.forEach((item) {
+      if(item.uniqueId == i.uniqueId){
+        item.totalQuantity=q;
+        notifyListeners();
+      }
+    });
   }
 }

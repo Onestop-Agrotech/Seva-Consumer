@@ -22,6 +22,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   children: <Widget>[
                     Text('$counter.'),
                     Text('${items[index].name}'),
+                    Text('${items[index].totalQuantity}'),
                     IconButton(
                       icon: Icon(
                         Icons.delete,

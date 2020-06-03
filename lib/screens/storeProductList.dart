@@ -18,13 +18,25 @@ class StoreProductsScreen extends StatefulWidget {
 class _StoreProductsScreenState extends State<StoreProductsScreen> {
   final AsyncMemoizer _memoizer = AsyncMemoizer();
 
+  void _updateCartItem(int binary, arr, int index, cart) {
+    if (binary == 0) {
+      // remove quantity
+      int qty=arr[index].totalQuantity;
+      cart.minusQtyByOne(arr[index], qty-1);
+    } else if (binary == 1) {
+      // add quantity
+      int qty=arr[index].totalQuantity;
+      cart.updateQtyByOne(arr[index], qty+1);
+    }
+  }
+
   _fetchProductsFromStore() async {
     return this._memoizer.runOnce(() async {
       String url =
           "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
       Map<String, String> requestHeaders = {
         'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE2NzAyNSwiZXhwIjoxNTkxMTcwNjI1fQ.GiWrOJ8_Ozs9QJQELgRNmE5844EWpraixs7L_Al3Ucw'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE3NTg1NiwiZXhwIjoxNTkxMTc5NDU2fQ.OQSeTR5tS2maYIeQX-H--CLWQcLpnzaECkCGQLMfVcc'
       };
 
       var response = await http.get(url, headers: requestHeaders);
@@ -52,19 +64,30 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                         children: <Widget>[
                           Text('${arr[index].name}'),
                           Text('${arr[index].pricePerQuantity}'),
-                          IconButton(icon: Icon(Icons.remove), onPressed: (){
-                            setState(() {
-                              if(arr[index].totalQuantity != 0){
-                                arr[index].totalQuantity--;
-                              }
-                            });
-                          }),
+                          IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                setState(() {
+                                  if (arr[index].totalQuantity != 0) {
+                                    // arr[index].totalQuantity--;
+                                    _updateCartItem(0, arr, index, cart);
+                                  }
+                                });
+                              }),
                           Text('${arr[index].totalQuantity}'),
-                          IconButton(icon: Icon(Icons.add), onPressed: () {
-                            setState(() {
-                              arr[index].totalQuantity++;
-                            });
-                          }),
+                          IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                                setState(() {
+                                  if (arr[index].totalQuantity == 0){
+                                    arr[index].totalQuantity++;
+                                    cart.addItem(arr[index], arr[index].totalQuantity, 100);
+                                  }
+                                  else {
+                                    _updateCartItem(1, arr, index, cart);
+                                  }
+                                });
+                              }),
                         ],
                       ),
                       SizedBox(height: 20.0)
