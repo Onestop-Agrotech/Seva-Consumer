@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
+import 'package:mvp/screens/storeProductList.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
+  final String businessUserName;
+  ShoppingCartScreen({this.businessUserName});
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
@@ -23,15 +27,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     Text('$counter.'),
                     Text('${items[index].name}'),
                     Text('${items[index].totalQuantity}'),
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        cart.removeItem(items[index]);
-                      },
-                    )
+                    IconButton(icon: Icon(Icons.delete, color: Colors.red,), onPressed: (){
+                      cart.removeItem(items[index]);
+                    })
                   ],
                 ),
               ],
@@ -57,7 +55,25 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     cart.firstTimeAddition();
     return Scaffold(
       body: SafeArea(
-        child: _listbuilder(cart),
+        child: Column(
+          children: <Widget>[
+            Expanded(child: _listbuilder(cart),),
+            ButtonTheme(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
+              child: RaisedButton(
+                onPressed: () {
+                  // Navigator.pushReplacement(context, MaterialPageRoute(
+                  //   builder: (context) => StoreProductsScreen(businessUsername: widget.businessUserName,)
+                  // ));
+                  Navigator.pop(context);
+                },
+                color: ThemeColoursSeva().dkGreen,
+                textColor: Colors.white,
+                child: Text("Back"),
+              ),),
+          ],
+        ),
       ),
     );
   }

@@ -17,7 +17,7 @@ class CartModel extends ChangeNotifier {
   _checkFireStore() async {
     List<DocumentSnapshot> docs;
     QuerySnapshot q;
-    var username ='rahul';
+    var username = 'rahul';
     q = await Firestore.instance.collection('$username').getDocuments();
     docs = q.documents;
     return docs;
@@ -28,13 +28,13 @@ class CartModel extends ChangeNotifier {
       var docs = await _checkFireStore();
       docs.forEach((d) {
         StoreProduct ob = new StoreProduct();
-          ob.name = d.data['name'];
-          ob.pricePerQuantity = d.data['pricePerQuantity'];
-          ob.uniqueId = d.data['uniqueId'];
-          ob.id = d.data['id'];
-          ob.type = d.data['type'];
-          ob.totalPrice = d.data['price'];
-          ob.totalQuantity = d.data['quantity'];
+        ob.name = d.data['name'];
+        ob.pricePerQuantity = d.data['pricePerQuantity'];
+        ob.uniqueId = d.data['uniqueId'];
+        ob.id = d.data['id'];
+        ob.type = d.data['type'];
+        ob.totalPrice = d.data['price'];
+        ob.totalQuantity = d.data['quantity'];
         _cartItems.add(ob);
       });
       notifyListeners();
@@ -50,30 +50,35 @@ class CartModel extends ChangeNotifier {
 
   // Remove from cart
   void removeItem(StoreProduct i) {
-    int itemIndex = _cartItems.indexOf(i);
-    String uid = _cartItems[itemIndex].uniqueId;
-    _cartItems.removeAt(itemIndex);
-    f.deleteFromFirestore(uid);
-    notifyListeners();
+    int index = -1;
+    _cartItems.forEach((element) {
+      if (element.uniqueId == i.uniqueId) index = _cartItems.indexOf(element);
+    });
+    if (index != -1) {
+      String uid = _cartItems[index].uniqueId;
+      _cartItems.removeAt(index);
+      f.deleteFromFirestore(uid);
+      notifyListeners();
+    }
   }
 
   // update quantity by 1 for an item
-  void updateQtyByOne(StoreProduct i, q){
-    // int itemIndex = _cartItems.indexOf(i);
-    // _cartItems[itemIndex].totalQuantity++;
+  void updateQtyByOne(StoreProduct i, q) {
     _cartItems.forEach((item) {
-      if(item.uniqueId == i.uniqueId){
-        item.totalQuantity=q;
+      if (item.uniqueId == i.uniqueId) {
+        item.totalQuantity = q;
+        f.updateDocInFirestore('p-${item.uniqueId}', item.totalQuantity, 100);
         notifyListeners();
       }
     });
   }
 
   // update quantity by -1 for an item
-  void minusQtyByOne(StoreProduct i, q){
+  void minusQtyByOne(StoreProduct i, q) {
     _cartItems.forEach((item) {
-      if(item.uniqueId == i.uniqueId){
-        item.totalQuantity=q;
+      if (item.uniqueId == i.uniqueId) {
+        item.totalQuantity = q;
+        f.updateDocInFirestore('p-${item.uniqueId}', item.totalQuantity, 100);
         notifyListeners();
       }
     });

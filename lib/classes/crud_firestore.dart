@@ -26,7 +26,7 @@ class FirestoreCRUD {
   }
 
   // Update document
-  void updateDocInFirestore(String docId, StoreProduct obj, String newq, String newp) {
+  void updateDocInFirestore(String docId, int newq, int newp) {
     String username = 'rahul';
     Firestore.instance.collection('$username').document(docId).updateData({
       'quantity': newq,
