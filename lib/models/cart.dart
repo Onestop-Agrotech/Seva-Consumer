@@ -23,28 +23,6 @@ class CartModel extends ChangeNotifier {
     return docs;
   }
 
-  // void fillCart() async {
-  //   String username = 'rahul';
-  //   Firestore.instance.collection('$username').getDocuments().then((docs) {
-  //     if (docs.documents.length > 0) {
-  //       for (var i = 0; i < docs.documents.length; i++) {
-  //         StoreProduct ob = new StoreProduct();
-  //         ob.name = docs.documents[i].data['name'];
-  //         ob.pricePerQuantity = docs.documents[i].data['pricePerQuantity'];
-  //         ob.uniqueId = docs.documents[i].data['uniqueId'];
-  //         ob.id = docs.documents[i].data['id'];
-  //         ob.type = docs.documents[i].data['type'];
-  //         ob.totalPrice = docs.documents[i].data['price'];
-  //         ob.totalQuantity = docs.documents[i].data['quantity'];
-  //         _cartItems.add(ob);
-  //       }
-  //       print(docs.documents.length);
-  //       notifyListeners();
-  //     }
-      
-  //   });
-  // }
-
   void firstTimeAddition() async {
     if (_cartItems.length == 0) {
       var docs = await _checkFireStore();

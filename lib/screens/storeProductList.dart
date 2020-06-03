@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
@@ -15,19 +16,24 @@ class StoreProductsScreen extends StatefulWidget {
 }
 
 class _StoreProductsScreenState extends State<StoreProductsScreen> {
-  Future<List<StoreProduct>> _fetchProductsFromStore() async {
-    String url =
-        "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
-    Map<String, String> requestHeaders = {
-      'x-auth-token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE2MTAwMSwiZXhwIjoxNTkxMTY0NjAxfQ.cq8BfbaX6WQbT5VldAcc3gUngxFDiPtuIWFlEeXQqFo'
-    };
-    var response = await http.get(url, headers: requestHeaders);
-    if (response.statusCode == 200) {
-      return jsonToStoreProductModel(response.body);
-    } else {
-      throw Exception('something is wrong');
-    }
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  _fetchProductsFromStore() async {
+    return this._memoizer.runOnce(() async {
+      String url =
+          "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
+      Map<String, String> requestHeaders = {
+        'x-auth-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE2NzAyNSwiZXhwIjoxNTkxMTcwNjI1fQ.GiWrOJ8_Ozs9QJQELgRNmE5844EWpraixs7L_Al3Ucw'
+      };
+
+      var response = await http.get(url, headers: requestHeaders);
+      if (response.statusCode == 200) {
+        return jsonToStoreProductModel(response.body);
+      } else {
+        throw Exception('something is wrong');
+      }
+    });
   }
 
   FutureBuilder _buildArrayFromFuture(cart) {
@@ -46,18 +52,19 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                         children: <Widget>[
                           Text('${arr[index].name}'),
                           Text('${arr[index].pricePerQuantity}'),
-                          ButtonTheme(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            child: RaisedButton(
-                              onPressed: () {
-                                cart.addItem(arr[index]);
-                              },
-                              color: ThemeColoursSeva().dkGreen,
-                              textColor: Colors.white,
-                              child: Text("Add to cart"),
-                            ),
-                          )
+                          IconButton(icon: Icon(Icons.remove), onPressed: (){
+                            setState(() {
+                              if(arr[index].totalQuantity != 0){
+                                arr[index].totalQuantity--;
+                              }
+                            });
+                          }),
+                          Text('${arr[index].totalQuantity}'),
+                          IconButton(icon: Icon(Icons.add), onPressed: () {
+                            setState(() {
+                              arr[index].totalQuantity++;
+                            });
+                          }),
                         ],
                       ),
                       SizedBox(height: 20.0)
