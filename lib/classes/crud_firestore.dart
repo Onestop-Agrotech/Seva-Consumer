@@ -7,12 +7,12 @@ class FirestoreCRUD {
 
   // Get all documents from Firestore
   // currently just printing everything
-  void getDocsFromFirestore(){
+  getDocsFromFirestore(){
     String username = 'rahul';
     Firestore.instance
       .collection('$username')
       .getDocuments()
-      .then((docs) => docs.documents.forEach((e) => print(e)));
+      .then((docs) { return docs;});
   }
 
   // Add document to firestore
@@ -24,6 +24,12 @@ class FirestoreCRUD {
       'price': price,
       'pricePerQuantity': obj.pricePerQuantity
     });
+  }
+
+  // Delete a particular document from firestore
+  void deleteFromFirestore(String uId){
+    String username = 'rahul';
+    Firestore.instance.collection('$username').document('p-$uId').delete();
   }
 
   // Update document

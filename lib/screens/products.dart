@@ -1,8 +1,8 @@
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mvp/constants/themeColours.dart';
+// import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenProducts.dart';
-import 'package:mvp/screens/common/customProductCard.dart';
+// import 'package:mvp/screens/common/customProductCard.dart';
 import 'package:mvp/screens/common/topText.dart';
 
 class ProductScreen extends StatefulWidget {
