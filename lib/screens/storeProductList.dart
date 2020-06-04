@@ -24,7 +24,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
       Map<String, String> requestHeaders = {
         'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE4NjkwMywiZXhwIjoxNTkxMTkwNTAzfQ.0sL6rvaBTpXl_kAQ_Ehc_Nt7KduAu6PND3DQpt9yPYw'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTIzNjQxMywiZXhwIjoxNTkxMjQwMDEzfQ.-uQd_jJtf93niV5AtihrfA6vG5VAdPNw5uxoQPrxjz8'
       };
 
       var response = await http.get(url, headers: requestHeaders);
@@ -46,15 +46,40 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return arr;
   }
 
-  // _showQtyText(cart, item) {
-  //   var index = -1;
-  //   cart.items.forEach((a) =>
-  //       {if (a.uniqueId == item.uniqueId) index = cart.items.indexOf(a)});
-  //   if (index != -1)
-  //     return Text('${cart.items[index].totalQuantity}');
-  //   else
-  //     return Text('${item.totalQuantity}');
-  // }
+  _showQ(consumerCart, item){
+    int qty=0;
+    if(consumerCart.listLength > 0){
+      // items exists
+      consumerCart.items.forEach((a) {
+        if(a.uniqueId==item.uniqueId){
+          qty=a.totalQuantity;
+          return;
+        }
+      });
+    }
+    return Text('$qty');
+  }
+
+  _checkForAddition(consumerCart, item){
+    if(consumerCart.listLength > 0){
+      // check if item exists in cart and update
+      // also add if it doesn't exist
+      print(consumerCart.listLength);
+      consumerCart.updateQtyByOne(item);
+    } else {
+      // add item to cart
+      print(consumerCart.listLength);
+      consumerCart.addItem(item, 1, 100);
+    }
+  }
+
+  _checkForDeletion(consumerCart, item){
+    if(consumerCart.listLength > 0){
+      // check if item exists and remove quantity by 1
+      // if it doesn't exist, do nothing
+      consumerCart.minusQtyByOne(item);
+    }
+  }
 
   FutureBuilder _buildArrayFromFuture(cart) {
     return FutureBuilder(
@@ -85,34 +110,13 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                               IconButton(
                                   icon: Icon(Icons.remove),
                                   onPressed: () {
-                                    if (arr[index].totalQuantity != 0) {
-                                      arr[index].totalQuantity =
-                                          arr[index].totalQuantity - 1;
-                                      if (arr[index].totalQuantity != 0) {
-                                        consumerCart.minusQtyByOne(arr[index],
-                                            arr[index].totalQuantity);
-                                      } else if (arr[index].totalQuantity ==
-                                          0) {
-                                        // remove from cart
-                                        cart.removeItem(arr[index]);
-                                      }
-                                    }
+                                    _checkForDeletion(consumerCart, arr[index]);
                                   }),
-                              Text('${arr[index].totalQuantity}'),
+                              _showQ(consumerCart, arr[index]),
                               IconButton(
                                   icon: Icon(Icons.add),
                                   onPressed: () {
-                                    if (arr[index].totalQuantity == 0) {
-                                      // first time addition to cart, so update quantity to 1 and add to cart
-                                      arr[index].totalQuantity =
-                                          arr[index].totalQuantity + 1;
-                                      consumerCart.addItem(arr[index], 1, 100);
-                                    } else {
-                                      arr[index].totalQuantity =
-                                          arr[index].totalQuantity + 1;
-                                      consumerCart.updateQtyByOne(
-                                          arr[index], arr[index].totalQuantity);
-                                    }
+                                    _checkForAddition(consumerCart, arr[index]);
                                   }),
                             ],
                           );

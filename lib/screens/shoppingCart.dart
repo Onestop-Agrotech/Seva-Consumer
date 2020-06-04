@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
-import 'package:mvp/screens/storeProductList.dart';
+// import 'package:mvp/screens/storeProductList.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {

@@ -14,7 +14,7 @@ class _StoresScreenState extends State<StoresScreen> {
     String url = "http://10.0.2.2:8000/api/businesses/";
     Map<String, String> requestHeaders = {
       'x-auth-token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTE4NjkwMywiZXhwIjoxNTkxMTkwNTAzfQ.0sL6rvaBTpXl_kAQ_Ehc_Nt7KduAu6PND3DQpt9yPYw'
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTIzNjQxMywiZXhwIjoxNTkxMjQwMDEzfQ.-uQd_jJtf93niV5AtihrfA6vG5VAdPNw5uxoQPrxjz8'
     };
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {

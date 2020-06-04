@@ -25,6 +25,7 @@ class CartModel extends ChangeNotifier {
 
   void firstTimeAddition() async {
     if (_cartItems.length == 0) {
+      // print("Added from firestore");
       var docs = await _checkFireStore();
       docs.forEach((d) {
         StoreProduct ob = new StoreProduct();
@@ -43,9 +44,21 @@ class CartModel extends ChangeNotifier {
 
   // Add item to cart
   void addItem(StoreProduct i, int totalQuantity, int totalPrice) {
-    _cartItems.add(i);
-    f.addToFirestore(i, totalQuantity, totalPrice);
-    notifyListeners();
+    // check if it exists already, then don't add
+    bool matched = false;
+    _cartItems.forEach((element) {
+      if (element.uniqueId == i.uniqueId) {
+        matched = true;
+        return;
+      }
+    });
+
+    if (matched == false) {
+      print("added once");
+      _cartItems.add(i);
+      f.addToFirestore(i, totalQuantity, totalPrice);
+      notifyListeners();
+    }
   }
 
   // Remove from cart
@@ -63,23 +76,37 @@ class CartModel extends ChangeNotifier {
   }
 
   // update quantity by 1 for an item
-  void updateQtyByOne(StoreProduct i, q) {
+  void updateQtyByOne(StoreProduct i) {
+    bool matched = false;
     _cartItems.forEach((item) {
       if (item.uniqueId == i.uniqueId) {
-        item.totalQuantity = q;
+        matched = true;
+        item.totalQuantity = item.totalQuantity + 1;
         f.updateDocInFirestore('p-${item.uniqueId}', item.totalQuantity, 100);
         notifyListeners();
+        return;
       }
     });
+    if (matched == false) {
+      addItem(i, 1, 100);
+    }
   }
 
   // update quantity by -1 for an item
-  void minusQtyByOne(StoreProduct i, q) {
+  void minusQtyByOne(StoreProduct i) {
     _cartItems.forEach((item) {
       if (item.uniqueId == i.uniqueId) {
-        item.totalQuantity = q;
-        f.updateDocInFirestore('p-${item.uniqueId}', item.totalQuantity, 100);
-        notifyListeners();
+        if (item.totalQuantity != 0) {
+          item.totalQuantity = item.totalQuantity - 1;
+          if (item.totalQuantity != 0) {
+            f.updateDocInFirestore(
+                'p-${item.uniqueId}', item.totalQuantity, 100);
+            notifyListeners();
+          } else if (item.totalQuantity == 0) {
+            removeItem(item);
+          }
+          return;
+        }
       }
     });
   }
