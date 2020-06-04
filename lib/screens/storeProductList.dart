@@ -46,13 +46,13 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return arr;
   }
 
-  _showQ(consumerCart, item){
-    int qty=0;
-    if(consumerCart.listLength > 0){
+  _showQ(consumerCart, item) {
+    int qty = 0;
+    if (consumerCart.listLength > 0) {
       // items exists
       consumerCart.items.forEach((a) {
-        if(a.uniqueId==item.uniqueId){
-          qty=a.totalQuantity;
+        if (a.uniqueId == item.uniqueId) {
+          qty = a.totalQuantity;
           return;
         }
       });
@@ -60,21 +60,19 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return Text('$qty');
   }
 
-  _checkForAddition(consumerCart, item){
-    if(consumerCart.listLength > 0){
+  _checkForAddition(consumerCart, item) {
+    if (consumerCart.listLength > 0) {
       // check if item exists in cart and update
       // also add if it doesn't exist
-      print(consumerCart.listLength);
       consumerCart.updateQtyByOne(item);
     } else {
       // add item to cart
-      print(consumerCart.listLength);
       consumerCart.addItem(item, 1, 100);
     }
   }
 
-  _checkForDeletion(consumerCart, item){
-    if(consumerCart.listLength > 0){
+  _checkForDeletion(consumerCart, item) {
+    if (consumerCart.listLength > 0) {
       // check if item exists and remove quantity by 1
       // if it doesn't exist, do nothing
       consumerCart.minusQtyByOne(item);

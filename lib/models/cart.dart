@@ -46,15 +46,17 @@ class CartModel extends ChangeNotifier {
   void addItem(StoreProduct i, int totalQuantity, int totalPrice) {
     // check if it exists already, then don't add
     bool matched = false;
-    _cartItems.forEach((element) {
-      if (element.uniqueId == i.uniqueId) {
-        matched = true;
-        return;
-      }
-    });
+    if (_cartItems.length > 0) {
+      _cartItems.forEach((element) {
+        if (element.uniqueId == i.uniqueId) {
+          matched = true;
+          return;
+        }
+      });
+    }
 
     if (matched == false) {
-      print("added once");
+       i.totalQuantity=1;
       _cartItems.add(i);
       f.addToFirestore(i, totalQuantity, totalPrice);
       notifyListeners();
@@ -87,8 +89,10 @@ class CartModel extends ChangeNotifier {
         return;
       }
     });
+
     if (matched == false) {
       addItem(i, 1, 100);
+      notifyListeners();
     }
   }
 
@@ -104,6 +108,7 @@ class CartModel extends ChangeNotifier {
             notifyListeners();
           } else if (item.totalQuantity == 0) {
             removeItem(item);
+            notifyListeners();
           }
           return;
         }
