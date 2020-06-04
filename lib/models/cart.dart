@@ -56,7 +56,7 @@ class CartModel extends ChangeNotifier {
     }
 
     if (matched == false) {
-       i.totalQuantity=1;
+      i.totalQuantity = 1;
       _cartItems.add(i);
       f.addToFirestore(i, totalQuantity, totalPrice);
       notifyListeners();
@@ -67,7 +67,10 @@ class CartModel extends ChangeNotifier {
   void removeItem(StoreProduct i) {
     int index = -1;
     _cartItems.forEach((element) {
-      if (element.uniqueId == i.uniqueId) index = _cartItems.indexOf(element);
+      if (element.uniqueId == i.uniqueId) {
+        index = _cartItems.indexOf(element);
+        return;
+      }
     });
     if (index != -1) {
       String uid = _cartItems[index].uniqueId;
@@ -115,4 +118,6 @@ class CartModel extends ChangeNotifier {
       }
     });
   }
+
+  
 }

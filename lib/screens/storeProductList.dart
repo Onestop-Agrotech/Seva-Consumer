@@ -24,7 +24,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
       Map<String, String> requestHeaders = {
         'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTIzNjQxMywiZXhwIjoxNTkxMjQwMDEzfQ.-uQd_jJtf93niV5AtihrfA6vG5VAdPNw5uxoQPrxjz8'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTI0NzA2MywiZXhwIjoxNTkxMjUwNjYzfQ.vHrGy_Q4qAa8p8RNqfEnIkOfS_XyaUkWk6Le2CSSO1k'
       };
 
       var response = await http.get(url, headers: requestHeaders);

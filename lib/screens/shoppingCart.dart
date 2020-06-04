@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
-// import 'package:mvp/screens/storeProductList.dart';
+import 'package:mvp/models/storeProducts.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
@@ -12,10 +12,11 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+
   _listbuilder(cart) {
     int cLength = cart.listLength;
-    var items = cart.items;
     if (cLength > 0) {
+      var items = cart.items;
       return ListView.builder(
           itemCount: cLength,
           itemBuilder: (ctxt, index) {
@@ -27,9 +28,14 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     Text('$counter.'),
                     Text('${items[index].name}'),
                     Text('${items[index].totalQuantity}'),
-                    IconButton(icon: Icon(Icons.delete, color: Colors.red,), onPressed: (){
-                      cart.removeItem(items[index]);
-                    })
+                    IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          cart.removeItem(items[index]);
+                        })
                   ],
                 ),
               ],
@@ -57,21 +63,25 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Expanded(child: _listbuilder(cart),),
+            Consumer<CartModel>(
+              builder: (context, consumerCart, child) {
+                return Expanded(
+                  child: _listbuilder(consumerCart),
+                );
+              },
+            ),
             ButtonTheme(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0)),
               child: RaisedButton(
                 onPressed: () {
-                  // Navigator.pushReplacement(context, MaterialPageRoute(
-                  //   builder: (context) => StoreProductsScreen(businessUsername: widget.businessUserName,)
-                  // ));
                   Navigator.pop(context);
                 },
                 color: ThemeColoursSeva().dkGreen,
                 textColor: Colors.white,
                 child: Text("Back"),
-              ),),
+              ),
+            ),
           ],
         ),
       ),
