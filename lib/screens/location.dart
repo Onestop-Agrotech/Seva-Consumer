@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
   @override
@@ -20,14 +21,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   @override
   void initState() {
     super.initState();
-    // _markers.add(Marker(
-    //     markerId: MarkerId('1'),
-    //     position: _center,
-    //     draggable: true,
-    //     onDragEnd: ((value) {
-    //       print(value.latitude);
-    //       print(value.longitude);
-    //     })));
+    Fluttertoast.showToast(
+        msg: "Please search for your address and set it",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -57,11 +54,17 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     }
   }
 
-  _showFloatingActionButton(){
-    if(_showActionBtn==true){
+  _showFloatingActionButton() {
+    if (_showActionBtn == true) {
       return FloatingActionButton.extended(
         onPressed: () {
-          print(_userPosition);
+          _searchControl.clear();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => UserProfileScreen(
+                        coords: _userPosition,
+                      )));
         },
         label: Text("Set as Delivery Address"),
         icon: Icon(Icons.home),
@@ -82,7 +85,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
             markers: Set.from(_markers),
             onTap: (pos) {
-              _showActionBtn=true;
+              _showActionBtn = true;
               _userPosition = pos;
               Marker mk1 = Marker(
                 markerId: MarkerId('1'),
