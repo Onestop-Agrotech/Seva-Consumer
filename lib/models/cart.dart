@@ -101,6 +101,8 @@ class CartModel extends ChangeNotifier {
 
   // update quantity by -1 for an item
   void minusQtyByOne(StoreProduct i) {
+    bool remove = false;
+    StoreProduct toRemove;
     _cartItems.forEach((item) {
       if (item.uniqueId == i.uniqueId) {
         if (item.totalQuantity != 0) {
@@ -110,14 +112,40 @@ class CartModel extends ChangeNotifier {
                 'p-${item.uniqueId}', item.totalQuantity, 100);
             notifyListeners();
           } else if (item.totalQuantity == 0) {
-            removeItem(item);
-            notifyListeners();
+            remove = true;
+            toRemove = item;
           }
           return;
         }
       }
     });
+    if (remove == true) {
+      removeItem(toRemove);
+      notifyListeners();
+    }
   }
 
-  
+  // removing duplicates
+  removeDuplicates() {
+    // _cartItems.toSet().toList();
+    StoreProduct selected;
+    int itemIndex;
+    if (_cartItems.length >= 2) {
+      selected = _cartItems[0];
+      _cartItems.asMap().forEach((index, e) {
+        if (index > 0) {
+          if (e.uniqueId == selected.uniqueId) {
+            // remove item
+            itemIndex = _cartItems.indexOf(e);
+            // break loop
+            return;
+          }
+          return;
+        }
+      });
+    }
+    if (itemIndex != null) {
+      _cartItems.removeAt(itemIndex);
+    }
+  }
 }

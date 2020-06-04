@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
-import 'package:mvp/models/storeProducts.dart';
+// import 'package:mvp/models/storeProducts.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
@@ -14,6 +14,7 @@ class ShoppingCartScreen extends StatefulWidget {
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   _listbuilder(cart) {
+    cart.removeDuplicates();
     int cLength = cart.listLength;
     if (cLength > 0) {
       var items = cart.items;
