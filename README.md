@@ -1,10 +1,12 @@
-# Release - 1st week June 2020
-## version 0.0.1
+# Release - 3rd/4th Week June
+## version 1.0.0
 
 #### Features for this version: 
 
-- Simple Authentication
-- Profile with --> Name, Address, Contact
-- Catalog of 8-15 products --> Fruits and Vegetables
-- Shopping Cart activity
+- Authentication --> login & registration
+- Authorisation --> private api requests, user sessions
+- Nearby Stores --> within 1-2 kms of the user
+- Shopping Cart activity 
+- Store Products listing
+- Online payments with RazorPay
 - Place and confirm order
