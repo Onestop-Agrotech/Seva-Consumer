@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mvp/screens/auth/register.dart';
+import 'package:mvp/screens/auth/login.dart';
+// import 'package:mvp/screens/auth/register.dart';
 // import 'package:mvp/models/cart.dart';
 // import 'package:mvp/screens/location.dart';
 // import 'package:mvp/screens/auth/login.dart';
@@ -22,7 +23,7 @@ class SevaApp extends StatelessWidget {
     // );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: RegisterScreen(),
+      home: LoginScreen(),
     );
   }
 }

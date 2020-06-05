@@ -15,7 +15,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   int _index = 0;
-  int _errors = 0;
 
   bool _loading = false;
 
@@ -28,6 +27,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _passwordEmpty = false;
   bool _mobileEmpty = false;
   bool _pincodeEmpty = false;
+
+  Map<String, int> _errorMap = {
+    "username": 0,
+    "email": 0,
+    "password": 0,
+    "mobile": 0,
+    "pincode": 0,
+  };
 
   TextEditingController _username = new TextEditingController();
   TextEditingController _emailAddress = new TextEditingController();
@@ -168,13 +175,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _usernameEmpty = true;
         _index = 0;
-        _errors++;
+        // _errors++;
+        _errorMap["username"]=1;
       });
     } else if (_username.text != '') {
       user.username = _username.text;
       setState(() {
         _usernameEmpty = false;
-        if (_errors != 0) _errors--;
+        // if (_errors != 0) _errors--;
+        if(_errorMap["username"]==1)_errorMap["username"]=0;
       });
     }
 
@@ -182,7 +191,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _emailEmpty = true;
         _index = 0;
-        _errors++;
+        // _errors++;
+        _errorMap["email"]=1;
       });
     } else if (_emailAddress.text != '') {
       bool emailValid = RegExp(
@@ -194,14 +204,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _emailEmpty = false;
           _emailSyntaxError = false;
           _error = false;
-          if (_errors != 0) _errors--;
+          // if (_errors != 0) _errors--;
+          if(_errorMap["email"]==1)_errorMap["email"]=0;
         });
       } else {
         setState(() {
           _emailEmpty = false;
           _emailSyntaxError = true;
           _index = 0;
-          _errors++;
+          _errorMap["email"]=1;
         });
       }
     }
@@ -210,20 +221,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _passwordEmpty = true;
         _index = 0;
-        _errors++;
+        _errorMap["password"]=1;
       });
     } else if (_password.text != '') {
       user.password = _password.text;
       setState(() {
         _passwordEmpty = false;
-        if (_errors != 0) _errors--;
+        if(_errorMap["password"]==1)_errorMap["password"]=0;
       });
     }
 
     if (_mobile.text == '') {
       setState(() {
         _mobileEmpty = true;
-        _errors++;
+        _errorMap["mobile"]=1;
       });
     } else if (_mobile.text != '') {
       bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
@@ -232,13 +243,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _mobileEmpty = false;
           _mobileSyntaxError = false;
-          if (_errors != 0) _errors--;
+          if(_errorMap["mobile"]==1)_errorMap["mobile"]=0;
         });
       } else {
         setState(() {
           _mobileEmpty = false;
           _mobileSyntaxError = true;
-          _errors++;
+           _errorMap["mobile"]=1;
         });
       }
     }
@@ -246,17 +257,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_pincode.text == '') {
       setState(() {
         _pincodeEmpty = true;
-        _errors++;
+         _errorMap["pincode"]=1;
       });
     } else if (_pincode.text != '') {
       user.pincode = _pincode.text;
       setState(() {
         _pincodeEmpty = false;
-        if (_errors != 0) _errors--;
+        if(_errorMap["pincode"]==1)_errorMap["pincode"]=0;
       });
     }
 
-    if (_errors == 0 && _error == false) {
+    List<int> _valueList = _errorMap.values.toList();
+    int sum = _valueList.reduce((a, b) => a+b);
+
+    if (sum==0 && _error == false) {
       String url = "http://10.0.2.2:8000/api/users/register";
       String getJson = userModelRegister(user);
       Map<String, String> headers = {"Content-Type": "application/json"};
