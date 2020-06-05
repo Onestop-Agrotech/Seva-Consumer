@@ -11,15 +11,34 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  int _index = 0;
 
-  int _index=0;
+  TextEditingController _username;
+  TextEditingController _emailAddress;
+  TextEditingController _password;
+  TextEditingController _mobile;
+  TextEditingController _pincode;
 
-  TextEditingController fullName;
-  TextEditingController emailAddress;
-  TextEditingController password;
-  TextEditingController mobile;
-  TextEditingController pincode;
-  TextEditingController address;
+  _showBack() {
+    if (_index == 1) {
+      return Row(
+        children: <Widget>[
+          IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                size: 30.0,
+              ),
+              onPressed: () {
+                setState(() {
+                  _index = 0;
+                });
+              }),
+          SizedBox(width: 50.0),
+        ],
+      );
+    } else
+      return Container();
+  }
 
   IndexedStack _buildStack() {
     return IndexedStack(
@@ -27,17 +46,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       children: <Widget>[
         Column(
           children: <Widget>[
-            InputTextField(eC: fullName, lt: "Full Name:"),
+            InputTextField(eC: _username, lt: "Username"),
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(eC: emailAddress, lt: "Email Address:"),
+            InputTextField(eC: _emailAddress, lt: "Email Address:"),
             SizedBox(
               height: 30.0,
             ),
-           
             InputTextField(
-              eC: password,
+              eC: _password,
               lt: "Set Password:",
               pwdType: true,
             ),
@@ -45,15 +63,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         Column(
           children: <Widget>[
-             InputTextField(
-              eC: mobile,
+            InputTextField(
+              eC: _mobile,
               lt: "Mobile:",
             ),
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(eC: pincode, lt: "Enter Pincode:"),
-            
+            InputTextField(eC: _pincode, lt: "Enter Pincode:"),
           ],
         ),
       ],
@@ -79,7 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Column(
                   children: <Widget>[
-                    TopText(txt:"Create Account"),
+                    TopText(txt: "Create Account"),
                     SizedBox(
                       height: 20.0,
                     ),
@@ -113,20 +130,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     _buildStack(),
                     SizedBox(height: 30.0),
-                    ButtonTheme(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: RaisedButton(
-                        onPressed: () {
-                          setState(() {
-                            if(_index==0)_index++;
-                            else _index--;
-                          });
-                        },
-                        color: ThemeColoursSeva().dkGreen,
-                        textColor: Colors.white,
-                        child: _index==1 ? Text("Sign Up") : Text("Next"),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        _showBack(),
+                        ButtonTheme(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: RaisedButton(
+                            onPressed: () {
+                              setState(() {
+                                if (_index == 0)
+                                  _index++;
+                                else
+                                  _index--;
+                              });
+                            },
+                            color: ThemeColoursSeva().dkGreen,
+                            textColor: Colors.white,
+                            child: _index == 1 ? Text("Sign Up") : Text("Next"),
+                          ),
+                        )
+                      ],
                     ),
                     SizedBox(
                       height: 50.0,
@@ -138,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                               Navigator.pushReplacement(
+                              Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LoginScreen()));

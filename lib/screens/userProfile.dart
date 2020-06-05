@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/screens/common/inputTextField.dart';
+// import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/storesList.dart';
 
 class UserProfileScreen extends StatefulWidget {
