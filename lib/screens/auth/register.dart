@@ -223,7 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       // print(getJson);
       if (response.statusCode == 200) {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GoogleLocationScreen()));
+            MaterialPageRoute(builder: (context) => GoogleLocationScreen(userEmail: user.email,)));
         return;
       } else if (response.statusCode == 400) {
         // user email already exists
