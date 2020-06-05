@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
+import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:http/http.dart' as http;
+import 'package:mvp/screens/storesList.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -17,7 +20,57 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _emailEmpty = false;
   bool _passwordEmpty = false;
 
+  bool _wrongEmail = false;
+  bool _wrongPassword = false;
+
+  bool _loading = false;
+
   Map<String, int> _errorMap = {"email": 0, "password": 0};
+
+  _showLoadingOrButton() {
+    if (_loading == true) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else if (_loading == false) {
+      return ButtonTheme(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: RaisedButton(
+          onPressed: () {
+            _handleSignIn();
+          },
+          color: ThemeColoursSeva().dkGreen,
+          textColor: Colors.white,
+          child: Text("Sign in"),
+        ),
+      );
+    }
+  }
+
+  // wrong email address
+  _emailWrong() {
+    if (_wrongEmail) {
+      return Text(
+        'Invalid email address',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // wrong password
+  _passwordWrong() {
+    if (_wrongPassword) {
+      return Text(
+        'Incorrect password',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
 
   // email field is empty
   _showEmailEmpty() {
@@ -41,7 +94,12 @@ class _LoginScreenState extends State<LoginScreen> {
       return Container();
   }
 
-  _handleSignIn() {
+  _handleSignIn() async {
+    setState(() {
+      _loading = true;
+      _wrongPassword = false;
+      _wrongEmail = false;
+    });
     if (_email.text == '') {
       setState(() {
         _emailEmpty = true;
@@ -70,8 +128,37 @@ class _LoginScreenState extends State<LoginScreen> {
     List<int> _valueList = _errorMap.values.toList();
     int sum = _valueList.reduce((a, b) => a + b);
 
-    if(sum==0){
-      print("No errors");
+    if (sum == 0) {
+      UserModel user = new UserModel();
+      user.email = _email.text;
+      user.password = _password.text;
+      String url = "http://10.0.2.2:8000/api/users/login";
+      String getJson = userModelLogin(user);
+      Map<String, String> headers = {"Content-Type": "application/json"};
+      var response = await http.post(url, body: getJson, headers: headers);
+      if (response.statusCode == 200) {
+        // successfully logged in
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => StoresScreen()));
+      } else if (response.statusCode == 404) {
+        // invalid email
+        setState(() {
+          _wrongEmail = true;
+          _loading = false;
+        });
+      } else if (response.statusCode == 400) {
+        // invalid password
+        setState(() {
+          _wrongPassword = true;
+          _loading = false;
+        });
+      } else {
+        throw Exception("Server error");
+      }
+    } else {
+      setState(() {
+        _loading = false;
+      });
     }
   }
 
@@ -129,6 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: <Widget>[
                           InputTextField(eC: _email, lt: "Email:"),
                           _showEmailEmpty(),
+                          _emailWrong(),
                           SizedBox(
                             height: 30.0,
                           ),
@@ -138,6 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             pwdType: true,
                           ),
                           _showPasswordEmpty(),
+                          _passwordWrong(),
                           SizedBox(
                             height: 30.0,
                           ),
@@ -146,18 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 40.0),
-                  ButtonTheme(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: RaisedButton(
-                      onPressed: () {
-                        _handleSignIn();
-                      },
-                      color: ThemeColoursSeva().dkGreen,
-                      textColor: Colors.white,
-                      child: Text("Sign in"),
-                    ),
-                  ),
+                  _showLoadingOrButton(),
                   SizedBox(
                     height: 50.0,
                   ),
