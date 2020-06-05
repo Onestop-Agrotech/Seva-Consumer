@@ -5,6 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
+  final String userEmail;
+
+  GoogleLocationScreen({this.userEmail});
   @override
   _GoogleLocationScreenState createState() => _GoogleLocationScreenState();
 }
@@ -64,6 +67,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
               MaterialPageRoute(
                   builder: (context) => UserProfileScreen(
                         coords: _userPosition,
+                        userEmail: widget.userEmail,
                       )));
         },
         label: Text("Set as Delivery Address"),
