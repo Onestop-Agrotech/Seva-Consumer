@@ -6,8 +6,9 @@ class InputTextField extends StatelessWidget {
   final String lt;
   final bool pwdType;
   final String ht;
+  final TextInputType keyBoardType;
 
-  InputTextField({this.eC, this.lt, this.pwdType = false, this.ht = ''});
+  InputTextField({this.eC, this.lt, this.pwdType = false, this.ht = '', this.keyBoardType});
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +77,7 @@ class InputTextField extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: TextFormField(
+                    keyboardType: keyBoardType,
                     controller: eC,
                     decoration: InputDecoration(
                       border: InputBorder.none,

@@ -15,6 +15,17 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   int _index = 0;
+  int _errors=0;
+
+  bool _error = false;
+  bool _emailSyntaxError = false;
+  bool _mobileSyntaxError = false;
+
+  bool _usernameEmpty = false;
+  bool _emailEmpty = false;
+  bool _passwordEmpty = false;
+  bool _mobileEmpty = false;
+  bool _pincodeEmpty = false;
 
   TextEditingController _username = new TextEditingController();
   TextEditingController _emailAddress = new TextEditingController();
@@ -22,26 +33,212 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _mobile = new TextEditingController();
   TextEditingController _pincode = new TextEditingController();
 
+  // user field is empty
+  _showUserEmpty() {
+    if (_usernameEmpty == true) {
+      return Text(
+        'Please fill your name',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // email field is empty
+  _showEmailEmpty() {
+    if (_emailEmpty) {
+      return Text(
+        'Please fill your email address',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // password field is empty
+  _showPasswordEmpty() {
+    if (_passwordEmpty) {
+      return Text(
+        'Please fill a password',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // mobile field is empty
+  _showMobileEmpty() {
+    if (_mobileEmpty) {
+      return Text(
+        'Please fill your phone number',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // pincode field is empty
+  _showPincodeEmpty() {
+    if (_pincodeEmpty) {
+      return Text(
+        'Please fill your area pincode',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // handle already existing email error
+  _showError() {
+    if (_error) {
+      return Text(
+        'Email already exists! please change email!',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // handle valid email type
+  _showEmailError() {
+    if (_emailSyntaxError == true) {
+      return Text(
+        'Please input correct email type',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  // handle valid mobile number type
+  _showMobileError() {
+    if (_mobileSyntaxError == true) {
+      return Text(
+        'Please input 10 digit mobile number',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
   _handleSignUp() async {
     UserModel user = new UserModel();
-    user.username = _username.text;
-    user.email = _emailAddress.text;
-    user.password = _password.text;
-    user.mobile = _mobile.text;
-    user.pincode = _pincode.text;
-    String url = "http://10.0.2.2:8000/api/users/register";
-    String getJson = userModelRegister(user);
-    Map<String, String> headers = {
-      "Content-Type":"application/json"
-    };
-    var response = await http.post(url, body: getJson, headers: headers);
-    // print(getJson);
-    if (response.statusCode == 200) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => GoogleLocationScreen()));
-      return;
+    if (_username.text == '') {
+      setState(() {
+        _usernameEmpty = true;
+        _index = 0;
+        _errors++;
+      });
+    } else if (_username.text != '') {
+      user.username = _username.text;
+      setState(() {
+        _usernameEmpty = false;
+        if(_errors!=0)_errors--;
+      });
+    }
+
+    if (_emailAddress.text == '') {
+      setState(() {
+        _emailEmpty = true;
+        _index = 0;
+        _errors++;
+      });
+    } else if (_emailAddress.text != '') {
+      bool emailValid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(_emailAddress.text);
+      if (emailValid == true) {
+        user.email = _emailAddress.text;
+        setState(() {
+          _emailEmpty = false;
+          _emailSyntaxError = false;
+          _error=false;
+          if(_errors!=0)_errors--;
+        });
+      } else {
+        setState(() {
+          _emailEmpty = false;
+          _emailSyntaxError = true;
+          _index = 0;
+          _errors++;
+        });
+      }
+    }
+
+    if (_password.text == '') {
+      setState(() {
+        _passwordEmpty = true;
+        _index = 0;
+        _errors++;
+      });
+    } else if (_password.text != '') {
+      user.password = _password.text;
+      setState(() {
+        _passwordEmpty = false;
+        if(_errors!=0)_errors--;
+      });
+    }
+
+    if (_mobile.text == '') {
+      setState(() {
+        _mobileEmpty = true;
+        _errors++;
+      });
+    } else if (_mobile.text != '') {
+      bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
+      if (mobileValid == true) {
+        user.mobile = _mobile.text;
+        setState(() {
+          _mobileEmpty = false;
+          _mobileSyntaxError = false;
+          if(_errors!=0)_errors--;
+        });
+      } else {
+        setState(() {
+          _mobileEmpty = false;
+          _mobileSyntaxError = true;
+          _errors++;
+        });
+      }
+    }
+
+    if (_pincode.text == '') {
+      setState(() {
+        _pincodeEmpty = true;
+        _errors++;
+      });
+    } else if (_pincode.text != '') {
+      user.pincode = _pincode.text;
+      setState(() {
+        _pincodeEmpty = false;
+        if(_errors!=0)_errors--;
+      });
+    }
+
+    if (_errors == 0 && _error==false) {
+      String url = "http://10.0.2.2:8000/api/users/register";
+      String getJson = userModelRegister(user);
+      Map<String, String> headers = {"Content-Type": "application/json"};
+      var response = await http.post(url, body: getJson, headers: headers);
+      // print(getJson);
+      if (response.statusCode == 200) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => GoogleLocationScreen()));
+        return;
+      } else if (response.statusCode == 400) {
+        // user email already exists
+        setState(() {
+          _index = 0;
+          _error = true;
+        });
+      } else {
+        // some other error here
+        throw Exception('Server error');
+      }
+      print("No error");
     } else {
-      throw Exception('error');
+      print(_errors);
+      print(_error);
     }
   }
 
@@ -73,10 +270,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Column(
           children: <Widget>[
             InputTextField(eC: _username, lt: "Username"),
+            _showUserEmpty(),
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(eC: _emailAddress, lt: "Email Address:"),
+            InputTextField(
+              eC: _emailAddress,
+              lt: "Email Address:",
+              keyBoardType: TextInputType.emailAddress,
+            ),
+            _showEmailEmpty(),
+            _showEmailError(),
+            _showError(),
             SizedBox(
               height: 30.0,
             ),
@@ -85,6 +290,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               lt: "Set Password:",
               pwdType: true,
             ),
+            _showPasswordEmpty()
           ],
         ),
         Column(
@@ -92,11 +298,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
             InputTextField(
               eC: _mobile,
               lt: "Mobile:",
+              keyBoardType: TextInputType.phone,
             ),
+            _showMobileEmpty(),
+            _showMobileError(),
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(eC: _pincode, lt: "Enter Pincode:"),
+            InputTextField(
+              eC: _pincode,
+              lt: "Enter Pincode:",
+              keyBoardType: TextInputType.number,
+            ),
+            _showPincodeEmpty(),
           ],
         ),
       ],
