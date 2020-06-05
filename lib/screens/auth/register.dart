@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
+import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:mvp/screens/location.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -13,11 +16,34 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   int _index = 0;
 
-  TextEditingController _username;
-  TextEditingController _emailAddress;
-  TextEditingController _password;
-  TextEditingController _mobile;
-  TextEditingController _pincode;
+  TextEditingController _username = new TextEditingController();
+  TextEditingController _emailAddress = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+  TextEditingController _mobile = new TextEditingController();
+  TextEditingController _pincode = new TextEditingController();
+
+  _handleSignUp() async {
+    UserModel user = new UserModel();
+    user.username = _username.text;
+    user.email = _emailAddress.text;
+    user.password = _password.text;
+    user.mobile = _mobile.text;
+    user.pincode = _pincode.text;
+    String url = "http://10.0.2.2:8000/api/users/register";
+    String getJson = userModelRegister(user);
+    Map<String, String> headers = {
+      "Content-Type":"application/json"
+    };
+    var response = await http.post(url, body: getJson, headers: headers);
+    // print(getJson);
+    if (response.statusCode == 200) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => GoogleLocationScreen()));
+      return;
+    } else {
+      throw Exception('error');
+    }
+  }
 
   _showBack() {
     if (_index == 1) {
@@ -142,8 +168,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               setState(() {
                                 if (_index == 0)
                                   _index++;
-                                else
-                                  _index--;
+                                else {
+                                  _handleSignUp();
+                                }
                               });
                             },
                             color: ThemeColoursSeva().dkGreen,
