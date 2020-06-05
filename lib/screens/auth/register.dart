@@ -15,7 +15,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   int _index = 0;
-  int _errors=0;
+  int _errors = 0;
+
+  bool _loading = false;
 
   bool _error = false;
   bool _emailSyntaxError = false;
@@ -32,6 +34,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _password = new TextEditingController();
   TextEditingController _mobile = new TextEditingController();
   TextEditingController _pincode = new TextEditingController();
+
+  // show loading indicator
+  _showLoadingOrButton() {
+    if (_loading == true) {
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _showBack(),
+          ButtonTheme(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            child: RaisedButton(
+              onPressed: () {
+                setState(() {
+                  if (_index == 0)
+                    _index++;
+                  else {
+                    setState(() {
+                      _loading = true;
+                    });
+                    _handleSignUp();
+                  }
+                });
+              },
+              color: ThemeColoursSeva().dkGreen,
+              textColor: Colors.white,
+              child: _index == 1 ? Text("Sign Up") : Text("Next"),
+            ),
+          )
+        ],
+      );
+    }
+  }
 
   // user field is empty
   _showUserEmpty() {
@@ -133,7 +174,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       user.username = _username.text;
       setState(() {
         _usernameEmpty = false;
-        if(_errors!=0)_errors--;
+        if (_errors != 0) _errors--;
       });
     }
 
@@ -152,8 +193,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _emailEmpty = false;
           _emailSyntaxError = false;
-          _error=false;
-          if(_errors!=0)_errors--;
+          _error = false;
+          if (_errors != 0) _errors--;
         });
       } else {
         setState(() {
@@ -175,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       user.password = _password.text;
       setState(() {
         _passwordEmpty = false;
-        if(_errors!=0)_errors--;
+        if (_errors != 0) _errors--;
       });
     }
 
@@ -191,7 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _mobileEmpty = false;
           _mobileSyntaxError = false;
-          if(_errors!=0)_errors--;
+          if (_errors != 0) _errors--;
         });
       } else {
         setState(() {
@@ -211,19 +252,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       user.pincode = _pincode.text;
       setState(() {
         _pincodeEmpty = false;
-        if(_errors!=0)_errors--;
+        if (_errors != 0) _errors--;
       });
     }
 
-    if (_errors == 0 && _error==false) {
+    if (_errors == 0 && _error == false) {
       String url = "http://10.0.2.2:8000/api/users/register";
       String getJson = userModelRegister(user);
       Map<String, String> headers = {"Content-Type": "application/json"};
       var response = await http.post(url, body: getJson, headers: headers);
       // print(getJson);
       if (response.statusCode == 200) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => GoogleLocationScreen(userEmail: user.email,)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => GoogleLocationScreen(
+                      userEmail: user.email,
+                    )));
         return;
       } else if (response.statusCode == 400) {
         // user email already exists
@@ -235,10 +280,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         // some other error here
         throw Exception('Server error');
       }
-      print("No error");
     } else {
-      print(_errors);
-      print(_error);
+      setState(() {
+        _loading = false;
+      });
     }
   }
 
@@ -370,30 +415,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     _buildStack(),
                     SizedBox(height: 30.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        _showBack(),
-                        ButtonTheme(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: RaisedButton(
-                            onPressed: () {
-                              setState(() {
-                                if (_index == 0)
-                                  _index++;
-                                else {
-                                  _handleSignUp();
-                                }
-                              });
-                            },
-                            color: ThemeColoursSeva().dkGreen,
-                            textColor: Colors.white,
-                            child: _index == 1 ? Text("Sign Up") : Text("Next"),
-                          ),
-                        )
-                      ],
-                    ),
+                    _showLoadingOrButton(),
                     SizedBox(
                       height: 50.0,
                     ),

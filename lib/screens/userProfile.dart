@@ -3,7 +3,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
-// import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/storesList.dart';
 import 'package:http/http.dart' as http;
 
