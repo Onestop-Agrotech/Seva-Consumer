@@ -14,4 +14,17 @@ class StorageSharedPrefs {
     String token = await prefs.get('token');
     return token;
   }
+
+  // set username to storage
+  void setUsername(String username) async{
+     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+  }
+
+   // get token from storage
+  Future<String> getUsername() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = await prefs.get('username');
+    return username;
+  }
 }

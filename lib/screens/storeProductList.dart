@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -20,13 +21,11 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
 
   _fetchProductsFromStore() async {
     return this._memoizer.runOnce(() async {
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      String token = await p.getToken();
       String url =
           "http://localhost:8000/api/businesses/${widget.businessUsername}/products";
-      Map<String, String> requestHeaders = {
-        'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTI0NzA2MywiZXhwIjoxNTkxMjUwNjYzfQ.vHrGy_Q4qAa8p8RNqfEnIkOfS_XyaUkWk6Le2CSSO1k'
-      };
-
+      Map<String, String> requestHeaders = {'x-auth-token': token};
       var response = await http.get(url, headers: requestHeaders);
       if (response.statusCode == 200) {
         return jsonToStoreProductModel(response.body);

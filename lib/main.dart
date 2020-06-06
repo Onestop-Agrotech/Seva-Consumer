@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/models/cart.dart';
+import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class _SevaAppState extends State<SevaApp> {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => CartModel())],
       child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: LoadingScreen()),
+          MaterialApp(debugShowCheckedModeBanner: false, home: LoginScreen()),
     );
   }
 }
