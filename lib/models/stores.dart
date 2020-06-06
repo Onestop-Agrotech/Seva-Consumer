@@ -12,6 +12,8 @@ class Store {
         this.address,
         this.lat,
         this.long,
+        this.vegetables, 
+        this.fruits
     });
 
     String name;
@@ -20,6 +22,8 @@ class Store {
     String address;
     String lat;
     String long;
+    bool vegetables;
+    bool fruits;
 
     factory Store.fromJson(Map<String, dynamic> json) => Store(
         name: json["name"],
@@ -28,6 +32,8 @@ class Store {
         address: json["address"],
         lat: json["lat"],
         long: json["long"],
+        vegetables: json["vegetables"],
+        fruits: json["fruits"]
     );
 
     Map<String, dynamic> toJson() => {

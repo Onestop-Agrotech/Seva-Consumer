@@ -85,6 +85,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       // print(response.body);
       StorageSharedPrefs p = new StorageSharedPrefs();
       p.setToken(json.decode(response.body)["token"]);
+      p.setUsername(json.decode(response.body)["username"]);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => StoresScreen()));
     } else {
