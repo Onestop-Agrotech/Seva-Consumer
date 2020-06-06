@@ -5,7 +5,6 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/stores.dart';
 import 'package:mvp/screens/common/customStoreListCard.dart';
 import 'package:mvp/screens/common/topText.dart';
-import 'package:mvp/screens/storeProductList.dart';
 
 class StoresScreen extends StatefulWidget {
   @override
@@ -43,23 +42,6 @@ class _StoresScreenState extends State<StoresScreen> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: <Widget>[
-                      // ButtonTheme(
-                      //   shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(10.0)),
-                      //   child: RaisedButton(
-                      //     onPressed: () {
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) => StoreProductsScreen(
-                      //                     businessUsername: arr[index].username,
-                      //                   )));
-                      //     },
-                      //     color: ThemeColoursSeva().dkGreen,
-                      //     textColor: Colors.white,
-                      //     child: Text('${arr[index].name}'),
-                      //   ),
-                      // ),
                       StoreListCard(
                         shopName: arr[index].name,
                         vegetablesOnly: arr[index].vegetables,
