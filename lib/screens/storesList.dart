@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/stores.dart';
 import 'package:mvp/screens/storeProductList.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoresScreen extends StatefulWidget {
   @override
@@ -10,12 +11,22 @@ class StoresScreen extends StatefulWidget {
 }
 
 class _StoresScreenState extends State<StoresScreen> {
+  _getUserToken() async {
+    String token = '';
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs('token', token);
+      token = await prefs.get('token');
+    } catch (e) {
+      print(e);
+    }
+    return token;
+  }
+
   Future<List<Store>> _fetchStores() async {
+    String token = await _getUserToken();
     String url = "http://10.0.2.2:8000/api/businesses/";
-    Map<String, String> requestHeaders = {
-      'x-auth-token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTI0NzA2MywiZXhwIjoxNTkxMjUwNjYzfQ.vHrGy_Q4qAa8p8RNqfEnIkOfS_XyaUkWk6Le2CSSO1k'
-    };
+    Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       return jsonToStoreModel(response.body);

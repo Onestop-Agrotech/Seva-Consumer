@@ -7,6 +7,9 @@ import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/storesList.dart';
+import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,6 +29,16 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _loading = false;
 
   Map<String, int> _errorMap = {"email": 0, "password": 0};
+
+  _saveUserDetails(token) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', token);
+      print("Saved");
+    } catch (e) {
+      print(e);
+    }
+  }
 
   _showLoadingOrButton() {
     if (_loading == true) {
@@ -138,8 +151,12 @@ class _LoginScreenState extends State<LoginScreen> {
       var response = await http.post(url, body: getJson, headers: headers);
       if (response.statusCode == 200) {
         // successfully logged in
+        _saveUserDetails(json.decode(response.body)["token"]);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => StoresScreen()));
+        setState(() {
+          _loading = false;
+        });
       } else if (response.statusCode == 404) {
         // invalid email
         setState(() {
