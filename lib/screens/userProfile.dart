@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
@@ -19,29 +22,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool _loading = false;
   TextEditingController _address = new TextEditingController();
 
-  _showLoading(){
-    if(_loading==true){
+  _showLoading() {
+    if (_loading == true) {
       return Container(
         child: Center(
           child: CircularProgressIndicator(),
         ),
       );
-    } else if(_loading==false) {
+    } else if (_loading == false) {
       return ButtonTheme(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            child: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  _loading=true;
-                });
-                _handleAddressAddition();
-              },
-              color: ThemeColoursSeva().dkGreen,
-              textColor: Colors.white,
-              child: Text("Save"),
-            ),
-          );
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: RaisedButton(
+          onPressed: () {
+            setState(() {
+              _loading = true;
+            });
+            _handleAddressAddition();
+          },
+          color: ThemeColoursSeva().dkGreen,
+          textColor: Colors.white,
+          child: Text("Save"),
+        ),
+      );
     }
   }
 
@@ -64,11 +67,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       // handle empty error
       setState(() {
         _emailEmpty = true;
-        _loading=false;
+        _loading = false;
       });
     } else if (_address.text != '') {
       // add to db
-      user.address=_address.text;
+      user.address = _address.text;
       _submitToDb(user);
     }
   }
@@ -79,7 +82,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
-      print(response.body);
+      // print(response.body);
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      p.setToken(json.decode(response.body)["token"]);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => StoresScreen()));
     } else {
