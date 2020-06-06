@@ -77,7 +77,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   _submitToDb(UserModel user) async {
-    String url = "http://10.0.2.2:8000/api/users/register/address";
+    String url = "http://localhost:8000/api/users/register/address";
     String getJson = userModelAddress(user);
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);

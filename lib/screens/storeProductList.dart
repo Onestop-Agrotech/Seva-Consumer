@@ -21,7 +21,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
   _fetchProductsFromStore() async {
     return this._memoizer.runOnce(() async {
       String url =
-          "http://10.0.2.2:8000/api/businesses/${widget.businessUsername}/products";
+          "http://localhost:8000/api/businesses/${widget.businessUsername}/products";
       Map<String, String> requestHeaders = {
         'x-auth-token':
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZDYzNzE4YzNlN2M3OWYzZWY1ZWRmMSIsImlhdCI6MTU5MTI0NzA2MywiZXhwIjoxNTkxMjUwNjYzfQ.vHrGy_Q4qAa8p8RNqfEnIkOfS_XyaUkWk6Le2CSSO1k'

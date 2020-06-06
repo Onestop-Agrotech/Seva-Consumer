@@ -19,7 +19,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   _sendReqToServer(token) async {
-    String url = "http://10.0.2.2:8000/token";
+    String url = "http://localhost:8000/token";
     Map<String, String> headers = {"Content-Type": "application/json"};
     var body = json.encode({"token":token});
     var response = await http.post(url, body: body, headers: headers);

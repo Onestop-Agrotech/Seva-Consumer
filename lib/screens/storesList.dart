@@ -15,7 +15,7 @@ class _StoresScreenState extends State<StoresScreen> {
   Future<List<Store>> _fetchStores() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
-    String url = "http://10.0.2.2:8000/api/businesses/";
+    String url = "http://localhost:8000/api/businesses/";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
