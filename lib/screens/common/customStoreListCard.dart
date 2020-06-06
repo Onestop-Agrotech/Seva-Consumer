@@ -2,11 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 
+import '../storeProductList.dart';
+
 class StoreListCard extends StatefulWidget {
   final bool vegetablesOnly;
   final bool fruitsOnly;
+  final String shopName;
+  final String businessUserName;
 
-  StoreListCard({this.vegetablesOnly = true, this.fruitsOnly = true});
+  StoreListCard({this.vegetablesOnly, this.fruitsOnly, this.shopName, this.businessUserName});
 
   @override
   _StoreListCardState createState() => _StoreListCardState();
@@ -23,7 +27,13 @@ class _StoreListCardState extends State<StoreListCard> {
               BoxDecoration(color: Colors.green, shape: BoxShape.circle),
         ),
         SizedBox(width: 8.0),
-        Text(text),
+        Text(
+          text,
+          style: TextStyle(
+              fontFamily: "Raleway",
+              fontSize: 12.0,
+              fontWeight: FontWeight.w500),
+        ),
       ],
     );
   }
@@ -46,37 +56,47 @@ class _StoreListCardState extends State<StoreListCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: 100.0,
-      child: Row(
-        children: <Widget>[
-          // image container
-          CachedNetworkImage(
-            imageUrl: "http://via.placeholder.com/200x150",
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-          SizedBox(width: 20.0),
-          // description
-          Column(
+    return Material(
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => StoreProductsScreen(businessUsername: widget.businessUserName,),
+          ));
+        },
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: 100.0,
+          child: Row(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Sri Laxmi Vegetables",
-                  style: TextStyle(
-                      fontFamily: "Raleway",
-                      fontWeight: FontWeight.w500,
-                      color: ThemeColoursSeva().black,
-                      fontSize: 16.0),
-                ),
+              // image container
+              CachedNetworkImage(
+                imageUrl: "http://via.placeholder.com/200x150",
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              SizedBox(height: 30.0),
-              _tagsForStores()
+              SizedBox(width: 20.0),
+              // description
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      widget.shopName,
+                      style: TextStyle(
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w500,
+                          color: ThemeColoursSeva().black,
+                          fontSize: 16.0),
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
+                  _tagsForStores()
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

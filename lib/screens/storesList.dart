@@ -16,12 +16,12 @@ class _StoresScreenState extends State<StoresScreen> {
   final GlobalKey<ScaffoldState> _storesScreenKey =
       new GlobalKey<ScaffoldState>();
 
-      String _username;
+  String _username;
 
   Future<List<Store>> _fetchStores() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
-    _username= await p.getUsername();
+    _username = await p.getUsername();
     String url = "http://localhost:8000/api/businesses/";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
@@ -39,7 +39,7 @@ class _StoresScreenState extends State<StoresScreen> {
           if (snapshot.hasData) {
             List<Store> arr = snapshot.data;
             return ListView.builder(
-                itemCount: 6,
+                itemCount: arr.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: <Widget>[
@@ -60,7 +60,12 @@ class _StoresScreenState extends State<StoresScreen> {
                       //     child: Text('${arr[index].name}'),
                       //   ),
                       // ),
-                      StoreListCard(),
+                      StoreListCard(
+                        shopName: arr[index].name,
+                        vegetablesOnly: arr[index].vegetables,
+                        fruitsOnly: arr[index].fruits,
+                        businessUserName: arr[index].username,
+                      ),
                       SizedBox(height: 20.0)
                     ],
                   );
@@ -81,8 +86,8 @@ class _StoresScreenState extends State<StoresScreen> {
     return Scaffold(
       key: _storesScreenKey,
       appBar: PreferredSize(
-        preferredSize:Size.fromHeight(80.0),
-              child: AppBar(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
           title: TopText(
             txt: "Nearby Stores",
           ),
@@ -114,7 +119,8 @@ class _StoresScreenState extends State<StoresScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: DrawerHeader(
-                  child: TopText(txt:_username==null ? 'Username' : _username),
+                  child:
+                      TopText(txt: _username == null ? 'Username' : _username),
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
