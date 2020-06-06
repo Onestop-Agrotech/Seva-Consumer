@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/stores.dart';
+import 'package:mvp/screens/common/customStoreListCard.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/storeProductList.dart';
 
@@ -38,27 +39,28 @@ class _StoresScreenState extends State<StoresScreen> {
           if (snapshot.hasData) {
             List<Store> arr = snapshot.data;
             return ListView.builder(
-                itemCount: arr.length,
+                itemCount: 6,
                 itemBuilder: (context, index) {
                   return Column(
                     children: <Widget>[
-                      ButtonTheme(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: RaisedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StoreProductsScreen(
-                                          businessUsername: arr[index].username,
-                                        )));
-                          },
-                          color: ThemeColoursSeva().dkGreen,
-                          textColor: Colors.white,
-                          child: Text('${arr[index].name}'),
-                        ),
-                      ),
+                      // ButtonTheme(
+                      //   shape: RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.circular(10.0)),
+                      //   child: RaisedButton(
+                      //     onPressed: () {
+                      //       Navigator.push(
+                      //           context,
+                      //           MaterialPageRoute(
+                      //               builder: (context) => StoreProductsScreen(
+                      //                     businessUsername: arr[index].username,
+                      //                   )));
+                      //     },
+                      //     color: ThemeColoursSeva().dkGreen,
+                      //     textColor: Colors.white,
+                      //     child: Text('${arr[index].name}'),
+                      //   ),
+                      // ),
+                      StoreListCard(),
                       SizedBox(height: 20.0)
                     ],
                   );
@@ -78,27 +80,30 @@ class _StoresScreenState extends State<StoresScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _storesScreenKey,
-      appBar: AppBar(
-        title: TopText(
-          txt: "Nearby Stores",
+      appBar: PreferredSize(
+        preferredSize:Size.fromHeight(80.0),
+              child: AppBar(
+          title: TopText(
+            txt: "Nearby Stores",
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: ThemeColoursSeva().black,
+              ),
+              onPressed: () {
+                _storesScreenKey.currentState.openDrawer();
+              }),
+          elevation: 0,
+          actions: <Widget>[
+            Icon(
+              Icons.person,
+              color: Colors.black,
+            )
+          ],
         ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: ThemeColoursSeva().black,
-            ),
-            onPressed: () {
-              _storesScreenKey.currentState.openDrawer();
-            }),
-        elevation: 0,
-        actions: <Widget>[
-          Icon(
-            Icons.person,
-            color: Colors.black,
-          )
-        ],
       ),
       drawer: SizedBox(
         width: MediaQuery.of(context).size.width * 0.5,
