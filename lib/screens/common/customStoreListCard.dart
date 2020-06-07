@@ -79,7 +79,7 @@ class _StoreListCardState extends State<StoreListCard> {
             children: <Widget>[
               // image container
               CachedNetworkImage(
-                imageUrl: "http://via.placeholder.com/200x150",
+                imageUrl: "https://seva-consumer.s3.ap-south-1.amazonaws.com/shop-pictures/shop.jpg",
                 placeholder: (context, url) => CircularProgressIndicator(
                   backgroundColor: ThemeColoursSeva().black,
                   strokeWidth: 4.0,

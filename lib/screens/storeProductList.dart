@@ -34,6 +34,12 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
               icon: Icon(Icons.shopping_cart),
               onPressed: () {
                 // Handle shopping cart
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoppingCartScreen(
+                              businessUserName: widget.businessUsername,
+                            )));
               }),
         ),
         Positioned(left: 28.0, top: 5.0, child: _checkCartItems()),
@@ -129,31 +135,17 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                             height: 250.0,
                             child: Row(
                               children: <Widget>[
-                                ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: subArr[index].length,
-                                    itemBuilder: (context, subIndex) {
-                                      if (subArr[index].length == 2) {
-                                        return Row(
-                                          children: <Widget>[
-                                            SizedBox(width: 17.0),
-                                            ProductCard(
-                                              product: subArr[index][subIndex],
-                                            ),
-                                            SizedBox(width: 5.0)
-                                          ],
+                                Expanded(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: subArr[index].length,
+                                      itemBuilder: (context, subIndex) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(left: 16.0),
+                                          child: ProductCard(product: subArr[index][subIndex],),
                                         );
-                                      }
-                                      return Padding(
-                                        padding: const EdgeInsets.only(top: 1.0,left:17.0),
-                                        child: ProductCard(
-                                          product: subArr[index][subIndex],
-                                        ),
-                                      );
-                                    })
+                                      }),
+                                ),
                               ],
                             ),
                           );
@@ -170,7 +162,8 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                 child: CircularProgressIndicator(
                   backgroundColor: ThemeColoursSeva().black,
                   strokeWidth: 4.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
                 ),
               ),
             );
@@ -182,6 +175,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     var cart = Provider.of<CartModel>(context);
     cart.firstTimeAddition();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0),
         child: AppBar(
@@ -202,8 +196,10 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
         ),
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(child: _buildArrayFromFuture(cart)),
+          SizedBox(height: 40.0)
           // ButtonTheme(
           //   shape: RoundedRectangleBorder(
           //       borderRadius: BorderRadius.circular(10.0)),
