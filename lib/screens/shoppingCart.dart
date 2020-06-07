@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
-// import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/common/customShoppingCartCard.dart';
+import 'package:mvp/screens/common/topText.dart';
 import 'package:provider/provider.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
@@ -13,6 +14,44 @@ class ShoppingCartScreen extends StatefulWidget {
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
+  // _showClearCart(cart){
+  //   if(cart.listLength > 0){
+  //     return Material(
+  //             child: InkWell(
+  //               onTap: () {
+  //                 cart.clearCart();
+  //               },
+  //               child: Padding(
+  //                 padding: const EdgeInsets.only(top: 20.0, right: 10.0),
+  //                 child: Text(
+  //                   "Clear Cart",
+  //                   style: TextStyle(
+  //                     color: Colors.red,
+  //                     fontSize: 12.0,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           );
+  //   }else {
+  //     return Container();
+  //   }
+  // }
+
+  _showButton(cartItems) {
+    if (cartItems.listLength > 0) {
+      return FloatingActionButton.extended(
+        onPressed: () {},
+        label: Text(
+          "Proceed",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: ThemeColoursSeva().dkGreen,
+      );
+    } else
+      return Container();
+  }
+
   _listbuilder(cart) {
     cart.removeDuplicates();
     int cLength = cart.listLength;
@@ -21,24 +60,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       return ListView.builder(
           itemCount: cLength,
           itemBuilder: (ctxt, index) {
-            int counter = index + 1;
             return Column(
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text('$counter.'),
-                    Text('${items[index].name}'),
-                    Text('${items[index].totalQuantity}'),
-                    IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          cart.removeItem(items[index]);
-                        })
-                  ],
+                ShoppingCartCard(
+                  product: items[index],
                 ),
+                SizedBox(height: 20.0)
               ],
             );
           });
@@ -61,6 +88,28 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     var cart = Provider.of<CartModel>(context);
     cart.firstTimeAddition();
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(70.0),
+        child: AppBar(
+          leading: IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                color: ThemeColoursSeva().black,
+                size: 40.0,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: TopText(txt: 'Shopping Cart'),
+          centerTitle: true,
+          actions: <Widget>[
+            // _showClearCart(cart)
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: <Widget>[
@@ -71,21 +120,12 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 );
               },
             ),
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                color: ThemeColoursSeva().dkGreen,
-                textColor: Colors.white,
-                child: Text("Back"),
-              ),
-            ),
+            SizedBox(height: 70.0)
           ],
         ),
       ),
+      floatingActionButton: _showButton(cart),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -148,4 +148,12 @@ class CartModel extends ChangeNotifier {
       _cartItems.removeAt(itemIndex);
     }
   }
+
+  // remove all items from cart
+  clearCart(){
+    if (_cartItems.length > 0) {
+      _cartItems.clear();
+      notifyListeners();
+    }
+  }
 }
