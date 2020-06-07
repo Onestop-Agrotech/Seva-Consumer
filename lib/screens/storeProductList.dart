@@ -71,7 +71,6 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
       var end = (i + size < len) ? i + size : len;
       chunks.add(data.sublist(i, end));
     }
-    // print(chunks);
     return chunks;
   }
 
@@ -101,39 +100,6 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return arr;
   }
 
-  _showQ(consumerCart, item) {
-    int qty = 0;
-    if (consumerCart.listLength > 0) {
-      // items exists
-      consumerCart.items.forEach((a) {
-        if (a.uniqueId == item.uniqueId) {
-          qty = a.totalQuantity;
-          return;
-        }
-      });
-    }
-    return Text('$qty');
-  }
-
-  _checkForAddition(consumerCart, item) {
-    if (consumerCart.listLength > 0) {
-      // check if item exists in cart and update
-      // also add if it doesn't exist
-      consumerCart.updateQtyByOne(item);
-    } else {
-      // add item to cart
-      consumerCart.addItem(item, 1, 100);
-    }
-  }
-
-  _checkForDeletion(consumerCart, item) {
-    if (consumerCart.listLength > 0) {
-      // check if item exists and remove quantity by 1
-      // if it doesn't exist, do nothing
-      consumerCart.minusQtyByOne(item);
-    }
-  }
-
   // List Builder
   FutureBuilder _buildArrayFromFuture(cart) {
     return FutureBuilder(
@@ -156,28 +122,6 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: <Widget>[
-                      // Consumer<CartModel>(
-                      //   builder: (context, consumerCart, child) {
-                      //     return Row(
-                      //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      //       children: <Widget>[
-                      //         Text('${arr[index].name}'),
-                      //         Text('${arr[index].pricePerQuantity}'),
-                      //         IconButton(
-                      //             icon: Icon(Icons.remove),
-                      //             onPressed: () {
-                      //               _checkForDeletion(consumerCart, arr[index]);
-                      //             }),
-                      //         _showQ(consumerCart, arr[index]),
-                      //         IconButton(
-                      //             icon: Icon(Icons.add),
-                      //             onPressed: () {
-                      //               _checkForAddition(consumerCart, arr[index]);
-                      //             }),
-                      //       ],
-                      //     );
-                      //   },
-                      // ),
                       SizedBox(height: 20.0),
                       Consumer<CartModel>(
                         builder: (context, consumerCart, child) {
@@ -197,7 +141,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                                           children: <Widget>[
                                             SizedBox(width: 17.0),
                                             ProductCard(
-                                              productName: subArr[index][subIndex].name,
+                                              product: subArr[index][subIndex],
                                             ),
                                             SizedBox(width: 5.0)
                                           ],
@@ -206,7 +150,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                                       return Padding(
                                         padding: const EdgeInsets.only(top: 1.0,left:17.0),
                                         child: ProductCard(
-                                          productName: subArr[index][subIndex].name,
+                                          product: subArr[index][subIndex],
                                         ),
                                       );
                                     })

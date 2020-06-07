@@ -2,13 +2,53 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
+import 'package:mvp/models/storeProducts.dart';
 import 'package:provider/provider.dart';
 
-class ProductCard extends StatelessWidget {
-  final String productName;
-  ProductCard({this.productName = 'Product Name'});
+class ProductCard extends StatefulWidget {
+  final StoreProduct product;
+  ProductCard({this.product});
 
-  _qtyBuilder() {
+  @override
+  _ProductCardState createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+
+  _showQ(consumerCart, item) {
+    int qty = 0;
+    if (consumerCart.listLength > 0) {
+      // items exists
+      consumerCart.items.forEach((a) {
+        if (a.uniqueId == item.uniqueId) {
+          qty = a.totalQuantity;
+          return;
+        }
+      });
+    }
+    return Text('$qty');
+  }
+
+  _checkForAddition(consumerCart, item) {
+    if (consumerCart.listLength > 0) {
+      // check if item exists in cart and update
+      // also add if it doesn't exist
+      consumerCart.updateQtyByOne(item);
+    } else {
+      // add item to cart
+      consumerCart.addItem(item, 1, 100);
+    }
+  }
+
+  _checkForDeletion(consumerCart, item) {
+    if (consumerCart.listLength > 0) {
+      // check if item exists and remove quantity by 1
+      // if it doesn't exist, do nothing
+      consumerCart.minusQtyByOne(item);
+    }
+  }
+
+  _qtyBuilder(cart, StoreProduct product) {
     return Container(
       width: 105.0,
       height: 30.0,
@@ -23,15 +63,19 @@ class ProductCard extends StatelessWidget {
             icon: Icon(
               Icons.remove,
             ),
-            onPressed: () {},
+            onPressed: () {
+              _checkForDeletion(cart, product);
+            },
             iconSize: 15.0,
           ),
-          Text('0'),
+          _showQ(cart, product),
           IconButton(
             icon: Icon(
               Icons.add,
             ),
-            onPressed: () {},
+            onPressed: () {
+              _checkForAddition(cart, product);
+            },
             iconSize: 15.0,
           ),
         ],
@@ -62,7 +106,7 @@ class ProductCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 17.0),
             child: Text(
-              productName,
+              widget.product.name,
               style: TextStyle(
                   fontFamily: 'Raleway',
                   fontSize: 15.0,
@@ -112,7 +156,7 @@ class ProductCard extends StatelessWidget {
             builder: (context, cart, child) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[_qtyBuilder(), Text("Qty")],
+                children: <Widget>[_qtyBuilder(cart, widget.product), Text("Qty")],
               );
             },
           ),
