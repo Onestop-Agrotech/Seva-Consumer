@@ -34,6 +34,12 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
               icon: Icon(Icons.shopping_cart),
               onPressed: () {
                 // Handle shopping cart
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoppingCartScreen(
+                              businessUserName: widget.businessUsername,
+                            )));
               }),
         ),
         Positioned(left: 28.0, top: 5.0, child: _checkCartItems()),
@@ -182,6 +188,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     var cart = Provider.of<CartModel>(context);
     cart.firstTimeAddition();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(60.0),
         child: AppBar(
