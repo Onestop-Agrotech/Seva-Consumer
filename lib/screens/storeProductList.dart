@@ -5,19 +5,74 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/common/customProductCard.dart';
+import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/shoppingCart.dart';
 import 'package:provider/provider.dart';
 
 class StoreProductsScreen extends StatefulWidget {
   final String businessUsername;
+  final String shopName;
 
-  StoreProductsScreen({this.businessUsername});
+  StoreProductsScreen({this.businessUsername, this.shopName});
   @override
   _StoreProductsScreenState createState() => _StoreProductsScreenState();
 }
 
 class _StoreProductsScreenState extends State<StoreProductsScreen> {
   final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  // UI design and Widgets
+  Widget _shoppingCartIcon() {
+    return Stack(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: IconButton(
+              color: ThemeColoursSeva().black,
+              iconSize: 30.0,
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                // Handle shopping cart
+              }),
+        ),
+        Positioned(left: 28.0, top: 5.0, child: _checkCartItems()),
+      ],
+    );
+  }
+
+  Widget _checkCartItems() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.1,
+      height: 22.0,
+      decoration: BoxDecoration(
+        color: ThemeColoursSeva().lgGreen,
+        shape: BoxShape.circle,
+      ),
+      child: Consumer<CartModel>(
+        builder: (context, cart, child) {
+          cart.removeDuplicates();
+          return Center(
+            child: Text(
+              cart.listLength == null ? '0' : cart.listLength.toString(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // Application Logic
+  _splitAndArrange(List<StoreProduct> data) {
+    int len = data.length;
+    int size = 2;
+    List<List<StoreProduct>> chunks = [];
+    for (var i = 0; i < len; i += size) {
+      var end = (i + size < len) ? i + size : len;
+      chunks.add(data.sublist(i, end));
+    }
+    return chunks;
+  }
 
   _fetchProductsFromStore() async {
     return this._memoizer.runOnce(() async {
@@ -45,39 +100,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return arr;
   }
 
-  _showQ(consumerCart, item) {
-    int qty = 0;
-    if (consumerCart.listLength > 0) {
-      // items exists
-      consumerCart.items.forEach((a) {
-        if (a.uniqueId == item.uniqueId) {
-          qty = a.totalQuantity;
-          return;
-        }
-      });
-    }
-    return Text('$qty');
-  }
-
-  _checkForAddition(consumerCart, item) {
-    if (consumerCart.listLength > 0) {
-      // check if item exists in cart and update
-      // also add if it doesn't exist
-      consumerCart.updateQtyByOne(item);
-    } else {
-      // add item to cart
-      consumerCart.addItem(item, 1, 100);
-    }
-  }
-
-  _checkForDeletion(consumerCart, item) {
-    if (consumerCart.listLength > 0) {
-      // check if item exists and remove quantity by 1
-      // if it doesn't exist, do nothing
-      consumerCart.minusQtyByOne(item);
-    }
-  }
-
+  // List Builder
   FutureBuilder _buildArrayFromFuture(cart) {
     return FutureBuilder(
         future: _fetchProductsFromStore(),
@@ -85,6 +108,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           if (snapshot.hasData) {
             List<StoreProduct> arr = snapshot.data;
             arr.sort((a, b) => a.name.compareTo(b.name));
+            _splitAndArrange(arr);
             // check if cart items match current store products
             if (cart.listLength > 0) {
               if (cart.items[0].uniqueId == arr[0].uniqueId) {
@@ -92,34 +116,49 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                 arr = _updateQuantityFromCart(cart, arr);
               }
             }
+            var subArr = _splitAndArrange(arr);
             return ListView.builder(
-                itemCount: arr.length,
+                itemCount: subArr.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: <Widget>[
+                      SizedBox(height: 20.0),
                       Consumer<CartModel>(
                         builder: (context, consumerCart, child) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text('${arr[index].name}'),
-                              Text('${arr[index].pricePerQuantity}'),
-                              IconButton(
-                                  icon: Icon(Icons.remove),
-                                  onPressed: () {
-                                    _checkForDeletion(consumerCart, arr[index]);
-                                  }),
-                              _showQ(consumerCart, arr[index]),
-                              IconButton(
-                                  icon: Icon(Icons.add),
-                                  onPressed: () {
-                                    _checkForAddition(consumerCart, arr[index]);
-                                  }),
-                            ],
+                          return Container(
+                            height: 250.0,
+                            child: Row(
+                              children: <Widget>[
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: subArr[index].length,
+                                    itemBuilder: (context, subIndex) {
+                                      if (subArr[index].length == 2) {
+                                        return Row(
+                                          children: <Widget>[
+                                            SizedBox(width: 17.0),
+                                            ProductCard(
+                                              product: subArr[index][subIndex],
+                                            ),
+                                            SizedBox(width: 5.0)
+                                          ],
+                                        );
+                                      }
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 1.0,left:17.0),
+                                        child: ProductCard(
+                                          product: subArr[index][subIndex],
+                                        ),
+                                      );
+                                    })
+                              ],
+                            ),
                           );
                         },
                       ),
-                      SizedBox(height: 20.0)
                     ],
                   );
                 });
@@ -128,7 +167,11 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           else
             return Container(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  backgroundColor: ThemeColoursSeva().black,
+                  strokeWidth: 4.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                ),
               ),
             );
         });
@@ -139,29 +182,46 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     var cart = Provider.of<CartModel>(context);
     cart.firstTimeAddition();
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(child: _buildArrayFromFuture(cart)),
-            ButtonTheme(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShoppingCartScreen(
-                                businessUserName: widget.businessUsername,
-                              )));
-                },
-                color: ThemeColoursSeva().dkGreen,
-                textColor: Colors.white,
-                child: Text("To cart"),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60.0),
+        child: AppBar(
+          leading: IconButton(
+              icon: Icon(
+                Icons.keyboard_arrow_left,
+                color: ThemeColoursSeva().black,
+                size: 40.0,
               ),
-            )
-          ],
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: TopText(txt: widget.shopName),
+          centerTitle: true,
+          actions: <Widget>[_shoppingCartIcon()],
         ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(child: _buildArrayFromFuture(cart)),
+          // ButtonTheme(
+          //   shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(10.0)),
+          //   child: RaisedButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) => ShoppingCartScreen(
+          //                     businessUserName: widget.businessUsername,
+          //                   )));
+          //     },
+          //     color: ThemeColoursSeva().dkGreen,
+          //     textColor: Colors.white,
+          //     child: Text("To cart"),
+          //   ),
+          // )
+        ],
       ),
     );
   }

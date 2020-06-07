@@ -10,7 +10,11 @@ class StoreListCard extends StatefulWidget {
   final String shopName;
   final String businessUserName;
 
-  StoreListCard({this.vegetablesOnly, this.fruitsOnly, this.shopName, this.businessUserName});
+  StoreListCard(
+      {this.vegetablesOnly,
+      this.fruitsOnly,
+      this.shopName,
+      this.businessUserName});
 
   @override
   _StoreListCardState createState() => _StoreListCardState();
@@ -59,9 +63,14 @@ class _StoreListCardState extends State<StoreListCard> {
     return Material(
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) => StoreProductsScreen(businessUsername: widget.businessUserName,),
-          ));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StoreProductsScreen(
+                  businessUsername: widget.businessUserName,
+                  shopName: widget.shopName,
+                ),
+              ));
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
@@ -71,7 +80,11 @@ class _StoreListCardState extends State<StoreListCard> {
               // image container
               CachedNetworkImage(
                 imageUrl: "http://via.placeholder.com/200x150",
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) => CircularProgressIndicator(
+                  backgroundColor: ThemeColoursSeva().black,
+                  strokeWidth: 4.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               SizedBox(width: 20.0),
