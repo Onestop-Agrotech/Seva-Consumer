@@ -98,7 +98,11 @@ class _ProductCardState extends State<ProductCard> {
             padding: const EdgeInsets.only(top: 8.0, left: 5.0),
             child: CachedNetworkImage(
               imageUrl: "http://via.placeholder.com/160x120",
-              placeholder: (context, url) => CircularProgressIndicator(),
+              placeholder: (context, url) => CircularProgressIndicator(
+                  backgroundColor: ThemeColoursSeva().black,
+                  strokeWidth: 4.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                ),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),

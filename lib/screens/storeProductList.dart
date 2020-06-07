@@ -167,7 +167,11 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           else
             return Container(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  backgroundColor: ThemeColoursSeva().black,
+                  strokeWidth: 4.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                ),
               ),
             );
         });

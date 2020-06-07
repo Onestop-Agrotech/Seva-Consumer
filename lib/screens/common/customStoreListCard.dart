@@ -80,7 +80,11 @@ class _StoreListCardState extends State<StoreListCard> {
               // image container
               CachedNetworkImage(
                 imageUrl: "http://via.placeholder.com/200x150",
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) => CircularProgressIndicator(
+                  backgroundColor: ThemeColoursSeva().black,
+                  strokeWidth: 4.0,
+                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               SizedBox(width: 20.0),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/storesList.dart';
 
@@ -21,7 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   _sendReqToServer(token) async {
     String url = "http://localhost:8000/token";
     Map<String, String> headers = {"Content-Type": "application/json"};
-    var body = json.encode({"token":token});
+    var body = json.encode({"token": token});
     var response = await http.post(url, body: body, headers: headers);
     if (response.statusCode == 200) {
       print('verified token');
@@ -56,18 +57,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
       });
       _changePage();
     }
-     
   }
 
-  _changePage(){
-    if(_showLoginScreen==true){
-      Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context)=>LoginScreen()
-      ));
-    } else if(_showLoginScreen==false){
-      Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context)=>StoresScreen()
-      ));
+  _changePage() {
+    if (_showLoginScreen == true) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else if (_showLoginScreen == false) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => StoresScreen()));
     }
   }
 
@@ -76,7 +74,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            backgroundColor: ThemeColoursSeva().black,
+            strokeWidth: 4.0,
+            valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+          ),
         ),
       ),
     );
