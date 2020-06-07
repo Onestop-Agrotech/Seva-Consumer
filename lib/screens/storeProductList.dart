@@ -178,13 +178,12 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                       //     );
                       //   },
                       // ),
-                      SizedBox(height: 10.0),
+                      SizedBox(height: 20.0),
                       Consumer<CartModel>(
                         builder: (context, consumerCart, child) {
                           return Container(
                             height: 250.0,
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 ListView.builder(
                                     shrinkWrap: true,
@@ -196,13 +195,20 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                                       if (subArr[index].length == 2) {
                                         return Row(
                                           children: <Widget>[
-                                            SizedBox(width: 10.0),
-                                            ProductCard(),
-                                            SizedBox(width: 10.0)
+                                            SizedBox(width: 17.0),
+                                            ProductCard(
+                                              productName: subArr[index][subIndex].name,
+                                            ),
+                                            SizedBox(width: 5.0)
                                           ],
                                         );
                                       }
-                                      return ProductCard();
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 1.0,left:17.0),
+                                        child: ProductCard(
+                                          productName: subArr[index][subIndex].name,
+                                        ),
+                                      );
                                     })
                               ],
                             ),
