@@ -59,7 +59,7 @@ class OrderModel {
     );
 
     Map<String, dynamic> toJson() => {
-        "_id": id,
+        // "_id": id,
         "customerUsername": customerUsername,
         "customerId": customerId,
         "storeUserName": storeUserName,
@@ -71,9 +71,9 @@ class OrderModel {
         "customerFinalPrice": customerFinalPrice,
         "paymentType": paymentType,
         "paymentTransactionId": paymentTransactionId,
-        "orderStatus": orderStatus,
-        "timestamp": timestamp.toIso8601String(),
-        "__v": v,
+        // "orderStatus": orderStatus,
+        // "timestamp": timestamp.toIso8601String(),
+        // "__v": v,
     };
 }
 
@@ -107,7 +107,7 @@ class Item {
     );
 
     Map<String, dynamic> toJson() => {
-        "_id": id,
+        // "_id": id,
         "item_id": itemId,
         "name": name,
         "total_price": totalPrice,
