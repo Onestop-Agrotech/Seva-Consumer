@@ -16,8 +16,10 @@ class FirestoreCRUD {
       'quantityValue': obj.quantity.quantityValue,
       "quantityMetric": obj.quantity.quantityMetric,
       'uniqueId': obj.uniqueId,
+      'description': obj.description,
       'id':obj.id,
       'type':obj.type,
+      'pictureURL':obj.pictureUrl
     });
   }
 
