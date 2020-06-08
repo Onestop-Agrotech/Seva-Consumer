@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/screens/common/customShoppingCartCard.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class ShoppingCartScreen extends StatefulWidget {
   final String businessUserName;
@@ -13,35 +15,80 @@ class ShoppingCartScreen extends StatefulWidget {
 }
 
 class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
+  Razorpay _razorpay;
+  bool _payment;
 
-  // _showClearCart(cart){
-  //   if(cart.listLength > 0){
-  //     return Material(
-  //             child: InkWell(
-  //               onTap: () {
-  //                 cart.clearCart();
-  //               },
-  //               child: Padding(
-  //                 padding: const EdgeInsets.only(top: 20.0, right: 10.0),
-  //                 child: Text(
-  //                   "Clear Cart",
-  //                   style: TextStyle(
-  //                     color: Colors.red,
-  //                     fontSize: 12.0,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           );
-  //   }else {
-  //     return Container();
-  //   }
-  // }
+  @override
+  initState() {
+    super.initState();
+    _payment=false;
+
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+    Fluttertoast.showToast(
+        msg: "Paid Successfully!",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM);
+    setState(() {
+      _payment=true;
+    });
+    Navigator.pushReplacementNamed(context, '/orders');
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+    Fluttertoast.showToast(
+        msg: "EXTERNAL_WALLET: " + response.walletName,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM);
+  }
+
+  void openCheckout(price) async {
+    var options = {
+      'key': 'rzp_test_3PrnV481o0a0aV',
+      'amount': price * 100,
+      'prefill': {'contact': '9663395018', 'email': 'onestopagro@gmail.com'},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      debugPrint(e);
+    }
+  }
 
   _showButton(cartItems) {
     if (cartItems.listLength > 0) {
       return FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          // testing payments
+          var price = cartItems.calTotalPrice();
+
+          openCheckout(price);
+        },
         label: Text(
           "Proceed",
           style: TextStyle(color: Colors.white),
@@ -86,6 +133,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<CartModel>(context);
+    if(_payment==true) cart.clearCartWithoutNotify();
     cart.firstTimeAddition();
     return Scaffold(
       backgroundColor: Colors.white,
