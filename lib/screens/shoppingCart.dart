@@ -22,11 +22,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   Razorpay _razorpay;
   bool _payment;
   String _pid = '';
+  bool _loading;
+  int _orderPost;
 
   @override
   initState() {
     super.initState();
     _payment = false;
+    _loading = false;
+    _orderPost = 0;
 
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -78,6 +82,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   // post order to server here
   _postOrderToServer(cart, pid) async {
+   setState(() {
+     _orderPost=_orderPost+1;
+   });
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     // String _username = await p.getUsername();
@@ -108,9 +115,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     setState(() {
       _pid = response.paymentId;
       _payment = true;
+      _loading = true;
     });
-    Future.delayed(const Duration(seconds: 2), (){
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/orders');
+      setState(() {
+        _loading = false;
+      });
     });
   }
 
@@ -148,7 +159,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   _showButton(cartItems) {
-    if (cartItems.listLength > 0) {
+    if (cartItems.listLength > 0 && _loading == false) {
       return FloatingActionButton.extended(
         onPressed: () {
           // testing payments
@@ -197,12 +208,37 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       );
   }
 
+  _showLoadingOrNot() {
+    if (_loading)
+      return Container(
+        child: Center(
+          child: CircularProgressIndicator(
+            backgroundColor: ThemeColoursSeva().black,
+            strokeWidth: 4.0,
+            valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+          ),
+        ),
+      );
+      else return Column(
+        children: <Widget>[
+          Consumer<CartModel>(
+            builder: (context, consumerCart, child) {
+              return Expanded(
+                child: _listbuilder(consumerCart),
+              );
+            },
+          ),
+          SizedBox(height: 70.0)
+        ],
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<CartModel>(context);
     if (_payment == true) {
       // post order here
-      _postOrderToServer(cart, _pid);
+      if(_orderPost==0) _postOrderToServer(cart, _pid);
       Future.delayed(const Duration(seconds: 2), () {
         cart.clearCartWithoutNotify();
       });
@@ -231,20 +267,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ],
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Consumer<CartModel>(
-              builder: (context, consumerCart, child) {
-                return Expanded(
-                  child: _listbuilder(consumerCart),
-                );
-              },
-            ),
-            SizedBox(height: 70.0)
-          ],
-        ),
-      ),
+      body: _showLoadingOrNot(),
       floatingActionButton: _showButton(cart),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
