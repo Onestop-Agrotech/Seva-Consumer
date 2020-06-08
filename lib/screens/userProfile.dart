@@ -6,7 +6,6 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
-import 'package:mvp/screens/storesList.dart';
 import 'package:http/http.dart' as http;
 
 class UserProfileScreen extends StatefulWidget {

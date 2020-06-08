@@ -21,13 +21,16 @@ class _StoresScreenState extends State<StoresScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     String username = await p.getUsername();
-    setState(() {
-      _username = username;
-    });
+    // setState(() {
+    //   _username = username;
+    // });
     String url = "http://localhost:8000/api/businesses/";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
+      setState(() {
+        _username=username;
+      });
       return jsonToStoreModel(response.body);
     } else {
       throw Exception('something is wrong');
