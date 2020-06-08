@@ -22,7 +22,7 @@ class _ShoppingCartCardState extends State<ShoppingCartCard> {
       consumerCart.updateQtyByOne(item);
     } else {
       // add item to cart
-      consumerCart.addItem(item, 1, 100);
+      consumerCart.addItem(item);
     }
   }
 
@@ -110,7 +110,7 @@ class _ShoppingCartCardState extends State<ShoppingCartCard> {
                         ],
                       ),
                       Text(
-                        "Local",
+                        "${widget.product.description}",
                         style: TextStyle(
                           fontFamily: "Raleway",
                           fontSize: 12.0,
@@ -119,7 +119,7 @@ class _ShoppingCartCardState extends State<ShoppingCartCard> {
                         ),
                       ),
                       Text(
-                        "Rs 400",
+                        "Rs ${widget.product.totalPrice}",
                         style: TextStyle(
                             fontFamily: "Raleway",
                             fontWeight: FontWeight.w500,

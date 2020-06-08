@@ -36,7 +36,7 @@ class _ProductCardState extends State<ProductCard> {
       consumerCart.updateQtyByOne(item);
     } else {
       // add item to cart
-      consumerCart.addItem(item, 1, 100);
+      consumerCart.addItem(item);
     }
   }
 
@@ -87,6 +87,12 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Container(
+      // decoration: BoxDecoration(
+      //   border: Border.all(
+      //     color: ThemeColoursSeva().grey,
+      //     width: 0.6
+      //   )
+      // ),
       height: 280.0,
       width: width * 0.43,
       child: Column(
@@ -124,7 +130,7 @@ class _ProductCardState extends State<ProductCard> {
             Padding(
       padding: const EdgeInsets.only(left: 17.0),
       child: Text(
-        "Local",
+        "${widget.product.description}",
         style: TextStyle(
             fontFamily: 'Raleway',
             fontSize: 10.0,
@@ -139,7 +145,7 @@ class _ProductCardState extends State<ProductCard> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            "Rs 200",
+            "Rs ${widget.product.price}",
             style: TextStyle(
                 fontFamily: 'Raleway',
                 fontSize: 15.0,
@@ -147,7 +153,7 @@ class _ProductCardState extends State<ProductCard> {
                 color: ThemeColoursSeva().black),
           ),
           Text(
-            "1 kg",
+            "${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
             style: TextStyle(
                 fontFamily: 'Raleway',
                 fontSize: 15.0,

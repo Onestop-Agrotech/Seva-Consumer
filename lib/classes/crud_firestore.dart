@@ -6,13 +6,15 @@ import 'package:mvp/models/storeProducts.dart';
 class FirestoreCRUD {
 
   // Add document to firestore
-  void addToFirestore(StoreProduct obj, int quantity, int price){
+  void addToFirestore(StoreProduct obj){
     String username = 'rahul';
     Firestore.instance.collection('$username').document('p-${obj.uniqueId}').setData({
       'name': obj.name,
-      'quantity': quantity,
-      'price': price,
-      'pricePerQuantity': obj.pricePerQuantity,
+      'productPrice': obj.price,
+      'userQuantity': obj.totalQuantity,
+      'userPrice': obj.totalPrice,
+      'quantityValue': obj.quantity.quantityValue,
+      "quantityMetric": obj.quantity.quantityMetric,
       'uniqueId': obj.uniqueId,
       'id':obj.id,
       'type':obj.type,
@@ -29,8 +31,8 @@ class FirestoreCRUD {
   void updateDocInFirestore(String docId, int newq, int newp) {
     String username = 'rahul';
     Firestore.instance.collection('$username').document(docId).updateData({
-      'quantity': newq,
-      'pricePerKg': newp,
+      'userQuantity': newq,
+      'userPrice': newp,
     });
   }
 

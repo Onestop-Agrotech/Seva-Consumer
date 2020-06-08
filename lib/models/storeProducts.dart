@@ -6,12 +6,13 @@ String storeProductTojsonModel(List<StoreProduct> data) => json.encode(List<dyna
 
 class StoreProduct {
     StoreProduct({
+      this.quantity,
         this.id,
         this.name,
         this.type,
         this.uniqueId,
         this.description,
-        this.pricePerQuantity,
+        this.price,
         this.pictureUrl,
         this.totalPrice=0,
         this.totalQuantity=0
@@ -22,10 +23,11 @@ class StoreProduct {
     String type;
     String uniqueId;
     String description;
-    String pricePerQuantity;
+    int price;
     String pictureUrl;
     int totalPrice;
     int totalQuantity;
+    Quantity quantity;
 
     factory StoreProduct.fromJson(Map<String, dynamic> json) => StoreProduct(
         id: json["_id"],
@@ -33,8 +35,9 @@ class StoreProduct {
         type: json["type"],
         uniqueId: json["uniqueId"],
         description: json["description"],
-        pricePerQuantity: json["pricePerQuantity"],
+        price: json["price"],
         pictureUrl: json["pictureURL"],
+        quantity: Quantity.fromJson(json["quantity"]),
     );
 
     Map<String, dynamic> toJson() => {
@@ -43,7 +46,28 @@ class StoreProduct {
         "type": type,
         "uniqueId": uniqueId,
         "description": description,
-        "pricePerQuantity": pricePerQuantity,
+        "price": price,
         "pictureURL": pictureUrl,
+        "quantity": quantity.toJson(),
+    };
+}
+
+class Quantity {
+    Quantity({
+        this.quantityValue,
+        this.quantityMetric,
+    });
+
+    int quantityValue;
+    String quantityMetric;
+
+    factory Quantity.fromJson(Map<String, dynamic> json) => Quantity(
+        quantityValue: json["quantityValue"],
+        quantityMetric: json["quantityMetric"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "quantityValue": quantityValue,
+        "quantityMetric": quantityMetric,
     };
 }
