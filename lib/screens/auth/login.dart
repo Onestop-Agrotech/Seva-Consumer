@@ -141,8 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         // successfully logged in
         StorageSharedPrefs p = new StorageSharedPrefs();
-        p.setToken(json.decode(response.body)["token"]);
-        p.setUsername(json.decode(response.body)["username"]);
+        await p.setToken(json.decode(response.body)["token"]);
+        await p.setUsername(json.decode(response.body)["username"]);
+        await p.setId(json.decode(response.body)["id"]);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => StoresScreen()));
         setState(() {

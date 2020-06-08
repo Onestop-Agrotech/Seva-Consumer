@@ -84,10 +84,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     if (response.statusCode == 200) {
       // print(response.body);
       StorageSharedPrefs p = new StorageSharedPrefs();
-      p.setToken(json.decode(response.body)["token"]);
-      p.setUsername(json.decode(response.body)["username"]);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => StoresScreen()));
+      await p.setToken(json.decode(response.body)["token"]);
+      await p.setUsername(json.decode(response.body)["username"]);
+      await p.setId(json.decode(response.body)["id"]);
+      Navigator.pushReplacementNamed(context, '/stores');
     } else {
       throw Exception('Server error');
     }

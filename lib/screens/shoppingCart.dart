@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -24,6 +26,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   String _pid = '';
   bool _loading;
   int _orderPost;
+  String _userMobile;
+  String _userEmail;
 
   @override
   initState() {
@@ -42,6 +46,24 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   void dispose() {
     super.dispose();
     _razorpay.clear();
+  }
+
+  // get user details
+  _getUserDetails() async{
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String userId = await p.getId();
+    String token = await p.getToken();
+    String url = "http://localhost:8000/api/users/$userId";
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      setState(() {
+        _userMobile = json.decode(response.body)["email"]; 
+        _userEmail =  json.decode(response.body)["mobile"];
+      });
+    } else {
+      throw Exception('something is wrong');
+    }
   }
 
   List<Item> _modelItems(order, cart) {
@@ -64,8 +86,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   OrderModel _modelTheCart(cart, pid) {
     OrderModel newOrder = OrderModel();
-    newOrder.customerUsername = 'rahul';
-    newOrder.customerId = '5ed9dabb936d884d1a2e5e6d';
     newOrder.storeId = 'Seva1234';
     newOrder.storeUserName = widget.businessUserName;
     List<Item> items = _modelItems(newOrder, cart);
@@ -85,15 +105,19 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
    setState(() {
      _orderPost=_orderPost+1;
    });
+   
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
-    // String _username = await p.getUsername();
+    String username = await p.getUsername();
+    String id = await p.getId();
     String url = "http://localhost:8000/api/orders/${widget.businessUserName}/";
     Map<String, String> headers = {
       "Content-Type": "application/json",
       "x-auth-token": token
     };
     OrderModel order = _modelTheCart(cart, pid);
+    order.customerUsername = username;
+    order.customerId = id;
     String body = fromOrderModelToJson(order);
     // post
     var response = await http.post(url, headers: headers, body: body);
@@ -142,10 +166,11 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   void openCheckout(price) async {
+    _getUserDetails();
     var options = {
       'key': 'rzp_test_3PrnV481o0a0aV',
       'amount': price * 100,
-      'prefill': {'contact': '9663395018', 'email': 'onestopagro@gmail.com'},
+      'prefill': {'contact': _userMobile, 'email': _userEmail},
       'external': {
         'wallets': ['paytm']
       }
