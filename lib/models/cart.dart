@@ -25,25 +25,38 @@ class CartModel extends ChangeNotifier {
 
   void firstTimeAddition() async {
     if (_cartItems.length == 0) {
-      // print("Added from firestore");
       var docs = await _checkFireStore();
       docs.forEach((d) {
         StoreProduct ob = new StoreProduct();
+        Quantity q = new Quantity();
         ob.name = d.data['name'];
-        ob.pricePerQuantity = d.data['pricePerQuantity'];
+        ob.price = d.data['productPrice'];
         ob.uniqueId = d.data['uniqueId'];
         ob.id = d.data['id'];
         ob.type = d.data['type'];
-        ob.totalPrice = d.data['price'];
-        ob.totalQuantity = d.data['quantity'];
+        q.quantityValue = d.data['quantityValue'];
+        q.quantityMetric = d.data['quantityMetric'];
+        ob.totalPrice = d.data['userPrice'];
+        ob.totalQuantity = d.data['userQuantity'];
+        ob.pictureUrl = d.data['pictureURL'];
+        ob.description = d.data['description'];
+        ob.quantity = q;
         _cartItems.add(ob);
       });
       notifyListeners();
     }
   }
 
+  void checkCartItemsMatch() async{
+    var docs = await _checkFireStore();
+    if(docs.length ==0){
+       _cartItems.clear();
+       notifyListeners();
+    }
+  }
+
   // Add item to cart
-  void addItem(StoreProduct i, int totalQuantity, int totalPrice) {
+  void addItem(StoreProduct i) {
     // check if it exists already, then don't add
     bool matched = false;
     if (_cartItems.length > 0) {
@@ -57,8 +70,9 @@ class CartModel extends ChangeNotifier {
 
     if (matched == false) {
       i.totalQuantity = 1;
+      i.totalPrice = i.price;
       _cartItems.add(i);
-      f.addToFirestore(i, totalQuantity, totalPrice);
+      f.addToFirestore(i);
       notifyListeners();
     }
   }
@@ -87,14 +101,16 @@ class CartModel extends ChangeNotifier {
       if (item.uniqueId == i.uniqueId) {
         matched = true;
         item.totalQuantity = item.totalQuantity + 1;
-        f.updateDocInFirestore('p-${item.uniqueId}', item.totalQuantity, 100);
+        item.totalPrice = item.totalPrice + item.price;
+        f.updateDocInFirestore(
+            'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
         notifyListeners();
         return;
       }
     });
 
     if (matched == false) {
-      addItem(i, 1, 100);
+      addItem(i);
       notifyListeners();
     }
   }
@@ -107,9 +123,10 @@ class CartModel extends ChangeNotifier {
       if (item.uniqueId == i.uniqueId) {
         if (item.totalQuantity != 0) {
           item.totalQuantity = item.totalQuantity - 1;
+          item.totalPrice = item.totalPrice - item.price;
           if (item.totalQuantity != 0) {
             f.updateDocInFirestore(
-                'p-${item.uniqueId}', item.totalQuantity, 100);
+                'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
             notifyListeners();
           } else if (item.totalQuantity == 0) {
             remove = true;
@@ -150,9 +167,11 @@ class CartModel extends ChangeNotifier {
   }
 
   // remove all items from cart
-  clearCart(){
+  clearCart() {
     if (_cartItems.length > 0) {
       _cartItems.clear();
+      print(_cartItems.length);
+      f.deleteDocuments();
       notifyListeners();
     }
   }

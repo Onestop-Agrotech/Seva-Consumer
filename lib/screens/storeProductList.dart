@@ -20,7 +20,15 @@ class StoreProductsScreen extends StatefulWidget {
 }
 
 class _StoreProductsScreenState extends State<StoreProductsScreen> {
+  // var cart = Provider.of<CartModel>(context);
   final AsyncMemoizer _memoizer = AsyncMemoizer();
+
+  @override
+  initState(){
+    super.initState();
+    
+    // cart.firstTimeAddition();
+  }
 
   // UI design and Widgets
   Widget _shoppingCartIcon() {
@@ -173,6 +181,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<CartModel>(context);
+    cart.checkCartItemsMatch();
     cart.firstTimeAddition();
     return Scaffold(
       backgroundColor: Colors.white,
@@ -200,23 +209,6 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
         children: <Widget>[
           Expanded(child: _buildArrayFromFuture(cart)),
           SizedBox(height: 40.0)
-          // ButtonTheme(
-          //   shape: RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(10.0)),
-          //   child: RaisedButton(
-          //     onPressed: () {
-          //       Navigator.push(
-          //           context,
-          //           MaterialPageRoute(
-          //               builder: (context) => ShoppingCartScreen(
-          //                     businessUserName: widget.businessUsername,
-          //                   )));
-          //     },
-          //     color: ThemeColoursSeva().dkGreen,
-          //     textColor: Colors.white,
-          //     child: Text("To cart"),
-          //   ),
-          // )
         ],
       ),
     );
