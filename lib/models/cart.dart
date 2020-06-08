@@ -166,13 +166,31 @@ class CartModel extends ChangeNotifier {
     }
   }
 
+  // calculate total Price
+  calTotalPrice(){
+    var sum=0;
+    if(_cartItems.length > 0){
+      _cartItems.forEach((i) {
+        sum = sum + i.totalPrice;
+      });
+    }
+    return sum;
+  }
+
   // remove all items from cart
   clearCart() {
     if (_cartItems.length > 0) {
       _cartItems.clear();
-      print(_cartItems.length);
       f.deleteDocuments();
       notifyListeners();
+    }
+  }
+
+  // clear Cart don't notify
+  clearCartWithoutNotify(){
+     if (_cartItems.length > 0) {
+      _cartItems.clear();
+      f.deleteDocuments();
     }
   }
 }
