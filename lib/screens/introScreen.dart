@@ -32,9 +32,9 @@ class _IntroScreenState extends State<IntroScreen> {
             child: Padding(
               padding: const EdgeInsets.only(left: 30.0),
               child: Text(
-                "The more orders from your area, the faster the Delivery!",
+                "In light of #Covid19, now buy your essentials while following the safety measures!",
                 style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 24,
                     fontFamily: "Raleway",
                     color: ThemeColoursSeva().dkGreen),
               ),
@@ -44,7 +44,7 @@ class _IntroScreenState extends State<IntroScreen> {
             height: 80.0,
           ),
           Text(
-            "Delivering only in select areas of Bangalore",
+            "Service available only in select areas of Bangalore",
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontFamily: "Raleway",
@@ -71,17 +71,17 @@ class _IntroScreenState extends State<IntroScreen> {
           DescriptionIntro(
               img: 'images/ct1.png',
               descText:
-                  "Order Fresh Fruits and Vegetables on the app. We collect from a farmer directly, and deliver to your doorstep!",
+                  "Order Fresh Fruits and Vegetables. You can pick them up from nearby stores or have it delivered to your doorstep!",
             ),
           DescriptionIntro(
             img: 'images/ct2.png',
             descText:
-                "Standard delivery in under 12 hours from order time. Faster delivery available for select products at an extra price.",
+                "Delivery within an hour from your local stores. They are all within 2 kms of your delivery location!",
           ),
           DescriptionIntro(
             img: 'images/ct3.png',
             descText:
-                "Pay online or Cash on Delivery. A farmer directly benefits from your payment. The more you order, the better the benefit!",
+                "Payments are online so you don't have to worry about #Covid-19. Orders are packed and ready for pick up or delivery!",
           ),
         ],
       );
