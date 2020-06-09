@@ -58,8 +58,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       setState(() {
-        _userMobile = json.decode(response.body)["email"]; 
-        _userEmail =  json.decode(response.body)["mobile"];
+        _userMobile = json.decode(response.body)["mobile"]; 
+        _userEmail =  json.decode(response.body)["email"];
       });
     } else {
       throw Exception('something is wrong');
@@ -166,7 +166,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   void openCheckout(price) async {
-    _getUserDetails();
+    await _getUserDetails();
+    print(_userMobile);
+    print(_userEmail);
     var options = {
       'key': 'rzp_test_3PrnV481o0a0aV',
       'amount': price * 100,
