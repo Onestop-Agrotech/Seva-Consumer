@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
+import 'package:mvp/screens/orderDetails.dart';
 
 class CustomOrdersCard extends StatefulWidget {
   final OrderModel order;
@@ -36,11 +37,14 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("Order #1234567899", style: TextStyle(
-                        fontFamily: "Raleway",
-                        fontSize: 16.5,
-                        fontWeight: FontWeight.w700,
-                        color: ThemeColoursSeva().black),),
+              Text(
+                "Order #1234567899",
+                style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w700,
+                    color: ThemeColoursSeva().black),
+              ),
               Row(
                 children: <Widget>[
                   Text(
@@ -81,14 +85,23 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
                           fontFamily: "Raleway",
                           fontSize: 14.0,
                           color: ThemeColoursSeva().black)),
-                          SizedBox(width: 10.0),
+                  SizedBox(width: 10.0),
                   FlatButton(
                     shape: Border.all(width: 0.2),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OrderDetailsScreen(
+                              order: widget.order,
+                            ),
+                          ));
+                    },
                     child: Text("More Details",
                         style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 14.0,)),
+                          fontFamily: "Raleway",
+                          fontSize: 14.0,
+                        )),
                     textColor: ThemeColoursSeva().dkGreen,
                   )
                 ],
