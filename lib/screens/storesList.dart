@@ -121,7 +121,7 @@ class _StoresScreenState extends State<StoresScreen> {
               ListTile(
                 title: Text('My orders'),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/orders');
                 },
               ),
             ],

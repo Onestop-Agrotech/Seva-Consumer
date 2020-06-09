@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:mvp/models/storeProducts.dart';
 
 OrderModel toOrderModelFromJson(String str) => OrderModel.fromJson(json.decode(str));
-
 String fromOrderModelToJson(OrderModel data) => json.encode(data.toJson());
+
+List<OrderModel> toOrdersFromJson(b) =>  List<OrderModel>.from(b.map((x) => OrderModel.fromJson(x)));
 
 class OrderModel {
     OrderModel({
