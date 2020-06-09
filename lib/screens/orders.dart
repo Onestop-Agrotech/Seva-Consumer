@@ -5,6 +5,7 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/common/customOrdersCard.dart';
 
 import 'common/topText.dart';
 
@@ -61,11 +62,18 @@ class _OrdersScreenState extends State<OrdersScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<OrderModel> ordersArr = snapshot.data;
+            // sort the array according to time
+            ordersArr.sort((a, b) => b.timestamp.toString().compareTo(a.timestamp.toString()));
             // build array
             return ListView.builder(
                 itemCount: ordersArr.length,
                 itemBuilder: (context, index) {
-                  return Text("order");
+                  return Column(
+                    children: <Widget>[
+                      CustomOrdersCard(order: ordersArr[index],),
+                      SizedBox(height: 30.0)
+                    ],
+                  );
                 });
           } else {
             return Container();
@@ -78,7 +86,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: Size.fromHeight(80.0),
         child: AppBar(
           leading: IconButton(
               icon: Icon(

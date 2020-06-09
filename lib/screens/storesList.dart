@@ -5,6 +5,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/stores.dart';
 import 'package:mvp/screens/common/customStoreListCard.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoresScreen extends StatefulWidget {
   @override
@@ -29,7 +30,7 @@ class _StoresScreenState extends State<StoresScreen> {
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       setState(() {
-        _username=username;
+        _username = username;
       });
       return jsonToStoreModel(response.body);
     } else {
@@ -66,7 +67,8 @@ class _StoresScreenState extends State<StoresScreen> {
                 child: CircularProgressIndicator(
                   backgroundColor: ThemeColoursSeva().black,
                   strokeWidth: 4.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
                 ),
               ),
             );
@@ -122,6 +124,17 @@ class _StoresScreenState extends State<StoresScreen> {
                 title: Text('My orders'),
                 onTap: () {
                   Navigator.pushNamed(context, '/orders');
+                },
+              ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () async {
+                  // Navigator.pushNamed(context, '/orders');
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
                 },
               ),
             ],

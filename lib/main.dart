@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/models/cart.dart';
+import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/loading.dart';
 import 'package:mvp/screens/orders.dart';
 import 'package:mvp/screens/storesList.dart';
@@ -22,8 +23,9 @@ class _SevaAppState extends State<SevaApp> {
       child:
           MaterialApp(debugShowCheckedModeBanner: false, home: LoadingScreen(),
           routes: {
+            "/login": (context) => LoginScreen(),
             "/orders": (context) => OrdersScreen(),
-            "/stores": (context) => StoresScreen()
+            "/stores": (context) => StoresScreen(),
           },),
     );
   }
