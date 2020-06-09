@@ -68,7 +68,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   return Text("order");
                 });
           } else {
-            print("Empty");
             return Container();
           }
         });
