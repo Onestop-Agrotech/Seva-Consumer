@@ -12,15 +12,16 @@ class CustomOrdersCard extends StatefulWidget {
 
 class _CustomOrdersCardState extends State<CustomOrdersCard> {
   var _time;
-  bool _less=false;
+  bool _less = false;
 
   @override
   void initState() {
     super.initState();
     _time = DateTime.parse(widget.order.timestamp.toString()).toLocal();
-    if(int.parse(_time.minute.toString())<10)setState(() {
-      _less = true;
-    });
+    if (int.parse(_time.minute.toString()) < 10)
+      setState(() {
+        _less = true;
+      });
   }
 
   @override
@@ -35,12 +36,32 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("${widget.order.id}"),
+              Text("Order #1234567899", style: TextStyle(
+                        fontFamily: "Raleway",
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w700,
+                        color: ThemeColoursSeva().black),),
               Row(
                 children: <Widget>[
-                  Text("${_time.day}/${_time.month}/${_time.year}"),
+                  Text(
+                    "${_time.day}/${_time.month}/${_time.year}",
+                    style: TextStyle(
+                        fontFamily: "Raleway",
+                        fontSize: 14.0,
+                        color: ThemeColoursSeva().black),
+                  ),
                   SizedBox(width: 10.0),
-                  _less ? Text("${_time.hour}:0${_time.minute}") : Text("${_time.hour}:${_time.minute}"),
+                  _less
+                      ? Text("${_time.hour}:0${_time.minute}",
+                          style: TextStyle(
+                              fontFamily: "Raleway",
+                              fontSize: 14.0,
+                              color: ThemeColoursSeva().black))
+                      : Text("${_time.hour}:${_time.minute}",
+                          style: TextStyle(
+                              fontFamily: "Raleway",
+                              fontSize: 14.0,
+                              color: ThemeColoursSeva().black)),
                 ],
               ),
             ],
@@ -48,11 +69,28 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("${widget.order.orderStatus}"),
+              Text("${widget.order.orderStatus}",
+                  style: TextStyle(
+                      fontFamily: "Raleway",
+                      fontSize: 17.0,
+                      color: Colors.deepOrange)),
               Row(
                 children: <Widget>[
-                  Text("${widget.order.orderType}"),
-                  FlatButton(onPressed: (){}, child: Text("More Details"), textColor: ThemeColoursSeva().dkGreen,)
+                  Text("${widget.order.orderType}",
+                      style: TextStyle(
+                          fontFamily: "Raleway",
+                          fontSize: 14.0,
+                          color: ThemeColoursSeva().black)),
+                          SizedBox(width: 10.0),
+                  FlatButton(
+                    shape: Border.all(width: 0.2),
+                    onPressed: () {},
+                    child: Text("More Details",
+                        style: TextStyle(
+                            fontFamily: "Raleway",
+                            fontSize: 14.0,)),
+                    textColor: ThemeColoursSeva().dkGreen,
+                  )
                 ],
               ),
             ],
