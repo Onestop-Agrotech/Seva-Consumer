@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/screens/auth/login.dart';
+// import 'package:mvp/screens/auth/login.dart';
+import 'package:mvp/screens/introScreen.dart';
 import 'package:mvp/screens/storesList.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -62,7 +63,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   _changePage() {
     if (_showLoginScreen == true) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginScreen()));
+          context, MaterialPageRoute(builder: (context) => IntroScreen()));
     } else if (_showLoginScreen == false) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => StoresScreen()));
