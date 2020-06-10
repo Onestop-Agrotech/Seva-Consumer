@@ -29,9 +29,16 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   String _userMobile;
   String _userEmail;
 
+  bool _delivery;
+  bool _pickUp;
+
   @override
   initState() {
     super.initState();
+    _delivery = false;
+    _pickUp = false;
+
+    // payments
     _payment = false;
     _loading = false;
     _orderPost = 0;
@@ -49,7 +56,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   // get user details
-  _getUserDetails() async{
+  _getUserDetails() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
@@ -58,8 +65,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       setState(() {
-        _userMobile = json.decode(response.body)["mobile"]; 
-        _userEmail =  json.decode(response.body)["email"];
+        _userMobile = json.decode(response.body)["mobile"];
+        _userEmail = json.decode(response.body)["email"];
       });
     } else {
       throw Exception('something is wrong');
@@ -90,10 +97,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     newOrder.storeUserName = widget.businessUserName;
     List<Item> items = _modelItems(newOrder, cart);
     newOrder.items = items;
-    newOrder.orderType = 'Delivery';
+    newOrder.orderType = _delivery ? 'Delivery' : 'Pick Up';
     newOrder.finalItemsPrice = cart.calTotalPrice().toString();
-    newOrder.deliveryPrice = '10';
-    var cfp = cart.calTotalPrice() + 10;
+    newOrder.deliveryPrice = _delivery ? '10' : '0';
+    var cfp = _delivery ? cart.calTotalPrice() + 10 : cart.calTotalPrice();
     newOrder.customerFinalPrice = cfp.toString();
     newOrder.paymentType = 'Online';
     newOrder.paymentTransactionId = pid;
@@ -102,10 +109,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   // post order to server here
   _postOrderToServer(cart, pid) async {
-   setState(() {
-     _orderPost=_orderPost+1;
-   });
-   
+    setState(() {
+      _orderPost = _orderPost + 1;
+    });
+
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     String username = await p.getUsername();
@@ -167,8 +174,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   void openCheckout(price) async {
     await _getUserDetails();
-    print(_userMobile);
-    print(_userEmail);
     var options = {
       'key': 'rzp_test_3PrnV481o0a0aV',
       'amount': price * 100,
@@ -185,6 +190,98 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     }
   }
 
+  _showTotalPrice(price){
+    if(!_delivery && !_pickUp) return Text("Total Price - Rs $price");
+    else if(_delivery){
+      int totalPrice=price+10;
+      return Text("Total Price - Rs $totalPrice");
+    }else {
+      return Text("Total Price - Rs $price");
+    }
+  }
+
+  _showBottomSheetOptions(context, price) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            // setState(() {
+            //   _totalPrice=price;
+            // });
+            return Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                SizedBox(height: 30.0),
+                Text(
+                  "Choose a medium",
+                  style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    color: ThemeColoursSeva().black,
+                  ),
+                ),
+                SizedBox(height: 30.0),
+                CheckboxListTile(
+                  value: _delivery,
+                  onChanged: (val) {
+                    setState(() {
+                      _delivery = val;
+                      _pickUp = false;
+                      // _totalPrice=price+10;
+                    });
+                  },
+                  title: Text(
+                    'Delivery - Extra Charges Rs 10 ',
+                    style: TextStyle(
+                      color: ThemeColoursSeva().black,
+                      fontFamily: "Raleway",
+                      fontSize: 13.0,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.0),
+                CheckboxListTile(
+                  value: _pickUp,
+                  onChanged: (val) {
+                    setState(() {
+                      _pickUp = val;
+                      _delivery = false;
+                      // _totalPrice=price;
+                    });
+                  },
+                  title: Text('Pick Up - 0.9 Kms from your delivery location',
+                      style: TextStyle(
+                        color: ThemeColoursSeva().black,
+                        fontFamily: "Raleway",
+                        fontSize: 13.0,
+                      )),
+                ),
+                SizedBox(height: 30.0),
+                _showTotalPrice(price),
+                SizedBox(height: 90.0),
+                _delivery || _pickUp
+                    ? FlatButton(
+                        shape: Border.all(width: 0.2),
+                        onPressed: () {
+                          if(_delivery) price=price+10;
+                          openCheckout(price);
+                          Navigator.pop(context);
+                        },
+                        child: Text("PAY",
+                            style: TextStyle(
+                              fontFamily: "Raleway",
+                              fontSize: 14.0,
+                            )),
+                        textColor: ThemeColoursSeva().dkGreen,
+                      )
+                    : Container(),
+              ],
+            );
+          });
+        });
+  }
+
   _showButton(cartItems) {
     if (cartItems.listLength > 0 && _loading == false) {
       return FloatingActionButton.extended(
@@ -192,7 +289,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           // testing payments
           var price = cartItems.calTotalPrice();
 
-          openCheckout(price);
+          // openCheckout(price);
+          // open bottom sheet
+          _showBottomSheetOptions(context, price);
         },
         label: Text(
           "Proceed",
@@ -246,7 +345,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ),
       );
-      else return Column(
+    else
+      return Column(
         children: <Widget>[
           Consumer<CartModel>(
             builder: (context, consumerCart, child) {
@@ -265,7 +365,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     var cart = Provider.of<CartModel>(context);
     if (_payment == true) {
       // post order here
-      if(_orderPost==0) _postOrderToServer(cart, _pid);
+      if (_orderPost == 0) _postOrderToServer(cart, _pid);
       Future.delayed(const Duration(seconds: 2), () {
         cart.clearCartWithoutNotify();
       });
