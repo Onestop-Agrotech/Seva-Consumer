@@ -44,7 +44,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   _dataOrNot() {
-    if (_data==false)
+    if (_data == false)
       return Container(
         child: Center(
           child: Text("No Orders available!"),
@@ -62,21 +62,36 @@ class _OrdersScreenState extends State<OrdersScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<OrderModel> ordersArr = snapshot.data;
-            // sort the array according to time
-            ordersArr.sort((a, b) => b.timestamp.toString().compareTo(a.timestamp.toString()));
-            // build array
-            return ListView.builder(
-                itemCount: ordersArr.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: <Widget>[
-                      CustomOrdersCard(order: ordersArr[index],),
-                      SizedBox(height: 30.0)
-                    ],
-                  );
-                });
+            if (ordersArr.length > 0) {
+              // sort the array according to time
+              ordersArr.sort((a, b) =>
+                  b.timestamp.toString().compareTo(a.timestamp.toString()));
+              // build array
+              return ListView.builder(
+                  itemCount: ordersArr.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: <Widget>[
+                        CustomOrdersCard(
+                          order: ordersArr[index],
+                        ),
+                        SizedBox(height: 30.0)
+                      ],
+                    );
+                  });
+            } else {
+              return Container(
+                child: Center(
+                  child: Text("No orders available. Make one now!"),
+                ),
+              );
+            }
           } else {
-            return Container();
+            return Container(
+              child: Center(
+                child: Text("No orders available. Make one now!"),
+              ),
+            );
           }
         });
   }
