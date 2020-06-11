@@ -62,7 +62,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
-    String url = APIService.getUserAPI+userId;
+    String url = APIService.getUserAPI+"$userId";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {

@@ -95,7 +95,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return this._memoizer.runOnce(() async {
       StorageSharedPrefs p = new StorageSharedPrefs();
       String token = await p.getToken();
-      String url = APIService.businessProductsListAPI+widget.businessUsername+"/products";
+      String url = APIService.businessProductsListAPI+"${widget.businessUsername}/products";
       Map<String, String> requestHeaders = {'x-auth-token': token};
       var response = await http.get(url, headers: requestHeaders);
       if (response.statusCode == 200) {
