@@ -1,5 +1,5 @@
 class APIService {
-  static final String _api = "https://frozen-sands-29962.herokuapp.com/api/";
+  static final String _api = "https://frozen-sands-29962.herokuapp.com/api";
 
   // USERS
   static final String loginAPI = "$_api/users/login/";
