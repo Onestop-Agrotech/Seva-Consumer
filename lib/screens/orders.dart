@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
     String token = await p.getToken();
-    String url = "http://localhost:8000/api/orders/$id";
+    String url = APIService.ordersAPI+"$id";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {

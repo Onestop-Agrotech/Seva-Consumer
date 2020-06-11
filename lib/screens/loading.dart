@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 // import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/introScreen.dart';
@@ -21,7 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   _sendReqToServer(token) async {
-    String url = "http://localhost:8000/token";
+    String url = APIService.mainTokenAPI;
     Map<String, String> headers = {"Content-Type": "application/json"};
     var body = json.encode({"token": token});
     var response = await http.post(url, body: body, headers: headers);

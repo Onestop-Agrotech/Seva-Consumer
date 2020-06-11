@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
@@ -271,7 +272,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     int sum = _valueList.reduce((a, b) => a+b);
 
     if (sum==0 && _error == false) {
-      String url = "http://localhost:8000/api/users/register";
+      String url = APIService.registerAPI;
       String getJson = userModelRegister(user);
       Map<String, String> headers = {"Content-Type": "application/json"};
       var response = await http.post(url, body: getJson, headers: headers);

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/models/ordersModel.dart';
@@ -61,7 +62,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
-    String url = "http://localhost:8000/api/users/$userId";
+    String url = APIService.getUserAPI+userId;
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
@@ -118,7 +119,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     String token = await p.getToken();
     String username = await p.getUsername();
     String id = await p.getId();
-    String url = "http://localhost:8000/api/orders/${widget.businessUserName}/";
+    String url = APIService.ordersAPI+"${widget.businessUserName}";
     Map<String, String> headers = {
       "Content-Type": "application/json",
       "x-auth-token": token

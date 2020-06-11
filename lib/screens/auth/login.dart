@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
@@ -134,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
       UserModel user = new UserModel();
       user.email = _email.text;
       user.password = _password.text;
-      String url = "http://localhost:8000/api/users/login";
+      String url = APIService.loginAPI;
       String getJson = userModelLogin(user);
       Map<String, String> headers = {"Content-Type": "application/json"};
       var response = await http.post(url, body: getJson, headers: headers);

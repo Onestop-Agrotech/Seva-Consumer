@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/stores.dart';
 import 'package:mvp/screens/common/customStoreListCard.dart';
@@ -26,7 +27,7 @@ class _StoresScreenState extends State<StoresScreen> {
     // setState(() {
     //   _username = username;
     // });
-    String url = "http://localhost:8000/api/businesses/user-access/$id";
+    String url = APIService.businessListAPI+id;
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {

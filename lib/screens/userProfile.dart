@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
@@ -76,7 +77,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   _submitToDb(UserModel user) async {
-    String url = "http://localhost:8000/api/users/register/address";
+    String url = APIService.registerAddressAPI;
     String getJson = userModelAddress(user);
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);

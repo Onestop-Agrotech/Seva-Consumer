@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
@@ -82,7 +83,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() {
       _emailEmpty = false;
     });
-    String url = "http://localhost:8000/api/users/forgotPassword-mailer";
+    String url = APIService.forgotMailerAPI;
     Map<String, String> headers = {"Content-Type": "application/json"};
     var getJson = json.encode(_emailToJson());
     var response = await http.post(url, body: getJson, headers: headers);
