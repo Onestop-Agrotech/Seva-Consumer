@@ -38,9 +38,9 @@ class _ProductCardState extends State<ProductCard> {
                   _loading = true;
                 });
                 cart.clearCart();
-                Future.delayed(const Duration(seconds: 1), () {
-                  Navigator.pop(context);
+                Future.delayed(const Duration(seconds: 2), () {
                   cart.addItem(item);
+                  Navigator.pop(context);
                   setState(() {
                     _loading = false;
                   });

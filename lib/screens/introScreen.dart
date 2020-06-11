@@ -34,7 +34,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: Text(
                 "In light of #Covid19, now buy your essentials while following the safety measures!",
                 style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     fontFamily: "Raleway",
                     color: ThemeColoursSeva().dkGreen),
               ),

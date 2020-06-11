@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/classes/crud_firestore.dart';
 import 'package:mvp/models/storeProducts.dart';
 
@@ -17,8 +18,9 @@ class CartModel extends ChangeNotifier {
   _checkFireStore() async {
     List<DocumentSnapshot> docs;
     QuerySnapshot q;
-    var username = 'rahul';
-    q = await Firestore.instance.collection('$username').getDocuments();
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String id = await p.getId();
+    q = await Firestore.instance.collection('$id').getDocuments();
     docs = q.documents;
     return docs;
   }
@@ -26,32 +28,34 @@ class CartModel extends ChangeNotifier {
   void firstTimeAddition() async {
     if (_cartItems.length == 0) {
       var docs = await _checkFireStore();
-      docs.forEach((d) {
-        StoreProduct ob = new StoreProduct();
-        Quantity q = new Quantity();
-        ob.name = d.data['name'];
-        ob.price = d.data['productPrice'];
-        ob.uniqueId = d.data['uniqueId'];
-        ob.id = d.data['id'];
-        ob.type = d.data['type'];
-        q.quantityValue = d.data['quantityValue'];
-        q.quantityMetric = d.data['quantityMetric'];
-        ob.totalPrice = d.data['userPrice'];
-        ob.totalQuantity = d.data['userQuantity'];
-        ob.pictureUrl = d.data['pictureURL'];
-        ob.description = d.data['description'];
-        ob.quantity = q;
-        _cartItems.add(ob);
-      });
-      notifyListeners();
+      if (docs.length > 0) {
+        docs.forEach((d) {
+          StoreProduct ob = new StoreProduct();
+          Quantity q = new Quantity();
+          ob.name = d.data['name'];
+          ob.price = d.data['productPrice'];
+          ob.uniqueId = d.data['uniqueId'];
+          ob.id = d.data['id'];
+          ob.type = d.data['type'];
+          q.quantityValue = d.data['quantityValue'];
+          q.quantityMetric = d.data['quantityMetric'];
+          ob.totalPrice = d.data['userPrice'];
+          ob.totalQuantity = d.data['userQuantity'];
+          ob.pictureUrl = d.data['pictureURL'];
+          ob.description = d.data['description'];
+          ob.quantity = q;
+          _cartItems.add(ob);
+        });
+        notifyListeners();
+      }
     }
   }
 
-  void checkCartItemsMatch() async{
+  void checkCartItemsMatch() async {
     var docs = await _checkFireStore();
-    if(docs.length ==0){
-       _cartItems.clear();
-       notifyListeners();
+    if (docs.length == 0 && _cartItems.length > 0) {
+      _cartItems.clear();
+      notifyListeners();
     }
   }
 
@@ -103,7 +107,7 @@ class CartModel extends ChangeNotifier {
         item.totalQuantity = item.totalQuantity + 1;
         item.totalPrice = item.totalPrice + item.price;
         f.updateDocInFirestore(
-            'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
+        'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
         notifyListeners();
         return;
       }
@@ -167,9 +171,9 @@ class CartModel extends ChangeNotifier {
   }
 
   // calculate total Price
-  calTotalPrice(){
-    var sum=0;
-    if(_cartItems.length > 0){
+  calTotalPrice() {
+    var sum = 0;
+    if (_cartItems.length > 0) {
       _cartItems.forEach((i) {
         sum = sum + i.totalPrice;
       });
@@ -187,8 +191,8 @@ class CartModel extends ChangeNotifier {
   }
 
   // clear Cart don't notify
-  clearCartWithoutNotify(){
-     if (_cartItems.length > 0) {
+  clearCartWithoutNotify() {
+    if (_cartItems.length > 0) {
       _cartItems.clear();
       f.deleteDocuments();
     }
