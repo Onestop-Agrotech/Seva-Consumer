@@ -15,7 +15,8 @@ import 'package:http/http.dart' as http;
 
 class ShoppingCartScreen extends StatefulWidget {
   final String businessUserName;
-  ShoppingCartScreen({this.businessUserName});
+  final String distance;
+  ShoppingCartScreen({this.businessUserName, this.distance});
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
@@ -250,7 +251,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       // _totalPrice=price;
                     });
                   },
-                  title: Text('Pick Up - 0.9 Kms from your delivery location',
+                  title: Text('Pick Up - ${widget.distance} from your delivery location',
                       style: TextStyle(
                         color: ThemeColoursSeva().black,
                         fontFamily: "Raleway",

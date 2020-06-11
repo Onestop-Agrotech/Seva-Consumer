@@ -22,10 +22,11 @@ class _StoresScreenState extends State<StoresScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     String username = await p.getUsername();
+    String id = await p.getId();
     // setState(() {
     //   _username = username;
     // });
-    String url = "http://localhost:8000/api/businesses/";
+    String url = "http://localhost:8000/api/businesses/user-access/$id";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
@@ -44,6 +45,7 @@ class _StoresScreenState extends State<StoresScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Store> arr = snapshot.data;
+            arr.sort((a,b) => a.distance.compareTo(b.distance));
             return ListView.builder(
                 itemCount: arr.length,
                 itemBuilder: (context, index) {
@@ -54,6 +56,7 @@ class _StoresScreenState extends State<StoresScreen> {
                         vegetablesOnly: arr[index].vegetables,
                         fruitsOnly: arr[index].fruits,
                         businessUserName: arr[index].username,
+                        distance: arr[index].distance,
                       ),
                       SizedBox(height: 20.0)
                     ],

@@ -9,12 +9,14 @@ class StoreListCard extends StatefulWidget {
   final bool fruitsOnly;
   final String shopName;
   final String businessUserName;
+  final String distance;
 
   StoreListCard(
       {this.vegetablesOnly,
       this.fruitsOnly,
       this.shopName,
-      this.businessUserName});
+      this.businessUserName,
+      this.distance});
 
   @override
   _StoreListCardState createState() => _StoreListCardState();
@@ -69,6 +71,7 @@ class _StoreListCardState extends State<StoreListCard> {
                 builder: (context) => StoreProductsScreen(
                   businessUsername: widget.businessUserName,
                   shopName: widget.shopName,
+                  distance: widget.distance,
                 ),
               ));
         },
@@ -79,11 +82,13 @@ class _StoreListCardState extends State<StoreListCard> {
             children: <Widget>[
               // image container
               CachedNetworkImage(
-                imageUrl: "https://seva-consumer.s3.ap-south-1.amazonaws.com/shop-pictures/shop.jpg",
+                imageUrl:
+                    "https://seva-consumer.s3.ap-south-1.amazonaws.com/shop-pictures/shop.jpg",
                 placeholder: (context, url) => CircularProgressIndicator(
                   backgroundColor: ThemeColoursSeva().black,
                   strokeWidth: 4.0,
-                  valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
@@ -94,13 +99,26 @@ class _StoreListCardState extends State<StoreListCard> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      widget.shopName,
-                      style: TextStyle(
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w500,
-                          color: ThemeColoursSeva().black,
-                          fontSize: 16.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          widget.shopName,
+                          style: TextStyle(
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.w500,
+                              color: ThemeColoursSeva().black,
+                              fontSize: 16.0),
+                        ),
+                        SizedBox(width: 20.0,),
+                        Text(
+                          widget.distance,
+                          style: TextStyle(
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.w500,
+                              color: ThemeColoursSeva().black,
+                              fontSize: 16.0),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 30.0),

@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 class StoreProductsScreen extends StatefulWidget {
   final String businessUsername;
   final String shopName;
+  final String distance;
 
-  StoreProductsScreen({this.businessUsername, this.shopName});
+  StoreProductsScreen({this.businessUsername, this.shopName, this.distance});
   @override
   _StoreProductsScreenState createState() => _StoreProductsScreenState();
 }
@@ -47,6 +48,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                     MaterialPageRoute(
                         builder: (context) => ShoppingCartScreen(
                               businessUserName: widget.businessUsername,
+                              distance: widget.distance,
                             )));
               }),
         ),
