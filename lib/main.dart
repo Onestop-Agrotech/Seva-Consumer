@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/models/cart.dart';
+import 'package:mvp/screens/auth/forgotPassword.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/loading.dart';
 import 'package:mvp/screens/orders.dart';
@@ -26,6 +27,7 @@ class _SevaAppState extends State<SevaApp> {
             "/login": (context) => LoginScreen(),
             "/orders": (context) => OrdersScreen(),
             "/stores": (context) => StoresScreen(),
+            "/fpwd": (context) => ForgotPasswordScreen()
           },),
     );
   }
