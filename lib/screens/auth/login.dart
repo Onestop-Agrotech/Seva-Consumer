@@ -237,6 +237,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           _showPasswordEmpty(),
                           _passwordWrong(),
                           SizedBox(
+                            height: 10.0,
+                          ),
+                          // Text("Forgot password ?"),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/fpwd");
+                            },
+                            child: Text("Forgot password ?"),
+                            textColor: ThemeColoursSeva().dkGreen,
+                          ),
+                          SizedBox(
                             height: 30.0,
                           ),
                         ],
