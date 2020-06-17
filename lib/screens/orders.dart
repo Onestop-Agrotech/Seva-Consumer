@@ -117,7 +117,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               onPressed: () {
                 // go to store list
-                Navigator.pushReplacementNamed(context, '/stores');
+                Navigator.pop(context);
               }),
           backgroundColor: Colors.transparent,
           elevation: 0,
