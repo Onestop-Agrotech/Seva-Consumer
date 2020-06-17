@@ -28,7 +28,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
     String token = await p.getToken();
-    String url = APIService.ordersAPI+"$id";
+    String url = APIService.ordersAPI + "$id";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
@@ -90,7 +90,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
           } else {
             return Container(
               child: Center(
-                child: Text("No orders available. Make one now!"),
+                child: CircularProgressIndicator(
+                  backgroundColor: ThemeColoursSeva().black,
+                  strokeWidth: 4.0,
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+                ),
               ),
             );
           }
