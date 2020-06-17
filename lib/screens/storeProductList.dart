@@ -26,9 +26,9 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
   final AsyncMemoizer _memoizer = AsyncMemoizer();
 
   @override
-  initState(){
+  initState() {
     super.initState();
-    
+
     // cart.firstTimeAddition();
   }
 
@@ -95,7 +95,8 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     return this._memoizer.runOnce(() async {
       StorageSharedPrefs p = new StorageSharedPrefs();
       String token = await p.getToken();
-      String url = APIService.businessProductsListAPI+"${widget.businessUsername}/products";
+      String url = APIService.businessProductsListAPI +
+          "${widget.businessUsername}/products";
       Map<String, String> requestHeaders = {'x-auth-token': token};
       var response = await http.get(url, headers: requestHeaders);
       if (response.statusCode == 200) {
@@ -151,8 +152,11 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                                       itemCount: subArr[index].length,
                                       itemBuilder: (context, subIndex) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(left: 16.0),
-                                          child: ProductCard(product: subArr[index][subIndex],),
+                                          padding:
+                                              const EdgeInsets.only(left: 16.0),
+                                          child: ProductCard(
+                                            product: subArr[index][subIndex],
+                                          ),
                                         );
                                       }),
                                 ),
@@ -206,6 +210,25 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           actions: <Widget>[_shoppingCartIcon()],
         ),
       ),
+      floatingActionButton: cart.listLength > 0
+          ? FloatingActionButton.extended(
+              backgroundColor: ThemeColoursSeva().dkGreen,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoppingCartScreen(
+                              businessUserName: widget.businessUsername,
+                              distance: widget.distance,
+                            )));
+              },
+              label: Text("Cart"),
+              icon: Icon(
+                Icons.shopping_cart,
+              ),
+            )
+          : Container(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
