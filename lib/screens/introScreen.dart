@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenIntro.dart';
-import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/common/descriptionIntro.dart';
 import 'package:mvp/screens/common/smallDotsIntro.dart';
 
@@ -69,10 +68,10 @@ class _IntroScreenState extends State<IntroScreen> {
         index: _index,
         children: <Widget>[
           DescriptionIntro(
-              img: 'images/ct1.png',
-              descText:
-                  "Order Fresh Fruits and Vegetables. You can pick them up from nearby stores or have it delivered to your doorstep!",
-            ),
+            img: 'images/ct1.png',
+            descText:
+                "Order Fresh Fruits and Vegetables. You can pick them up from nearby stores or have it delivered to your doorstep!",
+          ),
           DescriptionIntro(
             img: 'images/ct2.png',
             descText:
@@ -98,8 +97,8 @@ class _IntroScreenState extends State<IntroScreen> {
       child: RaisedButton(
         onPressed: _index == 3
             ? () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()));
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/register', (route) => false);
               }
             : _changeIndex,
         color: ThemeColoursSeva().dkGreen,
@@ -154,21 +153,21 @@ class _IntroScreenState extends State<IntroScreen> {
             left: sWidth * 0.075,
             top: sHeight * 0.32,
             child: Container(
-              height: sHeight * 0.58,
+              height: sHeight * 0.80,
               width: sWidth * 0.85,
               child: Column(
                 children: <Widget>[
                   _buildStack(),
                   _lastContent(context),
-                  SizedBox(height: 40.0),
+                  SizedBox(height: 10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Material(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             setState(() {
-                              _index=0;
+                              _index = 0;
                             });
                           },
                           child: SmallDotsIntro(
@@ -179,9 +178,9 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                       Material(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             setState(() {
-                              _index=1;
+                              _index = 1;
                             });
                           },
                           child: SmallDotsIntro(
@@ -192,9 +191,9 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                       Material(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             setState(() {
-                              _index=2;
+                              _index = 2;
                             });
                           },
                           child: SmallDotsIntro(
@@ -205,9 +204,9 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                       Material(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             setState(() {
-                              _index=3;
+                              _index = 3;
                             });
                           },
                           child: SmallDotsIntro(

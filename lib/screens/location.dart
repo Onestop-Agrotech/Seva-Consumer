@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
@@ -60,6 +61,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   _showFloatingActionButton() {
     if (_showActionBtn == true) {
       return FloatingActionButton.extended(
+        backgroundColor: ThemeColoursSeva().dkGreen,
         onPressed: () {
           _searchControl.clear();
           Navigator.push(
