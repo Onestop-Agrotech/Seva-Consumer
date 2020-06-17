@@ -17,7 +17,7 @@ class _ProductCardState extends State<ProductCard> {
   bool _loading;
 
   @override
-  initState(){
+  initState() {
     super.initState();
     _loading = false;
   }
@@ -29,7 +29,7 @@ class _ProductCardState extends State<ProductCard> {
         strokeWidth: 4.0,
         valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
       );
-    } else if(_loading == false)
+    } else if (_loading == false)
       return Row(
         children: <Widget>[
           FlatButton(
@@ -65,8 +65,8 @@ class _ProductCardState extends State<ProductCard> {
             content: Text(
                 'You have items in your cart. Items will be deleted if you add from another store. Proceed ?'),
             actions: <Widget>[
-            StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState){
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
                 return _showLoading(cart, item, setState);
               })
             ],
@@ -117,38 +117,46 @@ class _ProductCardState extends State<ProductCard> {
   }
 
   _qtyBuilder(cart, StoreProduct product) {
-    return Container(
-      width: 105.0,
-      height: 30.0,
-      decoration: BoxDecoration(
-        border: Border.all(color: ThemeColoursSeva().black, width: 0.2),
-        borderRadius: BorderRadius.circular(7.0),
-      ),
-      child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.remove,
+    if (!product.outOfStock) {
+      return Container(
+        width: 105.0,
+        height: 30.0,
+        decoration: BoxDecoration(
+          border: Border.all(color: ThemeColoursSeva().black, width: 0.2),
+          borderRadius: BorderRadius.circular(7.0),
+        ),
+        child: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.remove,
+              ),
+              onPressed: () {
+                _checkForDeletion(cart, product);
+              },
+              iconSize: 15.0,
             ),
-            onPressed: () {
-              _checkForDeletion(cart, product);
-            },
-            iconSize: 15.0,
-          ),
-          _showQ(cart, product),
-          IconButton(
-            icon: Icon(
-              Icons.add,
+            _showQ(cart, product),
+            IconButton(
+              icon: Icon(
+                Icons.add,
+              ),
+              onPressed: () {
+                _checkForAddition(cart, product);
+              },
+              iconSize: 15.0,
             ),
-            onPressed: () {
-              _checkForAddition(cart, product);
-            },
-            iconSize: 15.0,
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        width: 105.0,
+        height: 30.0,
+        child: Text("Out Of Stock"),
+      );
+    }
   }
 
   @override
@@ -236,7 +244,7 @@ class _ProductCardState extends State<ProductCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   _qtyBuilder(cart, widget.product),
-                  Text("Qty")
+                  widget.product.outOfStock ? Text('') : Text("Qty")
                 ],
               );
             },
