@@ -58,6 +58,7 @@ class OrderModel {
         customerId: json["customerId"],
         storeUserName: json["storeUserName"],
         storeId: json["storeId"],
+        storeName: json["storeName"],
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
         orderType: json["orderType"],
         finalItemsPrice: json["finalItemsPrice"],
