@@ -37,11 +37,19 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              widget.order.otp != '0' ? Text(
+                "OTP ${widget.order.otp}",
+                style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w700,
+                    color: ThemeColoursSeva().black),
+              ): Text("Served"),
               Text(
                 "Order No. ${widget.order.orderNumber}",
                 style: TextStyle(
                     fontFamily: "Raleway",
-                    fontSize: 16.5,
+                    fontSize: 13.5,
                     fontWeight: FontWeight.w700,
                     color: ThemeColoursSeva().black),
               ),

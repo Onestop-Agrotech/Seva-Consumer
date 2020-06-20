@@ -61,7 +61,7 @@ class OrderDetailsScreen extends StatelessWidget {
               }),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: TopText(txt: 'Order Summary'),
+          title: TopText(txt: 'Order - ${order.orderNumber}'),
           centerTitle: true,
         ),
       ),
@@ -70,13 +70,13 @@ class OrderDetailsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Order No. ${order.orderNumber}",
+            Text("Token No. ${order.tokenNumber}",
                 style: TextStyle(
                     fontFamily: "Raleway",
                     fontSize: 16.5,
                     fontWeight: FontWeight.w700,
                     color: ThemeColoursSeva().black)),
-            SizedBox(height: 30.0),
+            SizedBox(height: 20.0),
             Expanded(
               child: _buildArray(),
             ),
