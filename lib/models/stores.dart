@@ -28,9 +28,9 @@ class Store {
     String distance;
 
     factory Store.fromJson(Map<String, dynamic> json) => Store(
-        name: json["name"],
-        username: json["username"],
-        uniqueId: json["uniqueId"],
+        name: json["storeName"],
+        username: json["storeUsername"],
+        uniqueId: json["storeUniqueId"],
         address: json["address"],
         lat: json["lat"],
         long: json["long"],
