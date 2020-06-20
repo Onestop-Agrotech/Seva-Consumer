@@ -9,6 +9,9 @@ List<OrderModel> toOrdersFromJson(b) =>  List<OrderModel>.from(b.map((x) => Orde
 class OrderModel {
     OrderModel({
         this.id,
+        this.orderNumber,
+        this.tokenNumber,
+        this.otp,
         this.customerUsername,
         this.customerId,
         this.storeUserName,
@@ -26,6 +29,9 @@ class OrderModel {
     });
 
     String id;
+    String orderNumber;
+    int tokenNumber;
+    String otp;
     String customerUsername;
     String customerId;
     String storeUserName;
@@ -43,6 +49,9 @@ class OrderModel {
 
     factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json["_id"],
+        orderNumber: json["orderNumber"],
+        tokenNumber: json["tokenNumber"],
+        otp: json["orderOTP"],
         customerUsername: json["customerUsername"],
         customerId: json["customerId"],
         storeUserName: json["storeUserName"],

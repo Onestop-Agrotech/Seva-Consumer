@@ -38,7 +38,7 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Text(
-                "Order #1234567899",
+                "Order No. ${widget.order.orderNumber}",
                 style: TextStyle(
                     fontFamily: "Raleway",
                     fontSize: 16.5,

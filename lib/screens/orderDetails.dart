@@ -70,7 +70,7 @@ class OrderDetailsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Order #1234567899",
+            Text("Order No. ${order.orderNumber}",
                 style: TextStyle(
                     fontFamily: "Raleway",
                     fontSize: 16.5,

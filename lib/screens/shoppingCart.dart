@@ -261,7 +261,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 ),
                 SizedBox(height: 30.0),
                 _showTotalPrice(price),
-                SizedBox(height: 90.0),
+                SizedBox(height: 50.0),
                 _delivery || _pickUp
                     ? FlatButton(
                         shape: Border.all(width: 0.2),
