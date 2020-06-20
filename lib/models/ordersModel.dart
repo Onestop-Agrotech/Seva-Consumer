@@ -16,6 +16,7 @@ class OrderModel {
         this.customerId,
         this.storeUserName,
         this.storeId,
+        this.storeName,
         this.items,
         this.orderType,
         this.finalItemsPrice,
@@ -36,6 +37,7 @@ class OrderModel {
     String customerId;
     String storeUserName;
     String storeId;
+    String storeName;
     List<Item> items;
     String orderType;
     String finalItemsPrice;
@@ -74,6 +76,7 @@ class OrderModel {
         "customerId": customerId,
         "storeUserName": storeUserName,
         "storeId": storeId,
+        "storeName":storeName,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "orderType": orderType,
         "finalItemsPrice": finalItemsPrice,

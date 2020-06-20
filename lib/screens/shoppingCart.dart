@@ -17,7 +17,8 @@ import 'package:http/http.dart' as http;
 class ShoppingCartScreen extends StatefulWidget {
   final String businessUserName;
   final String distance;
-  ShoppingCartScreen({this.businessUserName, this.distance});
+  final String storeName;
+  ShoppingCartScreen({this.businessUserName, this.distance, this.storeName});
   @override
   _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
 }
@@ -62,7 +63,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
-    String url = APIService.getUserAPI+"$userId";
+    String url = APIService.getUserAPI + "$userId";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
@@ -99,6 +100,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     newOrder.storeUserName = widget.businessUserName;
     List<Item> items = _modelItems(newOrder, cart);
     newOrder.items = items;
+    newOrder.storeName = widget.storeName;
     newOrder.orderType = _delivery ? 'Delivery' : 'Pick Up';
     newOrder.finalItemsPrice = cart.calTotalPrice().toString();
     newOrder.deliveryPrice = _delivery ? '10' : '0';
@@ -119,7 +121,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     String token = await p.getToken();
     String username = await p.getUsername();
     String id = await p.getId();
-    String url = APIService.ordersAPI+"${widget.businessUserName}";
+    String url = APIService.ordersAPI + "${widget.businessUserName}";
     Map<String, String> headers = {
       "Content-Type": "application/json",
       "x-auth-token": token
@@ -151,7 +153,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       _loading = true;
     });
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(context, '/orders', ModalRoute.withName('/stores'));
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/orders', ModalRoute.withName('/stores'));
       setState(() {
         _loading = false;
       });
@@ -192,12 +195,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     }
   }
 
-  _showTotalPrice(price){
-    if(!_delivery && !_pickUp) return Text("Total Price - Rs $price");
-    else if(_delivery){
-      int totalPrice=price+10;
+  _showTotalPrice(price) {
+    if (!_delivery && !_pickUp)
+      return Text("Total Price - Rs $price");
+    else if (_delivery) {
+      int totalPrice = price + 10;
       return Text("Total Price - Rs $totalPrice");
-    }else {
+    } else {
       return Text("Total Price - Rs $price");
     }
   }
@@ -252,7 +256,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                       // _totalPrice=price;
                     });
                   },
-                  title: Text('Pick Up - ${widget.distance} from your delivery location',
+                  title: Text(
+                      'Pick Up - ${widget.distance} from your delivery location',
                       style: TextStyle(
                         color: ThemeColoursSeva().black,
                         fontFamily: "Raleway",
@@ -266,7 +271,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     ? FlatButton(
                         shape: Border.all(width: 0.2),
                         onPressed: () {
-                          if(_delivery) price=price+10;
+                          if (_delivery) price = price + 10;
                           openCheckout(price);
                           Navigator.pop(context);
                         },

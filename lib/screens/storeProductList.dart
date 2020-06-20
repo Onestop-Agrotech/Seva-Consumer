@@ -50,6 +50,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                         builder: (context) => ShoppingCartScreen(
                               businessUserName: widget.businessUsername,
                               distance: widget.distance,
+                              storeName: widget.shopName,
                             )));
               }),
         ),
@@ -220,6 +221,7 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                         builder: (context) => ShoppingCartScreen(
                               businessUserName: widget.businessUsername,
                               distance: widget.distance,
+                              storeName: widget.shopName,
                             )));
               },
               label: Text("Cart"),
