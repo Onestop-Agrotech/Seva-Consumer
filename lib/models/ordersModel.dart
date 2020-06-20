@@ -9,10 +9,14 @@ List<OrderModel> toOrdersFromJson(b) =>  List<OrderModel>.from(b.map((x) => Orde
 class OrderModel {
     OrderModel({
         this.id,
+        this.orderNumber,
+        this.tokenNumber,
+        this.otp,
         this.customerUsername,
         this.customerId,
         this.storeUserName,
         this.storeId,
+        this.storeName,
         this.items,
         this.orderType,
         this.finalItemsPrice,
@@ -26,10 +30,14 @@ class OrderModel {
     });
 
     String id;
+    String orderNumber;
+    int tokenNumber;
+    String otp;
     String customerUsername;
     String customerId;
     String storeUserName;
     String storeId;
+    String storeName;
     List<Item> items;
     String orderType;
     String finalItemsPrice;
@@ -43,10 +51,14 @@ class OrderModel {
 
     factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
         id: json["_id"],
+        orderNumber: json["orderNumber"],
+        tokenNumber: json["tokenNumber"],
+        otp: json["orderOTP"],
         customerUsername: json["customerUsername"],
         customerId: json["customerId"],
         storeUserName: json["storeUserName"],
         storeId: json["storeId"],
+        storeName: json["storeName"],
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
         orderType: json["orderType"],
         finalItemsPrice: json["finalItemsPrice"],
@@ -65,6 +77,7 @@ class OrderModel {
         "customerId": customerId,
         "storeUserName": storeUserName,
         "storeId": storeId,
+        "storeName":storeName,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "orderType": orderType,
         "finalItemsPrice": finalItemsPrice,

@@ -29,6 +29,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _mobileEmpty = false;
   bool _pincodeEmpty = false;
 
+  bool _notValidMobile = false;
+
   Map<String, int> _errorMap = {
     "username": 0,
     "email": 0,
@@ -61,6 +63,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 borderRadius: BorderRadius.circular(10.0)),
             child: RaisedButton(
               onPressed: () {
+                setState(() {
+                  _notValidMobile=false;
+                });
                 setState(() {
                   if (_index == 0)
                     _index++;
@@ -168,6 +173,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
     } else
       return Container();
+  }
+
+  // mobile number validity
+  _handleMobileNumberValidity() {
+    if(_notValidMobile){
+      return Text(
+        'Mobile number already exists',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+    
   }
 
   _handleSignUp() async {
@@ -291,6 +308,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _index = 0;
           _error = true;
         });
+      } else if (response.statusCode == 401) {
+        // user email already exists
+        setState(() {
+          _index = 1;
+          _error = true;
+          _notValidMobile = true;
+          _loading = false;
+        });
       } else {
         // some other error here
         throw Exception('Server error');
@@ -362,6 +387,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             _showMobileEmpty(),
             _showMobileError(),
+            _handleMobileNumberValidity(),
             SizedBox(
               height: 30.0,
             ),

@@ -38,11 +38,31 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Text(
-                "Order #1234567899",
+                "${widget.order.storeName}",
                 style: TextStyle(
                     fontFamily: "Raleway",
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: ThemeColoursSeva().black),
+              ),
+              SizedBox(height: 10.0),
+              widget.order.otp != '0'
+                  ? Text(
+                      "OTP ${widget.order.otp}",
+                      style: TextStyle(
+                          fontFamily: "Raleway",
+                          fontSize: 16.5,
+                          fontWeight: FontWeight.w700,
+                          color: ThemeColoursSeva().black),
+                    )
+                  : Text("Served"),
+              SizedBox(height: 10.0),
+              Text(
+                "Order No. ${widget.order.orderNumber}",
+                style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
                     color: ThemeColoursSeva().black),
               ),
               Row(
@@ -73,11 +93,21 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              Text(
+                "TOKEN ${widget.order.tokenNumber}",
+                style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w700,
+                    color: ThemeColoursSeva().black),
+              ),
+              SizedBox(height: 10.0),
               Text("${widget.order.orderStatus}",
                   style: TextStyle(
                       fontFamily: "Raleway",
                       fontSize: 17.0,
                       color: Colors.deepOrange)),
+              SizedBox(height: 10.0),
               Row(
                 children: <Widget>[
                   Text("${widget.order.orderType}",
