@@ -27,7 +27,7 @@ class _StoresScreenState extends State<StoresScreen> {
     // setState(() {
     //   _username = username;
     // });
-    String url = APIService.businessListAPI+"$id";
+    String url = APIService.businessListAPI + "$id";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
@@ -46,40 +46,50 @@ class _StoresScreenState extends State<StoresScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Store> arr = snapshot.data;
-            if(arr.length > 0){
-              arr.sort((a,b) => a.distance.compareTo(b.distance));
-            return ListView.builder(
-                itemCount: arr.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: <Widget>[
-                      StoreListCard(
-                        shopName: arr[index].name,
-                        vegetablesOnly: arr[index].vegetables,
-                        fruitsOnly: arr[index].fruits,
-                        businessUserName: arr[index].username,
-                        distance: arr[index].distance,
-                      ),
-                      SizedBox(height: 20.0)
-                    ],
-                  );
-                });
-            } else return Container(
-              child: Center(
-                child: Text("Oops! No stores near you. We are trying hard to add more stores everyday. Stay tuned!"),
-              ),
-            );
+            if (arr.length > 0) {
+              arr.sort((a, b) => a.distance.compareTo(b.distance));
+              return ListView.builder(
+                  itemCount: arr.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: <Widget>[
+                        StoreListCard(
+                          shopName: arr[index].name,
+                          vegetablesOnly: arr[index].vegetables,
+                          fruitsOnly: arr[index].fruits,
+                          businessUserName: arr[index].username,
+                          distance: arr[index].distance,
+                        ),
+                        SizedBox(height: 20.0)
+                      ],
+                    );
+                  });
+            } else
+              return Container(
+                child: Center(
+                  child: Text(
+                      "Oops! No stores near you. We are trying hard to add more stores everyday. Stay tuned!"),
+                ),
+              );
           } else if (snapshot.hasError)
             return Text('${snapshot.error}');
           else
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: ThemeColoursSeva().black,
-                  strokeWidth: 4.0,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
-                ),
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Setting up your personal experience"),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  CircularProgressIndicator(
+                    backgroundColor: ThemeColoursSeva().black,
+                    strokeWidth: 4.0,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        ThemeColoursSeva().grey),
+                  ),
+                ],
               ),
             );
         });
