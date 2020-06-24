@@ -8,6 +8,8 @@ class APIService {
   static final String forgotMailerAPI = "$_api/users/forgotPassword-mailer/";
   // shopping cart file - _getUserDetails function
   static final String getUserAPI = "$_api/users/";
+  // storesList.dart - _fetchUserAddress function
+  static final String getAddressAPI = "$_api/users/user-address/";
 
   // BUSINESSES
   // storesList.dart - _fetchStores function

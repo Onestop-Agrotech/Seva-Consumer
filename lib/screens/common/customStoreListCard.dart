@@ -77,7 +77,7 @@ class _StoreListCardState extends State<StoreListCard> {
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
-          height: 100.0,
+          height: 110.0,
           child: Row(
             children: <Widget>[
               // image container
@@ -97,31 +97,27 @@ class _StoreListCardState extends State<StoreListCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          widget.shopName,
-                          style: TextStyle(
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w500,
-                              color: ThemeColoursSeva().black,
-                              fontSize: 16.0),
-                        ),
-                        SizedBox(width: 20.0,),
-                        Text(
-                          widget.distance,
-                          style: TextStyle(
-                              fontFamily: "Raleway",
-                              fontWeight: FontWeight.w500,
-                              color: ThemeColoursSeva().black,
-                              fontSize: 16.0),
-                        ),
-                      ],
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    child: Text(
+                      widget.shopName,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontFamily: "Raleway",
+                          fontWeight: FontWeight.w500,
+                          color: ThemeColoursSeva().black,
+                          fontSize: 14.0),
                     ),
                   ),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: 10.0),
+                  Text(
+                    widget.distance,
+                    style: TextStyle(
+                        fontFamily: "Raleway",
+                        color: ThemeColoursSeva().black,
+                        fontSize: 12.5),
+                  ),
+                  SizedBox(height: 20.0),
                   _tagsForStores()
                 ],
               ),

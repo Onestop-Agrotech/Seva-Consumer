@@ -1,33 +1,36 @@
 import 'dart:convert';
 
-List<Store> jsonToStoreModel(String str) => List<Store>.from(json.decode(str).map((x) => Store.fromJson(x)));
+List<Store> jsonToStoreModel(String str) =>
+    List<Store>.from(json.decode(str).map((x) => Store.fromJson(x)));
 
-String storeTojsonModel(List<Store> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String storeTojsonModel(List<Store> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Store {
-    Store({
-        this.name,
-        this.username,
-        this.uniqueId,
-        this.address,
-        this.lat,
-        this.long,
-        this.vegetables, 
-        this.fruits,
-        this.distance
-    });
+  Store(
+      {this.name,
+      this.username,
+      this.uniqueId,
+      this.address,
+      this.lat,
+      this.long,
+      this.vegetables,
+      this.fruits,
+      this.distance,
+      this.dp});
 
-    String name;
-    String username;
-    String uniqueId;
-    String address;
-    String lat;
-    String long;
-    bool vegetables;
-    bool fruits;
-    String distance;
+  String name;
+  String username;
+  String uniqueId;
+  String address;
+  String lat;
+  String long;
+  bool vegetables;
+  bool fruits;
+  String distance;
+  double dp;
 
-    factory Store.fromJson(Map<String, dynamic> json) => Store(
+  factory Store.fromJson(Map<String, dynamic> json) => Store(
         name: json["storeName"],
         username: json["storeUsername"],
         uniqueId: json["storeUniqueId"],
@@ -37,14 +40,28 @@ class Store {
         vegetables: json["vegetables"],
         fruits: json["fruits"],
         distance: json["distance"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "name": name,
         "username": username,
         "uniqueId": uniqueId,
         "address": address,
         "lat": lat,
         "long": long,
-    };
+      };
+
+  List<Store> checkAndArrange(List<Store> stores) {
+    if (stores.length > 0) {
+      for (int i = 0; i < stores.length; ++i) {
+        if (stores[i].distance.split(' ')[1] == 'm')
+          stores[i].dp =
+              (double.parse(stores[i].distance.split(' ')[0])) / 1000;
+        else
+          stores[i].dp = double.parse(stores[i].distance.split(' ')[0]);
+      }
+      stores.sort((a, b) => a.dp.compareTo(b.dp));
+    }
+    return stores;
+  }
 }
