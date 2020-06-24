@@ -24,9 +24,6 @@ class _StoresScreenState extends State<StoresScreen> {
     String token = await p.getToken();
     String username = await p.getUsername();
     String id = await p.getId();
-    // setState(() {
-    //   _username = username;
-    // });
     String url = APIService.businessListAPI + "$id";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
