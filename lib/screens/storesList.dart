@@ -21,6 +21,7 @@ class _StoresScreenState extends State<StoresScreen> {
       new GlobalKey<ScaffoldState>();
 
   String _username;
+  String _email;
 
   Future<List<Store>> _fetchStores() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
@@ -49,6 +50,7 @@ class _StoresScreenState extends State<StoresScreen> {
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       // got address
+      _email = json.decode(response.body)["email"];
       return (json.decode(response.body)["address"]);
     } else {
       throw Exception('something is wrong');
@@ -218,7 +220,9 @@ class _StoresScreenState extends State<StoresScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => GoogleLocationScreen()),
+                        builder: (context) => GoogleLocationScreen(
+                              userEmail: _email,
+                            )),
                   );
                 },
                 child: Text(
