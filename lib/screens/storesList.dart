@@ -6,6 +6,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/stores.dart';
 import 'package:mvp/screens/common/customStoreListCard.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:mvp/screens/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StoresScreen extends StatefulWidget {
@@ -170,7 +171,14 @@ class _StoresScreenState extends State<StoresScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Delivery Address:"),
+                  Text(
+                    "Delivery Address:",
+                    style: TextStyle(
+                        fontFamily: "Raleway",
+                        fontWeight: FontWeight.w700,
+                        color: ThemeColoursSeva().black,
+                        fontSize: 14.0),
+                  ),
                   SizedBox(height: 10.0),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.6,
@@ -183,9 +191,18 @@ class _StoresScreenState extends State<StoresScreen> {
               ),
               SizedBox(width: 10.0),
               RaisedButton(
-                onPressed: () {},
-                child: Text("Change"),
-                color: Colors.green,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GoogleLocationScreen()),
+                  );
+                },
+                child: Text(
+                  "Change",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().dkGreen,
               )
             ],
           ),
