@@ -43,8 +43,9 @@ class _StoresScreenState extends State<StoresScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Store> arr = snapshot.data;
+            Store s= new Store();
+            arr = s.checkAndArrange(arr);
             if (arr.length > 0) {
-              arr.sort((a, b) => a.distance.compareTo(b.distance));
               return ListView.builder(
                   itemCount: arr.length,
                   itemBuilder: (context, index) {
