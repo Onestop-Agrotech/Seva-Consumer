@@ -172,11 +172,21 @@ class _StoresScreenState extends State<StoresScreen> {
                 children: <Widget>[
                   Text("Delivery Address:"),
                   SizedBox(height: 10.0),
-                  Text("Whitefield, Bangalore 560066")
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: Text(
+                      "what about a very loooooong address wtf, Bangalore 560066",
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(width: 20.0),
-              RaisedButton(onPressed: (){}, child: Text("Change"), color: Colors.green,)
+              SizedBox(width: 10.0),
+              RaisedButton(
+                onPressed: () {},
+                child: Text("Change"),
+                color: Colors.green,
+              )
             ],
           ),
         ),
