@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -33,6 +35,21 @@ class _StoresScreenState extends State<StoresScreen> {
         _username = username;
       });
       return jsonToStoreModel(response.body);
+    } else {
+      throw Exception('something is wrong');
+    }
+  }
+
+  Future<String> _fetchUserAddress() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    String id = await p.getId();
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    String url = APIService.getAddressAPI + "$id";
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      // got address
+      return (json.decode(response.body)["address"]);
     } else {
       throw Exception('something is wrong');
     }
@@ -180,16 +197,22 @@ class _StoresScreenState extends State<StoresScreen> {
                         fontSize: 14.0),
                   ),
                   SizedBox(height: 10.0),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: Text(
-                      "what about a very loooooong address wtf, Bangalore 560066",
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
+                  FutureBuilder(
+                      future: _fetchUserAddress(),
+                      builder: (context, data) {
+                        if (data.hasData) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Text(
+                              data.data,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        } else
+                          return Container();
+                      }),
                 ],
               ),
-              SizedBox(width: 10.0),
               RaisedButton(
                 onPressed: () {
                   Navigator.push(
