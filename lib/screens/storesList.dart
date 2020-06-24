@@ -43,7 +43,7 @@ class _StoresScreenState extends State<StoresScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<Store> arr = snapshot.data;
-            Store s= new Store();
+            Store s = new Store();
             arr = s.checkAndArrange(arr);
             if (arr.length > 0) {
               return ListView.builder(
@@ -84,8 +84,8 @@ class _StoresScreenState extends State<StoresScreen> {
                   CircularProgressIndicator(
                     backgroundColor: ThemeColoursSeva().black,
                     strokeWidth: 4.0,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        ThemeColoursSeva().grey),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
                   ),
                 ],
               ),
@@ -96,71 +96,90 @@ class _StoresScreenState extends State<StoresScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _storesScreenKey,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: AppBar(
-          title: TopText(
-            txt: "Nearby Stores",
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          leading: IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: ThemeColoursSeva().black,
-              ),
-              onPressed: () {
-                _storesScreenKey.currentState.openDrawer();
-              }),
-          elevation: 0,
-          actions: <Widget>[
-            Icon(
-              Icons.person,
-              color: Colors.black,
-            )
-          ],
-        ),
-      ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
-        child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: DrawerHeader(
-                  child:
-                      TopText(txt: _username == null ? 'Username' : _username),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
+        key: _storesScreenKey,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            title: TopText(
+              txt: "Nearby Stores",
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            leading: IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: ThemeColoursSeva().black,
                 ),
-              ),
-              ListTile(
-                title: Text('My orders'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/orders');
-                },
-              ),
-              ListTile(
-                title: Text('Logout'),
-                onTap: () async {
-                  // Navigator.pushNamed(context, '/orders');
-                  SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
-                  preferences.clear();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
-                },
-              ),
+                onPressed: () {
+                  _storesScreenKey.currentState.openDrawer();
+                }),
+            elevation: 0,
+            actions: <Widget>[
+              Icon(
+                Icons.person,
+                color: Colors.black,
+              )
             ],
           ),
         ),
-      ),
-      body: _buildArrayFromFuture(),
-    );
+        drawer: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.5,
+          child: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: DrawerHeader(
+                    child: TopText(
+                        txt: _username == null ? 'Username' : _username),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: Text('My orders'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/orders');
+                  },
+                ),
+                ListTile(
+                  title: Text('Logout'),
+                  onTap: () async {
+                    // Navigator.pushNamed(context, '/orders');
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    preferences.clear();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/login', (Route<dynamic> route) => false);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: _buildArrayFromFuture(),
+        floatingActionButton: Container(
+          height: 60.0,
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text("Delivery Address:"),
+                  SizedBox(height: 10.0),
+                  Text("Whitefield, Bangalore 560066")
+                ],
+              ),
+              SizedBox(width: 20.0),
+              RaisedButton(onPressed: (){}, child: Text("Change"), color: Colors.green,)
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 }
