@@ -76,7 +76,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                         CustomOrdersCard(
                           order: ordersArr[index],
                         ),
-                        SizedBox(height: 30.0)
+                        SizedBox(height: 55.0)
                       ],
                     );
                   });
