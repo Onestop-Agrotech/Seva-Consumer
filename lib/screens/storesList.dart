@@ -181,59 +181,61 @@ class _StoresScreenState extends State<StoresScreen> {
           ),
         ),
         body: _buildArrayFromFuture(),
-        floatingActionButton: Container(
-          height: 60.0,
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Delivery Address:",
-                    style: TextStyle(
-                        fontFamily: "Raleway",
-                        fontWeight: FontWeight.w700,
-                        color: ThemeColoursSeva().black,
-                        fontSize: 14.0),
-                  ),
-                  SizedBox(height: 10.0),
-                  FutureBuilder(
-                      future: _fetchUserAddress(),
-                      builder: (context, data) {
-                        if (data.hasData) {
-                          return Container(
+        floatingActionButton: FutureBuilder(
+            future: _fetchUserAddress(),
+            builder: (context, data) {
+              if (data.hasData) {
+                return Container(
+                  height: 60.0,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Delivery Address:",
+                            style: TextStyle(
+                                fontFamily: "Raleway",
+                                fontWeight: FontWeight.w700,
+                                color: ThemeColoursSeva().black,
+                                fontSize: 14.0),
+                          ),
+                          SizedBox(height: 10.0),
+                          Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Text(
                               data.data,
                               overflow: TextOverflow.ellipsis,
                             ),
+                          ),
+                        ],
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GoogleLocationScreen(
+                                      userEmail: _email,
+                                    )),
                           );
-                        } else
-                          return Container();
-                      }),
-                ],
-              ),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GoogleLocationScreen(
-                              userEmail: _email,
-                            )),
-                  );
-                },
-                child: Text(
-                  "Change",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: ThemeColoursSeva().dkGreen,
-              )
-            ],
-          ),
-        ),
+                        },
+                        child: Text(
+                          "Change",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: ThemeColoursSeva().dkGreen,
+                      )
+                    ],
+                  ),
+                );
+              } else
+                return Container(
+                  child: Text("Loading Address ...")
+                );
+            }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 }

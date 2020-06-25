@@ -48,7 +48,9 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
               SizedBox(height: 10.0),
               widget.order.otp != '0'
                   ? Text(
-                      "OTP ${widget.order.otp}",
+                      widget.order.orderType != "Delivery"
+                          ? "OTP ${widget.order.otp}"
+                          : "No OTP",
                       style: TextStyle(
                           fontFamily: "Raleway",
                           fontSize: 16.5,
@@ -94,7 +96,9 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Text(
-                "TOKEN ${widget.order.tokenNumber}",
+                widget.order.orderType != "Delivery"
+                    ? "TOKEN ${widget.order.tokenNumber}"
+                    : "No TOKEN",
                 style: TextStyle(
                     fontFamily: "Raleway",
                     fontSize: 13.5,
