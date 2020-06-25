@@ -70,7 +70,10 @@ class OrderDetailsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("Token No. ${order.tokenNumber}",
+            Text(
+                order.orderType != "Delivery"
+                    ? "TOKEN ${order.tokenNumber}"
+                    : "",
                 style: TextStyle(
                     fontFamily: "Raleway",
                     fontSize: 16.5,
