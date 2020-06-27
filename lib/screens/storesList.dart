@@ -84,9 +84,12 @@ class _StoresScreenState extends State<StoresScreen> {
                   });
             } else
               return Container(
-                child: Center(
-                  child: Text(
-                      "Oops! No stores near you. We are trying hard to add more stores everyday. Stay tuned!"),
+                child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Center(
+                    child: Text(
+                        "Oops! No stores near you. We are trying hard to add more stores everyday. Stay tuned!"),
+                  ),
                 ),
               );
           } else if (snapshot.hasError)
