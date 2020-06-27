@@ -17,7 +17,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   GoogleMapController mapController;
   TextEditingController _searchControl = new TextEditingController();
 
-  final LatLng _center = const LatLng(28.570860, 77.368949);
+  final LatLng _center = const LatLng(12.9716, 77.5946);
   LatLng _userPosition;
   Set<Marker> _markers = {};
   bool _showActionBtn;
@@ -88,7 +88,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         children: <Widget>[
           GoogleMap(
             onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
+            initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             markers: Set.from(_markers),
             onTap: (pos) {
               _showActionBtn = true;
@@ -109,7 +109,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                 height: 60.0,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Color(0xffebedf0),
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20.0)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
