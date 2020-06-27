@@ -87,7 +87,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       await p.setToken(json.decode(response.body)["token"]);
       await p.setUsername(json.decode(response.body)["username"]);
       await p.setId(json.decode(response.body)["id"]);
-      Navigator.pushReplacementNamed(context, '/stores');
+      // Navigator.pushReplacementNamed(context, '/stores');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/stores', ModalRoute.withName('/stores'));
     } else {
       throw Exception('Server error');
     }
