@@ -5,6 +5,8 @@ import 'package:mvp/screens/common/topText.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderModel order;
+  static final TextStyle _tStyle = TextStyle(
+      fontFamily: "Raleway", fontSize: 16.0, color: ThemeColoursSeva().black);
 
   OrderDetailsScreen({this.order});
 
@@ -91,41 +93,17 @@ class OrderDetailsScreen extends StatelessWidget {
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Text("Sub total",
-                        style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 16.0,
-                            color: ThemeColoursSeva().black)),
-                    Text("Delivery Charges",
-                        style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 16.0,
-                            color: ThemeColoursSeva().black)),
-                    Text("Grand Total",
-                        style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 16.0,
-                            color: ThemeColoursSeva().black))
+                    Text("Sub total", style: _tStyle),
+                    Text("Delivery Charges", style: _tStyle),
+                    Text("Grand Total", style: _tStyle)
                   ],
                 ),
                 SizedBox(width: 40.0),
                 Column(
                   children: <Widget>[
-                    Text("Rs ${order.finalItemsPrice}",
-                        style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 16.0,
-                            color: ThemeColoursSeva().black)),
-                    Text("Rs ${order.deliveryPrice}",
-                        style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 16.0,
-                            color: ThemeColoursSeva().black)),
-                    Text("Rs ${order.customerFinalPrice}",
-                        style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontSize: 16.0,
-                            color: ThemeColoursSeva().black))
+                    Text("Rs ${order.finalItemsPrice}", style: _tStyle),
+                    Text("Rs ${order.deliveryPrice}", style: _tStyle),
+                    Text("Rs ${order.customerFinalPrice}", style: _tStyle)
                   ],
                 ),
               ],
