@@ -153,8 +153,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       _loading = true;
     });
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/orders', ModalRoute.withName('/stores'));
+      Navigator.pushReplacementNamed(
+          context, '/orders');
       setState(() {
         _loading = false;
       });
@@ -181,8 +181,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       _loading = true;
     });
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/orders', ModalRoute.withName('/stores'));
+      Navigator.pushReplacementNamed(
+          context, '/orders');
       setState(() {
         _loading = false;
       });
