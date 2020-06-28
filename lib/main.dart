@@ -19,13 +19,10 @@ class SevaApp extends StatefulWidget {
 }
 
 class _SevaAppState extends State<SevaApp> {
-
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp]
-    );
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   @override
@@ -37,15 +34,17 @@ class _SevaAppState extends State<SevaApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => CartModel())],
-      child:
-          MaterialApp(debugShowCheckedModeBanner: false, home: LoadingScreen(),
-          routes: {
-            "/register": (context) => RegisterScreen(),
-            "/login": (context) => LoginScreen(),
-            "/orders": (context) => OrdersScreen(),
-            "/stores": (context) => StoresScreen(),
-            "/fpwd": (context) => ForgotPasswordScreen()
-          },),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoadingScreen(),
+        routes: {
+          "/register": (context) => RegisterScreen(),
+          "/login": (context) => LoginScreen(),
+          "/orders": (context) => OrdersScreen(),
+          "/stores": (context) => StoresScreen(),
+          "/fpwd": (context) => ForgotPasswordScreen()
+        },
+      ),
     );
   }
 }

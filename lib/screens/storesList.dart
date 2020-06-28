@@ -235,9 +235,7 @@ class _StoresScreenState extends State<StoresScreen> {
                   ),
                 );
               } else
-                return Container(
-                  child: Text("Loading Address ...")
-                );
+                return Container(child: Text("Loading Address ..."));
             }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }

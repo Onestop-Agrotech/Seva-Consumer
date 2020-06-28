@@ -107,7 +107,7 @@ class CartModel extends ChangeNotifier {
         item.totalQuantity = item.totalQuantity + 1;
         item.totalPrice = item.totalPrice + item.price;
         f.updateDocInFirestore(
-        'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
+            'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
         notifyListeners();
         return;
       }

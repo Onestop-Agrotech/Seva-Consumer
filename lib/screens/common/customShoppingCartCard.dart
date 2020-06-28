@@ -14,7 +14,6 @@ class ShoppingCartCard extends StatefulWidget {
 }
 
 class _ShoppingCartCardState extends State<ShoppingCartCard> {
-
   _checkForAddition(consumerCart, item) {
     if (consumerCart.listLength > 0) {
       // check if item exists in cart and update

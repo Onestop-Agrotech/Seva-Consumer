@@ -8,11 +8,15 @@ class InputTextField extends StatelessWidget {
   final String ht;
   final TextInputType keyBoardType;
 
-  InputTextField({this.eC, this.lt, this.pwdType = false, this.ht = '', this.keyBoardType});
+  InputTextField(
+      {this.eC,
+      this.lt,
+      this.pwdType = false,
+      this.ht = '',
+      this.keyBoardType});
 
   @override
   Widget build(BuildContext context) {
-   
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

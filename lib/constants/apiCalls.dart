@@ -23,5 +23,6 @@ class APIService {
 
   // OTHERS
   // loading.dart - _sendReqToServer function
-  static final String mainTokenAPI = "https://frozen-sands-29962.herokuapp.com/token";
+  static final String mainTokenAPI =
+      "https://frozen-sands-29962.herokuapp.com/token";
 }
