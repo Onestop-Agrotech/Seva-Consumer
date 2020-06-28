@@ -15,6 +15,7 @@ class OrderModel {
     this.tokenNumber,
     this.otp,
     this.customerUsername,
+    this.customerAddress,
     this.customerId,
     this.storeUserName,
     this.storeId,
@@ -36,6 +37,7 @@ class OrderModel {
   int tokenNumber;
   String otp;
   String customerUsername;
+  String customerAddress;
   String customerId;
   String storeUserName;
   String storeId;
@@ -57,6 +59,7 @@ class OrderModel {
         tokenNumber: json["tokenNumber"],
         otp: json["orderOTP"],
         customerUsername: json["customerUsername"],
+        customerAddress: json["customerAddress"],
         customerId: json["customerId"],
         storeUserName: json["storeUserName"],
         storeId: json["storeId"],
