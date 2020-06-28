@@ -175,6 +175,18 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         msg: "EXTERNAL_WALLET: " + response.walletName,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM);
+    setState(() {
+      _pid = response.walletName;
+      _payment = true;
+      _loading = true;
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/orders', ModalRoute.withName('/stores'));
+      setState(() {
+        _loading = false;
+      });
+    });
   }
 
   void openCheckout(price) async {

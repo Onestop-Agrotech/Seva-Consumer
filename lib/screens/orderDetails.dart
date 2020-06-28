@@ -68,10 +68,17 @@ class OrderDetailsScreen extends StatelessWidget {
         ),
       ),
       body: Container(
-        height: 300.0,
+        height: 350.0,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            Text("From ${order.storeName}",
+                style: TextStyle(
+                    fontFamily: "Raleway",
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w500,
+                    color: ThemeColoursSeva().black)),
+            SizedBox(height: 20.0),
             Text(
                 order.orderType != "Delivery"
                     ? "TOKEN ${order.tokenNumber}"
@@ -108,6 +115,8 @@ class OrderDetailsScreen extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 20.0),
+            order.orderType=="Delivery"?Text("Address: ${order.customerAddress}"):Text("")
           ],
         ),
       ),
