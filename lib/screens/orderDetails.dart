@@ -116,7 +116,9 @@ class OrderDetailsScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 20.0),
-            order.orderType=="Delivery"?Text("Address: ${order.customerAddress}"):Text("")
+            order.orderType == "Delivery"
+                ? Text("Address: ${order.customerAddress}")
+                : Text("")
           ],
         ),
       ),
