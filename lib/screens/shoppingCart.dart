@@ -85,6 +85,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
       i.totalPrice = e.totalPrice.toString();
       i.totalQuantity = e.totalQuantity.toString();
       i.itemStoreId = e.uniqueId;
+      i.itemPictureURL = e.pictureUrl;
       Quantity q = new Quantity();
       q.quantityValue = e.quantity.quantityValue;
       q.quantityMetric = e.quantity.quantityMetric;

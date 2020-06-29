@@ -104,6 +104,7 @@ class Item {
     this.totalPrice,
     this.totalQuantity,
     this.itemStoreId,
+    this.itemPictureURL,
     this.quantity,
   });
 
@@ -113,6 +114,7 @@ class Item {
   String totalPrice;
   String totalQuantity;
   String itemStoreId;
+  String itemPictureURL;
   Quantity quantity;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -122,6 +124,7 @@ class Item {
         totalPrice: json["total_price"],
         totalQuantity: json["total_quantity"],
         itemStoreId: json["item_store_id"],
+        itemPictureURL: json["item_picture_url"],
         quantity: Quantity.fromJson(json["quantity"]),
       );
 
@@ -132,6 +135,7 @@ class Item {
         "total_price": totalPrice,
         "total_quantity": totalQuantity,
         "item_store_id": itemStoreId,
+        "item_picture_url": itemPictureURL,
         "quantity": quantity.toJson(),
       };
 }

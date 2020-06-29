@@ -23,6 +23,5 @@ class APIService {
 
   // OTHERS
   // loading.dart - _sendReqToServer function
-  static final String mainTokenAPI =
-      "https://api.theonestop.co.in/token";
+  static final String mainTokenAPI = "https://api.theonestop.co.in/token";
 }
