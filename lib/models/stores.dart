@@ -14,6 +14,7 @@ class Store {
       this.address,
       this.lat,
       this.long,
+      this.pictureURL,
       this.vegetables,
       this.fruits,
       this.distance,
@@ -25,6 +26,7 @@ class Store {
   String address;
   String lat;
   String long;
+  String pictureURL;
   bool vegetables;
   bool fruits;
   String distance;
@@ -38,6 +40,7 @@ class Store {
         lat: json["lat"],
         long: json["long"],
         vegetables: json["vegetables"],
+        pictureURL: json["pictureURL"],
         fruits: json["fruits"],
         distance: json["distance"],
       );
