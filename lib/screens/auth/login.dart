@@ -8,12 +8,15 @@ import 'dart:convert';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
+import 'package:sms_autofill/sms_autofill.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String _code;
   bool showOTPField = false;
   bool _loading = false;
   bool _inavlidMobile = false;
@@ -51,6 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                   // Here submit the form
                   await _verifyMobile();
+                  // await SmsAutoFill().listenForCode;
                 }
               },
               child: const Text('Get OTP',
@@ -277,7 +281,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       : SizedBox(),
                   _showInvalidOTP(),
                   _showOTPLoader(),
-                  _showLoader()
+                  _showLoader(),
+                  // PinFieldAutoFill(
+                  //   decoration: UnderlineDecoration(
+                  //       textStyle:
+                  //           TextStyle(fontSize: 20, color: Colors.black)),
+                  //   currentCode: _code,
+                  // ),
                 ],
               ),
             ),
