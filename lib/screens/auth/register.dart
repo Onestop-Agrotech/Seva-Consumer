@@ -25,25 +25,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   bool _usernameEmpty = false;
   bool _emailEmpty = false;
-  bool _passwordEmpty = false;
   bool _mobileEmpty = false;
-  bool _pincodeEmpty = false;
 
   bool _notValidMobile = false;
 
   Map<String, int> _errorMap = {
     "username": 0,
     "email": 0,
-    "password": 0,
     "mobile": 0,
-    "pincode": 0,
   };
 
   TextEditingController _username = new TextEditingController();
   TextEditingController _emailAddress = new TextEditingController();
-  TextEditingController _password = new TextEditingController();
   TextEditingController _mobile = new TextEditingController();
-  TextEditingController _pincode = new TextEditingController();
 
   // show loading indicator
   _showLoadingOrButton() {
@@ -109,33 +103,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return Container();
   }
 
-  // password field is empty
-  _showPasswordEmpty() {
-    if (_passwordEmpty) {
-      return Text(
-        'Please fill a password',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
   // mobile field is empty
   _showMobileEmpty() {
     if (_mobileEmpty) {
       return Text(
         'Please fill your phone number',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // pincode field is empty
-  _showPincodeEmpty() {
-    if (_pincodeEmpty) {
-      return Text(
-        'Please fill your area pincode',
         style: TextStyle(color: Colors.red),
       );
     } else
@@ -234,20 +206,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
 
-    if (_password.text == '') {
-      setState(() {
-        _passwordEmpty = true;
-        _index = 0;
-        _errorMap["password"] = 1;
-      });
-    } else if (_password.text != '') {
-      user.password = _password.text;
-      setState(() {
-        _passwordEmpty = false;
-        if (_errorMap["password"] == 1) _errorMap["password"] = 0;
-      });
-    }
-
     if (_mobile.text == '') {
       setState(() {
         _mobileEmpty = true;
@@ -269,19 +227,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _errorMap["mobile"] = 1;
         });
       }
-    }
-
-    if (_pincode.text == '') {
-      setState(() {
-        _pincodeEmpty = true;
-        _errorMap["pincode"] = 1;
-      });
-    } else if (_pincode.text != '') {
-      user.pincode = _pincode.text;
-      setState(() {
-        _pincodeEmpty = false;
-        if (_errorMap["pincode"] == 1) _errorMap["pincode"] = 0;
-      });
     }
 
     List<int> _valueList = _errorMap.values.toList();
@@ -369,12 +314,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(
-              eC: _password,
-              lt: "Set Password:",
-              pwdType: true,
-            ),
-            _showPasswordEmpty()
           ],
         ),
         Column(
@@ -390,12 +329,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             SizedBox(
               height: 30.0,
             ),
-            InputTextField(
-              eC: _pincode,
-              lt: "Enter Pincode:",
-              keyBoardType: TextInputType.number,
-            ),
-            _showPincodeEmpty(),
           ],
         ),
       ],
