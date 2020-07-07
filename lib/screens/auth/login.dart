@@ -4,6 +4,7 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/auth/register.dart';
 import 'dart:convert';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -279,6 +280,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   _showInvalidOTP(),
                   _showOTPLoader(),
                   _showLoader(),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Don't have an account? "),
+                      Material(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterScreen()));
+                          },
+                          child: Text(
+                            "Sign up",
+                            style: TextStyle(color: ThemeColoursSeva().dkGreen),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
