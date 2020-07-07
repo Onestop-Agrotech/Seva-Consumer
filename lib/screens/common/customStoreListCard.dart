@@ -98,7 +98,7 @@ class _StoreListCardState extends State<StoreListCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.40,
+                    width: MediaQuery.of(context).size.width * 0.46,
                     child: Text(
                       widget.shopName,
                       overflow: TextOverflow.ellipsis,
