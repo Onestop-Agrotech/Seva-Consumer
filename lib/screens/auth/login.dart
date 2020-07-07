@@ -3,13 +3,10 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
-import 'package:mvp/models/users.dart';
-import 'package:mvp/screens/auth/register.dart';
-import 'package:mvp/screens/common/inputTextField.dart';
-import 'package:mvp/screens/common/topText.dart';
 import 'package:http/http.dart' as http;
-import 'package:mvp/screens/storesList.dart';
 import 'dart:convert';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -17,274 +14,275 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _email = new TextEditingController();
-  TextEditingController _password = new TextEditingController();
-
-  bool _emailEmpty = false;
-  bool _passwordEmpty = false;
-
-  bool _wrongEmail = false;
-  bool _wrongPassword = false;
-
+  bool showOTPField = false;
   bool _loading = false;
+  bool _inavlidMobile = false;
+  bool _invalidOTP = false;
+  bool _otpLoader = false;
+  final _mobileFocus = FocusNode();
+  final _mobileController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-  Map<String, int> _errorMap = {"email": 0, "password": 0};
-
-  _showLoadingOrButton() {
-    if (_loading == true) {
-      return Container(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    } else if (_loading == false) {
-      return ButtonTheme(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        child: RaisedButton(
-          onPressed: () {
-            _handleSignIn();
-          },
-          color: ThemeColoursSeva().dkGreen,
-          textColor: Colors.white,
-          child: Text("Sign in"),
-        ),
-      );
-    }
-  }
-
-  // wrong email address
-  _emailWrong() {
-    if (_wrongEmail) {
-      return Text(
-        'Invalid email address',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
+  _showOTPLoader() {
+    if (_otpLoader)
+      return CircularProgressIndicator();
+    else
       return Container();
   }
 
-  // wrong password
-  _passwordWrong() {
-    if (_wrongPassword) {
+  _showLoader() {
+    if (_loading) {
+      return CircularProgressIndicator();
+    } else
+      return showOTPField
+          ? Container()
+          : Container(
+              child: RaisedButton(
+              color: ThemeColoursSeva().dkGreen,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  _mobileFocus.unfocus();
+                  setState(() {
+                    _loading = true;
+                    _inavlidMobile = false;
+                  });
+                  // Here submit the form
+                  await _verifyMobile();
+                }
+              },
+              child: const Text('Get OTP',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontFamily: "Raleway",
+                  )),
+            ));
+  }
+
+  _showInvalidMobile() {
+    if (_inavlidMobile)
       return Text(
-        'Incorrect password',
+        'Mobile number not registered!',
         style: TextStyle(color: Colors.red),
       );
-    } else
+    else
       return Container();
   }
 
-  // email field is empty
-  _showEmailEmpty() {
-    if (_emailEmpty) {
+  _showInvalidOTP() {
+    if (_invalidOTP)
       return Text(
-        'Please fill your email address',
+        'Incorrect OTP!',
         style: TextStyle(color: Colors.red),
       );
-    } else
+    else
       return Container();
   }
 
-  // password field is empty
-  _showPasswordEmpty() {
-    if (_passwordEmpty) {
-      return Text(
-        'Please fill your password',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  _handleSignIn() async {
-    setState(() {
-      _loading = true;
-      _wrongPassword = false;
-      _wrongEmail = false;
-    });
-    if (_email.text == '') {
+  _verifyMobile() async {
+    var getJson = json.encode({"phone": _mobileController.text});
+    String url = APIService.loginMobile;
+    Map<String, String> headers = {"Content-Type": "application/json"};
+    var response = await http.post(url, body: getJson, headers: headers);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      // successfully verified phone number
+      var bdy = json.decode(response.body);
+      String token = bdy["token"];
+      // store the returned token
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      await p.setToken(token);
       setState(() {
-        _emailEmpty = true;
-        _errorMap["email"] = 1;
+        _loading = false;
+        showOTPField = true;
       });
-    } else if (_email.text != '') {
+    } else if (response.statusCode == 404) {
+      // throw error, phone number not registered
       setState(() {
-        _emailEmpty = false;
-        if (_errorMap["email"] == 1) _errorMap["email"] = 0;
+        _inavlidMobile = true;
+        _loading = false;
       });
-      // handle
-    }
-
-    if (_password.text == '') {
-      setState(() {
-        _passwordEmpty = true;
-        _errorMap["password"] = 1;
-      });
-    } else if (_password.text != '') {
-      setState(() {
-        _passwordEmpty = false;
-        if (_errorMap["password"] == 1) _errorMap["password"] = 0;
-      });
-    }
-
-    List<int> _valueList = _errorMap.values.toList();
-    int sum = _valueList.reduce((a, b) => a + b);
-
-    if (sum == 0) {
-      UserModel user = new UserModel();
-      user.email = _email.text;
-      user.password = _password.text;
-      String url = APIService.loginAPI;
-      String getJson = userModelLogin(user);
-      Map<String, String> headers = {"Content-Type": "application/json"};
-      var response = await http.post(url, body: getJson, headers: headers);
-      if (response.statusCode == 200) {
-        // successfully logged in
-        StorageSharedPrefs p = new StorageSharedPrefs();
-        await p.setToken(json.decode(response.body)["token"]);
-        await p.setUsername(json.decode(response.body)["username"]);
-        await p.setId(json.decode(response.body)["id"]);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => StoresScreen()));
-        setState(() {
-          _loading = false;
-        });
-      } else if (response.statusCode == 404) {
-        // invalid email
-        setState(() {
-          _wrongEmail = true;
-          _loading = false;
-        });
-      } else if (response.statusCode == 400) {
-        // invalid password
-        setState(() {
-          _wrongPassword = true;
-          _loading = false;
-        });
-      } else {
-        throw Exception("Server error");
-      }
-    } else {
+    } else if (response.statusCode == 500) {
+      // throw error, internal server error
       setState(() {
         _loading = false;
       });
     }
   }
 
+  _verifyOTP(otp) async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    var getJson = json.encode({"phone": _mobileController.text, "otp": otp});
+    String url = APIService.verifyOTP;
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "x-auth-token": token
+    };
+    var response = await http.post(url, body: getJson, headers: headers);
+    if (response.statusCode == 200) {
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      var jsonBdy = json.decode(response.body);
+      await p.setUsername(jsonBdy["username"]);
+      await p.setToken(jsonBdy["token"]);
+      await p.setId(jsonBdy["id"]);
+      // grant access to the app
+      Navigator.pushReplacementNamed(context, '/stores');
+    } else if (response.statusCode == 400) {
+      // incorrect OTP
+      setState(() {
+        _otpLoader = false;
+        _invalidOTP = true;
+      });
+    } else if (response.statusCode == 500) {
+      // internal server error
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Stack(
-        children: <Widget>[
-          CustomPaint(
-            painter: GreenPaintBgLogin(),
-            child: Center(child: null),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Column(
+      resizeToAvoidBottomInset: false,
+      body: CustomPaint(
+        painter: GreenPaintBgLogin(),
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: ListView(children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Sign In",
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    color: ThemeColoursSeva().dkGreen,
+                    fontFamily: "Raleway",
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 40.0),
+            Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Row(
                 children: <Widget>[
-                  SizedBox(height: 50.0),
-                  TopText(txt: "Sign in"),
-                  SizedBox(
-                    height: 40.0,
+                  Text(
+                    "S",
+                    style: TextStyle(
+                        color: ThemeColoursSeva().lgGreen,
+                        fontSize: 45.0,
+                        fontFamily: "Raleway"),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "S",
-                          style: TextStyle(
-                              color: ThemeColoursSeva().lgGreen,
-                              fontSize: 45.0,
-                              fontFamily: "Raleway"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Text(
-                            "eva",
-                            style: TextStyle(
-                                fontFamily: "Raleway",
-                                color: ThemeColoursSeva().lgGreen,
-                                fontSize: 25.0),
-                          ),
-                        ),
-                      ],
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      "eva",
+                      style: TextStyle(
+                          fontFamily: "Raleway",
+                          color: ThemeColoursSeva().lgGreen,
+                          fontSize: 25.0),
                     ),
-                  ),
-                  SizedBox(height: 30.0),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: <Widget>[
-                          InputTextField(eC: _email, lt: "Email:"),
-                          _showEmailEmpty(),
-                          _emailWrong(),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                          InputTextField(
-                            eC: _password,
-                            lt: "Password:",
-                            pwdType: true,
-                          ),
-                          _showPasswordEmpty(),
-                          _passwordWrong(),
-                          SizedBox(
-                            height: 10.0,
-                          ),
-                          // Text("Forgot password ?"),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, "/fpwd");
-                            },
-                            child: Text("Forgot password ?"),
-                            textColor: ThemeColoursSeva().dkGreen,
-                          ),
-                          SizedBox(
-                            height: 30.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 40.0),
-                  _showLoadingOrButton(),
-                  SizedBox(
-                    height: 50.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Don't have an account? "),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterScreen()));
-                          },
-                          child: Text(
-                            "Sign up",
-                            style: TextStyle(color: ThemeColoursSeva().dkGreen),
-                          ),
-                        ),
-                      )
-                    ],
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 30.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 40.0),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "Mobile:",
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontFamily: "Raleway",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20.0),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: 260,
+                    child: TextFormField(
+                      enableInteractiveSelection: true,
+                      textInputAction: TextInputAction.next,
+                      autofocus: false,
+                      focusNode: _mobileFocus,
+                      keyboardType: TextInputType.number,
+                      controller: _mobileController,
+
+                      validator: (String val) {
+                        if (val.isEmpty || val.length < 10)
+                          return ('Min 10 digit number required!');
+                        else
+                          return (null);
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: ThemeColoursSeva().dkGreen),
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: '+91',
+                      ),
+                      maxLength: 10,
+                      // onTap: ,
+                    ),
+                  ),
+                  _showInvalidMobile(),
+                  SizedBox(height: 10.0),
+                  showOTPField
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 40.0),
+                              child: Text(
+                                "Enter OTP:",
+                                style: TextStyle(
+                                  fontSize: 24.0,
+                                  fontFamily: "Raleway",
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 40, right: 100),
+                              child: OTPTextField(
+                                length: 6,
+                                width: MediaQuery.of(context).size.width,
+                                fieldWidth: 30,
+                                style: TextStyle(fontSize: 20),
+                                textFieldAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                fieldStyle: FieldStyle.underline,
+                                onCompleted: (pin) async {
+                                  setState(() {
+                                    _otpLoader = true;
+                                    _invalidOTP = false;
+                                  });
+                                  await _verifyOTP(pin);
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                      : SizedBox(),
+                  _showInvalidOTP(),
+                  _showOTPLoader(),
+                  _showLoader()
+                ],
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

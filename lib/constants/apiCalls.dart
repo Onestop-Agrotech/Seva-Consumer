@@ -3,6 +3,8 @@ class APIService {
 
   // USERS
   static final String loginAPI = "$_api/users/login/";
+  static final String loginMobile = "$_api/users/loginMobile/";
+  static final String verifyOTP = "$_api/users/loginMobile/verifyOTP/";
   static final String registerAPI = "$_api/users/register/";
   static final String registerAddressAPI = "$_api/users/register/address/";
   static final String forgotMailerAPI = "$_api/users/forgotPassword-mailer/";
