@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final OrderModel order;
@@ -9,6 +10,15 @@ class OrderDetailsScreen extends StatelessWidget {
       fontFamily: "Raleway", fontSize: 16.0, color: ThemeColoursSeva().black);
 
   OrderDetailsScreen({this.order});
+
+_launchURL() async {
+  const url = 'https://www.google.com/maps/dir/?api=1&origin=12.963597563013833,77.49640859663486&destination=12.965388,77.499778';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
 
   _buildArray() {
     List<Item> iArr = this.order.items;
@@ -118,6 +128,17 @@ class OrderDetailsScreen extends StatelessWidget {
             SizedBox(height: 20.0),
             order.orderType == "Delivery"
                 ? Text("Address: ${order.customerAddress}")
+                : Text(""),
+            SizedBox(
+              height: 20.0,
+            ),
+            order.orderType == "Pick Up"
+                ? RaisedButton(
+                    onPressed: () {
+                      _launchURL();
+                    },
+                    child: Text("Get directions"),
+                  )
                 : Text("")
           ],
         ),
