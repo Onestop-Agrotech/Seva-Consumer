@@ -44,7 +44,7 @@ class _CustomOrdersCardState extends State<CustomOrdersCard> {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: ThemeColoursSeva().black),
-                    overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 10.0),
               widget.order.otp != '0'
