@@ -10,13 +10,15 @@ class StoreListCard extends StatefulWidget {
   final String shopName;
   final String businessUserName;
   final String distance;
+  final bool online;
 
   StoreListCard(
       {this.vegetablesOnly,
       this.fruitsOnly,
       this.shopName,
       this.businessUserName,
-      this.distance});
+      this.distance,
+      this.online});
 
   @override
   _StoreListCardState createState() => _StoreListCardState();
@@ -36,9 +38,12 @@ class _StoreListCardState extends State<StoreListCard> {
         Text(
           text,
           style: TextStyle(
-              fontFamily: "Raleway",
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500),
+            fontFamily: "Raleway",
+            fontSize: 12.0,
+            fontWeight: FontWeight.w500,
+            color:
+                widget.online == false ? Colors.grey : ThemeColoursSeva().black,
+          ),
         ),
       ],
     );
@@ -65,15 +70,19 @@ class _StoreListCardState extends State<StoreListCard> {
     return Material(
       child: InkWell(
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StoreProductsScreen(
-                  businessUsername: widget.businessUserName,
-                  shopName: widget.shopName,
-                  distance: widget.distance,
-                ),
-              ));
+          if (widget.online == true) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StoreProductsScreen(
+                    businessUsername: widget.businessUserName,
+                    shopName: widget.shopName,
+                    distance: widget.distance,
+                  ),
+                ));
+          } else {
+            print("shop is close");
+          }
         },
         child: Container(
           width: MediaQuery.of(context).size.width * 0.9,
@@ -81,16 +90,38 @@ class _StoreListCardState extends State<StoreListCard> {
           child: Row(
             children: <Widget>[
               // image container
-              CachedNetworkImage(
-                imageUrl:
-                    "https://seva-consumer.s3.ap-south-1.amazonaws.com/shop-pictures/shop.jpg",
-                placeholder: (context, url) => CircularProgressIndicator(
-                  backgroundColor: ThemeColoursSeva().black,
-                  strokeWidth: 4.0,
-                  valueColor:
-                      AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
-                ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+              Stack(
+                children: <Widget>[
+                  CachedNetworkImage(
+                    imageUrl:
+                        "https://seva-consumer.s3.ap-south-1.amazonaws.com/shop-pictures/shop.jpg",
+                    placeholder: (context, url) => CircularProgressIndicator(
+                      backgroundColor: ThemeColoursSeva().black,
+                      strokeWidth: 4.0,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          ThemeColoursSeva().grey),
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                  widget.online == false
+                      ? Container(
+                          height: 110.0,
+                          width: MediaQuery.of(context).size.width * 0.375,
+                          color: Colors.grey.withOpacity(0.75),
+                          child: Center(
+                            child: Text(
+                              "Closed",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          color: Colors.transparent,
+                        ),
+                ],
               ),
               SizedBox(width: 20.0),
               // description
@@ -105,7 +136,9 @@ class _StoreListCardState extends State<StoreListCard> {
                       style: TextStyle(
                           fontFamily: "Raleway",
                           fontWeight: FontWeight.w500,
-                          color: ThemeColoursSeva().black,
+                          color: widget.online == false
+                              ? Colors.grey
+                              : ThemeColoursSeva().black,
                           fontSize: 14.0),
                     ),
                   ),
@@ -114,7 +147,9 @@ class _StoreListCardState extends State<StoreListCard> {
                     widget.distance,
                     style: TextStyle(
                         fontFamily: "Raleway",
-                        color: ThemeColoursSeva().black,
+                        color: widget.online == false
+                            ? Colors.grey
+                            : ThemeColoursSeva().black,
                         fontSize: 12.5),
                   ),
                   SizedBox(height: 20.0),

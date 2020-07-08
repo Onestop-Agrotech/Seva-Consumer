@@ -18,6 +18,7 @@ class Store {
       this.vegetables,
       this.fruits,
       this.distance,
+      this.online,
       this.dp});
 
   String name;
@@ -29,6 +30,7 @@ class Store {
   String pictureURL;
   bool vegetables;
   bool fruits;
+  bool online;
   String distance;
   double dp;
 
@@ -43,6 +45,7 @@ class Store {
         pictureURL: json["pictureURL"],
         fruits: json["fruits"],
         distance: json["distance"],
+        online: json["online"]
       );
 
   Map<String, dynamic> toJson() => {

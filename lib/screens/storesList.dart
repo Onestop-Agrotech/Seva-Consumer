@@ -77,6 +77,7 @@ class _StoresScreenState extends State<StoresScreen> {
                           fruitsOnly: arr[index].fruits,
                           businessUserName: arr[index].username,
                           distance: arr[index].distance,
+                          online: arr[index].online
                         ),
                         SizedBox(height: 20.0)
                       ],
@@ -100,7 +101,7 @@ class _StoresScreenState extends State<StoresScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text("Setting up your personal experience"),
+                  Text("Setting up your personal shopping experience"),
                   SizedBox(
                     height: 20.0,
                   ),
