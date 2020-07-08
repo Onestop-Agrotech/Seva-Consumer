@@ -35,18 +35,17 @@ class Store {
   double dp;
 
   factory Store.fromJson(Map<String, dynamic> json) => Store(
-        name: json["storeName"],
-        username: json["storeUsername"],
-        uniqueId: json["storeUniqueId"],
-        address: json["address"],
-        lat: json["lat"],
-        long: json["long"],
-        vegetables: json["vegetables"],
-        pictureURL: json["pictureURL"],
-        fruits: json["fruits"],
-        distance: json["distance"],
-        online: json["online"]
-      );
+      name: json["storeName"],
+      username: json["storeUsername"],
+      uniqueId: json["storeUniqueId"],
+      address: json["address"],
+      lat: json["lat"],
+      long: json["long"],
+      vegetables: json["vegetables"],
+      pictureURL: json["pictureURL"],
+      fruits: json["fruits"],
+      distance: json["distance"],
+      online: json["online"]);
 
   Map<String, dynamic> toJson() => {
         "name": name,

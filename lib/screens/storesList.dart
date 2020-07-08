@@ -72,13 +72,12 @@ class _StoresScreenState extends State<StoresScreen> {
                     return Column(
                       children: <Widget>[
                         StoreListCard(
-                          shopName: arr[index].name,
-                          vegetablesOnly: arr[index].vegetables,
-                          fruitsOnly: arr[index].fruits,
-                          businessUserName: arr[index].username,
-                          distance: arr[index].distance,
-                          online: arr[index].online
-                        ),
+                            shopName: arr[index].name,
+                            vegetablesOnly: arr[index].vegetables,
+                            fruitsOnly: arr[index].fruits,
+                            businessUserName: arr[index].username,
+                            distance: arr[index].distance,
+                            online: arr[index].online),
                         SizedBox(height: 20.0)
                       ],
                     );
