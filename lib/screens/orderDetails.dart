@@ -88,7 +88,8 @@ class OrderDetailsScreen extends StatelessWidget {
                     fontFamily: "Raleway",
                     fontSize: 16.5,
                     fontWeight: FontWeight.w500,
-                    color: ThemeColoursSeva().black)),
+                    color: ThemeColoursSeva().black),
+                    overflow: TextOverflow.ellipsis,),
             SizedBox(height: 20.0),
             Text(
                 order.orderType != "Delivery"
