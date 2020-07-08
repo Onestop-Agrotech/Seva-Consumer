@@ -83,13 +83,15 @@ class OrderDetailsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text("From ${order.storeName}",
-                style: TextStyle(
-                    fontFamily: "Raleway",
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w500,
-                    color: ThemeColoursSeva().black),
-                    overflow: TextOverflow.ellipsis,),
+            Text(
+              "From ${order.storeName}",
+              style: TextStyle(
+                  fontFamily: "Raleway",
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w500,
+                  color: ThemeColoursSeva().black),
+              overflow: TextOverflow.ellipsis,
+            ),
             SizedBox(height: 20.0),
             Text(
                 order.orderType != "Delivery"
