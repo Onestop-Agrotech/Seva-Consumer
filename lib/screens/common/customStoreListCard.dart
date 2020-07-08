@@ -11,6 +11,7 @@ class StoreListCard extends StatefulWidget {
   final String businessUserName;
   final String distance;
   final bool online;
+  final String pictureURL;
 
   StoreListCard(
       {this.vegetablesOnly,
@@ -18,7 +19,8 @@ class StoreListCard extends StatefulWidget {
       this.shopName,
       this.businessUserName,
       this.distance,
-      this.online});
+      this.online,
+      this.pictureURL});
 
   @override
   _StoreListCardState createState() => _StoreListCardState();
@@ -93,8 +95,7 @@ class _StoreListCardState extends State<StoreListCard> {
               Stack(
                 children: <Widget>[
                   CachedNetworkImage(
-                    imageUrl:
-                        "https://seva-consumer.s3.ap-south-1.amazonaws.com/shop-pictures/shop.jpg",
+                    imageUrl: widget.pictureURL,
                     placeholder: (context, url) => CircularProgressIndicator(
                       backgroundColor: ThemeColoursSeva().black,
                       strokeWidth: 4.0,
