@@ -11,14 +11,15 @@ class OrderDetailsScreen extends StatelessWidget {
 
   OrderDetailsScreen({this.order});
 
-_launchURL() async {
-  const url = 'https://www.google.com/maps/dir/?api=1&origin=12.963597563013833,77.49640859663486&destination=12.965388,77.499778';
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
+  _launchURL() async {
+    String url =
+        "https://www.google.com/maps/dir/?api=1&origin=${order.orderOriginLat},${order.orderOriginLong}&destination=${order.orderDestLat},${order.orderDestLong}";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
-}
 
   _buildArray() {
     List<Item> iArr = this.order.items;

@@ -29,6 +29,10 @@ class OrderModel {
     this.paymentTransactionId,
     this.orderStatus,
     this.timestamp,
+    this.orderDestLat,
+    this.orderDestLong,
+    this.orderOriginLat,
+    this.orderOriginLong,
     this.v,
   });
 
@@ -51,6 +55,10 @@ class OrderModel {
   String paymentTransactionId;
   String orderStatus;
   DateTime timestamp;
+  String orderDestLat;
+  String orderDestLong;
+  String orderOriginLat;
+  String orderOriginLong;
   int v;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
@@ -73,6 +81,10 @@ class OrderModel {
         paymentTransactionId: json["paymentTransactionId"],
         orderStatus: json["orderStatus"],
         timestamp: DateTime.parse(json["timestamp"]),
+        orderDestLat: json["orderDestLat"],
+        orderDestLong: json["orderDestLong"],
+        orderOriginLat: json["orderOriginLat"],
+        orderOriginLong: json["orderOriginLong"],
         v: json["__v"],
       );
 
