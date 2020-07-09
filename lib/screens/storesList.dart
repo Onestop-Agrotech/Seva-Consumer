@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -22,6 +23,27 @@ class _StoresScreenState extends State<StoresScreen> {
 
   String _username;
   String _email;
+  FirebaseMessaging _fcm;
+
+  @override
+  initState(){
+    super.initState();
+    _fcm = new FirebaseMessaging();
+  }
+
+  initFCM() {
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
+  }
 
   Future<List<Store>> _fetchStores() async {
     StorageSharedPrefs p = new StorageSharedPrefs();

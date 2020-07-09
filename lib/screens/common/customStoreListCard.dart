@@ -94,15 +94,19 @@ class _StoreListCardState extends State<StoreListCard> {
               // image container
               Stack(
                 children: <Widget>[
-                  CachedNetworkImage(
-                    imageUrl: widget.pictureURL,
-                    placeholder: (context, url) => CircularProgressIndicator(
-                      backgroundColor: ThemeColoursSeva().black,
-                      strokeWidth: 4.0,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          ThemeColoursSeva().grey),
+                  Container(
+                    height: 110.0,
+                    width: MediaQuery.of(context).size.width * 0.375,
+                    child: CachedNetworkImage(
+                      imageUrl: widget.pictureURL,
+                      placeholder: (context, url) => CircularProgressIndicator(
+                        backgroundColor: ThemeColoursSeva().black,
+                        strokeWidth: 4.0,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            ThemeColoursSeva().grey),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
                   widget.online == false
                       ? Container(
