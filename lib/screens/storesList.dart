@@ -29,20 +29,36 @@ class _StoresScreenState extends State<StoresScreen> {
   initState(){
     super.initState();
     _fcm = new FirebaseMessaging();
+    initFCM();
   }
 
   initFCM() {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
+        // print("onMessage: $message");
+        _serialiseAndNavigate(message);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
+        // print("onLaunch: $message");
+        _serialiseAndNavigate(message);
       },
       onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
+        // print("onResume: $message");
+        _serialiseAndNavigate(message);
       },
     );
+  }
+
+  void _serialiseAndNavigate(Map<String, dynamic> message) {
+    var notificationData = message['data'];
+    var view = notificationData['view'];
+    if (view != null) {
+      // Navigate to the create post view
+      if (view == 'order_ready') {
+        Navigator.pushNamed(context, '/orders');
+      }
+      // If there's no view it'll just open the app on the first view
+    }
   }
 
   Future<List<Store>> _fetchStores() async {

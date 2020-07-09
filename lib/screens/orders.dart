@@ -117,7 +117,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               onPressed: () {
                 // go to store list
-                Navigator.pushReplacementNamed(context, '/stores');
+                // Navigator.pushReplacementNamed(context, '/stores');
+                Navigator.pop(context);
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, '/stores', ModalRoute.withName('/orders'));
               }),
           backgroundColor: Colors.transparent,
           elevation: 0,
