@@ -26,7 +26,7 @@ class _StoresScreenState extends State<StoresScreen> {
   FirebaseMessaging _fcm;
 
   @override
-  initState(){
+  initState() {
     super.initState();
     _fcm = new FirebaseMessaging();
     initFCM();

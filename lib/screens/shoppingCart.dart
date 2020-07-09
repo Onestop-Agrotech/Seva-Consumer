@@ -156,7 +156,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       // Navigator.pushReplacementNamed(context, '/orders');
       Navigator.pushNamedAndRemoveUntil(
-                    context, '/orders', ModalRoute.withName('/stores'));
+          context, '/orders', ModalRoute.withName('/stores'));
       setState(() {
         _loading = false;
       });
