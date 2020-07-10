@@ -72,7 +72,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   _checkForUserToken() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
-    if (token != '' || token != null) {
+    if (token != '' && token != null) {
       // there is a token, now verify
       _sendReqToServer(token);
     } else {
