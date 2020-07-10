@@ -61,7 +61,8 @@ class _StoresScreenState extends State<StoresScreen> {
             builder: (context) {
               return AlertDialog(
                 title: Text("Order ready!"),
-                content: Text("Your order with #${message['data']['orderNumber']} and Token ${message['data']['tokenNumber']} is ready!"),
+                content: Text(
+                    "Your order with #${message['data']['orderNumber']} and Token ${message['data']['tokenNumber']} is ready!"),
               );
             });
       },
