@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -16,32 +14,11 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  FirebaseMessaging _fcm;
   bool _showLoginScreen;
   @override
   initState() {
     super.initState();
     _checkForUserToken();
-    _fcm = FirebaseMessaging();
-    _saveDeviceToken();
-  }
-
-  /// Get the token, save it to the database for current user
-  _saveDeviceToken() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    // Get the current user
-    String uid = await p.getId();
-
-    // Get the token for this device
-    String fcmToken = await _fcm.getToken();
-    if (fcmToken != null) {
-      Firestore.instance
-          .collection('Consumer tokens')
-          .document('$uid')
-          .setData({
-        'token': fcmToken,
-      });
-    }
   }
 
   _sendReqToServer(token) async {

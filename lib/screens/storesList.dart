@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -30,20 +31,50 @@ class _StoresScreenState extends State<StoresScreen> {
     super.initState();
     _fcm = new FirebaseMessaging();
     initFCM();
+    _saveDeviceToken();
+  }
+
+  /// Get the token, save it to the database for current user
+  _saveDeviceToken() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    // Get the current user
+    String uid = await p.getId();
+
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+    if (fcmToken != null) {
+      Firestore.instance
+          .collection('Consumer tokens')
+          .document('$uid')
+          .setData({
+        'token': fcmToken,
+      });
+    }
   }
 
   initFCM() {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
-        // print("onMessage: $message");
-        _serialiseAndNavigate(message);
+        print("onMessage: $message");
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("Order ready!"),
+                content: Text("Your order with #${message['data']['orderNumber']} and Token ${message['data']['tokenNumber']} is ready!"),
+              );
+            });
       },
       onLaunch: (Map<String, dynamic> message) async {
-        // print("onLaunch: $message");
-        _serialiseAndNavigate(message);
+        print("onLaunch: $message");
+        // showDialog(context: context, builder: (context){
+        //   return AlertDialog(
+        //     title: Text("Order ready!"),
+        //   );
+        // });
       },
       onResume: (Map<String, dynamic> message) async {
-        // print("onResume: $message");
+        print("onResume: $message");
         _serialiseAndNavigate(message);
       },
     );
