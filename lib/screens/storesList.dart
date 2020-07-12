@@ -127,6 +127,68 @@ class _StoresScreenState extends State<StoresScreen> {
     }
   }
 
+  _showLocation() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Delivery Address:",
+            style: TextStyle(
+                fontSize: 17.0,
+                color: Colors.black,
+                fontWeight: FontWeight.w500),
+          ),
+          content: FutureBuilder(
+              future: _fetchUserAddress(),
+              builder: (context, data) {
+                if (data.hasData) {
+                  return StatefulBuilder(builder: (context, setState) {
+                    return Container(
+                      height: 120.0,
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 10.0),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Text(
+                              data.data,
+                              overflow: TextOverflow.clip,
+                            ),
+                          ),
+                          SizedBox(height: 30.0),
+                          RaisedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        GoogleLocationScreen(
+                                          userEmail: _email,
+                                        )),
+                              );
+                            },
+                            child: Text(
+                              "Change",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: ThemeColoursSeva().dkGreen,
+                          )
+                        ],
+                      ),
+                    );
+                  });
+                } else
+                  return Container(child: Text("Loading Address ..."));
+              }),
+        );
+      },
+    );
+  }
+
   FutureBuilder _buildArrayFromFuture() {
     return FutureBuilder(
         future: _fetchStores(),
@@ -194,124 +256,128 @@ class _StoresScreenState extends State<StoresScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _storesScreenKey,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
-          child: AppBar(
-            title: TopText(
-              txt: "Nearby Stores",
-            ),
-            centerTitle: true,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-                icon: Icon(
-                  Icons.menu,
-                  color: ThemeColoursSeva().black,
-                ),
-                onPressed: () {
-                  _storesScreenKey.currentState.openDrawer();
-                }),
-            elevation: 0,
-            actions: <Widget>[
-              Icon(
-                Icons.person,
+      key: _storesScreenKey,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(80.0),
+        child: AppBar(
+          title: TopText(
+            txt: "Nearby Stores",
+          ),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: ThemeColoursSeva().black,
+              ),
+              onPressed: () {
+                _storesScreenKey.currentState.openDrawer();
+              }),
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.location_on),
                 color: Colors.black,
-              )
+                iconSize: 25.0,
+                onPressed: () {
+                  _showLocation();
+                })
+          ],
+        ),
+      ),
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: DrawerHeader(
+                  child:
+                      TopText(txt: _username == null ? 'Username' : _username),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('My orders'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/orders');
+                },
+              ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () async {
+                  // Navigator.pushNamed(context, '/orders');
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
+                },
+              ),
             ],
           ),
         ),
-        drawer: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
-          child: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: DrawerHeader(
-                    child: TopText(
-                        txt: _username == null ? 'Username' : _username),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text('My orders'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, '/orders');
-                  },
-                ),
-                ListTile(
-                  title: Text('Logout'),
-                  onTap: () async {
-                    // Navigator.pushNamed(context, '/orders');
-                    SharedPreferences preferences =
-                        await SharedPreferences.getInstance();
-                    preferences.clear();
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/login', (Route<dynamic> route) => false);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-        body: _buildArrayFromFuture(),
-        floatingActionButton: FutureBuilder(
-            future: _fetchUserAddress(),
-            builder: (context, data) {
-              if (data.hasData) {
-                return Container(
-                  height: 60.0,
-                  width: double.infinity,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Delivery Address:",
-                            style: TextStyle(
-                                fontFamily: "Raleway",
-                                fontWeight: FontWeight.w700,
-                                color: ThemeColoursSeva().black,
-                                fontSize: 14.0),
-                          ),
-                          SizedBox(height: 10.0),
-                          Container(
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: Text(
-                              data.data,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                      RaisedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => GoogleLocationScreen(
-                                      userEmail: _email,
-                                    )),
-                          );
-                        },
-                        child: Text(
-                          "Change",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        color: ThemeColoursSeva().dkGreen,
-                      )
-                    ],
-                  ),
-                );
-              } else
-                return Container(child: Text("Loading Address ..."));
-            }),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
+      ),
+      body: _buildArrayFromFuture(),
+      // floatingActionButton: FutureBuilder(
+      //     future: _fetchUserAddress(),
+      //     builder: (context, data) {
+      //       if (data.hasData) {
+      //         return Container(
+      //           height: 60.0,
+      //           width: double.infinity,
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //             children: <Widget>[
+      //               Column(
+      //                 crossAxisAlignment: CrossAxisAlignment.start,
+      //                 children: <Widget>[
+      //                   Text(
+      //                     "Delivery Address:",
+      //                     style: TextStyle(
+      //                         fontFamily: "Raleway",
+      //                         fontWeight: FontWeight.w700,
+      //                         color: ThemeColoursSeva().black,
+      //                         fontSize: 14.0),
+      //                   ),
+      //                   SizedBox(height: 10.0),
+      //                   Container(
+      //                     width: MediaQuery.of(context).size.width * 0.6,
+      //                     child: Text(
+      //                       data.data,
+      //                       overflow: TextOverflow.ellipsis,
+      //                     ),
+      //                   ),
+      //                 ],
+      //               ),
+      //               RaisedButton(
+      //                 onPressed: () {
+      //                   Navigator.push(
+      //                     context,
+      //                     MaterialPageRoute(
+      //                         builder: (context) => GoogleLocationScreen(
+      //                               userEmail: _email,
+      //                             )),
+      //                   );
+      //                 },
+      //                 child: Text(
+      //                   "Change",
+      //                   style: TextStyle(color: Colors.white),
+      //                 ),
+      //                 color: ThemeColoursSeva().dkGreen,
+      //               )
+      //             ],
+      //           ),
+      //         );
+      //       } else
+      //         return Container(child: Text("Loading Address ..."));
+      //     }),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
+    );
   }
 }
