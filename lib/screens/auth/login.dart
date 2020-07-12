@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
@@ -15,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  int _start = 60;
   bool showOTPField = false;
   bool _loading = false;
   bool _inavlidMobile = false;
@@ -23,6 +26,32 @@ class _LoginScreenState extends State<LoginScreen> {
   final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  initState() {
+    super.initState();
+    // _startTimer();
+  }
+
+  _startTimer() {
+    _start = 60;
+    const oneSec = const Duration(seconds: 1);
+    new Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(
+        () {
+          if (_start == 0) {
+            setState(() {
+              showOTPField = false;
+            });
+            timer.cancel();
+          } else {
+            _start = _start - 1;
+          }
+        },
+      ),
+    );
+  }
 
   _showOTPLoader() {
     if (_otpLoader)
@@ -36,7 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
       return CircularProgressIndicator();
     } else
       return showOTPField
-          ? Container()
+          ? Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Text("Resend OTP in $_start seconds"),
+            )
           : Container(
               child: RaisedButton(
               color: ThemeColoursSeva().dkGreen,
@@ -101,6 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _loading = false;
         showOTPField = true;
       });
+      _startTimer();
     } else if (response.statusCode == 404) {
       // throw error, phone number not registered
       setState(() {

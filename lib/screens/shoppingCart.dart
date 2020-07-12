@@ -144,9 +144,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     Fluttertoast.showToast(
-        msg: "Order placed!",
+        msg: "Order placed! Go to Orders Page for more details.",
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM);
+        gravity: ToastGravity.CENTER);
 
     setState(() {
       _pid = response.paymentId;
@@ -156,7 +156,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     Future.delayed(const Duration(seconds: 2), () {
       // Navigator.pushReplacementNamed(context, '/orders');
       Navigator.pushNamedAndRemoveUntil(
-          context, '/orders', ModalRoute.withName('/stores'));
+          context, '/stores', ModalRoute.withName('/stores'));
       setState(() {
         _loading = false;
       });
@@ -210,12 +210,21 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   _showTotalPrice(price) {
     if (!_delivery && !_pickUp)
-      return Text("Total Price - Rs $price");
+      return Text(
+        "Total Price - Rs $price",
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+      );
     else if (_delivery) {
       int totalPrice = price + 10;
-      return Text("Total Price - Rs $totalPrice");
+      return Text(
+        "Total Price - Rs $totalPrice",
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+      );
     } else {
-      return Text("Total Price - Rs $price");
+      return Text(
+        "Total Price - Rs $price",
+        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+      );
     }
   }
 
@@ -253,10 +262,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   title: Text(
                     'Delivery - Extra Charges Rs 10 ',
                     style: TextStyle(
-                      color: ThemeColoursSeva().black,
-                      fontFamily: "Raleway",
-                      fontSize: 13.0,
-                    ),
+                        color: ThemeColoursSeva().black,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
                 SizedBox(height: 20.0),
@@ -272,10 +280,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   title: Text(
                       'Pick Up - ${widget.distance} from your delivery location',
                       style: TextStyle(
-                        color: ThemeColoursSeva().black,
-                        fontFamily: "Raleway",
-                        fontSize: 13.0,
-                      )),
+                          color: ThemeColoursSeva().black,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500)),
                 ),
                 SizedBox(height: 30.0),
                 _showTotalPrice(price),
