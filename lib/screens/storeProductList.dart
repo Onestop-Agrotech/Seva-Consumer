@@ -82,16 +82,16 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
 
   _fetchProductsFromStore() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
-      String token = await p.getToken();
-      String url = APIService.businessProductsListAPI +
-          "${widget.businessUsername}/products";
-      Map<String, String> requestHeaders = {'x-auth-token': token};
-      var response = await http.get(url, headers: requestHeaders);
-      if (response.statusCode == 200) {
-        return jsonToStoreProductModel(response.body);
-      } else {
-        throw Exception('something is wrong');
-      }
+    String token = await p.getToken();
+    String url = APIService.businessProductsListAPI +
+        "${widget.businessUsername}/products";
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      return jsonToStoreProductModel(response.body);
+    } else {
+      throw Exception('something is wrong');
+    }
   }
 
   _updateQuantityFromCart(cart, arr) {
@@ -263,6 +263,4 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
           ]),
         ));
   }
-
 }
-

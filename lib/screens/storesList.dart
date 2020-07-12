@@ -160,10 +160,10 @@ class _StoresScreenState extends State<StoresScreen> {
                   padding: const EdgeInsets.all(40.0),
                   child: Center(
                     child: Text(
-                        "Oops! No stores near you. We are trying hard to add more stores everyday. Stay tuned!", style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w500
-                        ),),
+                      "Oops! No stores near you. We are trying hard to add more stores everyday. Stay tuned!",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               );
