@@ -11,7 +11,6 @@ class TopText extends StatelessWidget {
     return Text(
       txt,
       style: TextStyle(
-          fontFamily: "Raleway",
           fontWeight: FontWeight.w500,
           fontSize: 20.0,
           color: ThemeColoursSeva().dkGreen),

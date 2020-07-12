@@ -163,21 +163,14 @@ class _ProductCardState extends State<ProductCard> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Container(
-      // decoration: BoxDecoration(
-      //   border: Border.all(
-      //     color: ThemeColoursSeva().grey,
-      //     width: 0.6
-      //   )
-      // ),
-      height: 280.0,
-      width: width * 0.43,
+      width: width * 0.46,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           // image
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 5.0),
+            padding: const EdgeInsets.only(left: 5.0),
             child: Container(
               height: 130.0,
               child: CachedNetworkImage(
@@ -194,7 +187,6 @@ class _ProductCardState extends State<ProductCard> {
             child: Text(
               widget.product.name,
               style: TextStyle(
-                  fontFamily: 'Raleway',
                   fontSize: 15.0,
                   fontWeight: FontWeight.w500,
                   color: ThemeColoursSeva().black),
@@ -206,10 +198,9 @@ class _ProductCardState extends State<ProductCard> {
             child: Text(
               "${widget.product.description}",
               style: TextStyle(
-                  fontFamily: 'Raleway',
-                  fontSize: 10.0,
+                  fontSize: 13.0,
                   fontWeight: FontWeight.w500,
-                  color: ThemeColoursSeva().grey),
+                  color: Colors.grey),
             ),
           ),
           SizedBox(height: 8.0),
@@ -221,7 +212,6 @@ class _ProductCardState extends State<ProductCard> {
                 Text(
                   "Rs ${widget.product.price}",
                   style: TextStyle(
-                      fontFamily: 'Raleway',
                       fontSize: 15.0,
                       fontWeight: FontWeight.w500,
                       color: ThemeColoursSeva().black),
@@ -229,7 +219,6 @@ class _ProductCardState extends State<ProductCard> {
                 Text(
                   "${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
                   style: TextStyle(
-                      fontFamily: 'Raleway',
                       fontSize: 15.0,
                       fontWeight: FontWeight.w500,
                       color: ThemeColoursSeva().black),
