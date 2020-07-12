@@ -83,14 +83,16 @@ class OrderDetailsScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
-              "From ${order.storeName}",
-              style: TextStyle(
-                  fontFamily: "Raleway",
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w500,
-                  color: ThemeColoursSeva().black),
-              overflow: TextOverflow.ellipsis,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: Text(
+                "From ${order.storeName}",
+                style: TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w500,
+                    color: ThemeColoursSeva().black),
+                overflow: TextOverflow.clip,
+              ),
             ),
             SizedBox(height: 20.0),
             Text(
@@ -136,7 +138,7 @@ class OrderDetailsScreen extends StatelessWidget {
             SizedBox(
               height: 20.0,
             ),
-            order.orderType == "Pick Up"
+            order.orderType == "Pick Up" && order.orderStatus != "finished"
                 ? RaisedButton(
                     onPressed: () {
                       _launchURL();

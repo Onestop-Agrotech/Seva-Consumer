@@ -15,6 +15,7 @@ class TopText extends StatelessWidget {
           fontWeight: FontWeight.w500,
           fontSize: 20.0,
           color: ThemeColoursSeva().dkGreen),
+          overflow: TextOverflow.fade,
     );
   }
 }
