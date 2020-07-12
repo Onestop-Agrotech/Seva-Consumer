@@ -165,8 +165,7 @@ class _StoresScreenState extends State<StoresScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        GoogleLocationScreen(
+                                    builder: (context) => GoogleLocationScreen(
                                           userEmail: _email,
                                         )),
                               );
