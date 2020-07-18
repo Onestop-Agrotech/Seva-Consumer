@@ -7,6 +7,7 @@ import 'package:mvp/constants/themeColours.dart';
 // import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'package:mvp/screens/storesList.dart';
+import 'dart:io';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -15,10 +16,29 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   bool _showLoginScreen;
+  String _showText;
+
   @override
   initState() {
     super.initState();
-    _checkForUserToken();
+    _showText = "Setting Up ...";
+    // check for internet connection here
+    _checkConnection();
+  }
+
+  _checkConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+        _checkForUserToken();
+      }
+    } on SocketException catch (_) {
+      print('not connected');
+      setState(() {
+        _showText = "Please check your network connection and try again";
+      });
+    }
   }
 
   _sendReqToServer(token) async {
@@ -76,12 +96,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: Text(
-            "Setting Up ...",
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontSize: 28.0,
-                fontWeight: FontWeight.bold),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              _showText,
+              style: TextStyle(
+                  color: ThemeColoursSeva().dkGreen,
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ),
