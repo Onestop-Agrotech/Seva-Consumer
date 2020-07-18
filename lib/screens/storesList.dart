@@ -178,7 +178,7 @@ class _StoresScreenState extends State<StoresScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => GoogleLocationScreen(
-                                  userEmail: data.data,
+                                  userEmail: _email,
                                 )),
                       );
                     },
