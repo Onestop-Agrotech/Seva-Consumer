@@ -55,7 +55,21 @@ class FirestoreCRUD {
   void deleteFromFirestore(String uId) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
-    Firestore.instance.collection('$id').document('p-$uId').delete();
+  String url = APIService.setCartAPI ;
+    String body=jsonEncode(
+    {
+      'userId':id,
+      'uniqueId':uId,
+    }
+
+    );
+    var response = await http.post(url, body: body);
+  if (response.statusCode == 200) {
+      print("success");
+    } else {
+      throw Exception('something is wrong');
+    }
+    // Firestore.instance.collection('$id').document('p-$uId').delete();
   }
 
   // Update document
