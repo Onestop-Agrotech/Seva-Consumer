@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -76,10 +75,27 @@ class FirestoreCRUD {
   void updateDocInFirestore(String docId, int newq, int newp) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
-    Firestore.instance.collection('$id').document(docId).updateData({
-      'userQuantity': newq,
-      'userPrice': newp,
-    });
+ String url = APIService.updatecartAPI ;
+    String body=jsonEncode(
+    {
+      'userPrice':newp,
+      'userQuantity':newq,
+      'uniqueId':docId,
+      'userId':id
+    }
+
+    );
+    var response = await http.post(url, body: body);
+  if (response.statusCode == 200) {
+      print("success");
+    } else {
+      throw Exception('something is wrong');
+    }
+
+    // Firestore.instance.collection('$id').document(docId).updateData({
+    //   'userQuantity': newq,
+    //   'userPrice': newp,
+    // });
   }
 
   // delete documents
