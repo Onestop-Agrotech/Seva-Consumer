@@ -12,7 +12,7 @@ class FirestoreCRUD {
   void addToFirestore(StoreProduct obj) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
-    String url = APIService.setCartAPI + "$id";
+    String url = APIService.setCartAPI ;
     String body=jsonEncode(
 {
       'description': obj.description,
@@ -52,7 +52,7 @@ class FirestoreCRUD {
   }
 
   // Delete a particular document from firestore
-  void deleteFromFirestore(String uId) async {
+  void deleteFromFirestore(String uId,int userPrice,int userQuantity,String userId) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
     Firestore.instance.collection('$id').document('p-$uId').delete();
