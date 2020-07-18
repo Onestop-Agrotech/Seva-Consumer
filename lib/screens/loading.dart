@@ -36,7 +36,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     } on SocketException catch (_) {
       print('not connected');
       setState(() {
-        _showText = "Please check your network connection and try again";
+        _showText = "Oops! No internet connection.";
       });
     }
   }
@@ -102,7 +102,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
               _showText,
               style: TextStyle(
                   color: ThemeColoursSeva().dkGreen,
-                  fontSize: 28.0,
+                  fontSize: 24.0,
                   fontWeight: FontWeight.bold),
             ),
           ),
