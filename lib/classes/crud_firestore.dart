@@ -16,7 +16,7 @@ class FirestoreCRUD {
     String body=jsonEncode(
 {
       'description': obj.description,
-      'userId':obj.id,
+      'userId':id,
       'name':obj.name,
       'pictureURL':obj.pictureUrl,
       'productPrice':obj.price,
@@ -52,7 +52,7 @@ class FirestoreCRUD {
   }
 
   // Delete a particular document from firestore
-  void deleteFromFirestore(String uId,int userPrice,int userQuantity,String userId) async {
+  void deleteFromFirestore(String uId) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
     Firestore.instance.collection('$id').document('p-$uId').delete();
