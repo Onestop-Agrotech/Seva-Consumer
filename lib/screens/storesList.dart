@@ -29,6 +29,7 @@ class _StoresScreenState extends State<StoresScreen> {
   @override
   initState() {
     super.initState();
+    _email = '';
     _fcm = new FirebaseMessaging();
     initFCM();
     _saveDeviceToken();
@@ -159,23 +160,6 @@ class _StoresScreenState extends State<StoresScreen> {
                             ),
                           ),
                           SizedBox(height: 30.0),
-                          RaisedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => GoogleLocationScreen(
-                                          userEmail: _email,
-                                        )),
-                              );
-                            },
-                            child: Text(
-                              "Change",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            color: ThemeColoursSeva().dkGreen,
-                          )
                         ],
                       ),
                     );
@@ -183,6 +167,30 @@ class _StoresScreenState extends State<StoresScreen> {
                 } else
                   return Container(child: Text("Loading Address ..."));
               }),
+          actions: <Widget>[
+            FutureBuilder(
+              future: _fetchUserAddress(),
+              builder: (context, data) {
+                if (data.hasData) {
+                  return RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GoogleLocationScreen(
+                                  userEmail: data.data,
+                                )),
+                      );
+                    },
+                    child: Text("Change"),
+                    color: ThemeColoursSeva().dkGreen,
+                    textColor: Colors.white,
+                  );
+                } else
+                  return Container();
+              },
+            ),
+          ],
         );
       },
     );
