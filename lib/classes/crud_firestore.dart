@@ -55,7 +55,7 @@ class FirestoreCRUD {
   void deleteFromFirestore(String uId) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
-  String url = APIService.setCartAPI ;
+  String url = APIService.removeitemAPI ;
     String body=jsonEncode(
     {
       'userId':id,
@@ -86,10 +86,25 @@ class FirestoreCRUD {
   void deleteDocuments() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
-    Firestore.instance.collection('$id').getDocuments().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
-        ds.reference.delete();
-      }
-    });
+
+     String url = APIService.emptycartAPI ;
+    String body=jsonEncode(
+    {
+      'userId':id,
+    }
+
+    );
+    var response = await http.post(url, body: body);
+  if (response.statusCode == 200) {
+      print("success");
+    } else {
+      throw Exception('something is wrong');
+    }
+
+    // Firestore.instance.collection('$id').getDocuments().then((snapshot) {
+    //   for (DocumentSnapshot ds in snapshot.documents) {
+    //     ds.reference.delete();
+    //   }
+    // });
   }
 }
