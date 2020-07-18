@@ -4,6 +4,7 @@ import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/loading.dart';
 import 'package:mvp/screens/orders.dart';
+import 'package:mvp/screens/payments.dart';
 import 'package:mvp/screens/storeProductList.dart';
 import 'package:mvp/screens/storesList.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +44,7 @@ class _SevaAppState extends State<SevaApp> {
           "/orders": (context) => OrdersScreen(),
           "/stores": (context) => StoresScreen(),
           "/storesProducts": (context) => StoreProductsScreen(),
+          "/payment": (context) => Payments()
         },
       ),
     );

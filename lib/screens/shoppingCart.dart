@@ -10,6 +10,7 @@ import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/customShoppingCartCard.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:mvp/screens/payments.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -215,7 +216,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
       );
     else if (_delivery) {
-      int totalPrice = price + 10;
+      int totalPrice = price + 20;
       return Text(
         "Total Price - Rs $totalPrice",
         style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
@@ -260,7 +261,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     });
                   },
                   title: Text(
-                    'Delivery - Extra Charges Rs 10 ',
+                    'Delivery - Extra Charges Rs 20 ',
                     style: TextStyle(
                         color: ThemeColoursSeva().black,
                         fontSize: 15.0,
@@ -291,9 +292,19 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     ? FlatButton(
                         shape: Border.all(width: 0.2),
                         onPressed: () {
-                          if (_delivery) price = price + 10;
-                          openCheckout(price);
-                          Navigator.pop(context);
+                          if (_delivery) price = price + 20;
+                          // openCheckout(price);
+                          // Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Payments(
+                                      price: price,
+                                      businessUsername: widget.businessUserName,
+                                      storeName: widget.storeName,
+                                      delivery: _delivery,
+                                    )),
+                          );
                         },
                         child: Text("PAY",
                             style: TextStyle(
