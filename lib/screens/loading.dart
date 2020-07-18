@@ -76,10 +76,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: CircularProgressIndicator(
-            backgroundColor: ThemeColoursSeva().black,
-            strokeWidth: 4.0,
-            valueColor: AlwaysStoppedAnimation<Color>(ThemeColoursSeva().grey),
+          child: Text(
+            "Setting Up ...",
+            style: TextStyle(
+                color: ThemeColoursSeva().dkGreen,
+                fontSize: 28.0,
+                fontWeight: FontWeight.bold),
           ),
         ),
       ),
