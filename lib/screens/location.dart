@@ -105,32 +105,41 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-              child: Container(
-                height: 60.0,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(width: 5.0),
-                    IconButton(
-                        icon: Icon(Icons.search), onPressed: _onSearchHandler),
-                    SizedBox(width: 5.0),
-                    Container(
-                        width: 270.0,
-                        child: TextFormField(
-                            controller: _searchControl,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                            )))
-                  ],
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    height: 60.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(width: 20.0),
+                       Icon(Icons.search),
+                        SizedBox(width: 10.0),
+                        Container(
+                            width: 270.0,
+                            child: TextFormField(
+                                controller: _searchControl,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                )))
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  RaisedButton(onPressed: (){
+                    FocusScope.of(context).unfocus();
+                    _onSearchHandler();
+                  }, child: Text("Search"), color: ThemeColoursSeva().dkGreen, textColor: Colors.white,)
+                ],
               ),
             ),
           ),
