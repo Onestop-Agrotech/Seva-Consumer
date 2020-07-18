@@ -19,7 +19,7 @@ class FirestoreCRUD {
       'userId':obj.id,
       'name':obj.name,
       'pictureURL':obj.pictureUrl,
-      'productPrice':obj.totalPrice,
+      'productPrice':obj.price,
       'quantityMetric':obj.quantity.quantityMetric,
       'quantityValue':obj.quantity.quantityValue,
       'type':obj.type,
