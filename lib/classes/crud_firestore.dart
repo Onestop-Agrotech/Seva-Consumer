@@ -40,19 +40,19 @@ class FirestoreCRUD {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
     String token = await p.getToken();
-    Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = APIService.removeitemAPI;
-    String body = jsonEncode({
+    final url = Uri.parse(APIService.removeitemAPI);
+    final request = http.Request("DELETE", url);
+    request.headers.addAll(<String, String>{'x-auth-token': token});
+    request.body = jsonEncode({
       'userId': id,
       'uniqueId': uId,
     });
-    var response = await http.post(url, body: body, headers: requestHeaders);
+    var response = await request.send();
     if (response.statusCode == 200) {
       print("success");
     } else {
       throw Exception('something is wrong');
     }
-    // Firestore.instance.collection('$id').document('p-$uId').delete();
   }
 
   // Update document
@@ -69,17 +69,12 @@ class FirestoreCRUD {
       'uniqueId': docId,
       'userId': id
     });
-    var response = await http.post(url, body: body, headers: requestHeaders);
+    var response = await http.put(url, body: body, headers: requestHeaders);
     if (response.statusCode == 200) {
       print("success");
     } else {
       throw Exception('something is wrong');
     }
-
-    // Firestore.instance.collection('$id').document(docId).updateData({
-    //   'userQuantity': newq,
-    //   'userPrice': newp,
-    // });
   }
 
   // delete documents
@@ -87,22 +82,19 @@ class FirestoreCRUD {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
     String token = await p.getToken();
-    String url = APIService.emptycartAPI;
-    Map<String, String> requestHeaders = {'x-auth-token': token};
-    String body = jsonEncode({
+
+    final url = Uri.parse(APIService.emptycartAPI);
+    final request = http.Request("DELETE", url);
+    request.headers.addAll(<String, String>{'x-auth-token': token});
+    request.body = jsonEncode({
       'userId': id,
     });
-    var response = await http.post(url, body: body, headers: requestHeaders);
+    var response = await request.send();
+
     if (response.statusCode == 200) {
       print("success");
     } else {
       throw Exception('something is wrong');
     }
-
-    // Firestore.instance.collection('$id').getDocuments().then((snapshot) {
-    //   for (DocumentSnapshot ds in snapshot.documents) {
-    //     ds.reference.delete();
-    //   }
-    // });
   }
 }
