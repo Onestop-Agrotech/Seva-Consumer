@@ -118,7 +118,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         SizedBox(width: 20.0),
-                       Icon(Icons.search),
+                        Icon(Icons.search),
                         SizedBox(width: 10.0),
                         Container(
                             width: 270.0,
@@ -135,10 +135,15 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  RaisedButton(onPressed: (){
-                    FocusScope.of(context).unfocus();
-                    _onSearchHandler();
-                  }, child: Text("Search"), color: ThemeColoursSeva().dkGreen, textColor: Colors.white,)
+                  RaisedButton(
+                    onPressed: () {
+                      FocusScope.of(context).unfocus();
+                      _onSearchHandler();
+                    },
+                    child: Text("Search"),
+                    color: ThemeColoursSeva().dkGreen,
+                    textColor: Colors.white,
+                  )
                 ],
               ),
             ),

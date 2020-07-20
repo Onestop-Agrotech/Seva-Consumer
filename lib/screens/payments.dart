@@ -80,13 +80,14 @@ class _PaymentsState extends State<Payments> {
 
   initiateTransaction(String app, cart) async {
     var response = await _upiIndia.startTransaction(
-        app: app,
-        receiverUpiId: 'vk.rahul318@okaxis',
-        receiverName: 'Seva By Onestop',
-        transactionRefId: 'SevaOrderRefID-000',
-        transactionNote: 'For Seva Order - Rs ${widget.price}',
-        amount: double.parse("${widget.price}"),);
-        // amount: 1.00);
+      app: app,
+      receiverUpiId: 'vk.rahul318@okaxis',
+      receiverName: 'Seva By Onestop',
+      transactionRefId: 'SevaOrderRefID-000',
+      transactionNote: 'For Seva Order - Rs ${widget.price}',
+      amount: double.parse("${widget.price}"),
+    );
+    // amount: 1.00);
     if (response.status == UpiPaymentStatus.SUCCESS) {
       Fluttertoast.showToast(
           msg: "Order placed!",
