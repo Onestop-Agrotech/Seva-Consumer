@@ -102,13 +102,11 @@ class _StoreListCardState extends State<StoreListCard> {
                       width: MediaQuery.of(context).size.width * 0.375,
                       child: CachedNetworkImage(
                         imageUrl: widget.pictureURL,
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(
-                          backgroundColor: ThemeColoursSeva().black,
-                          strokeWidth: 4.0,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              ThemeColoursSeva().grey),
-                        ),
+                        placeholder: (context, url) => Center(
+                            child: Text(
+                          "loading image",
+                          style: TextStyle(color: Colors.grey),
+                        )),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),

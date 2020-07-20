@@ -1,8 +1,11 @@
 import 'dart:collection';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/classes/crud_firestore.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
 
 class CartModel extends ChangeNotifier {
@@ -15,19 +18,36 @@ class CartModel extends ChangeNotifier {
   FirestoreCRUD f = new FirestoreCRUD();
 
   // check for items in firestore
-  _checkFireStore() async {
-    List<DocumentSnapshot> docs;
-    QuerySnapshot q;
+  // _checkFireStore() async {
+  //   List<DocumentSnapshot> docs;
+  //   QuerySnapshot q;
+  //   StorageSharedPrefs p = new StorageSharedPrefs();
+  //   String id = await p.getId();
+  //   q = await Firestore.instance.collection('$id').getDocuments();
+  //   docs = q.documents;
+  //   return docs;
+  // }
+
+  _checkFireStore1() async {
+    // List<DocumentSnapshot> docs;
+    // QuerySnapshot q;
     StorageSharedPrefs p = new StorageSharedPrefs();
-    String id = await p.getId();
-    q = await Firestore.instance.collection('$id').getDocuments();
-    docs = q.documents;
-    return docs;
+    String token = await p.getToken();
+    String uid = await p.getId();
+    String url = APIService.getCartAPI;
+    Map<String, String> requestHeaders = {'x-auth-token': token, "userId": uid};
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      var q = json.decode(response.body);
+      return q;
+    } else {
+      throw Exception('something is wrong');
+    }
   }
 
   void firstTimeAddition() async {
     if (_cartItems.length == 0) {
-      var docs = await _checkFireStore();
+      var docs = await _checkFireStore1();
       if (docs.length > 0) {
         docs.forEach((d) {
           StoreProduct ob = new StoreProduct();
@@ -52,7 +72,7 @@ class CartModel extends ChangeNotifier {
   }
 
   void checkCartItemsMatch() async {
-    var docs = await _checkFireStore();
+    var docs = await _checkFireStore1();
     if (docs.length == 0 && _cartItems.length > 0) {
       _cartItems.clear();
       notifyListeners();
@@ -107,7 +127,7 @@ class CartModel extends ChangeNotifier {
         item.totalQuantity = item.totalQuantity + 1;
         item.totalPrice = item.totalPrice + item.price;
         f.updateDocInFirestore(
-            'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
+            '${item.uniqueId}', item.totalQuantity, item.totalPrice);
         notifyListeners();
         return;
       }
@@ -130,7 +150,7 @@ class CartModel extends ChangeNotifier {
           item.totalPrice = item.totalPrice - item.price;
           if (item.totalQuantity != 0) {
             f.updateDocInFirestore(
-                'p-${item.uniqueId}', item.totalQuantity, item.totalPrice);
+                '${item.uniqueId}', item.totalQuantity, item.totalPrice);
             notifyListeners();
           } else if (item.totalQuantity == 0) {
             remove = true;
