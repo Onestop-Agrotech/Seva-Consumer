@@ -52,16 +52,16 @@ class _PaymentsState extends State<Payments> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Disclaimer"),
+            title: Text("Notification"),
             content: Text(
-                "The following payment made will be transacted to a personal account as the app is still in development phase. This personal account belongs to one of the Directors of Onestop Agrotech Private Limited. The next app update will fix this issue. For any queries please contact +918595179521. We apologize for any inconvenice caused. Your payment is safe and secure!"),
+                "We currently only support UPI payments. We will add more payment options soon! Your payment is safe and secure!"),
             actions: <Widget>[
               RaisedButton(
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
-                child: Text('Deny Payment'),
+                child: Text('Deny'),
                 color: Colors.red,
                 textColor: Colors.white,
               ),
@@ -70,7 +70,7 @@ class _PaymentsState extends State<Payments> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('I Understand'),
+                  child: Text('Okay'),
                   color: ThemeColoursSeva().lgGreen,
                   textColor: Colors.white)
             ],
@@ -81,7 +81,7 @@ class _PaymentsState extends State<Payments> {
   initiateTransaction(String app, cart) async {
     var response = await _upiIndia.startTransaction(
       app: app,
-      receiverUpiId: 'vk.rahul318@okaxis',
+      receiverUpiId: '9663395018@okbizaxis',
       receiverName: 'Seva By Onestop',
       transactionRefId: 'SevaOrderRefID-000',
       transactionNote: 'For Seva Order - Rs ${widget.price}',
