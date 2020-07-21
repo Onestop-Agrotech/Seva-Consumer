@@ -23,6 +23,10 @@ class APIService {
   // shopping cart file - _postOrderToServer function
   static final String ordersAPI = "$_api/orders/";
 
+  // Firebase
+  static final String setDeviceTokenInFirestore =
+      "$_api/firestore/consumersettoken";
+
   // OTHERS
   // loading.dart - _sendReqToServer function
   static final String mainTokenAPI = "https://api.theonestop.co.in/token";

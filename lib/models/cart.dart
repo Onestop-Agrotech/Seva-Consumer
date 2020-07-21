@@ -17,17 +17,6 @@ class CartModel extends ChangeNotifier {
   int get listLength => _cartItems.length;
   FirestoreCRUD f = new FirestoreCRUD();
 
-  // check for items in firestore
-  // _checkFireStore() async {
-  //   List<DocumentSnapshot> docs;
-  //   QuerySnapshot q;
-  //   StorageSharedPrefs p = new StorageSharedPrefs();
-  //   String id = await p.getId();
-  //   q = await Firestore.instance.collection('$id').getDocuments();
-  //   docs = q.documents;
-  //   return docs;
-  // }
-
   _checkFireStore1() async {
     // List<DocumentSnapshot> docs;
     // QuerySnapshot q;
