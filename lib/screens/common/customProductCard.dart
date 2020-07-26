@@ -235,31 +235,39 @@ class _ProductCardState extends State<ProductCard> {
                     );
                   }).toList(),
                   onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
                     switch (newValue) {
                       case "100 Gms":
                         setState(() {
                           widget.product.price = _priceHandler.cal100();
+                          widget.product.quantity.quantityValue = 100;
+                          widget.product.quantity.quantityMetric = "Gms";
                         });
                         break;
                       case "250 Gms":
                         setState(() {
                           widget.product.price = _priceHandler.cal250();
+                          widget.product.quantity.quantityValue = 250;
+                          widget.product.quantity.quantityMetric = "Gms";
                         });
                         break;
                       case "500 Gms":
                         setState(() {
                           widget.product.price = _priceHandler.cal500();
+                          widget.product.quantity.quantityValue = 500;
+                          widget.product.quantity.quantityMetric = "Gms";
                         });
                         break;
                       case "1 Kg":
                         setState(() {
                           widget.product.price = _priceHandler.resetPrice();
+                          widget.product.quantity.quantityValue = 1;
+                          widget.product.quantity.quantityMetric = "Kg";
                         });
                         break;
                     }
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
                   },
                 )
               ],
