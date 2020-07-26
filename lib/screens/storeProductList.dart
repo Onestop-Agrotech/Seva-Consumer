@@ -144,8 +144,8 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
     var size = MediaQuery.of(context).size;
     var heightOfScreen = size.longestSide;
     var cart = Provider.of<CartModel>(context);
-    cart.checkCartItemsMatch();
-    cart.firstTimeAddition();
+    // cart.checkCartItemsMatch();
+    // cart.firstTimeAddition();
     return DefaultTabController(
         length: 2,
         child: Scaffold(

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
-import 'package:mvp/classes/crud_firestore.dart';
+// import 'package:mvp/classes/crud_firestore.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
 
@@ -15,7 +15,8 @@ class CartModel extends ChangeNotifier {
       UnmodifiableListView(_cartItems);
 
   int get listLength => _cartItems.length;
-  FirestoreCRUD f = new FirestoreCRUD();
+  // ON HOLD
+  // FirestoreCRUD f = new FirestoreCRUD();
 
   _checkFireStore1() async {
     // List<DocumentSnapshot> docs;
@@ -34,32 +35,38 @@ class CartModel extends ChangeNotifier {
     }
   }
 
+// ON HOLD
   void firstTimeAddition() async {
     if (_cartItems.length == 0) {
       var docs = await _checkFireStore1();
       if (docs.length > 0) {
-        docs.forEach((d) {
-          StoreProduct ob = new StoreProduct();
-          Quantity q = new Quantity();
-          ob.name = d.data['name'];
-          ob.price = d.data['productPrice'];
-          ob.uniqueId = d.data['uniqueId'];
-          ob.id = d.data['id'];
-          ob.type = d.data['type'];
-          q.quantityValue = d.data['quantityValue'];
-          q.quantityMetric = d.data['quantityMetric'];
-          ob.totalPrice = d.data['userPrice'];
-          ob.totalQuantity = d.data['userQuantity'];
-          ob.pictureUrl = d.data['pictureURL'];
-          ob.description = d.data['description'];
-          ob.quantity = q;
-          _cartItems.add(ob);
-        });
-        notifyListeners();
+        print(docs.length);
+        print(docs[0]);
+        // docs.forEach((d) {
+        //   if (d) {
+        //     StoreProduct ob = new StoreProduct();
+        //     Quantity q = new Quantity();
+        //     ob.name = d.data['name'];
+        //     ob.price = d.data['productPrice'];
+        //     ob.uniqueId = d.data['uniqueId'];
+        //     ob.id = d.data['id'];
+        //     ob.type = d.data['type'];
+        //     q.quantityValue = d.data['quantityValue'];
+        //     q.quantityMetric = d.data['quantityMetric'];
+        //     ob.totalPrice = d.data['userPrice'];
+        //     ob.totalQuantity = d.data['userQuantity'];
+        //     ob.pictureUrl = d.data['pictureURL'];
+        //     ob.description = d.data['description'];
+        //     ob.quantity = q;
+        //     _cartItems.add(ob);
+        //   }
+        // });
+        // notifyListeners();
       }
     }
   }
 
+// ON HOLD
   void checkCartItemsMatch() async {
     var docs = await _checkFireStore1();
     if (docs.length == 0 && _cartItems.length > 0) {
@@ -85,7 +92,8 @@ class CartModel extends ChangeNotifier {
       i.totalQuantity = 1;
       i.totalPrice = i.price;
       _cartItems.add(i);
-      f.addToFirestore(i);
+      // ON HOLD
+      // f.addToFirestore(i);
       notifyListeners();
     }
   }
@@ -100,9 +108,10 @@ class CartModel extends ChangeNotifier {
       }
     });
     if (index != -1) {
-      String uid = _cartItems[index].uniqueId;
+      // String uid = _cartItems[index].uniqueId;
       _cartItems.removeAt(index);
-      f.deleteFromFirestore(uid);
+      // ON HOLD
+      // f.deleteFromFirestore(uid);
       notifyListeners();
     }
   }
@@ -115,8 +124,9 @@ class CartModel extends ChangeNotifier {
         matched = true;
         item.totalQuantity = item.totalQuantity + 1;
         item.totalPrice = item.totalPrice + item.price;
-        f.updateDocInFirestore(
-            '${item.uniqueId}', item.totalQuantity, item.totalPrice);
+        // ON HOLD
+        // f.updateDocInFirestore(
+        //     '${item.uniqueId}', item.totalQuantity, item.totalPrice);
         notifyListeners();
         return;
       }
@@ -138,8 +148,9 @@ class CartModel extends ChangeNotifier {
           item.totalQuantity = item.totalQuantity - 1;
           item.totalPrice = item.totalPrice - item.price;
           if (item.totalQuantity != 0) {
-            f.updateDocInFirestore(
-                '${item.uniqueId}', item.totalQuantity, item.totalPrice);
+            // ON HOLD
+            // f.updateDocInFirestore(
+            //     '${item.uniqueId}', item.totalQuantity, item.totalPrice);
             notifyListeners();
           } else if (item.totalQuantity == 0) {
             remove = true;
@@ -194,7 +205,8 @@ class CartModel extends ChangeNotifier {
   clearCart() {
     if (_cartItems.length > 0) {
       _cartItems.clear();
-      f.deleteDocuments();
+      // ON HOLD
+      // f.deleteDocuments();
       notifyListeners();
     }
   }
@@ -203,7 +215,8 @@ class CartModel extends ChangeNotifier {
   clearCartWithoutNotify() {
     if (_cartItems.length > 0) {
       _cartItems.clear();
-      f.deleteDocuments();
+      // ON HOLD
+      // f.deleteDocuments();
     }
   }
 }
