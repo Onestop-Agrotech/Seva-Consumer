@@ -117,12 +117,12 @@ class _StoreProductsScreenState extends State<StoreProductsScreen> {
                 crossAxisCount: 2,
                 childAspectRatio: heightOfScreen > 850
                     ? MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.5)
+                        (MediaQuery.of(context).size.height / 1.2)
                     : heightOfScreen > 700
                         ? MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height / 1.5)
+                            (MediaQuery.of(context).size.height / 1.2)
                         : MediaQuery.of(context).size.width /
-                            (MediaQuery.of(context).size.height / 1.1),
+                            (MediaQuery.of(context).size.height / 0.9),
               ),
               delegate: SliverChildBuilderDelegate((context, productIndex) {
                 return ProductCard(

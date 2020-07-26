@@ -15,11 +15,13 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   bool _loading;
+  String dropdownValue;
 
   @override
   initState() {
     super.initState();
     _loading = false;
+    dropdownValue = "1 Kg";
   }
 
   _showLoading(cart, item, setState) {
@@ -216,13 +218,32 @@ class _ProductCardState extends State<ProductCard> {
                       fontWeight: FontWeight.w500,
                       color: ThemeColoursSeva().black),
                 ),
-                Text(
-                  "${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
-                  style: TextStyle(
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.w500,
-                      color: ThemeColoursSeva().black),
-                )
+                // Text(
+                //   "${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
+                //   style: TextStyle(
+                //       fontSize: 15.0,
+                //       fontWeight: FontWeight.w500,
+                //       color: ThemeColoursSeva().black),
+                // )
+                DropdownButton(
+                        value: dropdownValue,
+                        items: <String>[
+                          '1 Kg',
+                          '100 Gms',
+                          '250 Gms',
+                          '500 Gms',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownValue = newValue;
+                          });
+                        },
+                      )
               ],
             ),
           ),
