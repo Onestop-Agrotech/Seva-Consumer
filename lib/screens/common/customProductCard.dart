@@ -221,37 +221,47 @@ class _ProductCardState extends State<ProductCard> {
                       fontWeight: FontWeight.w500,
                       color: ThemeColoursSeva().black),
                 ),
-                // Text(
-                //   "${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
-                //   style: TextStyle(
-                //       fontSize: 15.0,
-                //       fontWeight: FontWeight.w500,
-                //       color: ThemeColoursSeva().black),
-                // )
                 DropdownButton(
-                        value: dropdownValue,
-                        items: <String>[
-                          '1 Kg',
-                          '100 Gms',
-                          '250 Gms',
-                          '500 Gms',
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String newValue) {
-                          if(newValue=="100 Gms"){
-                            setState(() {
-                              widget.product.price = _priceHandler.cal100();
-                            });
-                          }
-                          setState(() {
-                            dropdownValue = newValue;
-                          });
-                        },
-                      )
+                  value: dropdownValue,
+                  items: <String>[
+                    '1 Kg',
+                    '100 Gms',
+                    '250 Gms',
+                    '500 Gms',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String newValue) {
+                    switch (newValue) {
+                      case "100 Gms":
+                        setState(() {
+                          widget.product.price = _priceHandler.cal100();
+                        });
+                        break;
+                      case "250 Gms":
+                        setState(() {
+                          widget.product.price = _priceHandler.cal250();
+                        });
+                        break;
+                      case "500 Gms":
+                        setState(() {
+                          widget.product.price = _priceHandler.cal500();
+                        });
+                        break;
+                      case "1 Kg":
+                        setState(() {
+                          widget.product.price = _priceHandler.resetPrice();
+                        });
+                        break;
+                    }
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                )
               ],
             ),
           ),
