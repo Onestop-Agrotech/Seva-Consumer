@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mvp/classes/price_handler.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -16,12 +17,14 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   bool _loading;
   String dropdownValue;
+  PriceHandler _priceHandler;
 
   @override
   initState() {
     super.initState();
     _loading = false;
     dropdownValue = "1 Kg";
+    _priceHandler = PriceHandler(price: widget.product.price);
   }
 
   _showLoading(cart, item, setState) {
@@ -239,6 +242,11 @@ class _ProductCardState extends State<ProductCard> {
                           );
                         }).toList(),
                         onChanged: (String newValue) {
+                          if(newValue=="100 Gms"){
+                            setState(() {
+                              widget.product.price = _priceHandler.cal100();
+                            });
+                          }
                           setState(() {
                             dropdownValue = newValue;
                           });
