@@ -213,18 +213,18 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     if (!_delivery && !_pickUp)
       return Text(
         "Total Price - Rs $price",
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
       );
     else if (_delivery) {
       int totalPrice = price + 20;
       return Text(
         "Total Price - Rs $totalPrice",
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
       );
     } else {
       return Text(
         "Total Price - Rs $price",
-        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
       );
     }
   }
@@ -261,29 +261,36 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     });
                   },
                   title: Text(
-                    'Delivery - Extra Charges Rs 20 ',
+                    'Delivery: Rs 20 ',
                     style: TextStyle(
                         color: ThemeColoursSeva().black,
-                        fontSize: 15.0,
+                        fontSize: 19.0,
                         fontWeight: FontWeight.w500),
                   ),
                 ),
                 SizedBox(height: 20.0),
-                CheckboxListTile(
-                  value: _pickUp,
-                  onChanged: (val) {
-                    setState(() {
-                      _pickUp = val;
-                      _delivery = false;
-                      // _totalPrice=price;
-                    });
-                  },
-                  title: Text(
-                      'Pick Up - ${widget.distance} from your delivery location',
-                      style: TextStyle(
-                          color: ThemeColoursSeva().black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500)),
+                // CheckboxListTile(
+                //   value: _pickUp,
+                //   onChanged: (val) {
+                //     setState(() {
+                //       _pickUp = val;
+                //       _delivery = false;
+                //       // _totalPrice=price;
+                //     });
+                //   },
+                //   title: Text(
+                //       'Pick Up - ${widget.distance} from your delivery location',
+                //       style: TextStyle(
+                //           color: ThemeColoursSeva().black,
+                //           fontSize: 15.0,
+                //           fontWeight: FontWeight.w500)),
+                // ),
+                Text(
+                  "Self Pick Up - Comming Soon!",
+                  style: TextStyle(
+                    color: ThemeColoursSeva().grey,
+                    fontSize: 16.0,
+                  ),
                 ),
                 SizedBox(height: 30.0),
                 _showTotalPrice(price),
@@ -322,21 +329,30 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   _showButton(cartItems) {
     if (cartItems.listLength > 0 && _loading == false) {
-      return FloatingActionButton.extended(
-        onPressed: () {
-          // testing payments
-          var price = cartItems.calTotalPrice();
+      var price = cartItems.calTotalPrice();
+      if (price >= 100) {
+        return FloatingActionButton.extended(
+          onPressed: () {
+            // testing payments
 
-          // openCheckout(price);
-          // open bottom sheet
-          _showBottomSheetOptions(context, price);
-        },
-        label: Text(
-          "Proceed",
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: ThemeColoursSeva().dkGreen,
-      );
+            // openCheckout(price);
+            // open bottom sheet
+            _showBottomSheetOptions(context, price);
+          },
+          label: Text(
+            "Proceed",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: ThemeColoursSeva().dkGreen,
+        );
+      } else {
+        return Container(
+          child: Text(
+            "Minimum order - Rs 100",
+            style: TextStyle(color: Colors.black, fontSize: 20.0),
+          ),
+        );
+      }
     } else
       return Container();
   }

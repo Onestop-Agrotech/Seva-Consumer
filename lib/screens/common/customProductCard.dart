@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:mvp/classes/price_handler.dart';
+// import 'package:mvp/classes/price_handler.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/cart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -17,14 +17,14 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   bool _loading;
   String dropdownValue;
-  PriceHandler _priceHandler;
+  // PriceHandler _priceHandler;
 
   @override
   initState() {
     super.initState();
     _loading = false;
     dropdownValue = "1 Kg";
-    _priceHandler = PriceHandler(price: widget.product.price);
+    // _priceHandler = PriceHandler(price: widget.product.price);
   }
 
   _showLoading(cart, item, setState) {
@@ -221,55 +221,66 @@ class _ProductCardState extends State<ProductCard> {
                       fontWeight: FontWeight.w500,
                       color: ThemeColoursSeva().black),
                 ),
-                DropdownButton(
-                  value: dropdownValue,
-                  items: <String>[
-                    '1 Kg',
-                    '100 Gms',
-                    '250 Gms',
-                    '500 Gms',
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                    switch (newValue) {
-                      case "100 Gms":
-                        setState(() {
-                          widget.product.price = _priceHandler.cal100();
-                          widget.product.quantity.quantityValue = 100;
-                          widget.product.quantity.quantityMetric = "Gms";
-                        });
-                        break;
-                      case "250 Gms":
-                        setState(() {
-                          widget.product.price = _priceHandler.cal250();
-                          widget.product.quantity.quantityValue = 250;
-                          widget.product.quantity.quantityMetric = "Gms";
-                        });
-                        break;
-                      case "500 Gms":
-                        setState(() {
-                          widget.product.price = _priceHandler.cal500();
-                          widget.product.quantity.quantityValue = 500;
-                          widget.product.quantity.quantityMetric = "Gms";
-                        });
-                        break;
-                      case "1 Kg":
-                        setState(() {
-                          widget.product.price = _priceHandler.resetPrice();
-                          widget.product.quantity.quantityValue = 1;
-                          widget.product.quantity.quantityMetric = "Kg";
-                        });
-                        break;
-                    }
-                  },
-                )
+                Text(
+                  "${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w500,
+                      color: ThemeColoursSeva().black),
+                ),
+                // DropdownButton(
+                //   value: dropdownValue,
+                //   items: <String>[
+                //     '1 Kg',
+                //     '100 Gms',
+                //     '250 Gms',
+                //     '500 Gms',
+                //   ].map<DropdownMenuItem<String>>((String value) {
+                //     return DropdownMenuItem<String>(
+                //       value: value,
+                //       child: Text(value),
+                //     );
+                //   }).toList(),
+                //   onChanged: (String newValue) {
+                //     setState(() {
+                //       dropdownValue = newValue;
+                //     });
+                //     switch (newValue) {
+                //       case "100 Gms":
+                //         setState(() {
+                //           widget.product.price = _priceHandler.cal100();
+                //           widget.product.quantity.quantityValue = 100;
+                //           widget.product.quantity.quantityMetric = "Gms";
+                //         });
+                //         break;
+                //       case "250 Gms":
+                //         setState(() {
+                //           widget.product.price = _priceHandler.cal250();
+                //           widget.product.quantity.quantityValue = 250;
+                //           widget.product.quantity.quantityMetric = "Gms";
+                //         });
+                //         break;
+                //       case "500 Gms":
+                //         setState(() {
+                //           widget.product.price = _priceHandler.cal500();
+                //           widget.product.quantity.quantityValue = 500;
+                //           widget.product.quantity.quantityMetric = "Gms";
+                //         });
+                //         break;
+                //       case "1 Kg":
+                //         setState(() {
+                //           widget.product.price = _priceHandler.resetPrice();
+                //           widget.product.quantity.quantityValue = 1;
+                //           widget.product.quantity.quantityMetric = "Kg";
+                //         });
+                //         break;
+
+                //     }
+                //     print(widget.product.price);
+                //     print(widget.product.quantity.quantityValue);
+                //     print(widget.product.quantity.quantityMetric);
+                //   },
+                // )
               ],
             ),
           ),
