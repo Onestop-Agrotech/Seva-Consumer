@@ -27,8 +27,7 @@ class _DescriptionIntroState extends State<DescriptionIntro> {
             child: Text(
               widget.descText,
               style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: "Raleway",
+                  fontSize: 15,
                   color: ThemeColoursSeva().dkGreen),
             ),
           ),

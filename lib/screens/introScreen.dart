@@ -32,10 +32,8 @@ class _IntroScreenState extends State<IntroScreen> {
               padding: const EdgeInsets.only(left: 30.0),
               child: Text(
                 "In light of #Covid19, now buy your essentials while following the safety measures!",
-                style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: "Raleway",
-                    color: ThemeColoursSeva().dkGreen),
+                style:
+                    TextStyle(fontSize: 15, color: ThemeColoursSeva().dkGreen),
               ),
             ),
           ),
@@ -43,11 +41,12 @@ class _IntroScreenState extends State<IntroScreen> {
             height: 80.0,
           ),
           Text(
-            "Service available only in select areas of Bangalore",
+            "Service available only in select areas of Bangalore.",
+            overflow: TextOverflow.clip,
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontFamily: "Raleway",
-                fontSize: 15.0),
+                fontSize: 13.0),
           ),
           SizedBox(height: 83.0)
         ],
@@ -89,8 +88,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
   ButtonTheme _buildButton() {
     return ButtonTheme(
-      minWidth: 90.0,
-      height: 40.0,
+      minWidth: 50.0,
+      height: 30.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -113,6 +112,7 @@ class _IntroScreenState extends State<IntroScreen> {
     double sWidth = MediaQuery.of(context).size.width;
     double sHeight = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           CustomPaint(
@@ -148,10 +148,10 @@ class _IntroScreenState extends State<IntroScreen> {
                   ],
                 ),
               ),
-              top: 120),
+              top: 90),
           Positioned(
             left: sWidth * 0.075,
-            top: sHeight * 0.32,
+            top: sHeight * 0.26,
             child: Container(
               height: sHeight * 0.80,
               width: sWidth * 0.85,
@@ -220,7 +220,45 @@ class _IntroScreenState extends State<IntroScreen> {
                   SizedBox(
                     height: 30.0,
                   ),
-                  _buildButton(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _buildButton(),
+                      _index == 3
+                          ? RaisedButton(
+                              onPressed: () {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/login', (route) => false);
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: ThemeColoursSeva().dkGreen,
+                                    fontSize: 15.0),
+                              ),
+                              color: Colors.white,
+                              elevation: 0.0,
+                            )
+                          : Container(),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  _index == 3
+                      ? Container()
+                      : RaisedButton(
+                          onPressed: () {
+                            setState(() {
+                              _index = 3;
+                            });
+                          },
+                          child: Text(
+                            "Skip",
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 13.0),
+                          ),
+                          color: Colors.white,
+                          elevation: 0.0,
+                        )
                 ],
               ),
             ),
