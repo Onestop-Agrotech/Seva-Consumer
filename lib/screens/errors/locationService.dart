@@ -16,9 +16,9 @@ class EnableLocationPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              width: MediaQuery.of(context).size.width * 0.7,
+              width: MediaQuery.of(context).size.width * 0.8,
               child: Text(
-                "Please enable your GPS to continue.",
+                "Please turn on your device location to continue.",
                 style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
                     fontSize: 24.0,
