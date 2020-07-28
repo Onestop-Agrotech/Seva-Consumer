@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/errors/locationService.dart';
 import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
@@ -35,15 +36,15 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   void getPermissions() async {
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
-      print("denied location.serviceEnabled");
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        print("denied location.requestService");
         // go to enable GPS service page
-        Fluttertoast.showToast(
-        msg: "Please enable GPS to continue",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EnableLocationPage(
+                      userEmail: widget.userEmail,
+                    )));
         return;
       }
     }
@@ -61,8 +62,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         msg: "Getting your location, just a moment!",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER);
-    _locationData = await location.getLocation();
-    getCurrentLocation(_locationData);
+    Future.delayed(const Duration(seconds: 3), () async {
+      _locationData = await location.getLocation();
+      getCurrentLocation(_locationData);
+    });
   }
 
   void getCurrentLocation(ld) async {
