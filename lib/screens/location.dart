@@ -22,24 +22,51 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   Set<Marker> _markers = {};
   bool _showActionBtn;
   Location location = new Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
 
   @override
   void initState() {
     super.initState();
+    getPermissions();
+  }
+
+  void getPermissions() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      print("denied location.serviceEnabled");
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        print("denied location.requestService");
+        // go to enable GPS service page
+        Fluttertoast.showToast(
+        msg: "Please enable GPS to continue",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM);
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      print("denied location.hasPermission");
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        print("denied location.requestPermission");
+        return;
+      }
+    }
     Fluttertoast.showToast(
         msg: "Getting your location, just a moment!",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER);
-    // getPermissions();
-    getCurrentLocation();
+    _locationData = await location.getLocation();
+    getCurrentLocation(_locationData);
   }
 
-  void getPermissions() async {}
-
-  void getCurrentLocation() async {
-    LocationData _locationData;
-    _locationData = await location.getLocation();
-    LatLng coords = LatLng(_locationData.latitude, _locationData.longitude);
+  void getCurrentLocation(ld) async {
+    LatLng coords = LatLng(ld.latitude, ld.longitude);
     Marker mk1 = Marker(
         markerId: MarkerId('current'),
         position: coords,
@@ -58,7 +85,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     Fluttertoast.showToast(
         msg: "Hold the marker and drag for accuracy.",
         toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER);
+        gravity: ToastGravity.BOTTOM);
   }
 
   void _onMapCreated(GoogleMapController controller) {
