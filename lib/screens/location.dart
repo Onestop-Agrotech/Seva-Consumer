@@ -41,18 +41,24 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     _locationData = await location.getLocation();
     LatLng coords = LatLng(_locationData.latitude, _locationData.longitude);
     Marker mk1 = Marker(
-      markerId: MarkerId('current'),
-      position: coords,
-    );
+        markerId: MarkerId('current'),
+        position: coords,
+        draggable: true,
+        onDragEnd: ((value) {
+          setState(() {
+            coords = LatLng(value.latitude, value.longitude);
+          });
+        }));
     setState(() {
       mapController.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: coords, zoom: 17.0)));
+          CameraPosition(target: coords, zoom: 18.0)));
       _markers.add(mk1);
+      _showActionBtn = true;
     });
-    // Fluttertoast.showToast(
-    //     msg: "Please add a marker",
-    //     toastLength: Toast.LENGTH_LONG,
-    //     gravity: ToastGravity.CENTER);
+    Fluttertoast.showToast(
+        msg: "Hold the marker and drag for accuracy.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -93,15 +99,15 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             markers: Set.from(_markers),
             onTap: (pos) {
-              _showActionBtn = true;
-              _userPosition = pos;
-              Marker mk1 = Marker(
-                markerId: MarkerId('1'),
-                position: pos,
-              );
-              setState(() {
-                _markers.add(mk1);
-              });
+              // _showActionBtn = true;
+              // _userPosition = pos;
+              // Marker mk1 = Marker(
+              //   markerId: MarkerId('1'),
+              //   position: pos,
+              // );
+              // setState(() {
+              //   _markers.add(mk1);
+              // });
             },
           ),
         ],
