@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/userProfile.dart';
 
@@ -21,6 +21,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   LatLng _userPosition;
   Set<Marker> _markers = {};
   bool _showActionBtn;
+  Location location = new Location();
 
   @override
   void initState() {
@@ -29,6 +30,21 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         msg: "Please search for your address and set it",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER);
+    // getPermissions();
+  }
+
+  void getPermissions() async {}
+
+  void getCurrentLocation() async {
+    LocationData _locationData;
+    _locationData = await location.getLocation();
+    print(_locationData.latitude);
+    print(_locationData.longitude);
+    LatLng coords = LatLng(_locationData.latitude, _locationData.longitude);
+    setState(() {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: coords, zoom: 16.0)));
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -37,25 +53,26 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   }
 
   _onSearchHandler() async {
-    try {
-      var addresses =
-          await Geocoder.local.findAddressesFromQuery(_searchControl.text);
-      LatLng coords = LatLng(addresses.first.coordinates.latitude,
-          addresses.first.coordinates.longitude);
-      setState(() {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: coords, zoom: 16.0)));
-      });
-      Fluttertoast.showToast(
-          msg: "Please select area on map for accuracy",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER);
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: "Please enter a valid address",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER);
-    }
+    // try {
+    //   var addresses =
+    //       await Geocoder.local.findAddressesFromQuery(_searchControl.text);
+    //   LatLng coords = LatLng(addresses.first.coordinates.latitude,
+    //       addresses.first.coordinates.longitude);
+    //   setState(() {
+    //     mapController.animateCamera(CameraUpdate.newCameraPosition(
+    //         CameraPosition(target: coords, zoom: 16.0)));
+    //   });
+    //   Fluttertoast.showToast(
+    //       msg: "Please select area on map for accuracy",
+    //       toastLength: Toast.LENGTH_LONG,
+    //       gravity: ToastGravity.CENTER);
+    // } catch (e) {
+    //   Fluttertoast.showToast(
+    //       msg: "Please enter a valid address",
+    //       toastLength: Toast.LENGTH_LONG,
+    //       gravity: ToastGravity.CENTER);
+    // }
+    getCurrentLocation();
   }
 
   _showFloatingActionButton() {
@@ -104,47 +121,15 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 60.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(width: 20.0),
-                        Icon(Icons.search),
-                        SizedBox(width: 10.0),
-                        Container(
-                            width: 270.0,
-                            child: TextFormField(
-                                controller: _searchControl,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                )))
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      _onSearchHandler();
-                    },
-                    child: Text("Search"),
-                    color: ThemeColoursSeva().dkGreen,
-                    textColor: Colors.white,
-                  )
-                ],
+              padding: const EdgeInsets.only(left: 130, right: 20, top: 30),
+              child: RaisedButton(
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  _onSearchHandler();
+                },
+                child: Text("Locate me"),
+                color: ThemeColoursSeva().dkGreen,
+                textColor: Colors.white,
               ),
             ),
           ),
