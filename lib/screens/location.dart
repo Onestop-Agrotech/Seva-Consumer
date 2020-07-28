@@ -27,10 +27,11 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   void initState() {
     super.initState();
     Fluttertoast.showToast(
-        msg: "Please search for your address and set it",
+        msg: "Getting your location, just a moment!",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER);
     // getPermissions();
+    getCurrentLocation();
   }
 
   void getPermissions() async {}
@@ -38,41 +39,25 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   void getCurrentLocation() async {
     LocationData _locationData;
     _locationData = await location.getLocation();
-    print(_locationData.latitude);
-    print(_locationData.longitude);
     LatLng coords = LatLng(_locationData.latitude, _locationData.longitude);
+    Marker mk1 = Marker(
+      markerId: MarkerId('current'),
+      position: coords,
+    );
     setState(() {
       mapController.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: coords, zoom: 16.0)));
+          CameraPosition(target: coords, zoom: 17.0)));
+      _markers.add(mk1);
     });
+    // Fluttertoast.showToast(
+    //     msg: "Please add a marker",
+    //     toastLength: Toast.LENGTH_LONG,
+    //     gravity: ToastGravity.CENTER);
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     // _encodeLocation();
-  }
-
-  _onSearchHandler() async {
-    // try {
-    //   var addresses =
-    //       await Geocoder.local.findAddressesFromQuery(_searchControl.text);
-    //   LatLng coords = LatLng(addresses.first.coordinates.latitude,
-    //       addresses.first.coordinates.longitude);
-    //   setState(() {
-    //     mapController.animateCamera(CameraUpdate.newCameraPosition(
-    //         CameraPosition(target: coords, zoom: 16.0)));
-    //   });
-    //   Fluttertoast.showToast(
-    //       msg: "Please select area on map for accuracy",
-    //       toastLength: Toast.LENGTH_LONG,
-    //       gravity: ToastGravity.CENTER);
-    // } catch (e) {
-    //   Fluttertoast.showToast(
-    //       msg: "Please enter a valid address",
-    //       toastLength: Toast.LENGTH_LONG,
-    //       gravity: ToastGravity.CENTER);
-    // }
-    getCurrentLocation();
   }
 
   _showFloatingActionButton() {
@@ -118,20 +103,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                 _markers.add(mk1);
               });
             },
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 130, right: 20, top: 30),
-              child: RaisedButton(
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                  _onSearchHandler();
-                },
-                child: Text("Locate me"),
-                color: ThemeColoursSeva().dkGreen,
-                textColor: Colors.white,
-              ),
-            ),
           ),
         ],
       ),
