@@ -26,9 +26,7 @@ class _DescriptionIntroState extends State<DescriptionIntro> {
             padding: const EdgeInsets.only(left: 30.0),
             child: Text(
               widget.descText,
-              style: TextStyle(
-                  fontSize: 15,
-                  color: ThemeColoursSeva().dkGreen),
+              style: TextStyle(fontSize: 15, color: ThemeColoursSeva().dkGreen),
             ),
           ),
         ),

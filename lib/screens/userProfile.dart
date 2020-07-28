@@ -103,9 +103,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-      InputTextField(eC: _address, lt: "Home address:", keyBoardType: TextInputType.numberWithOptions(),),
-      _showEmptyError(),
-      _showLoading(),
+          InputTextField(
+            eC: _address,
+            lt: "Home address:",
+            keyBoardType: TextInputType.numberWithOptions(),
+          ),
+          _showEmptyError(),
+          _showLoading(),
         ],
       ),
     );
