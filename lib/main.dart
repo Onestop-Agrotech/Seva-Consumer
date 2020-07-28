@@ -3,7 +3,6 @@ import 'package:mvp/models/cart.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/loading.dart';
-import 'package:mvp/screens/location.dart';
 import 'package:mvp/screens/orders.dart';
 import 'package:mvp/screens/payments.dart';
 import 'package:mvp/screens/storeProductList.dart';
@@ -38,7 +37,7 @@ class _SevaAppState extends State<SevaApp> {
       providers: [ChangeNotifierProvider(create: (context) => CartModel())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: GoogleLocationScreen(),
+        home: LoadingScreen(),
         routes: {
           "/register": (context) => RegisterScreen(),
           "/login": (context) => LoginScreen(),
