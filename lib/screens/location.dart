@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/errors/locationService.dart';
 import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
@@ -21,41 +22,78 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   LatLng _userPosition;
   Set<Marker> _markers = {};
   bool _showActionBtn;
+  Location location = new Location();
+  bool _serviceEnabled;
+  PermissionStatus _permissionGranted;
+  LocationData _locationData;
 
   @override
   void initState() {
     super.initState();
+    getPermissions();
+  }
+
+  void getPermissions() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        // go to enable GPS service page
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EnableLocationPage(
+                      userEmail: widget.userEmail,
+                    )));
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      print("denied location.hasPermission");
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        print("denied location.requestPermission");
+        return;
+      }
+    }
     Fluttertoast.showToast(
-        msg: "Please search for your address and set it",
+        msg: "Getting your location, just a moment!",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER);
+    Future.delayed(const Duration(seconds: 3), () async {
+      _locationData = await location.getLocation();
+      getCurrentLocation(_locationData);
+    });
+  }
+
+  void getCurrentLocation(ld) async {
+    LatLng coords = LatLng(ld.latitude, ld.longitude);
+    Marker mk1 = Marker(
+        markerId: MarkerId('current'),
+        position: coords,
+        draggable: true,
+        onDragEnd: ((value) {
+          setState(() {
+            coords = LatLng(value.latitude, value.longitude);
+          });
+        }));
+    setState(() {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: coords, zoom: 18.0)));
+      _markers.add(mk1);
+      _showActionBtn = true;
+    });
+    Fluttertoast.showToast(
+        msg: "Hold the marker and drag for accuracy.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM);
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
     // _encodeLocation();
-  }
-
-  _onSearchHandler() async {
-    try {
-      var addresses =
-          await Geocoder.local.findAddressesFromQuery(_searchControl.text);
-      LatLng coords = LatLng(addresses.first.coordinates.latitude,
-          addresses.first.coordinates.longitude);
-      setState(() {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: coords, zoom: 16.0)));
-      });
-      Fluttertoast.showToast(
-          msg: "Please select area on map for accuracy",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER);
-    } catch (e) {
-      Fluttertoast.showToast(
-          msg: "Please enter a valid address",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER);
-    }
   }
 
   _showFloatingActionButton() {
@@ -91,62 +129,16 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
             markers: Set.from(_markers),
             onTap: (pos) {
-              _showActionBtn = true;
-              _userPosition = pos;
-              Marker mk1 = Marker(
-                markerId: MarkerId('1'),
-                position: pos,
-              );
-              setState(() {
-                _markers.add(mk1);
-              });
+              // _showActionBtn = true;
+              // _userPosition = pos;
+              // Marker mk1 = Marker(
+              //   markerId: MarkerId('1'),
+              //   position: pos,
+              // );
+              // setState(() {
+              //   _markers.add(mk1);
+              // });
             },
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    height: 60.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(width: 20.0),
-                        Icon(Icons.search),
-                        SizedBox(width: 10.0),
-                        Container(
-                            width: 270.0,
-                            child: TextFormField(
-                                controller: _searchControl,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                )))
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  RaisedButton(
-                    onPressed: () {
-                      FocusScope.of(context).unfocus();
-                      _onSearchHandler();
-                    },
-                    child: Text("Search"),
-                    color: ThemeColoursSeva().dkGreen,
-                    textColor: Colors.white,
-                  )
-                ],
-              ),
-            ),
           ),
         ],
       ),

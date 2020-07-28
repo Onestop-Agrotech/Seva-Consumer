@@ -66,6 +66,19 @@ class Store {
           stores[i].dp = double.parse(stores[i].distance.split(' ')[0]);
       }
       stores.sort((a, b) => a.dp.compareTo(b.dp));
+      // make an extra list here:
+      var y = [];
+      // pick off the obs which are online:false
+      for (int i = 0; i < stores.length; ++i) {
+        if (stores[i].online == false) y.add(stores[i]);
+      }
+      // remove the obs which are online:false
+      stores.removeWhere((e) => e.online == false);
+
+      // add all y obs back to stores
+      for (int i = 0; i < y.length; ++i) {
+        stores.add(y[i]);
+      }
     }
     return stores;
   }

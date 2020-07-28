@@ -351,7 +351,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.only(top: 50.0),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: Column(
                   children: <Widget>[
                     TopText(txt: "Create Account"),
