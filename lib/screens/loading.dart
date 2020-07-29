@@ -6,6 +6,7 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 // import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/introScreen.dart';
+import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/storesList.dart';
 import 'dart:io';
 
@@ -87,7 +88,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
           context, MaterialPageRoute(builder: (context) => IntroScreen()));
     } else if (_showLoginScreen == false) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => StoresScreen()));
+          context, MaterialPageRoute(builder: (context) => MainLandingScreen()));
     }
   }
 
