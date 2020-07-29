@@ -10,7 +10,6 @@ import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/customShoppingCartCard.dart';
 import 'package:mvp/screens/common/topText.dart';
-import 'package:mvp/screens/payments.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -194,7 +193,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   void openCheckout(price) async {
     await _getUserDetails();
     var options = {
-      'key': 'rzp_test_3PrnV481o0a0aV',
+      'key': 'rzp_test_2kfF1SWWrdjXBf',
       'amount': price * 100,
       'prefill': {'contact': _userMobile, 'email': _userEmail},
       'external': {
@@ -286,7 +285,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 //           fontWeight: FontWeight.w500)),
                 // ),
                 Text(
-                  "Self Pick Up - Comming Soon!",
+                  "Self Pick Up - Coming Soon!",
                   style: TextStyle(
                     color: ThemeColoursSeva().grey,
                     fontSize: 16.0,
@@ -300,18 +299,18 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                         shape: Border.all(width: 0.2),
                         onPressed: () {
                           if (_delivery) price = price + 20;
-                          // openCheckout(price);
-                          // Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Payments(
-                                      price: price,
-                                      businessUsername: widget.businessUserName,
-                                      storeName: widget.storeName,
-                                      delivery: _delivery,
-                                    )),
-                          );
+                          openCheckout(price);
+                          Navigator.pop(context);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => Payments(
+                          //             price: price,
+                          //             businessUsername: widget.businessUserName,
+                          //             storeName: widget.storeName,
+                          //             delivery: _delivery,
+                          //           )),
+                          // );
                         },
                         child: Text("PAY",
                             style: TextStyle(
