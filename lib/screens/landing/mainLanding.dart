@@ -11,6 +11,10 @@ class MainLandingScreen extends StatefulWidget {
 }
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
+  var texts = [
+    "Free Delivery on your first 3 orders.\n"+"\nOrder Now!",
+    "Get a cashback of Rs 30 on your 4th order!"
+  ];
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -60,18 +64,20 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(11.0),
-                          child: Text("Featured", style: TextStyle(
-                            color: ThemeColoursSeva().dkGreen,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 17.0
-                          ),),
+                          child: Text(
+                            "Featured",
+                            style: TextStyle(
+                                color: ThemeColoursSeva().dkGreen,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 17.0),
+                          ),
                         ),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 12.0),
                       child: Container(
-                        height: height*0.2,
+                        height: height * 0.2,
                         child: Row(
                           children: <Widget>[
                             Expanded(
@@ -81,7 +87,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 itemBuilder: (context, index) {
                                   return Row(
                                     children: <Widget>[
-                                      FeaturedCards(),
+                                      FeaturedCards(
+                                        textToDisplay: texts[index],
+                                      ),
                                       SizedBox(width: 20.0),
                                     ],
                                   );

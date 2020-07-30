@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 
 class FeaturedCards extends StatelessWidget {
+  final String textToDisplay;
+  FeaturedCards({this.textToDisplay});
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -15,10 +17,10 @@ class FeaturedCards extends StatelessWidget {
         color: ThemeColoursSeva().pallete1,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(14.0),
+        padding: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
         child: Text(
-          "Hello from the other side wohoo! What can I say I am really grateful@! A super long text haha!",
-          style: TextStyle(color: Colors.white, fontSize: 19.0),
+          textToDisplay,
+          style: TextStyle(color: Colors.white, fontSize: 23.0, fontWeight: FontWeight.w500),
           overflow: TextOverflow.clip,
         ),
       ),
