@@ -1,7 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:mvp/screens/common/customProductCard.dart';
 import 'package:mvp/screens/common/productCard.dart';
 
 class Products extends StatefulWidget {
@@ -10,6 +7,8 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
+  List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
+  int tapped;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,21 +28,26 @@ class _ProductsState extends State<Products> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              // Text("Vegetables"),
-              RaisedButton(child: Text('Attention')),
-              RaisedButton(child: Text('Fruits')),
-              RaisedButton(child: Text('Daily Essentials')),
+              for (int i = 0; i < categories.length; i++)
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0)),
+                  color: tapped == i ? Colors.green : Colors.white,
+                  onPressed: () {
+                    setState(() {
+                      tapped = i;
+                    });
+                  },
+                  child: Text(categories[i], style: TextStyle(color:tapped==i? Colors.white: Colors.black),),
+                ),
             ],
           ),
           SizedBox(
             height: 30,
           ),
-         
-              Expanded(child: ProductCardNew())
-
+          Expanded(child: ProductCardNew())
         ],
-      )
-      ),
+      )),
     );
   }
 }
