@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
@@ -16,7 +17,62 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
     "Get a cashback of Rs 30 on your 4th order!"
   ];
-  Widget commonWidget(height) {
+  List<StoreProduct> products = [];
+  List<StoreProduct> categories = [];
+  // static products
+  StoreProduct a;
+  StoreProduct b;
+  StoreProduct c;
+  // static categories
+  StoreProduct d;
+  StoreProduct e;
+  StoreProduct f;
+
+  @override
+  initState() {
+    super.initState();
+    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
+    a = new StoreProduct(
+        name: "Apple",
+        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
+        quantity: q,
+        description: "local",
+        price: 250);
+    b = new StoreProduct(
+      name: "Onion",
+      pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
+      quantity: q,
+      description: "local",
+      price: 18,
+    );
+    c = new StoreProduct(
+        name: "Carrots",
+        pictureUrl:
+            "https://storepictures.theonestop.co.in/products/carrot.jpg",
+        quantity: q,
+        description: "local",
+        price: 30);
+    products.add(a);
+    products.add(b);
+    products.add(c);
+    d = new StoreProduct(
+      name: "Vegetables",
+      pictureUrl: "https://storepictures.theonestop.co.in/illustrations/vegetable.png",
+    );
+    e = new StoreProduct(
+      name: "Fruits",
+      pictureUrl: "https://storepictures.theonestop.co.in/illustrations/viburnum-fruit.png",
+    );
+    f = new StoreProduct(
+      name: "Daily Essentials",
+      pictureUrl: "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
+    );
+    categories.add(d);
+    categories.add(e);
+    categories.add(f);
+  }
+
+  Widget commonWidget(height, itemsList, store) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0),
       child: Container(
@@ -29,7 +85,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Row(
-                        children: <Widget>[ShowCards(), SizedBox(width: 10.0)],
+                        children: <Widget>[
+                          ShowCards(sp: itemsList[index], store: store),
+                          SizedBox(width: 10.0)
+                        ],
                       );
                     }))
           ],
@@ -38,21 +97,21 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-  Widget commonText(height) {
+  Widget commonText(height, leftText, rightText) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            "Best Sellers",
+            leftText,
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontWeight: FontWeight.w900,
                 fontSize: 17.0),
           ),
           Text(
-            "See all",
+            rightText,
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontSize: 15.0,
@@ -128,6 +187,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         padding: const EdgeInsets.only(left: 12.0),
                         child: Container(
                           height: height * 0.2,
+                          width: double.infinity,
                           child: Row(
                             children: <Widget>[
                               Expanded(
@@ -150,14 +210,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0),
-                      commonText(height),
                       SizedBox(height: 9.0),
-                      commonWidget(height),
+                      commonText(height, "Best Sellers", "See All"),
                       SizedBox(height: 9.0),
-                      commonText(height),
+                      commonWidget(height, products, true),
                       SizedBox(height: 9.0),
-                      commonWidget(height),
+                      commonText(height, "Categories", ""),
+                      SizedBox(height: 9.0),
+                      commonWidget(height, categories, false),
                     ],
                   ),
                 ),
