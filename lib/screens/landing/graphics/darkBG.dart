@@ -10,9 +10,9 @@ class DarkColourBG extends CustomPainter {
     Paint paint = Paint();
     Path ovalPath = Path();
     // a little dark colour bg
-    ovalPath.moveTo(0, height * 0.24);
+    ovalPath.moveTo(0, height * 0.28);
     ovalPath.quadraticBezierTo(
-        width * 0.78, height * 0.36, width, height * 0.3);
+        width * 0.68, height * 0.40, width, height * 0.34);
     ovalPath.lineTo(width, 0);
     ovalPath.lineTo(0, 0);
     ovalPath.close();
