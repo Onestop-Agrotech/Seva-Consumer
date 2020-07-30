@@ -21,6 +21,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           CustomPaint(
@@ -129,7 +130,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     Padding(
                       padding: const EdgeInsets.only(left: 15.0),
                       child: Container(
-                        height: height * 0.2,
+                        height: height * 0.22,
                         child: Row(
                           children: <Widget>[
                             Expanded(
