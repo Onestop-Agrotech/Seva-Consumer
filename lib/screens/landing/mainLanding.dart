@@ -84,8 +84,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   itemBuilder: (context, index) {
                     return Row(
                       children: <Widget>[
-                        ShowCards(sp: itemsList[index], store: store),
-                        SizedBox(width: 10.0)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: ShowCards(sp: itemsList[index], store: store),
+                        ),
                       ],
                     );
                   }))
@@ -189,10 +191,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: <Widget>[
-                                    FeaturedCards(
-                                      textToDisplay: texts[index],
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 12.0),
+                                      child: FeaturedCards(
+                                        textToDisplay: texts[index],
+                                      ),
                                     ),
-                                    SizedBox(width: 20.0),
                                   ],
                                 );
                               },
