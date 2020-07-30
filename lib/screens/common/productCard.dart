@@ -23,7 +23,7 @@ class ProductCardNew extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                     Text(
                       "Apple- Red Delicious",
