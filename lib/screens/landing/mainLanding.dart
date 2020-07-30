@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvp/screens/landing/graphics/darkBG.dart';
 
 import 'graphics/lightBG.dart';
 
@@ -15,9 +16,11 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         children: <Widget>[
           CustomPaint(
             painter: LightBlueBG(),
-            child: Center(
-              child: Text("Hello"),
-            ),
+            child: Container(),
+          ),
+          CustomPaint(
+            painter: DarkColourBG(),
+            child: Container(),
           )
         ],
       ),
