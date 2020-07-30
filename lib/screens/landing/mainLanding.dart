@@ -12,7 +12,7 @@ class MainLandingScreen extends StatefulWidget {
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
   var texts = [
-    "Free Delivery on your first 3 orders.\n"+"\nOrder Now!",
+    "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
     "Get a cashback of Rs 30 on your 4th order!"
   ];
   @override
@@ -98,6 +98,45 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    SizedBox(height: 20.0),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 20.0, left: 20.0, right: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Best Sellers",
+                            style: TextStyle(
+                                color: ThemeColoursSeva().dkGreen,
+                                fontWeight: FontWeight.w900,
+                                fontSize: 17.0),
+                          ),
+                          Text(
+                            "See all",
+                            style: TextStyle(
+                                color: ThemeColoursSeva().dkGreen,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15.0),
+                    Container(
+                      height: height * 0.2,
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                              child: ListView.builder(
+                                  itemCount: 2,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return Text("HLL");
+                                  }))
+                        ],
                       ),
                     ),
                   ],
