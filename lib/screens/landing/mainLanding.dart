@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
+import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 
 import 'graphics/lightBG.dart';
@@ -125,18 +126,26 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       ),
                     ),
                     SizedBox(height: 15.0),
-                    Container(
-                      height: height * 0.2,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                              child: ListView.builder(
-                                  itemCount: 2,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return Text("HLL");
-                                  }))
-                        ],
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Container(
+                        height: height * 0.2,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                                child: ListView.builder(
+                                    itemCount: 3,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      return Row(
+                                        children: <Widget>[
+                                          ShowCards(),
+                                          SizedBox(width: 10.0)
+                                        ],
+                                      );
+                                    }))
+                          ],
+                        ),
                       ),
                     ),
                   ],
