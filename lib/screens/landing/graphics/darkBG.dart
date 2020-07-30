@@ -18,7 +18,7 @@ class DarkColourBG extends CustomPainter {
     ovalPath.close();
 
     // paint
-    paint.color = ThemeColoursSeva().pallete1;
+    paint.color = ThemeColoursSeva().pallete3;
     canvas.drawPath(ovalPath, paint);
   }
 
