@@ -16,6 +16,53 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
     "Get a cashback of Rs 30 on your 4th order!"
   ];
+  Widget commonWidget(height) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0),
+      child: Container(
+        height: height * 0.22,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+                child: ListView.builder(
+                    itemCount: 3,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Row(
+                        children: <Widget>[ShowCards(), SizedBox(width: 10.0)],
+                      );
+                    }))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget commonText(height) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            "Best Sellers",
+            style: TextStyle(
+                color: ThemeColoursSeva().dkGreen,
+                fontWeight: FontWeight.w900,
+                fontSize: 17.0),
+          ),
+          Text(
+            "See all",
+            style: TextStyle(
+                color: ThemeColoursSeva().dkGreen,
+                fontSize: 15.0,
+                fontWeight: FontWeight.w400),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -37,119 +84,82 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.menu),
-                          onPressed: () {},
-                          iconSize: 28.0,
-                        ),
-                        Text(
-                          "Welcome",
-                          style: TextStyle(
-                              color: ThemeColoursSeva().dkGreen,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.location_on),
-                          onPressed: () {},
-                          iconSize: 28.0,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(11.0),
-                          child: Text(
-                            "Featured",
-                            style: TextStyle(
-                                color: ThemeColoursSeva().dkGreen,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 17.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Container(
-                        height: height * 0.2,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: 2,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    children: <Widget>[
-                                      FeaturedCards(
-                                        textToDisplay: texts[index],
-                                      ),
-                                      SizedBox(width: 20.0),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20.0),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          top: 20.0, left: 20.0, right: 10.0),
-                      child: Row(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Text(
-                            "Best Sellers",
-                            style: TextStyle(
-                                color: ThemeColoursSeva().dkGreen,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 17.0),
+                          IconButton(
+                            icon: Icon(Icons.menu),
+                            onPressed: () {},
+                            iconSize: 28.0,
                           ),
                           Text(
-                            "See all",
+                            "Welcome",
                             style: TextStyle(
                                 color: ThemeColoursSeva().dkGreen,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400),
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.location_on),
+                            onPressed: () {},
+                            iconSize: 28.0,
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 15.0),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Container(
-                        height: height * 0.22,
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(11.0),
+                            child: Text(
+                              "Featured",
+                              style: TextStyle(
+                                  color: ThemeColoursSeva().dkGreen,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 17.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12.0),
+                        child: Container(
+                          height: height * 0.2,
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
                                 child: ListView.builder(
-                                    itemCount: 3,
-                                    scrollDirection: Axis.horizontal,
-                                    itemBuilder: (context, index) {
-                                      return Row(
-                                        children: <Widget>[
-                                          ShowCards(),
-                                          SizedBox(width: 10.0)
-                                        ],
-                                      );
-                                    }))
-                          ],
+                                  itemCount: 2,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return Row(
+                                      children: <Widget>[
+                                        FeaturedCards(
+                                          textToDisplay: texts[index],
+                                        ),
+                                        SizedBox(width: 20.0),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 20.0),
+                      commonText(height),
+                      SizedBox(height: 15.0),
+                      commonWidget(height),
+                      SizedBox(height: 15.0),
+                      commonText(height),
+                      SizedBox(height: 15.0),
+                      commonWidget(height),
+                    ],
+                  ),
                 ),
               ),
             ),
