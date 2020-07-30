@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 
 import 'graphics/lightBG.dart';
@@ -30,25 +31,66 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () {},
-                      iconSize: 28.0,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(Icons.menu),
+                          onPressed: () {},
+                          iconSize: 28.0,
+                        ),
+                        Text(
+                          "Welcome",
+                          style: TextStyle(
+                              color: ThemeColoursSeva().dkGreen,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.location_on),
+                          onPressed: () {},
+                          iconSize: 28.0,
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Welcome",
-                      style: TextStyle(
-                          color: ThemeColoursSeva().dkGreen,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(11.0),
+                          child: Text("Featured", style: TextStyle(
+                            color: ThemeColoursSeva().dkGreen,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 17.0
+                          ),),
+                        ),
+                      ],
                     ),
-                    IconButton(
-                      icon: Icon(Icons.location_on),
-                      onPressed: () {},
-                      iconSize: 28.0,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Container(
+                        height: height*0.2,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: 2,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    children: <Widget>[
+                                      FeaturedCards(),
+                                      SizedBox(width: 20.0),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
