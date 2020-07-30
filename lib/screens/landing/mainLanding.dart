@@ -57,15 +57,18 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     products.add(c);
     d = new StoreProduct(
       name: "Vegetables",
-      pictureUrl: "https://storepictures.theonestop.co.in/illustrations/vegetable.png",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/illustrations/vegetable.png",
     );
     e = new StoreProduct(
       name: "Fruits",
-      pictureUrl: "https://storepictures.theonestop.co.in/illustrations/viburnum-fruit.png",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/illustrations/viburnum-fruit.png",
     );
     f = new StoreProduct(
       name: "Daily Essentials",
-      pictureUrl: "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
     );
     categories.add(d);
     categories.add(e);
@@ -192,7 +195,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 return Row(
                                   children: <Widget>[
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 12.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 12.0),
                                       child: FeaturedCards(
                                         textToDisplay: texts[index],
                                       ),

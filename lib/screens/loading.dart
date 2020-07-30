@@ -87,8 +87,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => IntroScreen()));
     } else if (_showLoginScreen == false) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainLandingScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => MainLandingScreen()));
     }
   }
 

@@ -20,7 +20,8 @@ class FeaturedCards extends StatelessWidget {
         padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
         child: Text(
           textToDisplay,
-          style: TextStyle(color: Colors.white, fontSize: 23.0, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              color: Colors.white, fontSize: 23.0, fontWeight: FontWeight.w500),
           overflow: TextOverflow.clip,
         ),
       ),
