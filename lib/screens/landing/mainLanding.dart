@@ -73,26 +73,23 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   }
 
   Widget commonWidget(height, itemsList, store) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0),
-      child: Container(
-        height: height * 0.22,
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                child: ListView.builder(
-                    itemCount: 3,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Row(
-                        children: <Widget>[
-                          ShowCards(sp: itemsList[index], store: store),
-                          SizedBox(width: 10.0)
-                        ],
-                      );
-                    }))
-          ],
-        ),
+    return Container(
+      height: height * 0.22,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+              child: ListView.builder(
+                  itemCount: 3,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: <Widget>[
+                        ShowCards(sp: itemsList[index], store: store),
+                        SizedBox(width: 10.0)
+                      ],
+                    );
+                  }))
+        ],
       ),
     );
   }
@@ -125,7 +122,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -184,28 +180,25 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     Container(
                       height: height * 0.2,
                       width: double.infinity,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 12.0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: 2,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    children: <Widget>[
-                                      FeaturedCards(
-                                        textToDisplay: texts[index],
-                                      ),
-                                      SizedBox(width: 20.0),
-                                    ],
-                                  );
-                                },
-                              ),
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: 2,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  children: <Widget>[
+                                    FeaturedCards(
+                                      textToDisplay: texts[index],
+                                    ),
+                                    SizedBox(width: 20.0),
+                                  ],
+                                );
+                              },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: 9.0),
