@@ -8,6 +8,49 @@ class ShoppingCartNew extends StatefulWidget {
 }
 
 class _ShoppingCartNewState extends State<ShoppingCartNew> {
+  _showModal() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text("Summary"),
+                // text and promo btn
+                Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                    ),
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                    ),
+                    SizedBox(height: 30.0),
+                    RaisedButton(onPressed: () {}, child: Text("Apply Promo"))
+                  ],
+                ),
+                // slide to pay btn
+                RaisedButton(onPressed: () {}, child: Text("Slide to pay"))
+              ],
+            );
+          });
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,9 +73,24 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
       body: Column(
         children: <Widget>[
           SizedBox(height: 20.0),
-          Expanded(child: ProductCardNew(shopping: true,))
+          Expanded(
+              child: ProductCardNew(
+            shopping: true,
+          ))
         ],
       ),
+      floatingActionButton: RaisedButton(
+        onPressed: () {
+          // open the bottomsheet
+          _showModal();
+        },
+        child: Text(
+          "Proceed",
+          style: TextStyle(color: Colors.white, fontSize: 20.0),
+        ),
+        color: ThemeColoursSeva().dkGreen,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
