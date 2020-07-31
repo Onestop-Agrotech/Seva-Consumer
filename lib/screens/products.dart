@@ -37,7 +37,8 @@ class _ProductsState extends State<Products> {
                 RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0)),
-                  color: tapped == i ? ThemeColoursSeva().dkGreen : Colors.white,
+                  color:
+                      tapped == i ? ThemeColoursSeva().dkGreen : Colors.white,
                   onPressed: () {
                     setState(() {
                       tapped = i;
@@ -46,7 +47,9 @@ class _ProductsState extends State<Products> {
                   child: Text(
                     categories[i],
                     style: TextStyle(
-                        color: tapped == i ? Colors.white : Colors.black),
+                        color: tapped == i
+                            ? Colors.white
+                            : ThemeColoursSeva().dkGreen),
                   ),
                 ),
             ],
@@ -54,7 +57,7 @@ class _ProductsState extends State<Products> {
           SizedBox(
             height: 30,
           ),
-          Expanded(child: ProductCardNew())
+          Expanded(child: ProductCardNew(shopping: false,))
         ],
       )),
     );
