@@ -3,121 +3,122 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/storeProducts.dart';
 
 class ProductCardNew extends StatefulWidget {
   final bool shopping;
   ProductCardNew({this.shopping});
-  
+
   // onClickProduct() {
   //   showGeneralDialog(
-        // context: context,
-        // barrierDismissible: true,
-        // barrierLabel:
-        //     MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        // barrierColor: Colors.black45,
-        // transitionDuration: const Duration(milliseconds: 200),
-        // pageBuilder: (BuildContext buildContext, Animation animation,
-        //     Animation secondaryAnimation) {
-        //   return Material(
-        //     type: MaterialType.transparency,
-        //     child: Center(
-        //       child: Container(
-        //         width: MediaQuery.of(context).size.width - 50,
-        //         height: MediaQuery.of(context).size.height - 300,
-        //         padding: EdgeInsets.all(20),
-        //         color: Colors.white,
-        //         child: Column(
-        //           children: [
-        //             RaisedButton(
-        //               onPressed: () {
-        //                 Navigator.of(context).pop();
-        //               },
-        //               child: Text(
-        //                 "Save",
-        //                 style: TextStyle(color: Colors.white),
-        //               ),
-        //               color: const Color(0xFF1BC0C5),
-        //             ),
-        //             Text(
-        //               "Apple - Red Delicious",
-        //               style: TextStyle(
-        //                   color: ThemeColoursSeva().pallete2,
-        //                   fontSize: 25.0,
-        //                   fontWeight: FontWeight.w500),
-        //             ),
-        //             SizedBox(
-        //               height: 10,
-        //             ),
-        //             Text("Rs 120 - 1 Kg",
-        //                 overflow: TextOverflow.clip,
-        //                 style: TextStyle(
-        //                     color: ThemeColoursSeva().pallete2,
-        //                     fontSize: 25.0,
-        //                     fontWeight: FontWeight.w500)),
-        //             SizedBox(height: 10),
-        //             Row(
-        //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //               children: <Widget>[
-        //                 // ConstrainedBox(
-        //                 //     constraints:
-        //                 //         BoxConstraints(minWidth: 600, maxHeight: 160),
-        //                 //     child: CachedNetworkImage(
-        //                 //         imageUrl:
-        //                 //             "https://storepictures.theonestop.co.in/products/pineapple.png")
-        //                 //             ),
-        //                 CachedNetworkImage(
-        //                     width: 200,
-        //                     height: 140,
-        //                     imageUrl:
-        //                         "https://storepictures.theonestop.co.in/products/pineapple.png"),
-        //                 Column(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //                   // crossAxisAlignment: CrossAxisAlignment.,
-        //                   children: <Widget>[
-        //                     Text(
-        //                       "200 Gms",
-        //                       style: TextStyle(
-        //                           color: ThemeColoursSeva().pallete2,
-        //                           fontSize: 20.0,
-        //                           fontWeight: FontWeight.w500),
-        //                     ),
-        //                     Text(
-        //                       "200 Gms",
-        //                       style: TextStyle(
-        //                           color: ThemeColoursSeva().pallete2,
-        //                           fontSize: 20.0,
-        //                           fontWeight: FontWeight.w500),
-        //                     ),
-        //                     Text(
-        //                       "200 Gms",
-        //                       style: TextStyle(
-        //                           color: ThemeColoursSeva().pallete2,
-        //                           fontSize: 20.0,
-        //                           fontWeight: FontWeight.w500),
-        //                     ),
-        //                   ],
-        //                 ),
-        //               ],
-        //             ),
-        //             SizedBox(
-        //               height: 10,
-        //             ),
-        //             Text(
-        //                 "Apples contain  no fat, sodium or cholestrol and are a good source"),
-        //                 Row(
-        //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //                   crossAxisAlignment: CrossAxisAlignment.center,
-        //                   children: <Widget>[
-        //                     Text("Item Total Price"),
-        //                     Text("250")
-        //                   ],
-        //                 )
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        //   );
-        // });
+  // context: context,
+  // barrierDismissible: true,
+  // barrierLabel:
+  //     MaterialLocalizations.of(context).modalBarrierDismissLabel,
+  // barrierColor: Colors.black45,
+  // transitionDuration: const Duration(milliseconds: 200),
+  // pageBuilder: (BuildContext buildContext, Animation animation,
+  //     Animation secondaryAnimation) {
+  //   return Material(
+  //     type: MaterialType.transparency,
+  //     child: Center(
+  //       child: Container(
+  //         width: MediaQuery.of(context).size.width - 50,
+  //         height: MediaQuery.of(context).size.height - 300,
+  //         padding: EdgeInsets.all(20),
+  //         color: Colors.white,
+  //         child: Column(
+  //           children: [
+  //             RaisedButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop();
+  //               },
+  //               child: Text(
+  //                 "Save",
+  //                 style: TextStyle(color: Colors.white),
+  //               ),
+  //               color: const Color(0xFF1BC0C5),
+  //             ),
+  //             Text(
+  //               "Apple - Red Delicious",
+  //               style: TextStyle(
+  //                   color: ThemeColoursSeva().pallete2,
+  //                   fontSize: 25.0,
+  //                   fontWeight: FontWeight.w500),
+  //             ),
+  //             SizedBox(
+  //               height: 10,
+  //             ),
+  //             Text("Rs 120 - 1 Kg",
+  //                 overflow: TextOverflow.clip,
+  //                 style: TextStyle(
+  //                     color: ThemeColoursSeva().pallete2,
+  //                     fontSize: 25.0,
+  //                     fontWeight: FontWeight.w500)),
+  //             SizedBox(height: 10),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: <Widget>[
+  //                 // ConstrainedBox(
+  //                 //     constraints:
+  //                 //         BoxConstraints(minWidth: 600, maxHeight: 160),
+  //                 //     child: CachedNetworkImage(
+  //                 //         imageUrl:
+  //                 //             "https://storepictures.theonestop.co.in/products/pineapple.png")
+  //                 //             ),
+  //                 CachedNetworkImage(
+  //                     width: 200,
+  //                     height: 140,
+  //                     imageUrl:
+  //                         "https://storepictures.theonestop.co.in/products/pineapple.png"),
+  //                 Column(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   // crossAxisAlignment: CrossAxisAlignment.,
+  //                   children: <Widget>[
+  //                     Text(
+  //                       "200 Gms",
+  //                       style: TextStyle(
+  //                           color: ThemeColoursSeva().pallete2,
+  //                           fontSize: 20.0,
+  //                           fontWeight: FontWeight.w500),
+  //                     ),
+  //                     Text(
+  //                       "200 Gms",
+  //                       style: TextStyle(
+  //                           color: ThemeColoursSeva().pallete2,
+  //                           fontSize: 20.0,
+  //                           fontWeight: FontWeight.w500),
+  //                     ),
+  //                     Text(
+  //                       "200 Gms",
+  //                       style: TextStyle(
+  //                           color: ThemeColoursSeva().pallete2,
+  //                           fontSize: 20.0,
+  //                           fontWeight: FontWeight.w500),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //             SizedBox(
+  //               height: 10,
+  //             ),
+  //             Text(
+  //                 "Apples contain  no fat, sodium or cholestrol and are a good source"),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                   crossAxisAlignment: CrossAxisAlignment.center,
+  //                   children: <Widget>[
+  //                     Text("Item Total Price"),
+  //                     Text("250")
+  //                   ],
+  //                 )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // });
   // }
 
   @override
@@ -125,19 +126,76 @@ class ProductCardNew extends StatefulWidget {
 }
 
 class _ProductCardNewState extends State<ProductCardNew> {
-  GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
+  List<StoreProduct> products = [];
+  List<StoreProduct> categories = [];
+  // static products
+  StoreProduct a;
+  StoreProduct b;
+  StoreProduct c;
+  // static categories
+  StoreProduct d;
+  StoreProduct e;
+  StoreProduct f;
+
   @override
+  initState() {
+    super.initState();
+    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
+    a = new StoreProduct(
+        name: "Apple",
+        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
+        quantity: q,
+        description: "local",
+        price: 250);
+    b = new StoreProduct(
+      name: "Onion",
+      pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
+      quantity: q,
+      description: "local",
+      price: 18,
+    );
+    c = new StoreProduct(
+        name: "Carrots",
+        pictureUrl:
+            "https://storepictures.theonestop.co.in/products/carrot.jpg",
+        quantity: q,
+        description: "local",
+        price: 30);
+    products.add(a);
+    products.add(b);
+    products.add(c);
+    d = new StoreProduct(
+      name: "Vegetables",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/illustrations/vegetable.png",
+    );
+    e = new StoreProduct(
+      name: "Fruits",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/illustrations/viburnum-fruit.png",
+    );
+    f = new StoreProduct(
+      name: "Daily Essentials",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
+    );
+    categories.add(d);
+    categories.add(e);
+    categories.add(f);
+  }
+
   Widget build(BuildContext context) {
+    GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
     return StaggeredGridView.countBuilder(
       crossAxisCount: 4,
-      itemCount: 1,
-      itemBuilder: (BuildContext context, int index) => Container(
+      itemCount: categories.length,
+      itemBuilder: (BuildContext categories, int index) => Container(
           color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: FlipCard(
-                key: cardKey,
-                flipOnTouch: false,
+                // key: cardKey,
+                flipOnTouch: this.widget.shopping ? true : false,
                 front: Container(
                   width: 100.0,
                   decoration: BoxDecoration(
@@ -153,7 +211,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                         height: 15,
                       ),
                       Text(
-                        "Apple - Red Delicious",
+                        "apple",
                         overflow: TextOverflow.clip,
                         style: TextStyle(
                             color: ThemeColoursSeva().pallete2,
@@ -165,11 +223,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           this.widget.shopping
-                              ? IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {
-                                    cardKey.currentState.toggleCard();
-                                  })
+                              ? Expanded(child: Icon(Icons.edit))
                               : Container(),
                           ConstrainedBox(
                             constraints:
@@ -179,8 +233,13 @@ class _ProductCardNewState extends State<ProductCardNew> {
                                     "https://storepictures.theonestop.co.in/products/pineapple.png"),
                           ),
                           this.widget.shopping
-                              ? IconButton(
-                                  icon: Icon(Icons.delete), onPressed: () {})
+                              ? Expanded(
+                                  child: IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () {
+                                        print("something");
+                                      }),
+                                )
                               : Container(),
                         ],
                       ),
@@ -210,7 +269,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                         ),
                         child: RaisedButton(
                           onPressed: () {
-                            cardKey.currentState.toggleCard();
+                            // cardKey.currentState.toggleCard();
                           },
                           child: Text("Done"),
                         ),
