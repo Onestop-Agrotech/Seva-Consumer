@@ -84,7 +84,25 @@ class _ProductCardNewState extends State<ProductCardNew> {
                     ],
                   ),
                 ),
-                back: this.widget.shopping ? Text("Back!!") : Container()),
+                back: this.widget.shopping
+                    ? Container(
+                        height: MediaQuery.of(context).size.height * 0.22,
+                        width: 120,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: ThemeColoursSeva().pallete3,
+                            width: 1.5,
+                          ),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        child: RaisedButton(
+                          onPressed: () {
+                            cardKey.currentState.toggleCard();
+                          },
+                          child: Text("Done"),
+                        ),
+                      )
+                    : Container()),
           )),
       staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
       mainAxisSpacing: 10.0,
