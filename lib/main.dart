@@ -9,6 +9,7 @@ import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/orders.dart';
 import 'package:mvp/screens/payments.dart';
 import 'package:mvp/screens/products.dart';
+import 'package:mvp/screens/shoppingCartNew.dart';
 import 'package:mvp/screens/storeProductList.dart';
 import 'package:mvp/screens/storesList.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,7 @@ class _SevaAppState extends State<SevaApp> {
       providers: [ChangeNotifierProvider(create: (context) => CartModel())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Products(),
+        home: ShoppingCartNew(),
         routes: {
           "/register": (context) => RegisterScreen(),
           "/login": (context) => LoginScreen(),

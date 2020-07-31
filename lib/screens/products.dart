@@ -56,7 +56,7 @@ class _ProductsState extends State<Products> {
           SizedBox(
             height: 30,
           ),
-          Expanded(child: ProductCardNew())
+          Expanded(child: ProductCardNew(shopping: false,))
         ],
       )),
     );
