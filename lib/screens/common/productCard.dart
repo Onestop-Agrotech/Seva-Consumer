@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mvp/constants/themeColours.dart';
 
 class ProductCardNew extends StatelessWidget {
   @override
@@ -16,7 +17,8 @@ class ProductCardNew extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.blue,
+                    color: ThemeColoursSeva().pallete3,
+                    width: 1.5,
                   ),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -26,26 +28,27 @@ class ProductCardNew extends StatelessWidget {
                       height: 15,
                     ),
                     Text(
-                      "Apple- Red Delicious",
+                      "Apple - Red Delicious",
+                      overflow: TextOverflow.clip,
                       style: TextStyle(
-                          color: Colors.green,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600),
+                          color: ThemeColoursSeva().pallete2,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500),
                     ),
                     SizedBox(height: 20),
                     ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minWidth: 600,
-                          maxHeight: 160),
+                        constraints:
+                            BoxConstraints(minWidth: 600, maxHeight: 160),
                         child: CachedNetworkImage(
                             imageUrl:
                                 "https://storepictures.theonestop.co.in/products/pineapple.png")),
                     SizedBox(height: 20),
                     Text("Rs 120 - 1 Kg",
+                        overflow: TextOverflow.clip,
                         style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600)),
+                            color: ThemeColoursSeva().pallete2,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w500)),
                     SizedBox(
                       height: 30,
                     )

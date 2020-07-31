@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/productCard.dart';
 
 class Products extends StatefulWidget {
@@ -12,6 +13,7 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(
         children: <Widget>[
@@ -20,7 +22,9 @@ class _ProductsState extends State<Products> {
               child: Text(
             "Fresh Fruits",
             style: TextStyle(
-                color: Colors.green, fontSize: 35, fontWeight: FontWeight.w600),
+                color: ThemeColoursSeva().dkGreen,
+                fontSize: 25,
+                fontWeight: FontWeight.w600),
           )),
           SizedBox(
             height: 20,
@@ -32,13 +36,17 @@ class _ProductsState extends State<Products> {
                 RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0)),
-                  color: tapped == i ? Colors.green : Colors.white,
+                  color: tapped == i ? ThemeColoursSeva().dkGreen : Colors.white,
                   onPressed: () {
                     setState(() {
                       tapped = i;
                     });
                   },
-                  child: Text(categories[i], style: TextStyle(color:tapped==i? Colors.white: Colors.black),),
+                  child: Text(
+                    categories[i],
+                    style: TextStyle(
+                        color: tapped == i ? Colors.white : Colors.black),
+                  ),
                 ),
             ],
           ),
