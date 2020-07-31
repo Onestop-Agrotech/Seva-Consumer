@@ -10,6 +10,7 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
   int tapped;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
