@@ -27,6 +27,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                 key: cardKey,
                 flipOnTouch: false,
                 front: Container(
+                  width: 100.0,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: ThemeColoursSeva().pallete3,
@@ -49,7 +50,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                       ),
                       SizedBox(height: 20),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           this.widget.shopping
                               ? IconButton(
@@ -60,7 +61,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                               : Container(),
                           ConstrainedBox(
                             constraints:
-                                BoxConstraints(minWidth: 60, maxHeight: 160),
+                                BoxConstraints(maxWidth: 67.3, maxHeight: 160),
                             child: CachedNetworkImage(
                                 imageUrl:
                                     "https://storepictures.theonestop.co.in/products/pineapple.png"),
