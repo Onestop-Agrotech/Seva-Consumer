@@ -73,7 +73,9 @@ class _ProductsState extends State<Products> {
                   child: Row(
                     children: <Widget>[
                       SizedBox(width: 10.0),
-                      Expanded(child: AnimatedCard(shopping: false),),
+                      Expanded(
+                        child: AnimatedCard(shopping: false),
+                      ),
                       SizedBox(width: 9.0)
                     ],
                   ),
