@@ -58,7 +58,7 @@ class _SevaAppState extends State<SevaApp> {
       providers: [ChangeNotifierProvider(create: (context) => CartModel())],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ShoppingCartNew(),
+        home: Products(),
         routes: {
           "/register": (context) => RegisterScreen(),
           "/login": (context) => LoginScreen(),

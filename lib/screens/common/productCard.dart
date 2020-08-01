@@ -268,8 +268,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                     ),
                   ),
                 ),
-                back: this.widget.shopping
-                    ? Container(
+                back: Container(
                         height: MediaQuery.of(context).size.height * 0.22,
                         width: 120,
                         decoration: BoxDecoration(
@@ -281,7 +280,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                         ),
                         child: Text("Done"),
                       )
-                    : Container()),
+                   ),
           )),
       staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
       mainAxisSpacing: 10.0,
