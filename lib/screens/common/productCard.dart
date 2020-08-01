@@ -203,19 +203,20 @@ class _ProductCardNewState extends State<ProductCardNew> {
             padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: FlipCard(
                 // key: cardKey,
-                flipOnTouch: this.widget.shopping ? true : false,
-                front: GestureDetector(
-                  onTap: () => this.widget.shopping ? null : onClickProduct(),
-                  child: Container(
-                    width: 100.0,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: ThemeColoursSeva().pallete3,
-                        width: 1.5,
-                      ),
-                      borderRadius: BorderRadius.circular(20.0),
+                flipOnTouch: this.widget.shopping ? true : true,
+                front: Container(
+                  width: 100.0,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ThemeColoursSeva().pallete3,
+                      width: 1.5,
                     ),
-                    child: Column(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  child: GestureDetector(
+                                      onTap: () => this.widget.shopping ? null : onClickProduct(),
+
+                                        child: Column(
                       children: <Widget>[
                         SizedBox(
                           height: 15,
