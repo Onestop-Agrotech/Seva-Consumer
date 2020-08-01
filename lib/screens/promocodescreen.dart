@@ -52,7 +52,7 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0)),
                       color:
-                          tapped == i ? ThemeColoursSeva().dkGreen : Colors.white,
+                           ThemeColoursSeva().dkGreen,
                       onPressed: () {
                         setState(() {
                           tapped = i;
@@ -61,9 +61,9 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                       child: Text(
                         categories[i],
                         style: TextStyle(
-                            color: tapped == i
-                                ? Colors.white
-                                : ThemeColoursSeva().dkGreen),
+                            color: 
+                                 Colors.white
+                              ),
                       ),
                     ),
                   ),
