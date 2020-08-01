@@ -83,11 +83,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
               mainAxisSpacing: 10.0,
               crossAxisSpacing: 0.0,
               itemBuilder: (BuildContext categories, int index) {
-                return Container(
-                  color: Colors.white,
-                  // height: 100.0,
-                  // width: 100.0,
-                  child: AnimatedCard(shopping: true),
+                return Row(
+                  children: <Widget>[
+                    SizedBox(width: 12.0),
+                    Expanded(child: AnimatedCard(shopping: true)),
+                    SizedBox(width: 9.0)
+                  ],
                 );
               },
             ),
