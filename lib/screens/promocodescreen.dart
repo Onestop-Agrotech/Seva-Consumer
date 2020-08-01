@@ -16,35 +16,50 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
           child: Center(
-            child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
             Column(
               children: <Widget>[
-                SizedBox(height: 20),
-                Text("Apply Promo Code"),
+                Text(
+                  "Offers and Discount",
+                  style: TextStyle(
+                      color: ThemeColoursSeva().dkGreen, fontSize: 27),
+                ),
                 SizedBox(height: 50),
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                   children: <Widget>[
-                     Theme(
-                        data:  ThemeData(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Theme(
+                        data: ThemeData(
                             primaryColor: Colors.greenAccent,
                             primaryColorDark: Colors.deepOrangeAccent),
                         child: Container(
                           width: 200,
-                          child:  TextField(
-                              decoration:  InputDecoration(
-                            border:  OutlineInputBorder(
-                                borderSide:  BorderSide(color: Colors.teal)),
+                          child: TextField(
+                              decoration: InputDecoration(
+                            filled: true,
+                            fillColor: ThemeColoursSeva().pallete3,
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.teal)),
                             // hintText: 'Tell us about yourself',
                             // helperText: 'helper text',
                             labelText: 'Promo Code',
                           )),
                         )),
-                        Text("yo")
-                   ],
-                 ),
+                    RaisedButton(
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: new BorderRadius.circular(10.0)),
+                      color: Colors.white,
+                      onPressed: () {},
+                      child: Text(
+                        "Apply",
+                        style: TextStyle(
+                            color: ThemeColoursSeva().dkGreen, fontSize: 22),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
             for (int i = 0; i < categories.length; i++)
@@ -57,8 +72,7 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0)),
-                      color:
-                           ThemeColoursSeva().dkGreen,
+                      color: ThemeColoursSeva().dkGreen,
                       onPressed: () {
                         setState(() {
                           tapped = i;
@@ -66,19 +80,15 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                       },
                       child: Text(
                         categories[i],
-                        style: TextStyle(
-                            color: 
-                                 Colors.white
-                              ),
+                        style: TextStyle(color: Colors.white, fontSize: 24),
                       ),
                     ),
                   ),
                 ],
               )
-        ],
-      ),
-          )
-      ),
+          ],
+        ),
+      )),
     );
   }
 }
