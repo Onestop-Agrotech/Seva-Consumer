@@ -7,7 +7,7 @@ class PromoCodeScreen extends StatefulWidget {
 }
 
 class _PromoCodeScreenState extends State<PromoCodeScreen> {
-  List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
+  List categories = ['Vegetables', 'Fruits', 'Daily Essentials', 'Category 1', 'Category 2'];
   int tapped;
 
   @override
@@ -22,13 +22,13 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
             Column(
               children: <Widget>[
                 Text(
-                  "Offers and Discount",
+                  "Offers For You",
                   style: TextStyle(
                       color: ThemeColoursSeva().dkGreen, fontSize: 27),
                 ),
                 SizedBox(height: 50),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Theme(
                         data: ThemeData(
@@ -39,7 +39,7 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                           child: TextField(
                               decoration: InputDecoration(
                             filled: true,
-                            fillColor: ThemeColoursSeva().pallete3,
+                            // fillColor: ThemeColoursSeva().pallete3,
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.teal)),
                             // hintText: 'Tell us about yourself',
@@ -48,6 +48,7 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                           )),
                         )),
                     RaisedButton(
+                      elevation: 0,
                       // shape: RoundedRectangleBorder(
                       //     borderRadius: new BorderRadius.circular(10.0)),
                       color: Colors.white,
@@ -62,6 +63,8 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                 ),
               ],
             ),
+            // instead of for loop
+            // use list view builder
             for (int i = 0; i < categories.length; i++)
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
