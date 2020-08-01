@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/screens/common/productCard.dart';
+
+import 'common/AnimatedCard/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
   @override
@@ -72,11 +74,24 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          SizedBox(height: 20.0),
           Expanded(
-              child: ProductCardNew(
-            shopping: true,
-          ))
+            child: StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              itemCount: 3,
+              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 0.0,
+              itemBuilder: (BuildContext categories, int index) {
+                return Row(
+                  children: <Widget>[
+                    SizedBox(width: 12.0),
+                    Expanded(child: AnimatedCard(shopping: true)),
+                    SizedBox(width: 9.0)
+                  ],
+                );
+              },
+            ),
+          ),
         ],
       ),
       floatingActionButton: RaisedButton(
