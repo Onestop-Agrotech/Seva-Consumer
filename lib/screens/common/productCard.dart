@@ -103,8 +103,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w500),
                           ),
-                                                    SizedBox(height: 10),
-
+                          SizedBox(height: 10),
                           Text(
                             "200 Gms",
                             style: TextStyle(
@@ -123,20 +122,23 @@ class _ProductCardNewState extends State<ProductCardNew> {
                   Text(
                     "Apples contain  no fat, sodium or cholestrol and are a good source",
                     style: TextStyle(
-                      decoration: TextDecoration.none,
-                      fontSize: 10
-                    ),
+                        decoration: TextDecoration.none, fontSize: 10),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[Text("Item Total Price", style: TextStyle(
-                      decoration: TextDecoration.none,
-                      fontSize: 10
-                    ),), Text("250", style: TextStyle(
-                      decoration: TextDecoration.none,
-                      fontSize: 10
-                    ),)],
+                    children: <Widget>[
+                      Text(
+                        "Item Total Price",
+                        style: TextStyle(
+                            decoration: TextDecoration.none, fontSize: 10),
+                      ),
+                      Text(
+                        "250",
+                        style: TextStyle(
+                            decoration: TextDecoration.none, fontSize: 10),
+                      )
+                    ],
                   )
                 ],
               ),
@@ -157,15 +159,15 @@ class _ProductCardNewState extends State<ProductCardNew> {
         price: 250);
     b = new StoreProduct(
       name: "Onion",
-      pictureUrl: "https://storepictures.theonestop.co.in/products/pineapple.png",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/products/pineapple.png",
       quantity: q,
       description: "local",
       price: 18,
     );
     c = new StoreProduct(
         name: "Carrots",
-        pictureUrl:
-            "https://storepictures.theonestop.co.in/products/onion.jpg",
+        pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
         quantity: q,
         description: "local",
         price: 30);
@@ -203,7 +205,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
             padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
             child: FlipCard(
                 // key: cardKey,
-                flipOnTouch: this.widget.shopping ? true : true,
+                flipOnTouch: this.widget.shopping ? true : false,
                 front: Container(
                   width: 100.0,
                   decoration: BoxDecoration(
@@ -214,9 +216,8 @@ class _ProductCardNewState extends State<ProductCardNew> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: GestureDetector(
-                                      onTap: () => this.widget.shopping ? null : onClickProduct(),
-
-                                        child: Column(
+                    onTap: () => this.widget.shopping ? null : onClickProduct(),
+                    child: Column(
                       children: <Widget>[
                         SizedBox(
                           height: 15,
@@ -240,8 +241,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                               constraints: BoxConstraints(
                                   maxWidth: 67.3, maxHeight: 160),
                               child: CachedNetworkImage(
-                                  imageUrl:
-                                      products[index].pictureUrl),
+                                  imageUrl: products[index].pictureUrl),
                             ),
                             this.widget.shopping
                                 ? Expanded(
@@ -279,12 +279,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                           ),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
-                        child: RaisedButton(
-                          onPressed: () {
-                            // cardKey.currentState.toggleCard();
-                          },
-                          child: Text("Done"),
-                        ),
+                        child: Text("Done"),
                       )
                     : Container()),
           )),
