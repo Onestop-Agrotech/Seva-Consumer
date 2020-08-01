@@ -157,7 +157,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
         price: 250);
     b = new StoreProduct(
       name: "Onion",
-      pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
+      pictureUrl: "https://storepictures.theonestop.co.in/products/pineapple.png",
       quantity: q,
       description: "local",
       price: 18,
@@ -165,7 +165,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
     c = new StoreProduct(
         name: "Carrots",
         pictureUrl:
-            "https://storepictures.theonestop.co.in/products/carrot.jpg",
+            "https://storepictures.theonestop.co.in/products/onion.jpg",
         quantity: q,
         description: "local",
         price: 30);
@@ -240,7 +240,7 @@ class _ProductCardNewState extends State<ProductCardNew> {
                                   maxWidth: 67.3, maxHeight: 160),
                               child: CachedNetworkImage(
                                   imageUrl:
-                                      "https://storepictures.theonestop.co.in/products/pineapple.png"),
+                                      products[index].pictureUrl),
                             ),
                             this.widget.shopping
                                 ? Expanded(
