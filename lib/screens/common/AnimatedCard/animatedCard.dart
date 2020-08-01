@@ -195,7 +195,10 @@ class _AnimatedCardState extends State<AnimatedCard>
                               ),
                               borderRadius: BorderRadius.circular(20.0),
                             ),
-                            child: Text("Done"),
+                            child: Transform(
+                                alignment: FractionalOffset.center,
+                                transform: Matrix4.identity()..rotateY(pi),
+                                child: Text("Done")),
                           ),
                         )
                       : Container(),

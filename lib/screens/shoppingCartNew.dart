@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/screens/common/productCard.dart';
 
 import 'common/AnimatedCard/animatedCard.dart';
 
