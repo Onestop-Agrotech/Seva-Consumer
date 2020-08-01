@@ -24,21 +24,27 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
                 SizedBox(height: 20),
                 Text("Apply Promo Code"),
                 SizedBox(height: 50),
-                 Theme(
-                    data:  ThemeData(
-                        primaryColor: Colors.greenAccent,
-                        primaryColorDark: Colors.deepOrangeAccent),
-                    child: Container(
-                      width: 200,
-                      child:  TextField(
-                          decoration:  InputDecoration(
-                        border:  OutlineInputBorder(
-                            borderSide:  BorderSide(color: Colors.teal)),
-                        // hintText: 'Tell us about yourself',
-                        // helperText: 'helper text',
-                        labelText: 'Promo Code',
-                      )),
-                    )),
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                   children: <Widget>[
+                     Theme(
+                        data:  ThemeData(
+                            primaryColor: Colors.greenAccent,
+                            primaryColorDark: Colors.deepOrangeAccent),
+                        child: Container(
+                          width: 200,
+                          child:  TextField(
+                              decoration:  InputDecoration(
+                            border:  OutlineInputBorder(
+                                borderSide:  BorderSide(color: Colors.teal)),
+                            // hintText: 'Tell us about yourself',
+                            // helperText: 'helper text',
+                            labelText: 'Promo Code',
+                          )),
+                        )),
+                        Text("yo")
+                   ],
+                 ),
               ],
             ),
             for (int i = 0; i < categories.length; i++)
