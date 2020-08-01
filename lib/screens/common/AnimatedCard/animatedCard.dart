@@ -111,7 +111,7 @@ class _AnimatedCardState extends State<AnimatedCard>
               child: animationController.value <= 0.5
                   ? GestureDetector(
                       onTap: () {
-                        this.widget.shopping ? null : onClickProduct();
+                        if (!this.widget.shopping) onClickProduct();
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -135,35 +135,34 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w500),
                             ),
-                            
                             SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 this.widget.shopping
-                                ? Expanded(
-                                    child: IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () {
-                                          print("something");
-                                        }),
-                                  )
-                                : Container(),
+                                    ? Expanded(
+                                        child: IconButton(
+                                            icon: Icon(Icons.edit),
+                                            onPressed: () {
+                                              toggle();
+                                            }),
+                                      )
+                                    : Container(),
                                 ConstrainedBox(
-                              constraints: BoxConstraints(
-                                  maxWidth: 67.3, maxHeight: 160),
-                              child: CachedNetworkImage(
-                                  imageUrl: products[1].pictureUrl),
-                            ),
-                            this.widget.shopping
-                                ? Expanded(
-                                    child: IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {
-                                          print("something");
-                                        }),
-                                  )
-                                : Container(),
+                                  constraints: BoxConstraints(
+                                      maxWidth: 67.3, maxHeight: 160),
+                                  child: CachedNetworkImage(
+                                      imageUrl: products[1].pictureUrl),
+                                ),
+                                this.widget.shopping
+                                    ? Expanded(
+                                        child: IconButton(
+                                            icon: Icon(Icons.delete),
+                                            onPressed: () {
+                                              print("something");
+                                            }),
+                                      )
+                                    : Container(),
                               ],
                             ),
                             SizedBox(height: 20),
@@ -181,18 +180,23 @@ class _AnimatedCardState extends State<AnimatedCard>
                       ),
                     )
                   : this.widget.shopping
-                      ? Container(
-                          height: MediaQuery.of(context).size.height * 0.22,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: ThemeColoursSeva().pallete3,
-                              width: 1.5,
+                      ? GestureDetector(
+                          onTap: () {
+                            toggle();
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.22,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: ThemeColoursSeva().pallete3,
+                                width: 1.5,
+                              ),
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
-                            borderRadius: BorderRadius.circular(20.0),
+                            child: Text("Done"),
                           ),
-                          child: Text("Done"),
                         )
                       : Container(),
             ),
