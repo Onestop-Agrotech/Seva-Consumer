@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/common/AnimatedCard/animatedCard.dart';
 import 'package:mvp/screens/common/productCard.dart';
 
 class Products extends StatefulWidget {
@@ -57,7 +59,23 @@ class _ProductsState extends State<Products> {
           SizedBox(
             height: 30,
           ),
-          Expanded(child: ProductCardNew(shopping: false,))
+          // AnimatedCard(shopping: false)
+
+          Expanded(
+            child: StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              itemCount: categories.length,
+              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 0.0,
+              itemBuilder: (BuildContext categories, int index) {
+                return Container(
+                  color: Colors.white,
+                  child: AnimatedCard(shopping: false),
+                );
+              },
+            ),
+          ),
         ],
       )),
     );
