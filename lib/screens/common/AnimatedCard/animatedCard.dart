@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,7 +10,9 @@ import 'modalContainer.dart';
 
 class AnimatedCard extends StatefulWidget {
   final bool shopping;
-  AnimatedCard({this.shopping});
+  final String categorySelected;
+
+  AnimatedCard({this.shopping, this.categorySelected});
   @override
   _AnimatedCardState createState() => _AnimatedCardState();
 }
@@ -27,10 +30,12 @@ class _AnimatedCardState extends State<AnimatedCard>
   StoreProduct d;
   StoreProduct e;
   StoreProduct f;
-
+  String heightofContainer;
+  double newscreenheight;
   @override
   void initState() {
     super.initState();
+    print(this.widget.categorySelected);
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
     Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
@@ -145,6 +150,12 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             icon: Icon(Icons.edit),
                                             onPressed: () {
                                               toggle();
+                                              setState(() {
+                                                heightofContainer =
+                                                    '${context.size.height}';
+                                              });
+                                              newscreenheight = double.parse(
+                                                  heightofContainer);
                                             }),
                                       )
                                     : Container(),
@@ -152,7 +163,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   constraints: BoxConstraints(
                                       maxWidth: 67.3, maxHeight: 160),
                                   child: CachedNetworkImage(
-                                      imageUrl: products[1].pictureUrl),
+                                      imageUrl: products[0].pictureUrl),
                                 ),
                                 this.widget.shopping
                                     ? Expanded(
@@ -185,8 +196,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                             toggle();
                           },
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.22,
-                            width: 120,
+                            height: newscreenheight,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(

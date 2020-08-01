@@ -11,7 +11,7 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
   int tapped;
-
+String selected;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +43,8 @@ class _ProductsState extends State<Products> {
                   onPressed: () {
                     setState(() {
                       tapped = i;
+                      selected=categories[i];
+                      print(selected);
                     });
                   },
                   child: Text(
@@ -74,7 +76,7 @@ class _ProductsState extends State<Products> {
                     children: <Widget>[
                       SizedBox(width: 10.0),
                       Expanded(
-                        child: AnimatedCard(shopping: false),
+                        child: AnimatedCard(shopping: false,categorySelected:selected),
                       ),
                       SizedBox(width: 9.0)
                     ],
