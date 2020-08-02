@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,8 +10,9 @@ import 'modalContainer.dart';
 class AnimatedCard extends StatefulWidget {
   final bool shopping;
   final String categorySelected;
+  final StoreProduct product;
 
-  AnimatedCard({this.shopping, this.categorySelected});
+  AnimatedCard({this.shopping, this.categorySelected, @required this.product});
   @override
   _AnimatedCardState createState() => _AnimatedCardState();
 }
@@ -20,16 +20,6 @@ class AnimatedCard extends StatefulWidget {
 class _AnimatedCardState extends State<AnimatedCard>
     with SingleTickerProviderStateMixin {
   AnimationController animationController;
-  List<StoreProduct> products = [];
-  List<StoreProduct> categories = [];
-  // static products
-  StoreProduct a;
-  StoreProduct b;
-  StoreProduct c;
-  // static categories
-  StoreProduct d;
-  StoreProduct e;
-  StoreProduct f;
   String heightofContainer;
   double newscreenheight;
   @override
@@ -38,48 +28,6 @@ class _AnimatedCardState extends State<AnimatedCard>
     print(this.widget.categorySelected);
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
-    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
-    a = new StoreProduct(
-        name: "Apple",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
-        quantity: q,
-        description: "local",
-        price: 250);
-    b = new StoreProduct(
-      name: "Onion",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/products/pineapple.png",
-      quantity: q,
-      description: "local",
-      price: 18,
-    );
-    c = new StoreProduct(
-        name: "Carrots",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    products.add(a);
-    products.add(b);
-    products.add(c);
-    d = new StoreProduct(
-      name: "Vegetables",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/illustrations/vegetable.png",
-    );
-    e = new StoreProduct(
-      name: "Fruits",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/illustrations/viburnum-fruit.png",
-    );
-    f = new StoreProduct(
-      name: "Daily Essentials",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
-    );
-    categories.add(d);
-    categories.add(e);
-    categories.add(f);
   }
 
   // open the modal for product addition
@@ -133,7 +81,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                               height: 15,
                             ),
                             Text(
-                              "apple",
+                              this.widget.product.name,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
                                   color: ThemeColoursSeva().pallete2,
@@ -163,7 +111,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   constraints: BoxConstraints(
                                       maxWidth: 67.3, maxHeight: 160),
                                   child: CachedNetworkImage(
-                                      imageUrl: products[0].pictureUrl),
+                                      imageUrl: this.widget.product.pictureUrl),
                                 ),
                                 this.widget.shopping
                                     ? Expanded(
@@ -177,7 +125,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                               ],
                             ),
                             SizedBox(height: 20),
-                            Text("Rs 120 - 1 Kg",
+                            Text("Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}",
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: ThemeColoursSeva().pallete2,

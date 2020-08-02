@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/storeProducts.dart';
 
 import 'common/AnimatedCard/animatedCard.dart';
 
@@ -10,6 +11,40 @@ class ShoppingCartNew extends StatefulWidget {
 }
 
 class _ShoppingCartNewState extends State<ShoppingCartNew> {
+  List<StoreProduct> p = [];
+  StoreProduct a;
+  StoreProduct b;
+  StoreProduct c;
+
+  @override
+  initState() {
+    super.initState();
+    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
+    a = new StoreProduct(
+        name: "Apple",
+        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
+        quantity: q,
+        description: "local",
+        price: 250);
+    b = new StoreProduct(
+      name: "Pineapple",
+      pictureUrl:
+          "https://storepictures.theonestop.co.in/products/pineapple.png",
+      quantity: q,
+      description: "local",
+      price: 18,
+    );
+    c = new StoreProduct(
+        name: "Carrots",
+        pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
+        quantity: q,
+        description: "local",
+        price: 30);
+    p.add(a);
+    p.add(b);
+    p.add(c);
+  }
+
   _showModal() {
     showModalBottomSheet(
         context: context,
@@ -85,7 +120,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 return Row(
                   children: <Widget>[
                     SizedBox(width: 12.0),
-                    Expanded(child: AnimatedCard(shopping: true)),
+                    Expanded(child: AnimatedCard(shopping: true, product: p[index],)),
                     SizedBox(width: 9.0)
                   ],
                 );
