@@ -80,7 +80,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 // slide to pay btn
                 SlideButton(
                   height: 64,
-                  backgroundColor: Colors.red,
+                  backgroundColor: ThemeColoursSeva().dkGreen,
                   slidingBarColor: Colors.white,
                   backgroundChild: Center(
                       child: ButtonTheme(
