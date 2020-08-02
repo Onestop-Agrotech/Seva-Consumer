@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/shoppingCart/razorpay.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import 'common/AnimatedCard/animatedCard.dart';
+import '../common/AnimatedCard/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
   @override
@@ -15,6 +22,10 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   StoreProduct a;
   StoreProduct b;
   StoreProduct c;
+  String _rzpAPIKey;
+  Razorpay _rzp;
+  String _userMobile;
+  String _userEmail;
 
   @override
   initState() {
@@ -43,6 +54,76 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     p.add(a);
     p.add(b);
     p.add(c);
+    getKey();
+    _rzp = Razorpay();
+    _rzp.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
+    _rzp.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentError);
+    _rzp.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
+  }
+
+  // handle successful payment
+  handlePaymentSuccess(PaymentSuccessResponse response) {
+    print("success");
+  }
+
+  // handle payment failure
+  handlePaymentError(PaymentFailureResponse response) {
+    print("fail");
+    Fluttertoast.showToast(
+        msg: "ERROR: " + response.code.toString() + " - " + response.message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM);
+  }
+
+  // handle external wallet
+  handleExternalWallet(ExternalWalletResponse response) {
+    print("external");
+  }
+
+  // get user details
+  _getUserDetails() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String userId = await p.getId();
+    String token = await p.getToken();
+    String url = APIService.getUserAPI + "$userId";
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      this._userMobile = json.decode(response.body)["mobile"];
+      this._userEmail = json.decode(response.body)["email"];
+    } else {
+      throw Exception('something is wrong');
+    }
+  }
+
+  void openCheckout(price, key) async {
+    await _getUserDetails();
+    var options = {
+      'key': key,
+      'amount': price * 100,
+      'prefill': {'contact': this._userMobile, 'email': this._userEmail},
+      'external': {
+        'wallets': ['paytm']
+      }
+    };
+
+    try {
+      this._rzp.open(options);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  getKey() async {
+    // get razorpay key for checkout options
+    String apiKey = await RazorPaySeva().getRzpAPIKEY();
+    setState(() {
+      _rzpAPIKey = apiKey;
+    });
+  }
+
+  onSlidePay() {
+    openCheckout(50, this._rzpAPIKey);
   }
 
   _showModal() {
@@ -81,7 +162,11 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                   ],
                 ),
                 // slide to pay btn
-                RaisedButton(onPressed: () {}, child: Text("Slide to pay"))
+                RaisedButton(
+                    onPressed: () {
+                      onSlidePay();
+                    },
+                    child: Text("Slide to pay"))
               ],
             );
           });
@@ -120,7 +205,11 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 return Row(
                   children: <Widget>[
                     SizedBox(width: 12.0),
-                    Expanded(child: AnimatedCard(shopping: true, product: p[index],)),
+                    Expanded(
+                        child: AnimatedCard(
+                      shopping: true,
+                      product: p[index],
+                    )),
                     SizedBox(width: 9.0)
                   ],
                 );
