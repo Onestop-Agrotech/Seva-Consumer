@@ -7,7 +7,13 @@ class PromoCodeScreen extends StatefulWidget {
 }
 
 class _PromoCodeScreenState extends State<PromoCodeScreen> {
-  List categories = ['Vegetables', 'Fruits', 'Daily Essentials', 'Category 1', 'Category 2'];
+  List categories = [
+    'Vegetables',
+    'Fruits',
+    'Daily Essentials',
+    'Category 1',
+    'Category 2'
+  ];
   int tapped;
 
   @override
@@ -21,6 +27,7 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
           children: <Widget>[
             Column(
               children: <Widget>[
+                SizedBox(height: 20),
                 Text(
                   "Offers For You",
                   style: TextStyle(
@@ -65,30 +72,40 @@ class _PromoCodeScreenState extends State<PromoCodeScreen> {
             ),
             // instead of for loop
             // use list view builder
-            for (int i = 0; i < categories.length; i++)
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  ButtonTheme(
-                    minWidth: 200.0,
-                    height: 70.0,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(10.0)),
-                      color: ThemeColoursSeva().dkGreen,
-                      onPressed: () {
-                        setState(() {
-                          tapped = i;
-                        });
-                      },
-                      child: Text(
-                        categories[i],
-                        style: TextStyle(color: Colors.white, fontSize: 24),
+            // for (int i = 0; i < categories.length; i++)
+            // Expanded(
+            SizedBox(height: 40),
+            Expanded(
+              child: ListView.builder(
+                itemCount: categories.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    SizedBox(height: 20),
+                    ButtonTheme(
+                      minWidth: 200.0,
+                      height: 70.0,
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(10.0)),
+                        color: ThemeColoursSeva().dkGreen,
+                        onPressed: () {
+                          setState(() {
+                            tapped = index;
+                          });
+                        },
+                        child: Text(
+                          categories[index],
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                ),
+              ),
+            ),
+            // )
           ],
         ),
       )),
