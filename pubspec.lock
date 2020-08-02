@@ -469,6 +469,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_button:
+    dependency: "direct main"
+    description:
+      name: slide_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.9"
   sms_autofill:
     dependency: "direct main"
     description:

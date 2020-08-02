@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/constants/themeColours.dart';
-
+import 'package:slide_button/slide_button.dart';
 import 'common/AnimatedCard/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
@@ -18,35 +18,85 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Text("Summary"),
+                Text(
+                  "Summary",
+                  style: TextStyle(fontSize: 25),
+                ),
                 // text and promo btn
                 Column(
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                      children: <Widget>[
+                        Text(
+                          "Cart Price: ",
+                          style: TextStyle(fontSize: 21),
+                        ),
+                        Text(
+                          "Rs 220",
+                          style: TextStyle(fontSize: 21),
+                        )
+                      ],
                     ),
                     SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                      children: <Widget>[
+                        Text("Cart Price: ", style: TextStyle(fontSize: 21)),
+                        Text("Rs 220", style: TextStyle(fontSize: 21))
+                      ],
                     ),
                     SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                      children: <Widget>[
+                        Text("Cart Price: ", style: TextStyle(fontSize: 21)),
+                        Text("Rs 220", style: TextStyle(fontSize: 21))
+                      ],
                     ),
                     SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[Text("Cart Price: "), Text("Rs 220")],
+                      children: <Widget>[
+                        Text("Cart Price: ", style: TextStyle(fontSize: 21)),
+                        Text("Rs 220", style: TextStyle(fontSize: 21))
+                      ],
                     ),
                     SizedBox(height: 30.0),
-                    RaisedButton(onPressed: () {}, child: Text("Apply Promo"))
+                    ButtonTheme(
+                        minWidth: 150.0,
+                        height: 45.0,
+                        child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(10.0)),
+                            color: ThemeColoursSeva().dkGreen,
+                            onPressed: () {},
+                            child: Text(
+                              "Apply Promo",
+                              style: TextStyle(color: Colors.white),
+                            )))
                   ],
                 ),
                 // slide to pay btn
-                RaisedButton(onPressed: () {}, child: Text("Slide to pay"))
+                SlideButton(
+                  height: 64,
+                  backgroundColor: Colors.red,
+                  slidingBarColor: Colors.white,
+                  backgroundChild: Center(
+                      child: ButtonTheme(
+                          minWidth: 300.0,
+                          height: 70.0,
+                          child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      new BorderRadius.circular(10.0)),
+                              color: ThemeColoursSeva().dkGreen,
+                              onPressed: () {},
+                              child: Text(
+                                "Slide to pay",
+                                style: TextStyle(color: Colors.white),
+                              )))),
+                )
               ],
             );
           });
