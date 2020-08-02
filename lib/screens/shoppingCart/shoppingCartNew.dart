@@ -22,6 +22,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   StoreProduct a;
   StoreProduct b;
   StoreProduct c;
+  StoreProduct d;
   String _rzpAPIKey;
   Razorpay _rzp;
   String _userMobile;
@@ -51,9 +52,16 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         quantity: q,
         description: "local",
         price: 30);
+    d = new StoreProduct(
+        name: "Carrots",
+        pictureUrl: "https://storepictures.theonestop.co.in/products/orange.jpg",
+        quantity: q,
+        description: "local",
+        price: 30);
     p.add(a);
     p.add(b);
     p.add(c);
+    p.add(d);
     getKey();
     _rzp = Razorpay();
     _rzp.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
@@ -197,7 +205,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
           Expanded(
             child: StaggeredGridView.countBuilder(
               crossAxisCount: 4,
-              itemCount: 3,
+              itemCount: this.p.length,
               staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
               mainAxisSpacing: 10.0,
               crossAxisSpacing: 0.0,
