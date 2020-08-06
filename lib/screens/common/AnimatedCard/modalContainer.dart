@@ -1,8 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/storeProducts.dart';
 
-class AddItemModal extends StatelessWidget {
+class AddItemModal extends StatefulWidget {
+  final StoreProduct product;
+  AddItemModal({@required this.product});
+  @override
+  _AddItemModalState createState() => _AddItemModalState();
+}
+
+class _AddItemModalState extends State<AddItemModal> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +21,7 @@ class AddItemModal extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Apple - Red Delicious",
+            widget.product.name,
             style: TextStyle(
               color: ThemeColoursSeva().pallete2,
               fontSize: 22.0,
@@ -24,7 +32,8 @@ class AddItemModal extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Text("Rs 120 - 1 Kg",
+          Text(
+              "Rs ${widget.product.price} - ${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
               overflow: TextOverflow.clip,
               style: TextStyle(
                 color: ThemeColoursSeva().pallete2,
@@ -37,41 +46,35 @@ class AddItemModal extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               CachedNetworkImage(
-                  width: 200,
-                  height: 140,
-                  imageUrl:
-                      "https://storepictures.theonestop.co.in/products/pineapple.png"),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // crossAxisAlignment: CrossAxisAlignment.,
-                children: <Widget>[
-                  Text(
-                    "200 Gms",
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: ThemeColoursSeva().pallete2,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "200 Gms",
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: ThemeColoursSeva().pallete2,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "200 Gms",
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: ThemeColoursSeva().pallete2,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
+                  width: 100, height: 80, imageUrl: widget.product.pictureUrl),
+              Expanded(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      child: ListView.builder(
+                        // shrinkWrap: true,
+                        itemCount:
+                            widget.product.quantity.allowedQuantities.length,
+                        itemBuilder: (builder, i) {
+                          return Column(
+                            children: [
+                              Text(
+                                "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}",
+                                style: TextStyle(
+                                    decoration: TextDecoration.none,
+                                    color: ThemeColoursSeva().pallete2,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(height: 7.0),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

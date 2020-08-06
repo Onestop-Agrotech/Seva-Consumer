@@ -41,7 +41,10 @@ class _AnimatedCardState extends State<AnimatedCard>
         transitionDuration: const Duration(milliseconds: 200),
         pageBuilder: (BuildContext buildContext, Animation animation,
             Animation secondaryAnimation) {
-          return Center(child: AddItemModal());
+          return Center(
+              child: AddItemModal(
+            product: widget.product,
+          ));
         });
   }
 
@@ -125,7 +128,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                               ],
                             ),
                             SizedBox(height: 20),
-                            Text("Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}",
+                            Text(
+                                "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}",
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: ThemeColoursSeva().pallete2,
