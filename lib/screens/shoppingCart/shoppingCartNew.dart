@@ -9,8 +9,6 @@ import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:slide_button/slide_button.dart';
-
 import '../common/AnimatedCard/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
@@ -203,26 +201,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             )))
                   ],
                 ),
-                // slide to pay btn
-                SlideButton(
-                  height: 64,
-                  backgroundColor: ThemeColoursSeva().dkGreen,
-                  slidingBarColor: Colors.white,
-                  backgroundChild: Center(
-                      child: ButtonTheme(
-                          minWidth: 300.0,
-                          height: 70.0,
-                          child: RaisedButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(10.0)),
-                              color: ThemeColoursSeva().dkGreen,
-                              onPressed: () {},
-                              child: Text(
-                                "Slide to pay",
-                                style: TextStyle(color: Colors.white),
-                              )))),
-                )
+                RaisedButton(onPressed: (){}, child: Text("PAY"),)
               ],
             );
           });
