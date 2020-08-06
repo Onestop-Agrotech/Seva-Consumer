@@ -15,52 +15,23 @@ class _ProductsState extends State<Products> {
   List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
   int tapped;
   String selected;
-  List<StoreProduct> p = [];
-  StoreProduct a;
-  StoreProduct b;
-  StoreProduct c;
 
   @override
   void initState() {
     super.initState();
-    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
-    a = new StoreProduct(
-        name: "Apple",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
-        quantity: q,
-        description: "local",
-        price: 250);
-    b = new StoreProduct(
-      name: "Pineapple",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/products/pineapple.png",
-      quantity: q,
-      description: "local",
-      price: 18,
-    );
-    c = new StoreProduct(
-        name: "Carrots",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    p.add(a);
-    p.add(b);
-    p.add(c);
-    getProducts();
   }
 
-  getProducts() async{
-    print("hello");
+  Future<List<StoreProduct>> getProducts() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     Map<String, String> requestHeaders = {'x-auth-token': token};
     String url = "https://api.theonestop.co.in/api/products/fruit";
     var response = await http.get(url, headers: requestHeaders);
-    if(response.statusCode==200){
+    if (response.statusCode == 200) {
       List<StoreProduct> x = jsonToStoreProductModel(response.body);
-    }else {
-      print("some error");
+      return x;
+    } else {
+      throw Exception("Some error");
     }
   }
 
@@ -114,33 +85,42 @@ class _ProductsState extends State<Products> {
           ),
           // AnimatedCard(shopping: false)
 
-          Expanded(
-            child: StaggeredGridView.countBuilder(
-              crossAxisCount: 4,
-              itemCount: categories.length,
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 0.0,
-              itemBuilder: (BuildContext categories, int index) {
-                return Container(
-                  color: Colors.white,
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: AnimatedCard(
-                          shopping: false,
-                          categorySelected: selected,
-                          product: p[index],
-                        ),
-                      ),
-                      SizedBox(width: 9.0)
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
+          FutureBuilder(
+              future: getProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<StoreProduct> arr = snapshot.data;
+                  return Expanded(
+                    child: StaggeredGridView.countBuilder(
+                      crossAxisCount: 4,
+                      itemCount: arr.length,
+                      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 0.0,
+                      itemBuilder: (BuildContext buildContext, int index) {
+                        return Container(
+                          color: Colors.white,
+                          child: Row(
+                            children: <Widget>[
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: AnimatedCard(
+                                  shopping: false,
+                                  categorySelected: selected,
+                                  product: arr[index],
+                                ),
+                              ),
+                              SizedBox(width: 9.0)
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              })
         ],
       )),
     );
