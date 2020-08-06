@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/AnimatedCard/animatedCard.dart';
+import 'package:http/http.dart' as http;
 
 class Products extends StatefulWidget {
   @override
@@ -45,6 +47,21 @@ class _ProductsState extends State<Products> {
     p.add(a);
     p.add(b);
     p.add(c);
+    getProducts();
+  }
+
+  getProducts() async{
+    print("hello");
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    String url = "https://api.theonestop.co.in/api/products/fruit";
+    var response = await http.get(url, headers: requestHeaders);
+    if(response.statusCode==200){
+      List<StoreProduct> x = jsonToStoreProductModel(response.body);
+    }else {
+      print("some error");
+    }
   }
 
   @override
