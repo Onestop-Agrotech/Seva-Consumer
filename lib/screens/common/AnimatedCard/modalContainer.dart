@@ -82,7 +82,7 @@ class _AddItemModalState extends State<AddItemModal> {
             height: 10,
           ),
           Text(
-            "Apples contain  no fat, sodium or cholestrol and are a good source",
+            "Apples contain  no fat, sodium or cholestrol and are a good source of fibre.",
             style: TextStyle(decoration: TextDecoration.none, fontSize: 10),
           ),
           Row(
@@ -94,7 +94,21 @@ class _AddItemModalState extends State<AddItemModal> {
                 style: TextStyle(decoration: TextDecoration.none, fontSize: 10),
               ),
               Text(
-                "250",
+                "Rs 250",
+                style: TextStyle(decoration: TextDecoration.none, fontSize: 10),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Cart Total Price",
+                style: TextStyle(decoration: TextDecoration.none, fontSize: 10),
+              ),
+              Text(
+                "Rs 250",
                 style: TextStyle(decoration: TextDecoration.none, fontSize: 10),
               )
             ],
