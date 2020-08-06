@@ -146,8 +146,14 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                   "Summary",
                   style: TextStyle(fontSize: 25),
                 ),
+                Text(
+                  "Self pick up coming soon!",
+                  style:
+                      TextStyle(color: ThemeColoursSeva().grey, fontSize: 17.0),
+                ),
                 // text and promo btn
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -157,51 +163,60 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                           style: TextStyle(fontSize: 21),
                         ),
                         Text(
-                          "Rs 220",
+                          "Rs 100",
                           style: TextStyle(fontSize: 21),
                         )
                       ],
                     ),
-                    SizedBox(height: 10.0),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text("Cart Price: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 220", style: TextStyle(fontSize: 21))
+                        Text("Delivery Fee: ", style: TextStyle(fontSize: 21)),
+                        Text("Rs 20",
+                            style: TextStyle(
+                                fontSize: 21,
+                                decoration: TextDecoration.lineThrough))
                       ],
                     ),
-                    SizedBox(height: 10.0),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Text("Cart Price: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 220", style: TextStyle(fontSize: 21))
+                        Text("Total Price: ", style: TextStyle(fontSize: 21)),
+                        Text("Rs 100", style: TextStyle(fontSize: 21))
                       ],
                     ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text("Cart Price: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 220", style: TextStyle(fontSize: 21))
-                      ],
-                    ),
-                    SizedBox(height: 30.0),
-                    ButtonTheme(
-                        minWidth: 150.0,
-                        height: 45.0,
-                        child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(10.0)),
-                            color: ThemeColoursSeva().dkGreen,
-                            onPressed: () {},
-                            child: Text(
-                              "Apply Promo",
-                              style: TextStyle(color: Colors.white),
-                            )))
+                    SizedBox(height: 20.0),
+                    // Promo code on Hold!
+                    // ButtonTheme(
+                    //     minWidth: 150.0,
+                    //     height: 45.0,
+                    //     child: RaisedButton(
+                    //         shape: RoundedRectangleBorder(
+                    //             borderRadius: new BorderRadius.circular(10.0)),
+                    //         color: ThemeColoursSeva().dkGreen,
+                    //         onPressed: () {},
+                    //         child: Text(
+                    //           "Apply Promo",
+                    //           style: TextStyle(color: Colors.white),
+                    //         )))
                   ],
                 ),
-                RaisedButton(onPressed: (){}, child: Text("PAY"),)
+                ButtonTheme(
+                  minWidth: 80.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    color: ThemeColoursSeva().dkGreen,
+                    onPressed: () {
+                      openCheckout(100, _rzpAPIKey);
+                    },
+                    child: Text(
+                      "PAY",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
               ],
             );
           });
