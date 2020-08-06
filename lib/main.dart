@@ -10,7 +10,7 @@ import 'package:mvp/screens/orders.dart';
 import 'package:mvp/screens/payments.dart';
 import 'package:mvp/screens/products.dart';
 // import 'package:mvp/screens/products.dart';
-import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
+// import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/screens/storeProductList.dart';
 import 'package:mvp/screens/storesList.dart';
 import 'package:provider/provider.dart';
