@@ -13,13 +13,14 @@ class AddItemModal extends StatefulWidget {
 }
 
 class _AddItemModalState extends State<AddItemModal> {
-  void additionHelper(index, newCart) {
+  void helper(int index, newCart, bool addToCart) {
     double p, q;
 
     // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
 
-    // For Kg
-    if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
+    // For Kg & Pc
+    if (widget.product.quantity.allowedQuantities[index].metric == "Kg" ||
+        widget.product.quantity.allowedQuantities[index].metric == "Pc") {
       q = 1;
       p = double.parse("${widget.product.price}");
     }
@@ -29,7 +30,11 @@ class _AddItemModalState extends State<AddItemModal> {
       p = (widget.product.quantity.allowedQuantities[index].value / 1000) *
           widget.product.price;
     }
-    newCart.addToNewCart(widget.product, p, q, index);
+
+    if (addToCart)
+      newCart.addToNewCart(widget.product, p, q, index);
+    else
+      newCart.removeFromNewCart(widget.product, p, q, index);
   }
 
   Text _showQ(newCart, item, index) {
@@ -122,6 +127,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                           icon: Icon(Icons.remove),
                                           onPressed: () {
                                             // remove from cart
+                                            helper(i, newCart, false);
                                           },
                                         ),
                                         _showQ(newCart, widget.product, i),
@@ -129,8 +135,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                           icon: Icon(Icons.add),
                                           onPressed: () {
                                             // add to cart
-                                            //TODO: add helper
-                                            additionHelper(i, newCart);
+                                            helper(i, newCart, true);
                                           },
                                         ),
                                       ],

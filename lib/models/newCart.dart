@@ -46,30 +46,35 @@ class NewCartModel extends ChangeNotifier {
   }
 
   // Remove item or quantity
-  void removeFromCart(StoreProduct item) {
+  void removeFromNewCart(StoreProduct item, double p, double q, int index) {
     bool remove = false;
+    // check if items exist in cart
     if (_cartItems.length > 0) {
-      // check if item exists
-      _cartItems.forEach((cartItem) {
-        if (item.id == cartItem.id) {
-          var diff = cartItem.totalQuantity - item.totalQuantity;
-          if (diff == 0) {
+      // check if product exist in cart
+      _cartItems.forEach((e) {
+        if (e.id == item.id) {
+          // check for qty
+          int qtyDiff = e.quantity.allowedQuantities[index].qty - 1;
+          if (qtyDiff == 0) {
             // remove from cart
             remove = true;
             return;
           } else {
             // just remove the desired quantity
-            cartItem.totalQuantity -= item.totalQuantity;
-            cartItem.totalPrice -= item.totalPrice;
+            e.quantity.allowedQuantities[index].qty -= 1;
+            e.totalPrice -= p;
+            e.totalQuantity -= q;
             return;
           }
         }
       });
-      if (remove) {
-        // remove from cart
-        int index = _cartItems.indexOf(item);
-        _cartItems.removeAt(index);
-      }
+    }
+    if (remove) {
+      item.quantity.allowedQuantities[index].qty -= 1;
+      item.totalPrice -= p;
+      item.totalQuantity -= q;
+      int i = _cartItems.indexOf(item);
+      _cartItems.removeAt(i);
     }
     notifyListeners();
   }
