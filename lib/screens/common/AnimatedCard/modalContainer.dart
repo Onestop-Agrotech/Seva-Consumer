@@ -18,13 +18,17 @@ class _AddItemModalState extends State<AddItemModal> {
 
     // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
 
+    // For Kg
+    if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
+      q = 1;
+      p = double.parse("${widget.product.price}");
+    }
     // For Gms
-    if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
+    else if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
       q = (widget.product.quantity.allowedQuantities[index].value / 1000);
       p = (widget.product.quantity.allowedQuantities[index].value / 1000) *
           widget.product.price;
     }
-
     newCart.addToNewCart(widget.product, p, q, index);
   }
 
@@ -36,6 +40,23 @@ class _AddItemModalState extends State<AddItemModal> {
       }
     });
     return Text("$qty");
+  }
+
+  Text _showItemTotalPrice(newCart) {
+    double price = 0;
+    newCart.items.forEach((e) {
+      if (e.id == widget.product.id) {
+        price = e.totalPrice;
+      }
+    });
+    return Text(
+      "Rs $price",
+      style: TextStyle(
+        color: ThemeColoursSeva().dkGreen,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+      ),
+    );
   }
 
   @override
@@ -144,14 +165,7 @@ class _AddItemModalState extends State<AddItemModal> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Text(
-                      "Rs 250",
-                      style: TextStyle(
-                        color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
+                    _showItemTotalPrice(newCart),
                   ],
                 ),
                 Row(
