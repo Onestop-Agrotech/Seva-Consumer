@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/models/cart.dart';
+import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
@@ -9,8 +10,8 @@ import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/orders.dart';
 import 'package:mvp/screens/payments.dart';
 import 'package:mvp/screens/products.dart';
-import 'package:mvp/screens/promocodescreen.dart';
-import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
+// import 'package:mvp/screens/promocodescreen.dart';
+// import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 // import 'package:mvp/screens/products.dart';
 // import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/screens/storeProductList.dart';
@@ -58,10 +59,13 @@ class _SevaAppState extends State<SevaApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => CartModel())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartModel()),
+        ChangeNotifierProvider(create: (context) => NewCartModel())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: MainLandingScreen(),
+        home: Products(),
         routes: {
           "/register": (context) => RegisterScreen(),
           "/login": (context) => LoginScreen(),

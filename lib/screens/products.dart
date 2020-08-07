@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/AnimatedCard/animatedCard.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
   @override
@@ -85,42 +87,47 @@ class _ProductsState extends State<Products> {
           ),
           // AnimatedCard(shopping: false)
 
-          FutureBuilder(
-              future: getProducts(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<StoreProduct> arr = snapshot.data;
-                  return Expanded(
-                    child: StaggeredGridView.countBuilder(
-                      crossAxisCount: 4,
-                      itemCount: arr.length,
-                      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 0.0,
-                      itemBuilder: (BuildContext buildContext, int index) {
-                        return Container(
-                          color: Colors.white,
-                          child: Row(
-                            children: <Widget>[
-                              SizedBox(width: 10.0),
-                              Expanded(
-                                child: AnimatedCard(
-                                  shopping: false,
-                                  categorySelected: selected,
-                                  product: arr[index],
-                                ),
+          Consumer<NewCartModel>(
+            builder: (context, newCart, child){
+              return FutureBuilder(
+            future: getProducts(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                List<StoreProduct> arr = snapshot.data;
+                return Expanded(
+                  child: StaggeredGridView.countBuilder(
+                    crossAxisCount: 4,
+                    itemCount: arr.length,
+                    staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 0.0,
+                    itemBuilder: (BuildContext buildContext, int index) {
+                      return Container(
+                        color: Colors.white,
+                        child: Row(
+                          children: <Widget>[
+                            SizedBox(width: 10.0),
+                            Expanded(
+                              child: AnimatedCard(
+                                shopping: false,
+                                categorySelected: selected,
+                                product: arr[index],
                               ),
-                              SizedBox(width: 9.0)
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              })
+                            ),
+                            SizedBox(width: 9.0)
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return Container();
+              }
+            },
+          );
+            },
+          )
         ],
       )),
     );

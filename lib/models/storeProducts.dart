@@ -28,8 +28,8 @@ class StoreProduct {
   String description;
   int price;
   String pictureUrl;
-  int totalPrice;
-  int totalQuantity;
+  double totalPrice;
+  double totalQuantity;
   Quantity quantity;
   bool outOfStock;
 
@@ -82,10 +82,11 @@ class Quantity {
 
 class AllowedQuantity {
   AllowedQuantity({
-    this.value, this.metric
+    this.value, this.metric, this.qty=0
   });
   int value;
   String metric;
+  int qty;
 
   factory AllowedQuantity.fromJson(Map<String, dynamic> json) => AllowedQuantity(
         value: json["quantityValue"],

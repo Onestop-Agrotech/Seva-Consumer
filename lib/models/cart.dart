@@ -90,7 +90,7 @@ class CartModel extends ChangeNotifier {
 
     if (matched == false) {
       i.totalQuantity = 1;
-      i.totalPrice = i.price;
+      // i.totalPrice = i.price;
       _cartItems.add(i);
       // ON HOLD
       // f.addToFirestore(i);
@@ -195,7 +195,7 @@ class CartModel extends ChangeNotifier {
     var sum = 0;
     if (_cartItems.length > 0) {
       _cartItems.forEach((i) {
-        sum = sum + i.totalPrice;
+        // sum = sum + i.totalPrice;
       });
     }
     return sum;
