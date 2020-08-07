@@ -21,13 +21,21 @@ class _AddItemModalState extends State<AddItemModal> {
     // For Gms
     if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
       q = (widget.product.quantity.allowedQuantities[index].value / 1000);
-      print("New Quantity - $q");
       p = (widget.product.quantity.allowedQuantities[index].value / 1000) *
           widget.product.price;
-      print("New Price - $p");
     }
 
-    newCart.addToNewCart(widget.product, p, q);
+    newCart.addToNewCart(widget.product, p, q, index);
+  }
+
+  Text _showQ(newCart, item, index) {
+    int qty = 0;
+    newCart.items.forEach((e) {
+      if (e.id == item.id) {
+        qty = e.quantity.allowedQuantities[index].qty;
+      }
+    });
+    return Text("$qty");
   }
 
   @override
@@ -95,7 +103,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                             // remove from cart
                                           },
                                         ),
-                                        Text("0"),
+                                        _showQ(newCart, widget.product, i),
                                         IconButton(
                                           icon: Icon(Icons.add),
                                           onPressed: () {

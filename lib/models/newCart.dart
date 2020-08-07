@@ -12,7 +12,7 @@ class NewCartModel extends ChangeNotifier {
       UnmodifiableListView(_cartItems);
 
   // Add item accordingly
-  void addToNewCart(StoreProduct item, double p, double q) {
+  void addToNewCart(StoreProduct item, double p, double q, int index) {
     bool add = false;
     if (_cartItems.length > 0) {
       // check if item already exists
@@ -21,6 +21,7 @@ class NewCartModel extends ChangeNotifier {
           // already exists in cart- so add new quantity and new price
           cartItem.totalQuantity += q;
           cartItem.totalPrice += p;
+          cartItem.quantity.allowedQuantities[index].qty += 1;
           return;
         } else {
           // doesn't exist in cart so add as new
@@ -31,12 +32,14 @@ class NewCartModel extends ChangeNotifier {
       if (add) {
         item.totalQuantity = q;
         item.totalPrice = p;
+        item.quantity.allowedQuantities[index].qty += 1;
         _cartItems.add(item);
       }
     } else {
       // add to cart when cart length is 0
       item.totalQuantity = q;
       item.totalPrice = p;
+      item.quantity.allowedQuantities[index].qty += 1;
       _cartItems.add(item);
     }
     notifyListeners();
