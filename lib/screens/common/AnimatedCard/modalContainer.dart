@@ -64,6 +64,19 @@ class _AddItemModalState extends State<AddItemModal> {
     );
   }
 
+  Text _showTotalCartPrice(newCart) {
+    double price;
+    price = newCart.getCartTotalPrice();
+    return Text(
+      "Rs $price",
+      style: TextStyle(
+        color: ThemeColoursSeva().dkGreen,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -185,14 +198,7 @@ class _AddItemModalState extends State<AddItemModal> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Text(
-                      "Rs 250",
-                      style: TextStyle(
-                        color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
+                    _showTotalCartPrice(newCart),
                   ],
                 )
               ],

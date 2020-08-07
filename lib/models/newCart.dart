@@ -11,6 +11,17 @@ class NewCartModel extends ChangeNotifier {
   UnmodifiableListView<StoreProduct> get items =>
       UnmodifiableListView(_cartItems);
 
+  // get total price of cart
+  double getCartTotalPrice() {
+    double sum = 0;
+    if (_cartItems.length > 0) {
+      _cartItems.forEach((element) {
+        sum += element.totalPrice;
+      });
+    }
+    return sum;
+  }
+
   // Add item accordingly
   void addToNewCart(StoreProduct item, double p, double q, int index) {
     bool add = false;
@@ -53,9 +64,9 @@ class NewCartModel extends ChangeNotifier {
       // check if product exist in cart
       _cartItems.forEach((e) {
         if (e.id == item.id) {
-          // check for qty
-          int qtyDiff = e.quantity.allowedQuantities[index].qty - 1;
-          if (qtyDiff == 0) {
+          // check for total Price of that item
+          double pDiff = e.totalPrice - p;
+          if (pDiff == 0) {
             // remove from cart
             remove = true;
             return;
