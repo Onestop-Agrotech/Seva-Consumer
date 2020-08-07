@@ -21,6 +21,9 @@ class NewCartModel extends ChangeNotifier {
     }
     return sum;
   }
+  
+  // get total Items in cart
+  int get totalItems => _cartItems.length;
 
   // Add item accordingly
   void addToNewCart(StoreProduct item, double p, double q, int index) {
