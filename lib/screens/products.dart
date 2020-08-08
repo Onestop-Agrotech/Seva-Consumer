@@ -21,6 +21,7 @@ class _ProductsState extends State<Products> {
   List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
   int tapped;
   String selected;
+  bool loading = false;
 
   @override
   void initState() {
@@ -44,8 +45,14 @@ class _ProductsState extends State<Products> {
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       List<StoreProduct> x = jsonToStoreProductModel(response.body);
+      setState(() {
+        loading = false;
+      });
       return x;
     } else {
+      setState(() {
+        loading = false;
+      });
       return prods;
     }
   }
@@ -151,6 +158,7 @@ class _ProductsState extends State<Products> {
                     setState(() {
                       tapped = i;
                       selected = categories[i];
+                      loading = true;
                     });
                     print(i);
                   },
@@ -167,53 +175,56 @@ class _ProductsState extends State<Products> {
           SizedBox(
             height: 30,
           ),
-          Consumer<NewCartModel>(
-            builder: (context, newCart, child) {
-              return FutureBuilder(
-                future: getProducts(tapped),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<StoreProduct> arr = snapshot.data;
-                    if (arr.length == 0) {
-                      return Center(
-                        child: Text("No Products Available!"),
-                      );
-                    }
-                    return Expanded(
-                      child: StaggeredGridView.countBuilder(
-                        crossAxisCount: 4,
-                        itemCount: arr.length,
-                        staggeredTileBuilder: (int index) =>
-                            StaggeredTile.fit(2),
-                        mainAxisSpacing: 10.0,
-                        crossAxisSpacing: 0.0,
-                        itemBuilder: (BuildContext buildContext, int index) {
-                          return Container(
-                            color: Colors.white,
-                            child: Row(
-                              children: <Widget>[
-                                SizedBox(width: 10.0),
-                                Expanded(
-                                  child: AnimatedCard(
-                                    shopping: false,
-                                    categorySelected: selected,
-                                    product: arr[index],
+          !loading
+              ? Consumer<NewCartModel>(
+                  builder: (context, newCart, child) {
+                    return FutureBuilder(
+                      future: getProducts(tapped),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<StoreProduct> arr = snapshot.data;
+                          if (arr.length == 0) {
+                            return Center(
+                              child: Text("No Products Available!"),
+                            );
+                          }
+                          return Expanded(
+                            child: StaggeredGridView.countBuilder(
+                              crossAxisCount: 4,
+                              itemCount: arr.length,
+                              staggeredTileBuilder: (int index) =>
+                                  StaggeredTile.fit(2),
+                              mainAxisSpacing: 10.0,
+                              crossAxisSpacing: 0.0,
+                              itemBuilder:
+                                  (BuildContext buildContext, int index) {
+                                return Container(
+                                  color: Colors.white,
+                                  child: Row(
+                                    children: <Widget>[
+                                      SizedBox(width: 10.0),
+                                      Expanded(
+                                        child: AnimatedCard(
+                                          shopping: false,
+                                          categorySelected: selected,
+                                          product: arr[index],
+                                        ),
+                                      ),
+                                      SizedBox(width: 9.0)
+                                    ],
                                   ),
-                                ),
-                                SizedBox(width: 9.0)
-                              ],
+                                );
+                              },
                             ),
                           );
-                        },
-                      ),
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
                     );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                },
-              );
-            },
-          )
+                  },
+                )
+              : CircularProgressIndicator()
         ],
       )),
     );
