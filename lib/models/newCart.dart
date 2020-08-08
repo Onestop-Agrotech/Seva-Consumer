@@ -21,7 +21,7 @@ class NewCartModel extends ChangeNotifier {
     }
     return sum;
   }
-  
+
   // get total Items in cart
   int get totalItems => _cartItems.length;
 
@@ -87,6 +87,29 @@ class NewCartModel extends ChangeNotifier {
       item.quantity.allowedQuantities[index].qty -= 1;
       item.totalPrice -= p;
       item.totalQuantity -= q;
+      int i = _cartItems.indexOf(item);
+      _cartItems.removeAt(i);
+    }
+    notifyListeners();
+  }
+
+  // Remove item from cart completely
+  void removeItemFromNewCart(StoreProduct item) {
+    bool remove = false;
+    if (_cartItems.length > 0) {
+      _cartItems.forEach((element) {
+        if (element.id == item.id) {
+          remove = true;
+          return;
+        }
+      });
+    }
+    if (remove) {
+      item.quantity.allowedQuantities.forEach((element) {
+        element.qty = 0;
+      });
+      item.totalPrice = 0;
+      item.totalQuantity = 0;
       int i = _cartItems.indexOf(item);
       _cartItems.removeAt(i);
     }

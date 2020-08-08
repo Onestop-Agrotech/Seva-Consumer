@@ -160,7 +160,6 @@ class _ProductsState extends State<Products> {
                       selected = categories[i];
                       loading = true;
                     });
-                    print(i);
                   },
                   child: Text(
                     categories[i],
