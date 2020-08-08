@@ -82,6 +82,43 @@ class _AnimatedCardState extends State<AnimatedCard>
       ? animationController.forward()
       : animationController.reverse();
 
+  void _showDeleteAlert(newCart) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Remove item ?"),
+            content:
+                Text("${widget.product.name} will be removed from your cart."),
+            actions: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().pallete1,
+              ),
+              SizedBox(width: 20.0),
+              RaisedButton(
+                onPressed: () {
+                  // delete the item
+                  newCart.removeItemFromNewCart(widget.product);
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.red,
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -150,12 +187,19 @@ class _AnimatedCardState extends State<AnimatedCard>
                                       imageUrl: this.widget.product.pictureUrl),
                                 ),
                                 this.widget.shopping
-                                    ? Expanded(
-                                        child: IconButton(
-                                            icon: Icon(Icons.delete),
-                                            onPressed: () {
-                                              print("something");
-                                            }),
+                                    ? Consumer<NewCartModel>(
+                                        builder: (context, newCart, child) {
+                                          return Expanded(
+                                            child: IconButton(
+                                                icon: Icon(Icons.delete),
+                                                color:
+                                                    ThemeColoursSeva().binColor,
+                                                onPressed: () {
+                                                  // alert
+                                                  _showDeleteAlert(newCart);
+                                                }),
+                                          );
+                                        },
                                       )
                                     : Container(),
                               ],
