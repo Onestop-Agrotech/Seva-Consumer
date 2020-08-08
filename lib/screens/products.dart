@@ -9,6 +9,10 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
+  final int type;
+
+  const Products({Key key, @required this.type}) : super(key: key);
+
   @override
   _ProductsState createState() => _ProductsState();
 }
@@ -21,19 +25,28 @@ class _ProductsState extends State<Products> {
   @override
   void initState() {
     super.initState();
+    tapped = widget.type;
   }
 
-  Future<List<StoreProduct>> getProducts() async {
+  Future<List<StoreProduct>> getProducts(int index) async {
+    String type = '';
+    if (index == 0)
+      type = "vegetable";
+    else if (index == 1)
+      type = "fruit";
+    else
+      type = "dailyEssential";
+    List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = "https://api.theonestop.co.in/api/products/fruit";
+    String url = "https://api.theonestop.co.in/api/products/$type";
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       List<StoreProduct> x = jsonToStoreProductModel(response.body);
       return x;
     } else {
-      throw Exception("Some error");
+      return prods;
     }
   }
 
@@ -80,6 +93,17 @@ class _ProductsState extends State<Products> {
     );
   }
 
+  String _renderTopText() {
+    String text = "";
+    if (tapped == 0)
+      text = "Fresh Vegetables";
+    else if (tapped == 1)
+      text = "Fresh Fruits";
+    else
+      text = "Daily Essentials";
+    return text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,16 +118,18 @@ class _ProductsState extends State<Products> {
               IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,
-                  size: 30.0,
+                  size: 25.0,
                   color: ThemeColoursSeva().dkGreen,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               Text(
-                "Fresh Fruits",
+                _renderTopText(),
                 style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600),
               ),
               _renderCartIcon(),
@@ -125,8 +151,8 @@ class _ProductsState extends State<Products> {
                     setState(() {
                       tapped = i;
                       selected = categories[i];
-                      print(selected);
                     });
+                    print(i);
                   },
                   child: Text(
                     categories[i],
@@ -141,12 +167,10 @@ class _ProductsState extends State<Products> {
           SizedBox(
             height: 30,
           ),
-          // AnimatedCard(shopping: false)
-
           Consumer<NewCartModel>(
             builder: (context, newCart, child) {
               return FutureBuilder(
-                future: getProducts(),
+                future: getProducts(tapped),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<StoreProduct> arr = snapshot.data;

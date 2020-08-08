@@ -7,7 +7,8 @@ import 'package:mvp/screens/products.dart';
 class ShowCards extends StatelessWidget {
   final StoreProduct sp;
   final bool store;
-  ShowCards({this.sp, this.store});
+  final int index;
+  ShowCards({this.sp, this.store, @required this.index});
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -17,7 +18,7 @@ class ShowCards extends StatelessWidget {
         if (!this.store)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Products()),
+            MaterialPageRoute(builder: (context) => Products(type:this.index)),
           );
       },
       child: Container(

@@ -89,7 +89,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 12.0),
-                          child: ShowCards(sp: itemsList[index], store: store),
+                          child: ShowCards(sp: itemsList[index], store: store, index: index,),
                         ),
                       ],
                     );
