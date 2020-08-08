@@ -75,9 +75,11 @@ class NewCartModel extends ChangeNotifier {
             return;
           } else {
             // just remove the desired quantity
-            e.quantity.allowedQuantities[index].qty -= 1;
-            e.totalPrice -= p;
-            e.totalQuantity -= q;
+            if ((e.quantity.allowedQuantities[index].qty - 1) >= 0) {
+              e.quantity.allowedQuantities[index].qty -= 1;
+              e.totalPrice -= p;
+              e.totalQuantity -= q;
+            }
             return;
           }
         }

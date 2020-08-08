@@ -107,21 +107,49 @@ class _AddItemModalState extends State<AddItemModal> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    CachedNetworkImage(
-                        width: 90,
-                        height: 120,
-                        imageUrl: widget.product.pictureUrl),
-                    SizedBox(width: 30.0),
-                    Expanded(
-                      child: Column(
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.16,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      // image
+                      CachedNetworkImage(
+                          width: 90,
+                          height: 120,
+                          imageUrl: widget.product.pictureUrl),
+                      Column(
                         children: [
                           SizedBox(
-                            height: 145,
+                            height: 125.0,
+                            width: 80.0,
                             child: ListView.builder(
-                              // shrinkWrap: true,
+                              itemCount: widget
+                                  .product.quantity.allowedQuantities.length,
+                              itemBuilder: (builder, i) {
+                                return Column(
+                                  children: [
+                                    SizedBox(height: 10.0),
+                                    Text(
+                                      "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}",
+                                      style: TextStyle(
+                                          color: ThemeColoursSeva().dkGreen,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w300),
+                                    ),
+                                    SizedBox(height: 10.0)
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: 125.0,
+                            width: 110.0,
+                            child: ListView.builder(
                               itemCount: widget
                                   .product.quantity.allowedQuantities.length,
                               itemBuilder: (builder, i) {
@@ -129,15 +157,9 @@ class _AddItemModalState extends State<AddItemModal> {
                                   children: [
                                     Row(
                                       children: [
-                                        Text(
-                                          "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}",
-                                          style: TextStyle(
-                                              color: ThemeColoursSeva().dkGreen,
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w300),
-                                        ),
                                         IconButton(
                                           icon: Icon(Icons.remove),
+                                          iconSize: 25.0,
                                           onPressed: () {
                                             // remove from cart
                                             helper(i, newCart, false);
@@ -146,6 +168,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                         _showQ(newCart, widget.product, i),
                                         IconButton(
                                           icon: Icon(Icons.add),
+                                          iconSize: 25.0,
                                           onPressed: () {
                                             // add to cart
                                             helper(i, newCart, true);
@@ -160,8 +183,8 @@ class _AddItemModalState extends State<AddItemModal> {
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Text(
                   "Apples contain no fat, sodium or cholestrol and are a good source of fibre.",
@@ -172,7 +195,7 @@ class _AddItemModalState extends State<AddItemModal> {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
@@ -187,7 +210,7 @@ class _AddItemModalState extends State<AddItemModal> {
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
