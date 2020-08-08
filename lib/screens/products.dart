@@ -174,6 +174,11 @@ class _ProductsState extends State<Products> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<StoreProduct> arr = snapshot.data;
+                    if (arr.length == 0) {
+                      return Center(
+                        child: Text("No Products Available!"),
+                      );
+                    }
                     return Expanded(
                       child: StaggeredGridView.countBuilder(
                         crossAxisCount: 4,
@@ -203,7 +208,7 @@ class _ProductsState extends State<Products> {
                       ),
                     );
                   } else {
-                    return Container();
+                    return CircularProgressIndicator();
                   }
                 },
               );
