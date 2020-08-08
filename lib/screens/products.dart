@@ -68,6 +68,7 @@ class _ProductsState extends State<Products> {
               icon: Icon(Icons.shopping_basket),
               onPressed: () {
                 // Handle shopping cart
+                Navigator.pushNamed(context, '/shoppingCartNew');
               }),
         ),
         Positioned(

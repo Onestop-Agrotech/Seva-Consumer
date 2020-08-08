@@ -4,10 +4,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../common/AnimatedCard/animatedCard.dart';
 
@@ -226,47 +228,73 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_left),
-          color: Colors.black,
-          iconSize: 40.0,
-          onPressed: () {},
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text("My Shopping Cart",
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontSize: 25,
-                fontWeight: FontWeight.w600)),
-      ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: StaggeredGridView.countBuilder(
-              crossAxisCount: 4,
-              itemCount: this.p.length,
-              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-              mainAxisSpacing: 10.0,
-              crossAxisSpacing: 0.0,
-              itemBuilder: (BuildContext categories, int index) {
-                return Row(
-                  children: <Widget>[
-                    SizedBox(width: 12.0),
-                    Expanded(
-                        child: AnimatedCard(
-                      shopping: true,
-                      product: p[index],
-                    )),
-                    SizedBox(width: 9.0)
-                  ],
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    size: 25.0,
+                    color: ThemeColoursSeva().dkGreen,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Text(
+                  "My Shopping Cart",
+                  style: TextStyle(
+                      color: ThemeColoursSeva().dkGreen,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600),
+                ),
+                Container(
+                  height: 10.0,
+                  width: 100.0,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Consumer<NewCartModel>(
+              builder: (context, newCart, child) {
+                if (newCart.totalItems == 0) {
+                  return Center(
+                    child: Text("No items in cart"),
+                  );
+                }
+                return Expanded(
+                  child: StaggeredGridView.countBuilder(
+                    crossAxisCount: 4,
+                    itemCount: newCart.totalItems,
+                    staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                    mainAxisSpacing: 10.0,
+                    crossAxisSpacing: 0.0,
+                    itemBuilder: (BuildContext categories, int index) {
+                      return Row(
+                        children: <Widget>[
+                          SizedBox(width: 12.0),
+                          Expanded(
+                              child: AnimatedCard(
+                            shopping: true,
+                            product: newCart.items[index],
+                          )),
+                          SizedBox(width: 9.0)
+                        ],
+                      );
+                    },
+                  ),
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: RaisedButton(
         onPressed: () {
