@@ -48,8 +48,8 @@ class _AnimatedCardState extends State<AnimatedCard>
     }
     // For Gms
     else if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
-      q = (widget.product.quantity.allowedQuantities[index].value / 1000);
-      p = (widget.product.quantity.allowedQuantities[index].value / 1000) *
+      q = (widget.product.quantity.allowedQuantities[index].value / 1000.0);
+      p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
           widget.product.price;
     }
 
