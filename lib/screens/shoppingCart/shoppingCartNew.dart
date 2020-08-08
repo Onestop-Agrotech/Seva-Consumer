@@ -227,6 +227,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<NewCartModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -296,17 +297,19 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
           ],
         ),
       ),
-      floatingActionButton: RaisedButton(
-        onPressed: () {
-          // open the bottomsheet
-          _showModal();
-        },
-        child: Text(
-          "Proceed",
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
-        ),
-        color: ThemeColoursSeva().dkGreen,
-      ),
+      floatingActionButton: cart.totalItems > 0
+          ? RaisedButton(
+              onPressed: () {
+                // open the bottomsheet
+                _showModal();
+              },
+              child: Text(
+                "Proceed",
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+              ),
+              color: ThemeColoursSeva().dkGreen,
+            )
+          : Container(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

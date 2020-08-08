@@ -312,10 +312,15 @@ class _AnimatedCardState extends State<AnimatedCard>
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       RaisedButton(
-                                          onPressed: () {
-                                            toggle();
-                                          },
-                                          child: Text("Done")),
+                                        onPressed: () {
+                                          toggle();
+                                        },
+                                        child: Text(
+                                          "Done",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        color: ThemeColoursSeva().pallete1,
+                                      ),
                                     ],
                                   ),
                                 ],
