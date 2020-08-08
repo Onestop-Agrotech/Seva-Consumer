@@ -37,6 +37,49 @@ class _ProductsState extends State<Products> {
     }
   }
 
+  _renderCartIcon() {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: IconButton(
+              color: ThemeColoursSeva().black,
+              iconSize: 30.0,
+              icon: Icon(Icons.shopping_basket),
+              onPressed: () {
+                // Handle shopping cart
+              }),
+        ),
+        Positioned(
+          left: 28.0,
+          top: 10.0,
+          child: _checkCartItems(),
+        ),
+      ],
+    );
+  }
+
+  Widget _checkCartItems() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.1,
+      height: 22.0,
+      decoration: BoxDecoration(
+        color: ThemeColoursSeva().lgGreen,
+        shape: BoxShape.circle,
+      ),
+      child: Consumer<NewCartModel>(
+        builder: (context, cart, child) {
+          return Center(
+            child: Text(
+              cart.totalItems == null ? '0' : cart.totalItems.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +88,27 @@ class _ProductsState extends State<Products> {
           child: Column(
         children: <Widget>[
           SizedBox(height: 20),
-          Center(
-              child: Text(
-            "Fresh Fruits",
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontSize: 25,
-                fontWeight: FontWeight.w600),
-          )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  size: 30.0,
+                  color: ThemeColoursSeva().dkGreen,
+                ),
+                onPressed: () {},
+              ),
+              Text(
+                "Fresh Fruits",
+                style: TextStyle(
+                    color: ThemeColoursSeva().dkGreen,
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600),
+              ),
+              _renderCartIcon(),
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
@@ -88,44 +144,45 @@ class _ProductsState extends State<Products> {
           // AnimatedCard(shopping: false)
 
           Consumer<NewCartModel>(
-            builder: (context, newCart, child){
+            builder: (context, newCart, child) {
               return FutureBuilder(
-            future: getProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<StoreProduct> arr = snapshot.data;
-                return Expanded(
-                  child: StaggeredGridView.countBuilder(
-                    crossAxisCount: 4,
-                    itemCount: arr.length,
-                    staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 0.0,
-                    itemBuilder: (BuildContext buildContext, int index) {
-                      return Container(
-                        color: Colors.white,
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox(width: 10.0),
-                            Expanded(
-                              child: AnimatedCard(
-                                shopping: false,
-                                categorySelected: selected,
-                                product: arr[index],
-                              ),
+                future: getProducts(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<StoreProduct> arr = snapshot.data;
+                    return Expanded(
+                      child: StaggeredGridView.countBuilder(
+                        crossAxisCount: 4,
+                        itemCount: arr.length,
+                        staggeredTileBuilder: (int index) =>
+                            StaggeredTile.fit(2),
+                        mainAxisSpacing: 10.0,
+                        crossAxisSpacing: 0.0,
+                        itemBuilder: (BuildContext buildContext, int index) {
+                          return Container(
+                            color: Colors.white,
+                            child: Row(
+                              children: <Widget>[
+                                SizedBox(width: 10.0),
+                                Expanded(
+                                  child: AnimatedCard(
+                                    shopping: false,
+                                    categorySelected: selected,
+                                    product: arr[index],
+                                  ),
+                                ),
+                                SizedBox(width: 9.0)
+                              ],
                             ),
-                            SizedBox(width: 9.0)
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return Container();
-              }
-            },
-          );
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+              );
             },
           )
         ],
