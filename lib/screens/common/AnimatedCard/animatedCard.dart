@@ -26,12 +26,37 @@ class _AnimatedCardState extends State<AnimatedCard>
   String widthofContainer;
   double newscreenheight;
   double newscreenwidth;
+
   @override
   void initState() {
     super.initState();
     print(this.widget.categorySelected);
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
+  }
+
+  void helper(int index, newCart, bool addToCart) {
+    double p, q;
+
+    // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
+
+    // For Kg & Pc
+    if (widget.product.quantity.allowedQuantities[index].metric == "Kg" ||
+        widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+      q = 1;
+      p = double.parse("${widget.product.price}");
+    }
+    // For Gms
+    else if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
+      q = (widget.product.quantity.allowedQuantities[index].value / 1000);
+      p = (widget.product.quantity.allowedQuantities[index].value / 1000) *
+          widget.product.price;
+    }
+
+    if (addToCart)
+      newCart.addToNewCart(widget.product, p, q, index);
+    else
+      newCart.removeFromNewCart(widget.product, p, q, index);
   }
 
   // open the modal for product addition
@@ -168,56 +193,74 @@ class _AnimatedCardState extends State<AnimatedCard>
                               padding: const EdgeInsets.only(top: 12.0),
                               child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      // daalo
-                                      SizedBox(
-                                        width: newscreenwidth * 0.42,
-                                        height: newscreenheight * 0.65,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: 3,
-                                          itemBuilder: (builder, i) {
-                                            return Column(
-                                              children: [
-                                                SizedBox(height: 10.0),
-                                                Text(
-                                                    "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}"),
-                                                SizedBox(height: 10.0),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: newscreenwidth * 0.55,
-                                        height: newscreenheight * 0.65,
-                                        child: ListView.builder(
-                                          scrollDirection: Axis.vertical,
-                                          itemCount: 3,
-                                          itemBuilder: (builder, i) {
-                                            return Column(
-                                              children: [
-                                                SizedBox(height: 5.0),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
+                                  Consumer<NewCartModel>(
+                                    builder: (context, newCart, child) {
+                                      return Row(
+                                        children: [
+                                          // daalo
+                                          SizedBox(
+                                            width: newscreenwidth * 0.42,
+                                            height: newscreenheight * 0.65,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: 3,
+                                              itemBuilder: (builder, i) {
+                                                return Column(
                                                   children: [
-                                                    Icon(Icons.remove),
-                                                    SizedBox(width: 5.0),
+                                                    SizedBox(height: 10.0),
                                                     Text(
-                                                        "${widget.product.quantity.allowedQuantities[i].qty}"),
-                                                    SizedBox(width: 5.0),
-                                                    Icon(Icons.add),
+                                                        "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}"),
+                                                    SizedBox(height: 10.0),
                                                   ],
-                                                ),
-                                                SizedBox(height: 5.0),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: newscreenwidth * 0.55,
+                                            height: newscreenheight * 0.65,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: 3,
+                                              itemBuilder: (builder, i) {
+                                                return Column(
+                                                  children: [
+                                                    SizedBox(height: 5.0),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        GestureDetector(
+                                                          child: Icon(
+                                                              Icons.remove),
+                                                          onTap: () {
+                                                            helper(i, newCart,
+                                                                false);
+                                                          },
+                                                        ),
+                                                        SizedBox(width: 5.0),
+                                                        Text(
+                                                            "${widget.product.quantity.allowedQuantities[i].qty}"),
+                                                        SizedBox(width: 5.0),
+                                                        GestureDetector(
+                                                            child:
+                                                                Icon(Icons.add),
+                                                            onTap: () {
+                                                              helper(i, newCart,
+                                                                  true);
+                                                            }),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 5.0),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
