@@ -162,7 +162,9 @@ class _AnimatedCardState extends State<AnimatedCard>
                             ),
                             SizedBox(height: 20),
                             Text(
-                                "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}",
+                                !this.widget.shopping
+                                    ? "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}"
+                                    : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity} ${this.widget.product.quantity.quantityMetric}",
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     color: ThemeColoursSeva().pallete2,
