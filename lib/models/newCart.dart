@@ -27,10 +27,11 @@ class NewCartModel extends ChangeNotifier {
 
   // Add item accordingly
   void addToNewCart(StoreProduct item, double p, double q, int index) {
-    bool add = false;
+    int unmatched = 0;
     if (_cartItems.length > 0) {
       // check if item already exists
       _cartItems.forEach((cartItem) {
+        print(cartItem.id + "-" + item.id);
         if (item.id == cartItem.id) {
           // already exists in cart- so add new quantity and new price
           cartItem.totalQuantity += q;
@@ -38,12 +39,12 @@ class NewCartModel extends ChangeNotifier {
           cartItem.quantity.allowedQuantities[index].qty += 1;
           return;
         } else {
-          // doesn't exist in cart so add as new
-          add = true;
-          return;
+          // // doesn't exist in cart so add as new
+          unmatched++;
         }
       });
-      if (add) {
+      if (unmatched == _cartItems.length) {
+        // doesnt exist in cart, so add it
         item.totalQuantity = q;
         item.totalPrice = p;
         item.quantity.allowedQuantities[index].qty += 1;
@@ -76,6 +77,7 @@ class NewCartModel extends ChangeNotifier {
           } else {
             // just remove the desired quantity
             if ((e.quantity.allowedQuantities[index].qty - 1) >= 0) {
+              print("remove desired qty");
               e.quantity.allowedQuantities[index].qty -= 1;
               e.totalPrice -= p;
               e.totalQuantity -= q;
