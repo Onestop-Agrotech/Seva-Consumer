@@ -182,7 +182,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                     : Container(),
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
-                                      maxWidth: 120, maxHeight: 130),
+                                      maxWidth: 90, maxHeight: 130),
                                   child: CachedNetworkImage(
                                       imageUrl: this.widget.product.pictureUrl),
                                 ),
