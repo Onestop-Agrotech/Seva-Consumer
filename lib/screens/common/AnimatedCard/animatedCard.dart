@@ -157,7 +157,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w500),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
@@ -182,7 +182,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                     : Container(),
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
-                                      maxWidth: 67.3, maxHeight: 160),
+                                      maxWidth: 120, maxHeight: 130),
                                   child: CachedNetworkImage(
                                       imageUrl: this.widget.product.pictureUrl),
                                 ),
