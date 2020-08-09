@@ -37,6 +37,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   StoreProduct e;
   StoreProduct f;
   String _email;
+  String _username;
 
   @override
   initState() {
@@ -83,7 +84,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(d);
     categories.add(e);
     categories.add(f);
+    getUsername();
   }
+
+  getUsername()async{
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    _username = await p.getUsername();
+  }
+
 
   Future<String> _fetchUserAddress() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
@@ -237,7 +245,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: DrawerHeader(
-                  child: TopText(txt: 'Username'),
+                  child: TopText(txt: _username!=null ? _username : "Username"),
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
