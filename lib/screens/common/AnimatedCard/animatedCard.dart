@@ -311,15 +311,15 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      RaisedButton(
-                                        onPressed: () {
+                                      GestureDetector(
+                                        onTap: () {
                                           toggle();
                                         },
-                                        child: Text(
-                                          "Done",
-                                          style: TextStyle(color: Colors.white),
+                                        child: Icon(
+                                          Icons.done,
+                                          color: ThemeColoursSeva().dkGreen,
+                                          size: 30.0,
                                         ),
-                                        color: ThemeColoursSeva().pallete1,
                                       ),
                                     ],
                                   ),
