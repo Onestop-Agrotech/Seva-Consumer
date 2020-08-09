@@ -87,11 +87,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     getUsername();
   }
 
-  getUsername()async{
+  getUsername() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     _username = await p.getUsername();
   }
-
 
   Future<String> _fetchUserAddress() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
@@ -245,7 +244,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.15,
                 child: DrawerHeader(
-                  child: TopText(txt: _username!=null ? _username : "Username"),
+                  child:
+                      TopText(txt: _username != null ? _username : "Username"),
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),

@@ -18,7 +18,7 @@ class ShowCards extends StatelessWidget {
         if (!this.store)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Products(type:this.index)),
+            MaterialPageRoute(builder: (context) => Products(type: this.index)),
           );
       },
       child: Container(

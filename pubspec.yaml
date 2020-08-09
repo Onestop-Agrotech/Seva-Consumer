@@ -45,14 +45,10 @@ dependencies:
   razorpay_flutter: ^1.2.1
   # for otp login field
   otp_text_field: ^1.0.1
-  # autofill otp
-  sms_autofill: ^1.2.1
   # launch urls
   url_launcher: ^5.5.0
   # firebase messaging - notifs
   firebase_messaging: ^6.0.16
-  # UPI Payments
-  upi_india: ^2.1.2
   # splash screen
   flutter_native_splash: ^0.1.9
   # for location

@@ -13,12 +13,6 @@ class APIService {
   // storesList.dart - _fetchUserAddress function
   static final String getAddressAPI = "$_api/users/user-address/";
 
-  // BUSINESSES
-  // storesList.dart - _fetchStores function
-  static final String businessListAPI = "$_api/businesses/user-access/";
-  // storeProductList.dart - _fetchProductsFromStore function
-  static final String businessProductsListAPI = "$_api/businesses/";
-
   // ORDERS
   // shopping cart file - _postOrderToServer function
   static final String ordersAPI = "$_api/orders/";
@@ -33,11 +27,4 @@ class APIService {
   // OTHERS
   // loading.dart - _sendReqToServer function
   static final String mainTokenAPI = "https://api.theonestop.co.in/token";
-
-  // Cart Operations add, update , delete
-  static final String getCartAPI = "$_api/firestore/getcart";
-  static final String setCartAPI = "$_api/firestore/setcart";
-  static final String updatecartAPI = "$_api/firestore/updatecart";
-  static final String removeitemAPI = "$_api/firestore/removeitem";
-  static final String emptycartAPI = "$_api/firestore/emptycart";
 }

@@ -58,11 +58,7 @@ class StoreProduct {
 }
 
 class Quantity {
-  Quantity({
-    this.quantityValue,
-    this.quantityMetric,
-    this.allowedQuantities
-  });
+  Quantity({this.quantityValue, this.quantityMetric, this.allowedQuantities});
 
   int quantityValue;
   String quantityMetric;
@@ -71,7 +67,8 @@ class Quantity {
   factory Quantity.fromJson(Map<String, dynamic> json) => Quantity(
         quantityValue: json["quantityValue"],
         quantityMetric: json["quantityMetric"],
-        allowedQuantities: List<AllowedQuantity>.from(json["allowedQuantities"].map((x) => AllowedQuantity.fromJson(x))),
+        allowedQuantities: List<AllowedQuantity>.from(
+            json["allowedQuantities"].map((x) => AllowedQuantity.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -81,20 +78,19 @@ class Quantity {
 }
 
 class AllowedQuantity {
-  AllowedQuantity({
-    this.value, this.metric, this.qty=0
-  });
+  AllowedQuantity({this.value, this.metric, this.qty = 0});
   int value;
   String metric;
   int qty;
 
-  factory AllowedQuantity.fromJson(Map<String, dynamic> json) => AllowedQuantity(
+  factory AllowedQuantity.fromJson(Map<String, dynamic> json) =>
+      AllowedQuantity(
         value: json["quantityValue"],
         metric: json["quantityMetric"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "quantityValue": value,
         "quantityMetric": metric,
-    };
+      };
 }
