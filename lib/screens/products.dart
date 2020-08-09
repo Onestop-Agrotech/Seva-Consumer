@@ -21,7 +21,6 @@ class _ProductsState extends State<Products> {
   List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
   int tapped;
   String selected;
-  bool loading = false;
 
   @override
   void initState() {
@@ -29,14 +28,7 @@ class _ProductsState extends State<Products> {
     tapped = widget.type;
   }
 
-  Future<List<StoreProduct>> getProducts(int index) async {
-    String type = '';
-    if (index == 0)
-      type = "vegetable";
-    else if (index == 1)
-      type = "fruit";
-    else
-      type = "dailyEssential";
+  Future<List<StoreProduct>> getProducts(String type) async {
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -45,14 +37,8 @@ class _ProductsState extends State<Products> {
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       List<StoreProduct> x = jsonToStoreProductModel(response.body);
-      setState(() {
-        loading = false;
-      });
       return x;
     } else {
-      setState(() {
-        loading = false;
-      });
       return prods;
     }
   }
@@ -112,6 +98,52 @@ class _ProductsState extends State<Products> {
     return text;
   }
 
+  FutureBuilder _buildProducts(type) {
+    return FutureBuilder(
+      future: getProducts(type),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<StoreProduct> arr = snapshot.data;
+          if (arr.length == 0) {
+            return Center(
+              child: Text("No Products Available!"),
+            );
+          }
+          return SizedBox(
+            height: MediaQuery.of(context).size.height*0.75,
+            child: StaggeredGridView.countBuilder(
+              crossAxisCount: 4,
+              itemCount: arr.length,
+              staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+              mainAxisSpacing: 10.0,
+              crossAxisSpacing: 0.0,
+              itemBuilder: (BuildContext buildContext, int index) {
+                return Container(
+                  color: Colors.white,
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        child: AnimatedCard(
+                          shopping: false,
+                          categorySelected: selected,
+                          product: arr[index],
+                        ),
+                      ),
+                      SizedBox(width: 9.0)
+                    ],
+                  ),
+                );
+              },
+            ),
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,7 +191,6 @@ class _ProductsState extends State<Products> {
                     setState(() {
                       tapped = i;
                       selected = categories[i];
-                      loading = true;
                     });
                   },
                   child: Text(
@@ -175,56 +206,18 @@ class _ProductsState extends State<Products> {
           SizedBox(
             height: 30,
           ),
-          !loading
-              ? Consumer<NewCartModel>(
-                  builder: (context, newCart, child) {
-                    return FutureBuilder(
-                      future: getProducts(tapped),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<StoreProduct> arr = snapshot.data;
-                          if (arr.length == 0) {
-                            return Center(
-                              child: Text("No Products Available!"),
-                            );
-                          }
-                          return Expanded(
-                            child: StaggeredGridView.countBuilder(
-                              crossAxisCount: 4,
-                              itemCount: arr.length,
-                              staggeredTileBuilder: (int index) =>
-                                  StaggeredTile.fit(2),
-                              mainAxisSpacing: 10.0,
-                              crossAxisSpacing: 0.0,
-                              itemBuilder:
-                                  (BuildContext buildContext, int index) {
-                                return Container(
-                                  color: Colors.white,
-                                  child: Row(
-                                    children: <Widget>[
-                                      SizedBox(width: 10.0),
-                                      Expanded(
-                                        child: AnimatedCard(
-                                          shopping: false,
-                                          categorySelected: selected,
-                                          product: arr[index],
-                                        ),
-                                      ),
-                                      SizedBox(width: 9.0)
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    );
-                  },
-                )
-              : CircularProgressIndicator()
+          Consumer<NewCartModel>(
+            builder: (context, newCart, child) {
+              return IndexedStack(
+                index: tapped,
+                children: [
+                  _buildProducts("vegetable"),
+                  _buildProducts("fruit"),
+                  _buildProducts("dailyEssential")
+                ],
+              );
+            },
+          )
         ],
       )),
     );
