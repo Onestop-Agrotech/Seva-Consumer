@@ -267,7 +267,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
               builder: (context, newCart, child) {
                 if (newCart.totalItems == 0) {
                   return Center(
-                    child: Text("No items in cart"),
+                    child: Text(
+                      "No items in your cart!",
+                      style: TextStyle(
+                          color: ThemeColoursSeva().pallete1,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600),
+                    ),
                   );
                 }
                 return Expanded(
@@ -297,19 +303,31 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
           ],
         ),
       ),
-      floatingActionButton: cart.totalItems > 0
-          ? RaisedButton(
-              onPressed: () {
-                // open the bottomsheet
-                _showModal();
-              },
-              child: Text(
-                "Proceed",
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
-              ),
-              color: ThemeColoursSeva().dkGreen,
-            )
-          : Container(),
+      floatingActionButton:
+          cart.totalItems > 0 && cart.getCartTotalPrice() > 100.0
+              ? RaisedButton(
+                  onPressed: () {
+                    // open the bottomsheet
+                    _showModal();
+                  },
+                  child: Text(
+                    "Proceed",
+                    style: TextStyle(color: Colors.white, fontSize: 20.0),
+                  ),
+                  color: ThemeColoursSeva().dkGreen,
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Container(
+                    child: Text(
+                      "Minimum order is Rs 100",
+                      style: TextStyle(
+                          color: ThemeColoursSeva().pallete1,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

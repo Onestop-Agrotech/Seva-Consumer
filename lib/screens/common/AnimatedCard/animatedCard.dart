@@ -158,9 +158,9 @@ class _AnimatedCardState extends State<AnimatedCard>
                               this.widget.product.name,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
-                                  color: ThemeColoursSeva().pallete2,
+                                  color: ThemeColoursSeva().pallete1,
                                   fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w700),
                             ),
                             SizedBox(height: 10),
                             Row(
@@ -216,9 +216,9 @@ class _AnimatedCardState extends State<AnimatedCard>
                                     : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.quantity.quantityMetric}",
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                    color: ThemeColoursSeva().pallete2,
+                                    color: ThemeColoursSeva().pallete1,
                                     fontSize: 15.0,
-                                    fontWeight: FontWeight.w500)),
+                                    fontWeight: FontWeight.w700)),
                             SizedBox(
                               height: 30,
                             )
