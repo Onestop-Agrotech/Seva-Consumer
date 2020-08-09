@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'graphics/lightBG.dart';
 
@@ -13,6 +15,7 @@ class MainLandingScreen extends StatefulWidget {
 }
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var texts = [
     "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
     "Get a cashback of Rs 30 on your 4th order!"
@@ -89,7 +92,11 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 12.0),
-                          child: ShowCards(sp: itemsList[index], store: store, index: index,),
+                          child: ShowCards(
+                            sp: itemsList[index],
+                            store: store,
+                            index: index,
+                          ),
                         ),
                       ],
                     );
@@ -128,7 +135,45 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: DrawerHeader(
+                  child: TopText(txt: 'Username'),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('My orders'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/orders');
+                },
+              ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () async {
+                  // Navigator.pushNamed(context, '/orders');
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           CustomPaint(
@@ -150,7 +195,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       children: <Widget>[
                         IconButton(
                           icon: Icon(Icons.menu),
-                          onPressed: () {},
+                          onPressed: () {
+                            _scaffoldKey.currentState.openDrawer();
+                          },
                           iconSize: 28.0,
                         ),
                         Text(
