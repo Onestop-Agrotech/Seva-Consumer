@@ -1,10 +1,16 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
+import 'package:mvp/screens/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'graphics/lightBG.dart';
@@ -30,6 +36,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   StoreProduct d;
   StoreProduct e;
   StoreProduct f;
+  String _email;
 
   @override
   initState() {
@@ -76,6 +83,90 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(d);
     categories.add(e);
     categories.add(f);
+  }
+
+  Future<String> _fetchUserAddress() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    String id = await p.getId();
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    String url = APIService.getAddressAPI + "$id";
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      // got address
+      _email = json.decode(response.body)["email"];
+      return (json.decode(response.body)["address"]);
+    } else {
+      throw Exception('something is wrong');
+    }
+  }
+
+  _showLocation() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Delivery Address:",
+            style: TextStyle(
+                fontSize: 17.0,
+                color: Colors.black,
+                fontWeight: FontWeight.w500),
+          ),
+          content: FutureBuilder(
+              future: _fetchUserAddress(),
+              builder: (context, data) {
+                if (data.hasData) {
+                  return StatefulBuilder(builder: (context, setState) {
+                    return Container(
+                      height: 120.0,
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 10.0),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Text(
+                              data.data,
+                              overflow: TextOverflow.clip,
+                            ),
+                          ),
+                          SizedBox(height: 30.0),
+                        ],
+                      ),
+                    );
+                  });
+                } else
+                  return Container(child: Text("Loading Address ..."));
+              }),
+          actions: <Widget>[
+            FutureBuilder(
+              future: _fetchUserAddress(),
+              builder: (context, data) {
+                if (data.hasData) {
+                  return RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GoogleLocationScreen(
+                                  userEmail: _email,
+                                )),
+                      );
+                    },
+                    child: Text("Change"),
+                    color: ThemeColoursSeva().pallete1,
+                    textColor: Colors.white,
+                  );
+                } else
+                  return Container();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget commonWidget(height, itemsList, store) {
@@ -209,7 +300,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         ),
                         IconButton(
                           icon: Icon(Icons.location_on),
-                          onPressed: () {},
+                          onPressed: () {
+                            _showLocation();
+                          },
                           iconSize: 28.0,
                         ),
                       ],
