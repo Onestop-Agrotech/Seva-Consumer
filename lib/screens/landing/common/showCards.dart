@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/products.dart';
+import 'package:mvp/screens/products/products.dart';
 
 class ShowCards extends StatelessWidget {
   final StoreProduct sp;

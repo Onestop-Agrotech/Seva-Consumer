@@ -4,7 +4,7 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/common/AnimatedCard/animatedCard.dart';
+import 'package:mvp/screens/common/animatedCard/animatedCard.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -110,7 +110,7 @@ class _ProductsState extends State<Products> {
             );
           }
           return SizedBox(
-            height: MediaQuery.of(context).size.height*0.75,
+            height: MediaQuery.of(context).size.height * 0.75,
             child: StaggeredGridView.countBuilder(
               crossAxisCount: 4,
               itemCount: arr.length,

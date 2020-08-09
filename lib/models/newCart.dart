@@ -121,8 +121,8 @@ class NewCartModel extends ChangeNotifier {
   }
 
   // Clear the cart
-  void clearCart(){
-    if(_cartItems.length>0){
+  void clearCart() {
+    if (_cartItems.length > 0) {
       _cartItems.clear();
     }
     notifyListeners();
