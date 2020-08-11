@@ -13,8 +13,6 @@ class NewOrdersScreen extends StatefulWidget {
 }
 
 class _NewOrdersScreenState extends State<NewOrdersScreen> {
-  bool _data;
-
   _getOrderOfUser() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();
@@ -27,9 +25,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
       return toOrdersFromJson(json.decode(response.body)["orders"]);
     } else if (response.statusCode == 404) {
       // no orders
-      setState(() {
-        _data = false;
-      });
+      return [];
     } else
       throw Exception("Server error");
   }
@@ -40,15 +36,17 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          iconSize: 27.0,
+          color: Colors.black,
+        ),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {},
-              iconSize: 27.0,
-              color: Colors.black,
-            ),
             Text(
               "My Orders",
               style: TextStyle(
@@ -86,6 +84,17 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                         fontWeight: FontWeight.w500),
                   )),
                 );
+            } else if (snapshot.hasError) {
+              return Container(
+                child: Center(
+                    child: Text(
+                  "Oops! Encountered an error. Please login again.",
+                  style: TextStyle(
+                      color: ThemeColoursSeva().pallete1,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500),
+                )),
+              );
             } else {
               return Center(child: CircularProgressIndicator());
             }
