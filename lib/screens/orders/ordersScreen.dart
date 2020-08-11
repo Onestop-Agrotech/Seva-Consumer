@@ -34,7 +34,7 @@ class NewOrdersScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: 20,
+          itemCount: 3,
           itemBuilder: (builder, index) {
             return OrdersCard();
           }),
