@@ -8,24 +8,25 @@ class OrdersCard extends StatefulWidget {
 }
 
 class _OrdersCardState extends State<OrdersCard> {
-
-  void showDetails(){
-    showModalBottomSheet(context: context, builder: (context){
-      return OrderDetailsModal();
-    });
+  void showDetails() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return OrderDetailsModal();
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20.0),
+        SizedBox(height: 10.0),
         Container(
           width: MediaQuery.of(context).size.height * 0.45,
           height: MediaQuery.of(context).size.height * 0.18,
           decoration: BoxDecoration(
             // color: Colors.red,
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(10.0),
             border: Border.all(
               color: ThemeColoursSeva().pallete3,
               width: 1.5,
@@ -39,11 +40,28 @@ class _OrdersCardState extends State<OrdersCard> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text("Order number here"),
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Text(
+                      "#123456789",
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w600,
+                          color: ThemeColoursSeva().dkGreen),
+                      overflow: TextOverflow.clip,
+                    ),
                   ),
-                  Text("Ordered date here"),
-                  Text("Ordered time here"),
+                  Text(
+                    "12-10-2020",
+                    style: TextStyle(
+                        color: ThemeColoursSeva().pallete1,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    "08:20 AM",
+                    style: TextStyle(
+                        color: ThemeColoursSeva().pallete1,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ],
               ),
               RaisedButton(
