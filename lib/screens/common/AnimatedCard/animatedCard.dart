@@ -41,8 +41,7 @@ class _AnimatedCardState extends State<AnimatedCard>
     // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
-    if (widget.product.quantity.allowedQuantities[index].metric == "Kg" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+    if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
       q = 1;
       p = double.parse("${widget.product.price}");
     }
@@ -51,6 +50,12 @@ class _AnimatedCardState extends State<AnimatedCard>
       q = (widget.product.quantity.allowedQuantities[index].value / 1000.0);
       p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
           widget.product.price;
+    }
+    // For Pc
+    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+      q = double.parse(
+          "${widget.product.quantity.allowedQuantities[index].value}");
+      p = widget.product.price * q;
     }
 
     if (addToCart)
@@ -153,11 +158,11 @@ class _AnimatedCardState extends State<AnimatedCard>
                               this.widget.product.name,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
-                                  color: ThemeColoursSeva().pallete2,
+                                  color: ThemeColoursSeva().pallete1,
                                   fontSize: 15.0,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w700),
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
@@ -182,7 +187,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                     : Container(),
                                 ConstrainedBox(
                                   constraints: BoxConstraints(
-                                      maxWidth: 67.3, maxHeight: 160),
+                                      maxWidth: 90, maxHeight: 130),
                                   child: CachedNetworkImage(
                                       imageUrl: this.widget.product.pictureUrl),
                                 ),
@@ -208,12 +213,12 @@ class _AnimatedCardState extends State<AnimatedCard>
                             Text(
                                 !this.widget.shopping
                                     ? "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}"
-                                    : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity} ${this.widget.product.quantity.quantityMetric}",
+                                    : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.quantity.quantityMetric}",
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
-                                    color: ThemeColoursSeva().pallete2,
+                                    color: ThemeColoursSeva().pallete1,
                                     fontSize: 15.0,
-                                    fontWeight: FontWeight.w500)),
+                                    fontWeight: FontWeight.w700)),
                             SizedBox(
                               height: 30,
                             )
@@ -311,15 +316,15 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      RaisedButton(
-                                        onPressed: () {
+                                      GestureDetector(
+                                        onTap: () {
                                           toggle();
                                         },
-                                        child: Text(
-                                          "Done",
-                                          style: TextStyle(color: Colors.white),
+                                        child: Icon(
+                                          Icons.done,
+                                          color: ThemeColoursSeva().dkGreen,
+                                          size: 30.0,
                                         ),
-                                        color: ThemeColoursSeva().pallete1,
                                       ),
                                     ],
                                   ),

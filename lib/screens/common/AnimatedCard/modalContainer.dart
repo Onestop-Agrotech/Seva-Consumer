@@ -19,8 +19,7 @@ class _AddItemModalState extends State<AddItemModal> {
     // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
-    if (widget.product.quantity.allowedQuantities[index].metric == "Kg" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+    if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
       q = 1;
       p = double.parse("${widget.product.price}");
     }
@@ -29,6 +28,12 @@ class _AddItemModalState extends State<AddItemModal> {
       q = (widget.product.quantity.allowedQuantities[index].value / 1000.0);
       p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
           widget.product.price;
+    }
+    // For Pc
+    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+      q = double.parse(
+          "${widget.product.quantity.allowedQuantities[index].value}");
+      p = widget.product.price * q;
     }
 
     if (addToCart)
@@ -90,13 +95,31 @@ class _AddItemModalState extends State<AddItemModal> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  widget.product.name,
-                  style: TextStyle(
-                    color: ThemeColoursSeva().dkGreen,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w300,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      width: 30.0,
+                    ),
+                    Text(
+                      widget.product.name,
+                      style: TextStyle(
+                        color: ThemeColoursSeva().dkGreen,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.cancel,
+                        color: ThemeColoursSeva().binColor,
+                        size: 30.0,
+                      ),
+                    ),
+                  ],
                 ),
                 Text(
                   "Rs ${widget.product.price} for ${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
@@ -133,7 +156,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                       "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}",
                                       style: TextStyle(
                                           color: ThemeColoursSeva().dkGreen,
-                                          fontSize: 20.0,
+                                          fontSize: 17.0,
                                           fontWeight: FontWeight.w300),
                                     ),
                                     SizedBox(height: 10.0)
@@ -155,25 +178,23 @@ class _AddItemModalState extends State<AddItemModal> {
                               itemBuilder: (builder, i) {
                                 return Column(
                                   children: [
+                                    SizedBox(height: 13.0),
                                     Row(
                                       children: [
-                                        IconButton(
-                                          icon: Icon(Icons.remove),
-                                          iconSize: 25.0,
-                                          onPressed: () {
-                                            // remove from cart
+                                        GestureDetector(
+                                          onTap: () {
                                             helper(i, newCart, false);
                                           },
+                                          child: Icon(Icons.remove),
                                         ),
+                                        SizedBox(width: 15.0),
                                         _showQ(newCart, widget.product, i),
-                                        IconButton(
-                                          icon: Icon(Icons.add),
-                                          iconSize: 25.0,
-                                          onPressed: () {
-                                            // add to cart
-                                            helper(i, newCart, true);
-                                          },
-                                        ),
+                                        SizedBox(width: 15.0),
+                                        GestureDetector(
+                                            onTap: () {
+                                              helper(i, newCart, true);
+                                            },
+                                            child: Icon(Icons.add)),
                                       ],
                                     ),
                                   ],

@@ -3,7 +3,7 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
-import 'package:mvp/screens/orders.dart';
+import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -55,9 +55,9 @@ class _SevaAppState extends State<SevaApp> {
         routes: {
           "/register": (context) => RegisterScreen(),
           "/login": (context) => LoginScreen(),
-          "/orders": (context) => OrdersScreen(),
           "/main": (context) => MainLandingScreen(),
-          "/shoppingCartNew": (context) => ShoppingCartNew()
+          "/shoppingCartNew": (context) => ShoppingCartNew(),
+          "/ordersNew": (context) => NewOrdersScreen()
         },
       ),
     );

@@ -255,13 +255,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 title: Text('My orders'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/orders');
+                  Navigator.pushNamed(context, '/ordersNew');
                 },
               ),
               ListTile(
                 title: Text('Logout'),
                 onTap: () async {
-                  // Navigator.pushNamed(context, '/orders');
                   SharedPreferences preferences =
                       await SharedPreferences.getInstance();
                   preferences.clear();

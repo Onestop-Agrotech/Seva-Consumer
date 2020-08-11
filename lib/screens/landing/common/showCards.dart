@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/products.dart';
+import 'package:mvp/screens/products/products.dart';
 
 class ShowCards extends StatelessWidget {
   final StoreProduct sp;
@@ -36,14 +36,14 @@ class ShowCards extends StatelessWidget {
           children: <Widget>[
             store
                 ? Text(
-                    "${sp.name} - ${sp.description}",
+                    "${sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: ThemeColoursSeva().pallete2,
+                        color: ThemeColoursSeva().pallete1,
                         fontSize: 15.0,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w700),
                   )
-                : Container(),
+                : SizedBox.shrink(),
             Container(
               height: height * 0.1,
               child: CachedNetworkImage(
@@ -58,17 +58,17 @@ class ShowCards extends StatelessWidget {
                     "Rs ${sp.price} - ${sp.quantity.quantityValue} ${sp.quantity.quantityMetric}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: ThemeColoursSeva().pallete2,
+                        color: ThemeColoursSeva().pallete1,
                         fontSize: 15.0,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w700),
                   )
                 : Text(
                     "${sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: ThemeColoursSeva().pallete2,
+                        color: ThemeColoursSeva().pallete1,
                         fontSize: 15.0,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w700),
                   )
           ],
         ),
