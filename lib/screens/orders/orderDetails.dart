@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/ordersModel.dart';
 
 class OrderDetailsModal extends StatelessWidget {
+  final OrderModel order;
+
+  const OrderDetailsModal({Key key, this.order}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -13,7 +17,7 @@ class OrderDetailsModal extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Details: #1234567899",
+              "Details: #${order.orderNumber}",
               style: TextStyle(
                   color: ThemeColoursSeva().dkGreen,
                   fontSize: 16.0,
@@ -41,7 +45,7 @@ class OrderDetailsModal extends StatelessWidget {
             ),
             SizedBox(height: 20.0),
             Text(
-              "Delivery fee: Rs 0",
+              "Delivery fee: Rs ${order.deliveryPrice}",
               style: TextStyle(
                   color: ThemeColoursSeva().dkGreen,
                   fontSize: 16.0,
@@ -49,7 +53,7 @@ class OrderDetailsModal extends StatelessWidget {
             ),
             SizedBox(height: 12.0),
             Text(
-              "Order Price: Rs 200",
+              "Order Price: Rs ${order.finalItemsPrice}",
               style: TextStyle(
                   color: ThemeColoursSeva().dkGreen,
                   fontSize: 16.0,
@@ -57,7 +61,7 @@ class OrderDetailsModal extends StatelessWidget {
             ),
             SizedBox(height: 12.0),
             Text(
-              "Total Price: Rs 200",
+              "Total Price: Rs ${order.customerFinalPrice}",
               style: TextStyle(
                   color: ThemeColoursSeva().dkGreen,
                   fontSize: 16.0,

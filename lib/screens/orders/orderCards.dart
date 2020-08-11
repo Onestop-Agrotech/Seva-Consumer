@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/screens/orders/orderDetails.dart';
 
 class OrdersCard extends StatefulWidget {
+  final OrderModel order;
+
+  const OrdersCard({Key key, this.order}) : super(key: key);
+
   @override
   _OrdersCardState createState() => _OrdersCardState();
 }
@@ -42,7 +47,7 @@ class _OrdersCardState extends State<OrdersCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Text(
-                      "#123456789",
+                      "#${widget.order.orderNumber}",
                       style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w600,
@@ -51,13 +56,13 @@ class _OrdersCardState extends State<OrdersCard> {
                     ),
                   ),
                   Text(
-                    "12-10-2020",
+                    "${widget.order.timestamp}",
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    "08:20 AM",
+                    "${widget.order.timestamp}",
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
                         fontWeight: FontWeight.w600),
