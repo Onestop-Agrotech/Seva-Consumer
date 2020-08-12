@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/ordersModel.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -10,7 +9,6 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 
 class OrderLoader extends StatefulWidget {
-  // final OrderModel order;
   final String paymentId;
   OrderLoader({@required this.paymentId});
 
@@ -19,13 +17,17 @@ class OrderLoader extends StatefulWidget {
 }
 
 class _OrderLoaderState extends State<OrderLoader> {
+  bool _postOnce;
+
   @override
   initState() {
     super.initState();
+    _postOnce=true;
   }
 
   // post the order
   _postDataToServer(responseId, newCart) async {
+    _postOnce=false;
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
@@ -47,7 +49,7 @@ class _OrderLoaderState extends State<OrderLoader> {
         itemId: newCart.items[i].id,
         name: newCart.items[i].name,
         totalPrice: "${newCart.items[i].totalPrice}",
-        totalQuantity: "${newCart.items[i].totalQuantity}",
+        totalQuantity: "${newCart.items[i].totalQuantity} ${newCart.items[i].quantity.quantityMetric}",
       );
       itemList.add(it);
     }
@@ -80,7 +82,7 @@ class _OrderLoaderState extends State<OrderLoader> {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<NewCartModel>(context);
-    _postDataToServer(this.widget.paymentId, cart);
+    if(_postOnce)_postDataToServer(this.widget.paymentId, cart);
     return Material(
       child: Scaffold(
         body: Center(
