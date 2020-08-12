@@ -5,7 +5,6 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
-import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/shoppingCart/loading.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
@@ -20,51 +19,16 @@ class ShoppingCartNew extends StatefulWidget {
 }
 
 class _ShoppingCartNewState extends State<ShoppingCartNew> {
-  List<StoreProduct> p = [];
-  StoreProduct a;
-  StoreProduct b;
-  StoreProduct c;
-  StoreProduct d;
   String _rzpAPIKey;
   Razorpay _rzp;
   String _userMobile;
   String _userEmail;
+  String _userOrders;
 
   @override
   initState() {
     super.initState();
-    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
-    a = new StoreProduct(
-        name: "Apple",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
-        quantity: q,
-        description: "local",
-        price: 250);
-    b = new StoreProduct(
-      name: "Pineapple",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/products/pineapple.png",
-      quantity: q,
-      description: "local",
-      price: 18,
-    );
-    c = new StoreProduct(
-        name: "Carrots",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    d = new StoreProduct(
-        name: "Carrots",
-        pictureUrl:
-            "https://storepictures.theonestop.co.in/products/orange.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    p.add(a);
-    p.add(b);
-    p.add(c);
-    p.add(d);
+    _getUserDetails();
     getKey();
     _rzp = Razorpay();
     _rzp.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
@@ -72,13 +36,14 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     _rzp.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
-  
-
   // handle successful payment
   handlePaymentSuccess(PaymentSuccessResponse response) {
     print("success");
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-      return OrderLoader(paymentId: response.paymentId,);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return OrderLoader(
+        paymentId: response.paymentId,
+        orders: _userOrders,
+      );
     }));
   }
 
@@ -107,20 +72,22 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     if (response.statusCode == 200) {
       this._userMobile = json.decode(response.body)["mobile"];
       this._userEmail = json.decode(response.body)["email"];
+      try {
+        this._userOrders = json.decode(response.body)["orders"];
+        if (_userOrders == null) _userOrders = "0";
+      } catch (e) {
+        _userOrders = "0";
+      }
     } else {
       throw Exception('something is wrong');
     }
   }
 
   void openCheckout(price, key) async {
-    await _getUserDetails();
     var options = {
       'key': key,
       'amount': price * 100,
       'prefill': {'contact': this._userMobile, 'email': this._userEmail},
-      'external': {
-        'wallets': ['paytm']
-      }
     };
 
     try {
@@ -136,10 +103,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     setState(() {
       _rzpAPIKey = apiKey;
     });
-  }
-
-  onSlidePay() {
-    openCheckout(50, this._rzpAPIKey);
   }
 
   _showModal() {
@@ -159,7 +122,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                   style:
                       TextStyle(color: ThemeColoursSeva().grey, fontSize: 17.0),
                 ),
-                // text and promo btn
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -180,18 +142,16 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         ),
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text("Delivery Fee: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 0",
+                        Text(double.parse(_userOrders) < 3 ? "Rs 0" : "Rs 20",
                             style: TextStyle(
                               fontSize: 21,
                             ))
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -199,7 +159,9 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         Consumer<NewCartModel>(
                           builder: (context, newCart, child) {
                             return Text(
-                              "Rs ${newCart.getCartTotalPrice()}",
+                              double.parse(_userOrders) < 3
+                                  ? "Rs ${newCart.getCartTotalPrice()}"
+                                  : "Rs ${newCart.getCartTotalPrice() + 20.0}",
                               style: TextStyle(fontSize: 21),
                             );
                           },

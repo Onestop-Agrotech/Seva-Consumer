@@ -35,7 +35,7 @@ class OrderDetailsModal extends StatelessWidget {
                           "${order.items[i].name} x ${order.items[i].totalQuantity}",
                           style: TextStyle(
                               color: ThemeColoursSeva().pallete1,
-                              fontSize: 14.0,
+                              fontSize: 16.0,
                               fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 4.0),

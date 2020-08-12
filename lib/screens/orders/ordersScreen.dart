@@ -66,6 +66,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<OrderModel> orders = snapshot.data;
+              orders.sort((a,b) => b.time.orderTimestamp.compareTo(a.time.orderTimestamp));
               if (orders.length > 0) {
                 return ListView.builder(
                     scrollDirection: Axis.vertical,
