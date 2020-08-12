@@ -22,12 +22,12 @@ class _OrderLoaderState extends State<OrderLoader> {
   @override
   initState() {
     super.initState();
-    _postOnce=true;
+    _postOnce = true;
   }
 
   // post the order
   _postDataToServer(responseId, newCart) async {
-    _postOnce=false;
+    _postOnce = false;
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
@@ -45,11 +45,17 @@ class _OrderLoaderState extends State<OrderLoader> {
         "${double.parse(newOrder.deliveryPrice) + double.parse(newOrder.finalItemsPrice)}";
     List<Item> itemList = [];
     for (int i = 0; i < newCart.totalItems; i++) {
+      String q = "";
+      if (newCart.items[i].totalQuantity % 1 == 0) {
+        // whole double;
+        q = newCart.items[i].totalQuantity.toStringAsFixed(0);
+      } else
+        q = newCart.items[i].totalQuantity.toString();
       Item it = new Item(
         itemId: newCart.items[i].id,
         name: newCart.items[i].name,
         totalPrice: "${newCart.items[i].totalPrice}",
-        totalQuantity: "${newCart.items[i].totalQuantity} ${newCart.items[i].quantity.quantityMetric}",
+        totalQuantity: "$q ${newCart.items[i].quantity.quantityMetric}",
       );
       itemList.add(it);
     }
@@ -82,7 +88,7 @@ class _OrderLoaderState extends State<OrderLoader> {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<NewCartModel>(context);
-    if(_postOnce)_postDataToServer(this.widget.paymentId, cart);
+    if (_postOnce) _postDataToServer(this.widget.paymentId, cart);
     return Material(
       child: Scaffold(
         body: Center(

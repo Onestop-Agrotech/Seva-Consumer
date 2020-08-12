@@ -17,8 +17,30 @@ class _OrdersCardState extends State<OrdersCard> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return OrderDetailsModal(order: widget.order,);
+          return OrderDetailsModal(
+            order: widget.order,
+          );
         });
+  }
+
+  Text returnOrderTime(DateTime time) {
+    var hour;
+    var isAM;
+    if (time.hour > 12) {
+      hour = time.hour - 12;
+      isAM = false;
+    } else
+      hour = time.hour;
+    String timeString = "";
+    if (isAM)
+      timeString = "$hour:${time.minute} AM";
+    else
+      timeString = "$hour:${time.minute} PM";
+    return Text(
+      timeString,
+      style: TextStyle(
+          color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w600),
+    );
   }
 
   @override
@@ -55,14 +77,9 @@ class _OrdersCardState extends State<OrdersCard> {
                       overflow: TextOverflow.clip,
                     ),
                   ),
+                  returnOrderTime(widget.order.time.orderTimestamp),
                   Text(
-                    "${widget.order.time.orderTimestamp}",
-                    style: TextStyle(
-                        color: ThemeColoursSeva().pallete1,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    "${widget.order.time.orderTimestamp}",
+                    "${widget.order.time.orderTimestamp.day}-${widget.order.time.orderTimestamp.month}-${widget.order.time.orderTimestamp.year}",
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
                         fontWeight: FontWeight.w600),
