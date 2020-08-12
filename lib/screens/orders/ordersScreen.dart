@@ -71,7 +71,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                     scrollDirection: Axis.vertical,
                     itemCount: orders.length,
                     itemBuilder: (builder, index) {
-                      return OrdersCard();
+                      return OrdersCard(order:orders[index]);
                     });
               } else
                 return Container(

@@ -5,8 +5,8 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
-import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/shoppingCart/loading.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -29,16 +29,10 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   Razorpay _rzp;
   String _userMobile;
   String _userEmail;
-  String _userOrders;
-
-  bool _paymentSuccess;
-  String _paymentId;
 
   @override
   initState() {
     super.initState();
-    _paymentSuccess = false;
-    _paymentId = "";
     Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
     a = new StoreProduct(
         name: "Apple",
@@ -78,63 +72,14 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     _rzp.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
-  _postDataToServer(responseId, newCart) async {
-    _paymentSuccess=false;
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String userId = await p.getId();
-    String token = await p.getToken();
-    String url = APIService.ordersAPI + "/new/$userId";
-    Map<String, String> requestHeaders = {'x-auth-token': token};
-    // make the body
-    OrderModel newOrder = new OrderModel(
-        orderType: "delivery",
-        finalItemsPrice: "${newCart.getCartTotalPrice()}",
-        deliveryPrice: "20",
-        paymentType: "online",
-        paymentTransactionId: responseId);
-    // if (double.parse(_userOrders) < 3.0) newOrder.deliveryPrice = "0";
-    newOrder.customerFinalPrice =
-        "${double.parse(newOrder.deliveryPrice) + double.parse(newOrder.finalItemsPrice)}";
-    List<Item> itemList = [];
-    for (int i = 0; i < newCart.totalItems; i++) {
-      Item it = new Item(
-        itemId: newCart.items[i].id,
-        name: newCart.items[i].name,
-        totalPrice: "${newCart.items[i].totalPrice}",
-        totalQuantity: "${newCart.items[i].totalQuantity}",
-      );
-      itemList.add(it);
-    }
-    newOrder.items = itemList;
-    var jsonBody = fromOrderModelToJson(newOrder);
-    var response =
-        await http.post(url, headers: requestHeaders, body: jsonBody);
-    if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-          msg: "Order posted!",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM);
-    } else if (response.statusCode == 404) {
-      Fluttertoast.showToast(
-          msg: "404 error",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM);
-    } else if (response.statusCode == 500) {
-      Fluttertoast.showToast(
-          msg: "500 error",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM);
-    } else
-      throw Exception("Server error!");
-  }
+  
 
   // handle successful payment
   handlePaymentSuccess(PaymentSuccessResponse response) {
-    setState(() {
-      _paymentId = response.paymentId;
-      _paymentSuccess = true;
-    });
     print("success");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+      return OrderLoader(paymentId: response.paymentId,);
+    }));
   }
 
   // handle payment failure
@@ -162,7 +107,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     if (response.statusCode == 200) {
       this._userMobile = json.decode(response.body)["mobile"];
       this._userEmail = json.decode(response.body)["email"];
-      this._userOrders = json.decode(response.body)["orders"];
     } else {
       throw Exception('something is wrong');
     }
@@ -263,19 +207,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       ],
                     ),
                     SizedBox(height: 20.0),
-                    // Promo code on Hold!
-                    // ButtonTheme(
-                    //     minWidth: 150.0,
-                    //     height: 45.0,
-                    //     child: RaisedButton(
-                    //         shape: RoundedRectangleBorder(
-                    //             borderRadius: new BorderRadius.circular(10.0)),
-                    //         color: ThemeColoursSeva().dkGreen,
-                    //         onPressed: () {},
-                    //         child: Text(
-                    //           "Apply Promo",
-                    //           style: TextStyle(color: Colors.white),
-                    //         )))
                   ],
                 ),
                 Consumer<NewCartModel>(
@@ -287,6 +218,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         color: ThemeColoursSeva().dkGreen,
                         onPressed: () {
                           openCheckout(newCart.getCartTotalPrice(), _rzpAPIKey);
+                          Navigator.pop(context);
                         },
                         child: Text(
                           "PAY",
@@ -305,7 +237,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<NewCartModel>(context);
-    if (_paymentSuccess) _postDataToServer(_paymentId, cart);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

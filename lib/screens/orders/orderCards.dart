@@ -17,7 +17,7 @@ class _OrdersCardState extends State<OrdersCard> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return OrderDetailsModal();
+          return OrderDetailsModal(order: widget.order,);
         });
   }
 
