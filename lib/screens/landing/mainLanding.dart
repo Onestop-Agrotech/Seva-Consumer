@@ -357,7 +357,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       ),
                     ),
                     SizedBox(height: 9.0),
-                    commonText(height, "Best Sellers", "See All"),
+                    commonText(height, "Best Sellers", ""),
                     SizedBox(height: 9.0),
                     commonWidget(height, products, true),
                     SizedBox(height: 9.0),

@@ -5,7 +5,7 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
-import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/shoppingCart/loading.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -19,51 +19,16 @@ class ShoppingCartNew extends StatefulWidget {
 }
 
 class _ShoppingCartNewState extends State<ShoppingCartNew> {
-  List<StoreProduct> p = [];
-  StoreProduct a;
-  StoreProduct b;
-  StoreProduct c;
-  StoreProduct d;
   String _rzpAPIKey;
   Razorpay _rzp;
   String _userMobile;
   String _userEmail;
+  String _userOrders;
 
   @override
   initState() {
     super.initState();
-    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
-    a = new StoreProduct(
-        name: "Apple",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
-        quantity: q,
-        description: "local",
-        price: 250);
-    b = new StoreProduct(
-      name: "Pineapple",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/products/pineapple.png",
-      quantity: q,
-      description: "local",
-      price: 18,
-    );
-    c = new StoreProduct(
-        name: "Carrots",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    d = new StoreProduct(
-        name: "Carrots",
-        pictureUrl:
-            "https://storepictures.theonestop.co.in/products/orange.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    p.add(a);
-    p.add(b);
-    p.add(c);
-    p.add(d);
+    _getUserDetails();
     getKey();
     _rzp = Razorpay();
     _rzp.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
@@ -74,6 +39,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   // handle successful payment
   handlePaymentSuccess(PaymentSuccessResponse response) {
     print("success");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return OrderLoader(
+        paymentId: response.paymentId,
+        orders: _userOrders,
+      );
+    }));
   }
 
   // handle payment failure
@@ -101,20 +72,22 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     if (response.statusCode == 200) {
       this._userMobile = json.decode(response.body)["mobile"];
       this._userEmail = json.decode(response.body)["email"];
+      try {
+        this._userOrders = json.decode(response.body)["orders"];
+        if (_userOrders == null) _userOrders = "0";
+      } catch (e) {
+        _userOrders = "0";
+      }
     } else {
       throw Exception('something is wrong');
     }
   }
 
   void openCheckout(price, key) async {
-    await _getUserDetails();
     var options = {
       'key': key,
       'amount': price * 100,
       'prefill': {'contact': this._userMobile, 'email': this._userEmail},
-      'external': {
-        'wallets': ['paytm']
-      }
     };
 
     try {
@@ -130,10 +103,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     setState(() {
       _rzpAPIKey = apiKey;
     });
-  }
-
-  onSlidePay() {
-    openCheckout(50, this._rzpAPIKey);
   }
 
   _showModal() {
@@ -153,7 +122,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                   style:
                       TextStyle(color: ThemeColoursSeva().grey, fontSize: 17.0),
                 ),
-                // text and promo btn
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -164,60 +132,63 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                           "Cart Price: ",
                           style: TextStyle(fontSize: 21),
                         ),
-                        Text(
-                          "Rs 100",
-                          style: TextStyle(fontSize: 21),
-                        )
+                        Consumer<NewCartModel>(
+                          builder: (context, newCart, child) {
+                            return Text(
+                              "Rs ${newCart.getCartTotalPrice()}",
+                              style: TextStyle(fontSize: 21),
+                            );
+                          },
+                        ),
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text("Delivery Fee: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 20",
+                        Text(double.parse(_userOrders) < 3 ? "Rs 0" : "Rs 20",
                             style: TextStyle(
-                                fontSize: 21,
-                                decoration: TextDecoration.lineThrough))
+                              fontSize: 21,
+                            ))
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text("Total Price: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 100", style: TextStyle(fontSize: 21))
+                        Consumer<NewCartModel>(
+                          builder: (context, newCart, child) {
+                            return Text(
+                              double.parse(_userOrders) < 3
+                                  ? "Rs ${newCart.getCartTotalPrice()}"
+                                  : "Rs ${newCart.getCartTotalPrice() + 20.0}",
+                              style: TextStyle(fontSize: 21),
+                            );
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: 20.0),
-                    // Promo code on Hold!
-                    // ButtonTheme(
-                    //     minWidth: 150.0,
-                    //     height: 45.0,
-                    //     child: RaisedButton(
-                    //         shape: RoundedRectangleBorder(
-                    //             borderRadius: new BorderRadius.circular(10.0)),
-                    //         color: ThemeColoursSeva().dkGreen,
-                    //         onPressed: () {},
-                    //         child: Text(
-                    //           "Apply Promo",
-                    //           style: TextStyle(color: Colors.white),
-                    //         )))
                   ],
                 ),
-                ButtonTheme(
-                  minWidth: 80.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    color: ThemeColoursSeva().dkGreen,
-                    onPressed: () {
-                      openCheckout(100, _rzpAPIKey);
-                    },
-                    child: Text(
-                      "PAY",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                Consumer<NewCartModel>(
+                  builder: (context, newCart, child) {
+                    return ButtonTheme(
+                      minWidth: 80.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        color: ThemeColoursSeva().dkGreen,
+                        onPressed: () {
+                          openCheckout(newCart.getCartTotalPrice(), _rzpAPIKey);
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "PAY",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             );

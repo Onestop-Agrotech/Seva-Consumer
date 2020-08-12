@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
       // grant access to the app
-      Navigator.pushReplacementNamed(context, '/stores');
+      Navigator.pushReplacementNamed(context, '/main');
     } else if (response.statusCode == 400) {
       // incorrect OTP
       setState(() {
