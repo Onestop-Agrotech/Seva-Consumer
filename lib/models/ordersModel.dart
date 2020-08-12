@@ -65,14 +65,6 @@ class OrderModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "time": time.toJson(),
-        "_id": id,
-        "orderNumber": orderNumber,
-        "customerId": customerId,
-        "customerPhone": customerPhone,
-        "customerAddress": customerAddress,
-        "orderOriginLat": orderOriginLat,
-        "orderOriginLong": orderOriginLong,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "orderType": orderType,
         "finalItemsPrice": finalItemsPrice,
@@ -80,7 +72,6 @@ class OrderModel {
         "customerFinalPrice": customerFinalPrice,
         "paymentType": paymentType,
         "paymentTransactionId": paymentTransactionId,
-        "orderStatus": orderStatus,
       };
 }
 

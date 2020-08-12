@@ -5,6 +5,7 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
+import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
@@ -28,10 +29,16 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   Razorpay _rzp;
   String _userMobile;
   String _userEmail;
+  String _userOrders;
+
+  bool _paymentSuccess;
+  String _paymentId;
 
   @override
   initState() {
     super.initState();
+    _paymentSuccess = false;
+    _paymentId = "";
     Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
     a = new StoreProduct(
         name: "Apple",
@@ -71,8 +78,62 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     _rzp.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
+  _postDataToServer(responseId, newCart) async {
+    _paymentSuccess=false;
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String userId = await p.getId();
+    String token = await p.getToken();
+    String url = APIService.ordersAPI + "/new/$userId";
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    // make the body
+    OrderModel newOrder = new OrderModel(
+        orderType: "delivery",
+        finalItemsPrice: "${newCart.getCartTotalPrice()}",
+        deliveryPrice: "20",
+        paymentType: "online",
+        paymentTransactionId: responseId);
+    // if (double.parse(_userOrders) < 3.0) newOrder.deliveryPrice = "0";
+    newOrder.customerFinalPrice =
+        "${double.parse(newOrder.deliveryPrice) + double.parse(newOrder.finalItemsPrice)}";
+    List<Item> itemList = [];
+    for (int i = 0; i < newCart.totalItems; i++) {
+      Item it = new Item(
+        itemId: newCart.items[i].id,
+        name: newCart.items[i].name,
+        totalPrice: "${newCart.items[i].totalPrice}",
+        totalQuantity: "${newCart.items[i].totalQuantity}",
+      );
+      itemList.add(it);
+    }
+    newOrder.items = itemList;
+    var jsonBody = fromOrderModelToJson(newOrder);
+    var response =
+        await http.post(url, headers: requestHeaders, body: jsonBody);
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+          msg: "Order posted!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM);
+    } else if (response.statusCode == 404) {
+      Fluttertoast.showToast(
+          msg: "404 error",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM);
+    } else if (response.statusCode == 500) {
+      Fluttertoast.showToast(
+          msg: "500 error",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM);
+    } else
+      throw Exception("Server error!");
+  }
+
   // handle successful payment
   handlePaymentSuccess(PaymentSuccessResponse response) {
+    setState(() {
+      _paymentId = response.paymentId;
+      _paymentSuccess = true;
+    });
     print("success");
   }
 
@@ -101,6 +162,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     if (response.statusCode == 200) {
       this._userMobile = json.decode(response.body)["mobile"];
       this._userEmail = json.decode(response.body)["email"];
+      this._userOrders = json.decode(response.body)["orders"];
     } else {
       throw Exception('something is wrong');
     }
@@ -164,10 +226,14 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                           "Cart Price: ",
                           style: TextStyle(fontSize: 21),
                         ),
-                        Text(
-                          "Rs 100",
-                          style: TextStyle(fontSize: 21),
-                        )
+                        Consumer<NewCartModel>(
+                          builder: (context, newCart, child) {
+                            return Text(
+                              "Rs ${newCart.getCartTotalPrice()}",
+                              style: TextStyle(fontSize: 21),
+                            );
+                          },
+                        ),
                       ],
                     ),
 
@@ -175,10 +241,10 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text("Delivery Fee: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 20",
+                        Text("Rs 0",
                             style: TextStyle(
-                                fontSize: 21,
-                                decoration: TextDecoration.lineThrough))
+                              fontSize: 21,
+                            ))
                       ],
                     ),
 
@@ -186,7 +252,14 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Text("Total Price: ", style: TextStyle(fontSize: 21)),
-                        Text("Rs 100", style: TextStyle(fontSize: 21))
+                        Consumer<NewCartModel>(
+                          builder: (context, newCart, child) {
+                            return Text(
+                              "Rs ${newCart.getCartTotalPrice()}",
+                              style: TextStyle(fontSize: 21),
+                            );
+                          },
+                        ),
                       ],
                     ),
                     SizedBox(height: 20.0),
@@ -205,19 +278,23 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                     //         )))
                   ],
                 ),
-                ButtonTheme(
-                  minWidth: 80.0,
-                  height: 50.0,
-                  child: RaisedButton(
-                    color: ThemeColoursSeva().dkGreen,
-                    onPressed: () {
-                      openCheckout(100, _rzpAPIKey);
-                    },
-                    child: Text(
-                      "PAY",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                Consumer<NewCartModel>(
+                  builder: (context, newCart, child) {
+                    return ButtonTheme(
+                      minWidth: 80.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        color: ThemeColoursSeva().dkGreen,
+                        onPressed: () {
+                          openCheckout(newCart.getCartTotalPrice(), _rzpAPIKey);
+                        },
+                        child: Text(
+                          "PAY",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             );
@@ -228,6 +305,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<NewCartModel>(context);
+    if (_paymentSuccess) _postDataToServer(_paymentId, cart);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
