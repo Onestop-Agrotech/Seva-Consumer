@@ -27,12 +27,12 @@ class OrderDetailsModal extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.30,
               child: ListView.builder(
-                  itemCount: 10,
+                  itemCount: order.items.length,
                   itemBuilder: (context, i) {
                     return Column(
                       children: [
                         Text(
-                          "Product1 x 3 Kgs",
+                          "${order.items[i].name} x ${order.items[i].totalQuantity}",
                           style: TextStyle(
                               color: ThemeColoursSeva().pallete1,
                               fontSize: 14.0,
