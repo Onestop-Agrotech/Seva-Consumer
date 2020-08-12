@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:mvp/models/storeProducts.dart';
 
 OrderModel toOrderModelFromJson(String str) =>
     OrderModel.fromJson(json.decode(str));
+
 String fromOrderModelToJson(OrderModel data) => json.encode(data.toJson());
 
 List<OrderModel> toOrdersFromJson(b) =>
@@ -10,16 +10,14 @@ List<OrderModel> toOrdersFromJson(b) =>
 
 class OrderModel {
   OrderModel({
+    this.time,
     this.id,
     this.orderNumber,
-    this.tokenNumber,
-    this.otp,
-    this.customerUsername,
-    this.customerAddress,
     this.customerId,
-    this.storeUserName,
-    this.storeId,
-    this.storeName,
+    this.customerPhone,
+    this.customerAddress,
+    this.orderOriginLat,
+    this.orderOriginLong,
     this.items,
     this.orderType,
     this.finalItemsPrice,
@@ -28,24 +26,16 @@ class OrderModel {
     this.paymentType,
     this.paymentTransactionId,
     this.orderStatus,
-    this.timestamp,
-    this.orderDestLat,
-    this.orderDestLong,
-    this.orderOriginLat,
-    this.orderOriginLong,
-    this.v,
   });
 
+  Time time;
   String id;
   String orderNumber;
-  int tokenNumber;
-  String otp;
-  String customerUsername;
-  String customerAddress;
   String customerId;
-  String storeUserName;
-  String storeId;
-  String storeName;
+  String customerPhone;
+  String customerAddress;
+  String orderOriginLat;
+  String orderOriginLong;
   List<Item> items;
   String orderType;
   String finalItemsPrice;
@@ -54,24 +44,16 @@ class OrderModel {
   String paymentType;
   String paymentTransactionId;
   String orderStatus;
-  DateTime timestamp;
-  String orderDestLat;
-  String orderDestLong;
-  String orderOriginLat;
-  String orderOriginLong;
-  int v;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+        time: Time.fromJson(json["time"]),
         id: json["_id"],
         orderNumber: json["orderNumber"],
-        tokenNumber: json["tokenNumber"],
-        otp: json["orderOTP"],
-        customerUsername: json["customerUsername"],
-        customerAddress: json["customerAddress"],
         customerId: json["customerId"],
-        storeUserName: json["storeUserName"],
-        storeId: json["storeId"],
-        storeName: json["storeName"],
+        customerPhone: json["customerPhone"],
+        customerAddress: json["customerAddress"],
+        orderOriginLat: json["orderOriginLat"],
+        orderOriginLong: json["orderOriginLong"],
         items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
         orderType: json["orderType"],
         finalItemsPrice: json["finalItemsPrice"],
@@ -80,21 +62,17 @@ class OrderModel {
         paymentType: json["paymentType"],
         paymentTransactionId: json["paymentTransactionId"],
         orderStatus: json["orderStatus"],
-        timestamp: DateTime.parse(json["timestamp"]),
-        orderDestLat: json["orderDestLat"],
-        orderDestLong: json["orderDestLong"],
-        orderOriginLat: json["orderOriginLat"],
-        orderOriginLong: json["orderOriginLong"],
-        v: json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
-        // "_id": id,
-        "customerUsername": customerUsername,
+        "time": time.toJson(),
+        "_id": id,
+        "orderNumber": orderNumber,
         "customerId": customerId,
-        "storeUserName": storeUserName,
-        "storeId": storeId,
-        "storeName": storeName,
+        "customerPhone": customerPhone,
+        "customerAddress": customerAddress,
+        "orderOriginLat": orderOriginLat,
+        "orderOriginLong": orderOriginLong,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "orderType": orderType,
         "finalItemsPrice": finalItemsPrice,
@@ -102,9 +80,7 @@ class OrderModel {
         "customerFinalPrice": customerFinalPrice,
         "paymentType": paymentType,
         "paymentTransactionId": paymentTransactionId,
-        // "orderStatus": orderStatus,
-        // "timestamp": timestamp.toIso8601String(),
-        // "__v": v,
+        "orderStatus": orderStatus,
       };
 }
 
@@ -115,9 +91,6 @@ class Item {
     this.name,
     this.totalPrice,
     this.totalQuantity,
-    this.itemStoreId,
-    this.itemPictureURL,
-    this.quantity,
   });
 
   String id;
@@ -125,9 +98,6 @@ class Item {
   String name;
   String totalPrice;
   String totalQuantity;
-  String itemStoreId;
-  String itemPictureURL;
-  Quantity quantity;
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["_id"],
@@ -135,19 +105,29 @@ class Item {
         name: json["name"],
         totalPrice: json["total_price"],
         totalQuantity: json["total_quantity"],
-        itemStoreId: json["item_store_id"],
-        itemPictureURL: json["item_picture_url"],
-        quantity: Quantity.fromJson(json["quantity"]),
       );
 
   Map<String, dynamic> toJson() => {
-        // "_id": id,
+        "_id": id,
         "item_id": itemId,
         "name": name,
         "total_price": totalPrice,
         "total_quantity": totalQuantity,
-        "item_store_id": itemStoreId,
-        "item_picture_url": itemPictureURL,
-        "quantity": quantity.toJson(),
+      };
+}
+
+class Time {
+  Time({
+    this.orderTimestamp,
+  });
+
+  DateTime orderTimestamp;
+
+  factory Time.fromJson(Map<String, dynamic> json) => Time(
+        orderTimestamp: DateTime.parse(json["orderTimestamp"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "orderTimestamp": orderTimestamp.toIso8601String(),
       };
 }

@@ -56,13 +56,13 @@ class _OrdersCardState extends State<OrdersCard> {
                     ),
                   ),
                   Text(
-                    "${widget.order.timestamp}",
+                    "${widget.order.time.orderTimestamp}",
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    "${widget.order.timestamp}",
+                    "${widget.order.time.orderTimestamp}",
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
                         fontWeight: FontWeight.w600),
