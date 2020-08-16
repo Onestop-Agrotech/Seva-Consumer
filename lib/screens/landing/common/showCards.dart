@@ -2,24 +2,53 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/common/AnimatedCard/modalContainer.dart';
 import 'package:mvp/screens/products/products.dart';
 
-class ShowCards extends StatelessWidget {
+class ShowCards extends StatefulWidget {
   final StoreProduct sp;
   final bool store;
   final int index;
   ShowCards({this.sp, this.store, @required this.index});
+
+  @override
+  _ShowCardsState createState() => _ShowCardsState();
+}
+
+class _ShowCardsState extends State<ShowCards> {
+  void onClickProduct() {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black45,
+        transitionDuration: const Duration(milliseconds: 200),
+        pageBuilder: (BuildContext buildContext, Animation animation,
+            Animation secondaryAnimation) {
+          return Center(
+              child: AddItemModal(
+            product: widget.sp,
+          ));
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (!this.store)
+        if (!this.widget.store)
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Products(type: this.index)),
+            MaterialPageRoute(
+                builder: (context) => Products(type: this.widget.index)),
           );
+        else {
+          // open the modal container
+          onClickProduct();
+        }
       },
       child: Container(
         // fallback height
@@ -34,9 +63,9 @@ class ShowCards extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            store
+            widget.store
                 ? Text(
-                    "${sp.name}",
+                    "${widget.sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
@@ -47,15 +76,15 @@ class ShowCards extends StatelessWidget {
             Container(
               height: height * 0.1,
               child: CachedNetworkImage(
-                imageUrl: sp.pictureUrl,
+                imageUrl: widget.sp.pictureUrl,
                 placeholder: (context, url) =>
                     Container(height: 50.0, child: Text("Loading...")),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
-            store
+            widget.store
                 ? Text(
-                    "Rs ${sp.price} - ${sp.quantity.quantityValue} ${sp.quantity.quantityMetric}",
+                    "Rs ${widget.sp.price} - ${widget.sp.quantity.quantityValue} ${widget.sp.quantity.quantityMetric}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
@@ -63,7 +92,7 @@ class ShowCards extends StatelessWidget {
                         fontWeight: FontWeight.w700),
                   )
                 : Text(
-                    "${sp.name}",
+                    "${widget.sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,

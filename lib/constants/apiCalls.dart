@@ -13,6 +13,9 @@ class APIService {
   // storesList.dart - _fetchUserAddress function
   static final String getAddressAPI = "$_api/users/user-address/";
 
+  // PRODUCTS
+  static final String getBestSellersAPI = "$_api/products/all/bestsellers";
+
   // ORDERS
   // shopping cart file - _postOrderToServer function
   static final String ordersAPI = "$_api/orders/";
