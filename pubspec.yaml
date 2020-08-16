@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -45,12 +45,8 @@ dependencies:
   razorpay_flutter: ^1.2.1
   # for otp login field
   otp_text_field: ^1.0.1
-  # launch urls
-  url_launcher: ^5.5.0
   # firebase messaging - notifs
   firebase_messaging: ^6.0.16
-  # splash screen
-  flutter_native_splash: ^0.1.9
   # for location
   location: ^3.0.0
   # for in-app updates
@@ -65,6 +61,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  # splash screen
+  flutter_native_splash: ^0.1.9
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
