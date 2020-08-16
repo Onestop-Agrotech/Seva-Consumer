@@ -26,12 +26,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
     "Get a cashback of Rs 30 on your 4th order!"
   ];
-  List<StoreProduct> products = [];
   List<StoreProduct> categories = [];
-  // static products
-  StoreProduct a;
-  StoreProduct b;
-  StoreProduct c;
   // static categories
   StoreProduct d;
   StoreProduct e;
@@ -42,30 +37,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   initState() {
     super.initState();
-    Quantity q = new Quantity(quantityValue: 1, quantityMetric: "Kg");
-    a = new StoreProduct(
-        name: "Apple",
-        pictureUrl: "https://storepictures.theonestop.co.in/products/apple.jpg",
-        quantity: q,
-        description: "local",
-        price: 250);
-    b = new StoreProduct(
-      name: "Onion",
-      pictureUrl: "https://storepictures.theonestop.co.in/products/onion.jpg",
-      quantity: q,
-      description: "local",
-      price: 18,
-    );
-    c = new StoreProduct(
-        name: "Carrots",
-        pictureUrl:
-            "https://storepictures.theonestop.co.in/products/carrot.jpg",
-        quantity: q,
-        description: "local",
-        price: 30);
-    products.add(a);
-    products.add(b);
-    products.add(c);
     d = new StoreProduct(
       name: "Vegetables",
       pictureUrl:
@@ -103,6 +74,19 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       // got address
       _email = json.decode(response.body)["email"];
       return (json.decode(response.body)["address"]);
+    } else {
+      throw Exception('something is wrong');
+    }
+  }
+
+  Future<List<StoreProduct>> _fetchBestSellers() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    String url = APIService.getBestSellersAPI;
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      return jsonToStoreProductModel(response.body);
     } else {
       throw Exception('something is wrong');
     }
@@ -183,7 +167,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         children: <Widget>[
           Expanded(
               child: ListView.builder(
-                  itemCount: 3,
+                  itemCount: itemsList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return Row(
@@ -359,7 +343,21 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     SizedBox(height: 9.0),
                     commonText(height, "Best Sellers", ""),
                     SizedBox(height: 9.0),
-                    commonWidget(height, products, true),
+                    FutureBuilder(
+                        future: _fetchBestSellers(),
+                        builder: (builder, snapshot) {
+                          if (snapshot.hasData) {
+                            List<StoreProduct> bestSellers = snapshot.data;
+                            if (bestSellers.length > 0) {
+                              return commonWidget(height, bestSellers, true);
+                            } else
+                              return Container(
+                                child:
+                                    Center(child: Text("No products found!")),
+                              );
+                          }
+                          return Container();
+                        }),
                     SizedBox(height: 9.0),
                     commonText(height, "Categories", ""),
                     SizedBox(height: 9.0),
