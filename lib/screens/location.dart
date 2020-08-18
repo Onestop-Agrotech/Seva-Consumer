@@ -77,12 +77,14 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         onDragEnd: ((value) {
           setState(() {
             coords = LatLng(value.latitude, value.longitude);
+            _userPosition=coords;
           });
         }));
     setState(() {
       mapController.animateCamera(CameraUpdate.newCameraPosition(
           CameraPosition(target: coords, zoom: 18.0)));
       _markers.add(mk1);
+      _userPosition=coords;
       _showActionBtn = true;
     });
     Fluttertoast.showToast(

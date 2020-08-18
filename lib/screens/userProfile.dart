@@ -36,6 +36,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           child: RaisedButton(
             onPressed: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
               setState(() {
                 _loading = true;
               });
@@ -91,7 +95,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       await p.setId(json.decode(response.body)["id"]);
       // Navigator.pushReplacementNamed(context, '/stores');
       Navigator.pushNamedAndRemoveUntil(
-          context, '/stores', ModalRoute.withName('/stores'));
+          context, '/main', ModalRoute.withName('/main'));
     } else {
       throw Exception('Server error');
     }
@@ -101,17 +105,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           InputTextField(
             eC: _address,
             lt: "Home address:",
-            keyBoardType: TextInputType.numberWithOptions(),
           ),
           _showEmptyError(),
-          _showLoading(),
         ],
       ),
+      floatingActionButton: _showLoading(),
     );
   }
 }
