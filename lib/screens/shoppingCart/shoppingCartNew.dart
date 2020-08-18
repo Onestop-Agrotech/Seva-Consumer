@@ -142,52 +142,67 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text("Delivery Fee: ", style: TextStyle(fontSize: 21)),
-                        Text(double.parse(_userOrders) < 3 ? "Rs 0" : "Rs 20",
-                            style: TextStyle(
-                              fontSize: 21,
-                            ))
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text("Total Price: ", style: TextStyle(fontSize: 21)),
-                        Consumer<NewCartModel>(
-                          builder: (context, newCart, child) {
-                            return Text(
-                              double.parse(_userOrders) < 3
-                                  ? "Rs ${newCart.getCartTotalPrice()}"
-                                  : "Rs ${newCart.getCartTotalPrice() + 20.0}",
-                              style: TextStyle(fontSize: 21),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                    _userOrders != null
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text("Delivery Fee: ",
+                                  style: TextStyle(fontSize: 21)),
+                              Text(
+                                  double.parse(_userOrders) < 3
+                                      ? "Rs 0"
+                                      : "Rs 20",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                  ))
+                            ],
+                          )
+                        : Text(""),
+                    _userOrders != null
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text("Total Price: ",
+                                  style: TextStyle(fontSize: 21)),
+                              Consumer<NewCartModel>(
+                                builder: (context, newCart, child) {
+                                  return Text(
+                                    double.parse(_userOrders) < 3
+                                        ? "Rs ${newCart.getCartTotalPrice()}"
+                                        : "Rs ${newCart.getCartTotalPrice() + 20.0}",
+                                    style: TextStyle(fontSize: 21),
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        : Text(""),
                     SizedBox(height: 20.0),
                   ],
                 ),
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
-                    return ButtonTheme(
-                      minWidth: 80.0,
-                      height: 50.0,
-                      child: RaisedButton(
-                        color: ThemeColoursSeva().dkGreen,
-                        onPressed: () {
-                          openCheckout(newCart.getCartTotalPrice(), _rzpAPIKey);
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          "PAY",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    );
+                    return _userOrders != null
+                        ? ButtonTheme(
+                            minWidth: 80.0,
+                            height: 50.0,
+                            child: RaisedButton(
+                              color: ThemeColoursSeva().dkGreen,
+                              onPressed: () {
+                                openCheckout(
+                                    double.parse(_userOrders) < 3
+                                        ? newCart.getCartTotalPrice()
+                                        : (newCart.getCartTotalPrice() + 20),
+                                    _rzpAPIKey);
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "PAY",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
+                        : Text("Loading...");
                   },
                 ),
               ],

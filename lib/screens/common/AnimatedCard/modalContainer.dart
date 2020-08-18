@@ -16,7 +16,7 @@ class _AddItemModalState extends State<AddItemModal> {
   void helper(int index, newCart, bool addToCart) {
     double p, q;
 
-    // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
+    // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
     if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
@@ -29,8 +29,9 @@ class _AddItemModalState extends State<AddItemModal> {
       p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
           widget.product.price;
     }
-    // For Pc
-    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+    // For Pc and Kgs
+    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc" ||
+        widget.product.quantity.allowedQuantities[index].metric == "Kgs") {
       q = double.parse(
           "${widget.product.quantity.allowedQuantities[index].value}");
       p = widget.product.price * q;
@@ -208,7 +209,10 @@ class _AddItemModalState extends State<AddItemModal> {
                   ),
                 ),
                 Text(
-                  "Apples contain no fat, sodium or cholestrol and are a good source of fibre.",
+                  (widget.product.funFact == "" ||
+                          widget.product.funFact == null)
+                      ? ""
+                      : widget.product.funFact,
                   style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
                     fontSize: 20.0,

@@ -25,7 +25,7 @@ class _OrdersCardState extends State<OrdersCard> {
 
   Text returnOrderTime(DateTime time) {
     var hour;
-    var isAM;
+    var isAM = true;
     if (time.hour > 12) {
       hour = time.hour - 12;
       isAM = false;
@@ -86,14 +86,29 @@ class _OrdersCardState extends State<OrdersCard> {
                   ),
                 ],
               ),
-              RaisedButton(
-                onPressed: () {
-                  showDetails();
-                },
-                color: ThemeColoursSeva().pallete1,
-                textColor: Colors.white,
-                child: Text("View Details"),
-              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RaisedButton(
+                    onPressed: () {
+                      showDetails();
+                    },
+                    color: ThemeColoursSeva().pallete1,
+                    textColor: Colors.white,
+                    child: Text("View Details"),
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(
+                    "${widget.order.orderStatus}",
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                        color: (widget.order.orderStatus == "Delivered"
+                            ? ThemeColoursSeva().pallete1
+                            : ThemeColoursSeva().dkGreen)),
+                  )
+                ],
+              )
             ],
           ),
         ),

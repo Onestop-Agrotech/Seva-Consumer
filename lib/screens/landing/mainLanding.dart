@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -33,6 +34,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   StoreProduct f;
   String _email;
   String _username;
+  Timer x;
 
   @override
   initState() {
@@ -56,11 +58,21 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(e);
     categories.add(f);
     getUsername();
+    x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    x.cancel();
+    super.dispose();
   }
 
   getUsername() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
-    _username = await p.getUsername();
+    var x = await p.getUsername();
+    setState(() {
+      _username = x;
+    });
   }
 
   Future<String> _fetchUserAddress() async {
@@ -289,12 +301,24 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.location_on),
-                          onPressed: () {
-                            _showLocation();
-                          },
-                          iconSize: 28.0,
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.location_on),
+                              onPressed: () {
+                                _showLocation();
+                              },
+                              iconSize: 28.0,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.shopping_basket),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, "/shoppingCartNew");
+                              },
+                              iconSize: 28.0,
+                            ),
+                          ],
                         ),
                       ],
                     ),

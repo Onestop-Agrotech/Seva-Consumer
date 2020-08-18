@@ -16,6 +16,7 @@ class StoreProduct {
       this.uniqueId,
       this.description,
       this.price,
+      this.funFact = "",
       this.pictureUrl,
       this.totalPrice = 0,
       this.totalQuantity = 0,
@@ -28,6 +29,7 @@ class StoreProduct {
   String description;
   int price;
   String pictureUrl;
+  String funFact;
   double totalPrice;
   double totalQuantity;
   Quantity quantity;
@@ -40,6 +42,7 @@ class StoreProduct {
         uniqueId: json["uniqueId"],
         description: json["description"],
         price: json["price"],
+        funFact: json["funFact"],
         pictureUrl: json["pictureURL"],
         outOfStock: json["outOfStock"],
         quantity: Quantity.fromJson(json["quantity"]),
