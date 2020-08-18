@@ -208,7 +208,7 @@ class _AddItemModalState extends State<AddItemModal> {
                   ),
                 ),
                 Text(
-                  "Apples contain no fat, sodium or cholestrol and are a good source of fibre.",
+                  (widget.product.funFact == "" || widget.product.funFact == null) ? "" : widget.product.funFact,
                   style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
                     fontSize: 20.0,
