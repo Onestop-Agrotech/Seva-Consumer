@@ -38,7 +38,7 @@ class _AnimatedCardState extends State<AnimatedCard>
   void helper(int index, newCart, bool addToCart) {
     double p, q;
 
-    // Kg, Kgs, Gm, Gms, Pc - Types of Quantities
+    // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
     if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
@@ -51,8 +51,9 @@ class _AnimatedCardState extends State<AnimatedCard>
       p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
           widget.product.price;
     }
-    // For Pc
-    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc") {
+    // For Pc and Kgs
+    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc" ||
+        widget.product.quantity.allowedQuantities[index].metric == "Kgs") {
       q = double.parse(
           "${widget.product.quantity.allowedQuantities[index].value}");
       p = widget.product.price * q;
