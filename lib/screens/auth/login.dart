@@ -171,6 +171,9 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setUsername(jsonBdy["username"]);
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
+      await p.setEmail(jsonBdy["email"]);
+      bool far = jsonBdy["far"];
+      await p.setFarStatus(far.toString());
       // grant access to the app
       Navigator.pushReplacementNamed(context, '/main');
     } else if (response.statusCode == 400) {

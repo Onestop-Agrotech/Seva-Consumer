@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/errors/notServing.dart';
 // import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
@@ -18,6 +19,7 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   bool _showLoginScreen;
   String _showText;
+  bool _connected = false;
 
   @override
   initState() {
@@ -31,11 +33,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
+        _connected = true;
         _checkForUserToken();
       }
     } on SocketException catch (_) {
-      print('not connected');
       setState(() {
         _showText = "Oops! No internet connection.";
       });
@@ -82,18 +83,31 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
-  _changePage() {
+  _changePage() async {
     if (_showLoginScreen == true) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => IntroScreen()));
     } else if (_showLoginScreen == false) {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => MainLandingScreen()));
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      String far = await p.getFarStatus();
+      String email = await p.getEmail();
+      if (far == "false") {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => MainLandingScreen()));
+      } else if (far == "true") {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NotServing(
+                      userEmail: email,
+                    )));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_connected) _checkConnection();
     return Scaffold(
       body: Container(
         child: Center(

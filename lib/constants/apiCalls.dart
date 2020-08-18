@@ -6,7 +6,7 @@ class APIService {
   static final String loginMobile = "$_api/users/loginMobile/";
   static final String verifyOTP = "$_api/users/loginMobile/verifyOTP/";
   static final String registerAPI = "$_api/users/register/";
-  static final String registerAddressAPI = "$_api/users/register/address/";
+  static final String registerAddressAPI = "$_api/users/register/address/new";
   static final String forgotMailerAPI = "$_api/users/forgotPassword-mailer/";
   // shopping cart file - _getUserDetails function
   static final String getUserAPI = "$_api/users/";

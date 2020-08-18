@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
+import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/loading.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
@@ -58,7 +59,8 @@ class _SevaAppState extends State<SevaApp> {
           "/login": (context) => LoginScreen(),
           "/main": (context) => MainLandingScreen(),
           "/shoppingCartNew": (context) => ShoppingCartNew(),
-          "/ordersNew": (context) => NewOrdersScreen()
+          "/ordersNew": (context) => NewOrdersScreen(),
+          "/notServing": (context) => NotServing()
         },
       ),
     );

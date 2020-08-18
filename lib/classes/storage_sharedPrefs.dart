@@ -13,10 +13,36 @@ class StorageSharedPrefs {
     await prefs.setString('username', username);
   }
 
+  // set address status to storage
+  Future<void> setFarStatus(String far) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('far', far);
+  }
+
+  // set user email to storage
+  Future<void> setEmail(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', email);
+  }
+
   // set id to storage
   Future<void> setId(String id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('id', id);
+  }
+
+  // get Far status from storage
+  Future<String> getFarStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String far = await prefs.get('far');
+    return far;
+  }
+
+  // get Far status from storage
+  Future<String> getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email = await prefs.get('email');
+    return email;
   }
 
   // get token from storage

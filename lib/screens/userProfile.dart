@@ -8,6 +8,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/errors/notServing.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final LatLng coords;
@@ -22,7 +23,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   bool _loading = false;
   TextEditingController _address = new TextEditingController();
 
-  _showLoading() {
+  _showLoading(context) {
     if (_loading == true) {
       return Container(
         child: Center(
@@ -78,11 +79,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     } else if (_address.text != '') {
       // add to db
       user.address = _address.text;
-      _submitToDb(user);
+      _submitToDb(user, context);
     }
   }
 
-  _submitToDb(UserModel user) async {
+  _submitToDb(UserModel user, context) async {
     String url = APIService.registerAddressAPI;
     String getJson = userModelAddress(user);
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -93,9 +94,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       await p.setToken(json.decode(response.body)["token"]);
       await p.setUsername(json.decode(response.body)["username"]);
       await p.setId(json.decode(response.body)["id"]);
-      // Navigator.pushReplacementNamed(context, '/stores');
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/main', ModalRoute.withName('/main'));
+      bool far = json.decode(response.body)["far"];
+      await p.setFarStatus(far.toString());
+      await p.setEmail(json.decode(response.body)["email"]);
+      if (!far) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/main', ModalRoute.withName('/main'));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return NotServing(
+            userEmail: widget.userEmail,
+          );
+        }));
+      }
     } else {
       throw Exception('Server error');
     }
@@ -114,7 +126,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           _showEmptyError(),
         ],
       ),
-      floatingActionButton: _showLoading(),
+      floatingActionButton: _showLoading(context),
     );
   }
 }
