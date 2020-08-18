@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -13,6 +15,13 @@ class NewOrdersScreen extends StatefulWidget {
 }
 
 class _NewOrdersScreenState extends State<NewOrdersScreen> {
+
+  @override
+  initState(){
+    super.initState();
+    new Timer.periodic(Duration(seconds: 60), (Timer t) => setState((){}));
+  }
+
   _getOrderOfUser() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String id = await p.getId();

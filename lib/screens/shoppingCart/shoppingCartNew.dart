@@ -142,32 +142,41 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text("Delivery Fee: ", style: TextStyle(fontSize: 21)),
-                        Text(double.parse(_userOrders) < 3 ? "Rs 0" : "Rs 20",
-                            style: TextStyle(
-                              fontSize: 21,
-                            ))
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text("Total Price: ", style: TextStyle(fontSize: 21)),
-                        Consumer<NewCartModel>(
-                          builder: (context, newCart, child) {
-                            return Text(
-                              double.parse(_userOrders) < 3
-                                  ? "Rs ${newCart.getCartTotalPrice()}"
-                                  : "Rs ${newCart.getCartTotalPrice() + 20.0}",
-                              style: TextStyle(fontSize: 21),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
+                    _userOrders != null
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text("Delivery Fee: ",
+                                  style: TextStyle(fontSize: 21)),
+                              Text(
+                                  double.parse(_userOrders) < 3
+                                      ? "Rs 0"
+                                      : "Rs 20",
+                                  style: TextStyle(
+                                    fontSize: 21,
+                                  ))
+                            ],
+                          )
+                        : Text("Loading..."),
+                    _userOrders != null
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text("Total Price: ",
+                                  style: TextStyle(fontSize: 21)),
+                              Consumer<NewCartModel>(
+                                builder: (context, newCart, child) {
+                                  return Text(
+                                    double.parse(_userOrders) < 3
+                                        ? "Rs ${newCart.getCartTotalPrice()}"
+                                        : "Rs ${newCart.getCartTotalPrice() + 20.0}",
+                                    style: TextStyle(fontSize: 21),
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        : Text("Loading..."),
                     SizedBox(height: 20.0),
                   ],
                 ),
