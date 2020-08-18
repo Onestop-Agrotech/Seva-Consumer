@@ -34,6 +34,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   StoreProduct f;
   String _email;
   String _username;
+  Timer x;
 
   @override
   initState() {
@@ -57,14 +58,20 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(e);
     categories.add(f);
     getUsername();
-    new Timer.periodic(Duration(seconds: 10), (Timer t) => setState((){}));
+    x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    x.cancel();
+    super.dispose();
   }
 
   getUsername() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     var x = await p.getUsername();
     setState(() {
-      _username=x;
+      _username = x;
     });
   }
 
@@ -297,19 +304,20 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         Row(
                           children: [
                             IconButton(
-                          icon: Icon(Icons.location_on),
-                          onPressed: () {
-                            _showLocation();
-                          },
-                          iconSize: 28.0,
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.shopping_basket),
-                          onPressed: () {
-                            Navigator.pushNamed(context, "/shoppingCartNew");
-                          },
-                          iconSize: 28.0,
-                        ),
+                              icon: Icon(Icons.location_on),
+                              onPressed: () {
+                                _showLocation();
+                              },
+                              iconSize: 28.0,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.shopping_basket),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, "/shoppingCartNew");
+                              },
+                              iconSize: 28.0,
+                            ),
                           ],
                         ),
                       ],

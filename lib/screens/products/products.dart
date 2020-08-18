@@ -23,12 +23,18 @@ class _ProductsState extends State<Products> {
   List categories = ['Vegetables', 'Fruits', 'Daily Essentials'];
   int tapped;
   String selected;
-
+  Timer x;
   @override
   void initState() {
     super.initState();
     tapped = widget.type;
-    new Timer.periodic(Duration(seconds: 10), (Timer t) => setState((){}));
+    x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    x.cancel();
+    super.dispose();
   }
 
   Future<List<StoreProduct>> getProducts(String type) async {

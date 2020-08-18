@@ -15,11 +15,17 @@ class NewOrdersScreen extends StatefulWidget {
 }
 
 class _NewOrdersScreenState extends State<NewOrdersScreen> {
+  Timer x;
+  @override
+  initState() {
+    super.initState();
+    x = new Timer.periodic(Duration(seconds: 60), (Timer t) => setState(() {}));
+  }
 
   @override
-  initState(){
-    super.initState();
-    new Timer.periodic(Duration(seconds: 60), (Timer t) => setState((){}));
+  void dispose() {
+    x.cancel();
+    super.dispose();
   }
 
   _getOrderOfUser() async {
@@ -75,13 +81,14 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<OrderModel> orders = snapshot.data;
-              orders.sort((a,b) => b.time.orderTimestamp.compareTo(a.time.orderTimestamp));
+              orders.sort((a, b) =>
+                  b.time.orderTimestamp.compareTo(a.time.orderTimestamp));
               if (orders.length > 0) {
                 return ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: orders.length,
                     itemBuilder: (builder, index) {
-                      return OrdersCard(order:orders[index]);
+                      return OrdersCard(order: orders[index]);
                     });
               } else
                 return Container(
