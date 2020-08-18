@@ -182,21 +182,27 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 ),
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
-                    return _userOrders!=null?ButtonTheme(
-                      minWidth: 80.0,
-                      height: 50.0,
-                      child: RaisedButton(
-                        color: ThemeColoursSeva().dkGreen,
-                        onPressed: () {
-                          openCheckout(double.parse(_userOrders)<3?newCart.getCartTotalPrice():(newCart.getCartTotalPrice()+20), _rzpAPIKey);
-                          Navigator.pop(context);
-                        },
-                        child: Text(
-                          "PAY",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ):Text("Loading...");
+                    return _userOrders != null
+                        ? ButtonTheme(
+                            minWidth: 80.0,
+                            height: 50.0,
+                            child: RaisedButton(
+                              color: ThemeColoursSeva().dkGreen,
+                              onPressed: () {
+                                openCheckout(
+                                    double.parse(_userOrders) < 3
+                                        ? newCart.getCartTotalPrice()
+                                        : (newCart.getCartTotalPrice() + 20),
+                                    _rzpAPIKey);
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "PAY",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
+                        : Text("Loading...");
                   },
                 ),
               ],

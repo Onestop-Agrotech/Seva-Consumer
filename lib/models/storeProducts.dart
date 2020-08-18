@@ -16,7 +16,7 @@ class StoreProduct {
       this.uniqueId,
       this.description,
       this.price,
-      this.funFact="",
+      this.funFact = "",
       this.pictureUrl,
       this.totalPrice = 0,
       this.totalQuantity = 0,

@@ -98,11 +98,15 @@ class _OrdersCardState extends State<OrdersCard> {
                     child: Text("View Details"),
                   ),
                   SizedBox(height: 20.0),
-                  Text("${widget.order.orderStatus}", style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w500,
-                    color: (widget.order.orderStatus == "Delivered" ? ThemeColoursSeva().pallete1 : ThemeColoursSeva().dkGreen)
-                  ),)
+                  Text(
+                    "${widget.order.orderStatus}",
+                    style: TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                        color: (widget.order.orderStatus == "Delivered"
+                            ? ThemeColoursSeva().pallete1
+                            : ThemeColoursSeva().dkGreen)),
+                  )
                 ],
               )
             ],
