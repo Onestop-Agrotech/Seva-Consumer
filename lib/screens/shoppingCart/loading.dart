@@ -39,7 +39,7 @@ class _OrderLoaderState extends State<OrderLoader> {
         orderType: "delivery",
         finalItemsPrice: "${newCart.getCartTotalPrice()}",
         paymentType: "online",
-        deliveryPrice: "0",
+        deliveryPrice: "20",
         paymentTransactionId: responseId);
     if (double.parse(this.widget.orders) < 3.0) newOrder.deliveryPrice = "0";
     newOrder.customerFinalPrice =

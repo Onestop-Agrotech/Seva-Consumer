@@ -157,7 +157,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                                   ))
                             ],
                           )
-                        : Text("Loading..."),
+                        : Text(""),
                     _userOrders != null
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -176,19 +176,19 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                               ),
                             ],
                           )
-                        : Text("Loading..."),
+                        : Text(""),
                     SizedBox(height: 20.0),
                   ],
                 ),
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
-                    return ButtonTheme(
+                    return _userOrders!=null?ButtonTheme(
                       minWidth: 80.0,
                       height: 50.0,
                       child: RaisedButton(
                         color: ThemeColoursSeva().dkGreen,
                         onPressed: () {
-                          openCheckout(newCart.getCartTotalPrice(), _rzpAPIKey);
+                          openCheckout(double.parse(_userOrders)<3?newCart.getCartTotalPrice():(newCart.getCartTotalPrice()+20), _rzpAPIKey);
                           Navigator.pop(context);
                         },
                         child: Text(
@@ -196,7 +196,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    );
+                    ):Text("Loading...");
                   },
                 ),
               ],

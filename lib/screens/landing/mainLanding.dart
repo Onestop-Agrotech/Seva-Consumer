@@ -294,12 +294,23 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               fontSize: 24.0,
                               fontWeight: FontWeight.bold),
                         ),
-                        IconButton(
+                        Row(
+                          children: [
+                            IconButton(
                           icon: Icon(Icons.location_on),
                           onPressed: () {
                             _showLocation();
                           },
                           iconSize: 28.0,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.shopping_basket),
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/shoppingCartNew");
+                          },
+                          iconSize: 28.0,
+                        ),
+                          ],
                         ),
                       ],
                     ),
