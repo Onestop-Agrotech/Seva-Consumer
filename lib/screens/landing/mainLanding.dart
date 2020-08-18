@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -56,11 +57,15 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(e);
     categories.add(f);
     getUsername();
+    new Timer.periodic(Duration(seconds: 10), (Timer t) => setState((){}));
   }
 
   getUsername() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
-    _username = await p.getUsername();
+    var x = await p.getUsername();
+    setState(() {
+      _username=x;
+    });
   }
 
   Future<String> _fetchUserAddress() async {

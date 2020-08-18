@@ -25,7 +25,7 @@ class _OrdersCardState extends State<OrdersCard> {
 
   Text returnOrderTime(DateTime time) {
     var hour;
-    var isAM;
+    var isAM = true;
     if (time.hour > 12) {
       hour = time.hour - 12;
       isAM = false;

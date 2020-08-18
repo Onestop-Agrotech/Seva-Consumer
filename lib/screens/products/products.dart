@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -26,6 +28,7 @@ class _ProductsState extends State<Products> {
   void initState() {
     super.initState();
     tapped = widget.type;
+    new Timer.periodic(Duration(seconds: 10), (Timer t) => setState((){}));
   }
 
   Future<List<StoreProduct>> getProducts(String type) async {
