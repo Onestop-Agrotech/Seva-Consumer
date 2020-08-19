@@ -66,7 +66,7 @@ class _AnimatedCardState extends State<AnimatedCard>
   }
 
   // open the modal for product addition
-  void onClickProduct() {
+  void onClickProduct(context) {
     showGeneralDialog(
         context: context,
         barrierDismissible: true,
@@ -88,7 +88,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       ? animationController.forward()
       : animationController.reverse();
 
-  void _showDeleteAlert(newCart) {
+  void _showDeleteAlert(newCart, context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -139,14 +139,18 @@ class _AnimatedCardState extends State<AnimatedCard>
               child: animationController.value <= 0.5
                   ? GestureDetector(
                       onTap: () {
-                        if (!this.widget.shopping) onClickProduct();
+                        if (!this.widget.shopping &&
+                            !this.widget.product.outOfStock)
+                          onClickProduct(context);
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(
-                            color: ThemeColoursSeva().pallete3,
-                            width: 1.5,
+                            color: !this.widget.product.outOfStock
+                                ? ThemeColoursSeva().pallete3
+                                : ThemeColoursSeva().grey,
+                            width: !this.widget.product.outOfStock ? 1.5 : 0.2,
                           ),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -159,7 +163,9 @@ class _AnimatedCardState extends State<AnimatedCard>
                               this.widget.product.name,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
-                                  color: ThemeColoursSeva().pallete1,
+                                  color: !this.widget.product.outOfStock
+                                      ? ThemeColoursSeva().pallete1
+                                      : ThemeColoursSeva().grey,
                                   fontSize: 15.0,
                                   fontWeight: FontWeight.w700),
                             ),
@@ -202,7 +208,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                     ThemeColoursSeva().binColor,
                                                 onPressed: () {
                                                   // alert
-                                                  _showDeleteAlert(newCart);
+                                                  _showDeleteAlert(
+                                                      newCart, context);
                                                 }),
                                           );
                                         },
@@ -211,15 +218,22 @@ class _AnimatedCardState extends State<AnimatedCard>
                               ],
                             ),
                             SizedBox(height: 20),
-                            Text(
-                                !this.widget.shopping
-                                    ? "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}"
-                                    : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.quantity.quantityMetric}",
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                    color: ThemeColoursSeva().pallete1,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w700)),
+                            !this.widget.product.outOfStock
+                                ? Text(
+                                    !this.widget.shopping
+                                        ? "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}"
+                                        : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.quantity.quantityMetric}",
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        color: ThemeColoursSeva().pallete1,
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.w700))
+                                : Text("Out of stock",
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        color: ThemeColoursSeva().grey,
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.bold)),
                             SizedBox(
                               height: 30,
                             )

@@ -47,7 +47,7 @@ class _ShowCardsState extends State<ShowCards> {
           );
         else {
           // open the modal container
-          onClickProduct();
+          if (!this.widget.sp.outOfStock) onClickProduct();
         }
       },
       child: Container(
@@ -55,10 +55,17 @@ class _ShowCardsState extends State<ShowCards> {
         height: height * 0.22,
         width: width * 0.4,
         decoration: BoxDecoration(
-            border: Border.all(
-              color: ThemeColoursSeva().pallete3,
-              width: 1.5,
-            ),
+            border: !this.widget.store
+                ? Border.all(
+                    color: ThemeColoursSeva().pallete3,
+                    width: 1.5,
+                  )
+                : Border.all(
+                    color: !this.widget.sp.outOfStock
+                        ? ThemeColoursSeva().pallete3
+                        : ThemeColoursSeva().grey,
+                    width: !this.widget.sp.outOfStock ? 1.5 : 0.2,
+                  ),
             borderRadius: BorderRadius.circular(20.0)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,7 +75,9 @@ class _ShowCardsState extends State<ShowCards> {
                     "${widget.sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: ThemeColoursSeva().pallete1,
+                        color: !this.widget.sp.outOfStock
+                            ? ThemeColoursSeva().pallete1
+                            : ThemeColoursSeva().grey,
                         fontSize: 15.0,
                         fontWeight: FontWeight.w700),
                   )
@@ -84,10 +93,14 @@ class _ShowCardsState extends State<ShowCards> {
             ),
             widget.store
                 ? Text(
-                    "Rs ${widget.sp.price} - ${widget.sp.quantity.quantityValue} ${widget.sp.quantity.quantityMetric}",
+                    !this.widget.sp.outOfStock
+                        ? "Rs ${widget.sp.price} - ${widget.sp.quantity.quantityValue} ${widget.sp.quantity.quantityMetric}"
+                        : "Out of Stock",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: ThemeColoursSeva().pallete1,
+                        color: !this.widget.sp.outOfStock
+                            ? ThemeColoursSeva().pallete1
+                            : ThemeColoursSeva().grey,
                         fontSize: 15.0,
                         fontWeight: FontWeight.w700),
                   )
