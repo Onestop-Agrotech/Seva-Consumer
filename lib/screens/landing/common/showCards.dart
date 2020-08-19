@@ -47,7 +47,7 @@ class _ShowCardsState extends State<ShowCards> {
           );
         else {
           // open the modal container
-          onClickProduct();
+          if(!this.widget.sp.outOfStock)onClickProduct();
         }
       },
       child: Container(
