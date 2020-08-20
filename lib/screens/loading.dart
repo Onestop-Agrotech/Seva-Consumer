@@ -49,7 +49,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     var body = json.encode({"token": token});
     var response = await http.post(url, body: body, headers: headers);
     if (response.statusCode == 200) {
-      print('verified token');
       // valid token
       setState(() {
         _showLoginScreen = false;

@@ -127,7 +127,6 @@ class _LoginScreenState extends State<LoginScreen> {
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       // successfully verified phone number
       var bdy = json.decode(response.body);

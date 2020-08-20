@@ -38,7 +38,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   // handle successful payment
   handlePaymentSuccess(PaymentSuccessResponse response) {
-    print("success");
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return OrderLoader(
         paymentId: response.paymentId,
@@ -49,7 +48,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   // handle payment failure
   handlePaymentError(PaymentFailureResponse response) {
-    print("fail");
     Fluttertoast.showToast(
         msg: "ERROR: " + response.code.toString() + " - " + response.message,
         toastLength: Toast.LENGTH_LONG,
@@ -58,7 +56,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   // handle external wallet
   handleExternalWallet(ExternalWalletResponse response) {
-    print("external");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return OrderLoader(
+        paymentId: response.walletName,
+        orders: _userOrders,
+      );
+    }));
   }
 
   // get user details
