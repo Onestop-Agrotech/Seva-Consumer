@@ -290,7 +290,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         ),
       ),
       floatingActionButton:
-          cart.totalItems > 0 && cart.getCartTotalPrice() > 100.0
+          cart.totalItems > 0 && cart.getCartTotalPrice() >= 100.0
               ? RaisedButton(
                   onPressed: () {
                     // open the bottomsheet
