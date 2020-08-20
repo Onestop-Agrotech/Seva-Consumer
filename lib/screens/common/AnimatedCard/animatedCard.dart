@@ -268,7 +268,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             height: newscreenheight * 0.65,
                                             child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: widget.product.quantity.allowedQuantities.length,
+                                              itemCount: widget.product.quantity
+                                                  .allowedQuantities.length,
                                               itemBuilder: (builder, i) {
                                                 return Column(
                                                   children: [
@@ -286,7 +287,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             height: newscreenheight * 0.65,
                                             child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: widget.product.quantity.allowedQuantities.length,
+                                              itemCount: widget.product.quantity
+                                                  .allowedQuantities.length,
                                               itemBuilder: (builder, i) {
                                                 return Column(
                                                   children: [

@@ -324,13 +324,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
               color: ThemeColoursSeva().dkGreen,
             )
           : Padding(
-              padding: const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
+              padding:
+                  const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
               child: Container(
                 child: Text(
-                  _allowedDeliveries
-                      ? "Minimum order is Rs 100"
-                      : "",
-                      overflow: TextOverflow.clip,
+                  _allowedDeliveries ? "Minimum order is Rs 100" : "",
+                  overflow: TextOverflow.clip,
                   style: TextStyle(
                       color: ThemeColoursSeva().pallete1,
                       fontSize: 20.0,
