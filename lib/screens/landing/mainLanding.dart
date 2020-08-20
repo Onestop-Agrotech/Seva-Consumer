@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _email;
   String _username;
   Timer x;
+  FirebaseMessaging _fcm;
 
   @override
   initState() {
@@ -60,6 +62,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(e);
     categories.add(f);
     getUsername();
+    _fcm = new FirebaseMessaging();
+    _saveDeviceToken();
     x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
   }
 
@@ -67,6 +71,31 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   void dispose() {
     x.cancel();
     super.dispose();
+  }
+
+  /// Get the token, save it to the database for current user
+  _saveDeviceToken() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    // Get the current user
+    String uid = await p.getId();
+    String token = await p.getToken();
+
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+    if (fcmToken != null) {
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      Map<String, String> body = {
+        "collection": "Consumer tokens",
+        "token": "$fcmToken",
+        "userId": "$uid"
+      };
+      String url = APIService.setDeviceTokenInFirestore;
+      var response = await http.post(url, headers: requestHeaders, body: body);
+      if (response.statusCode == 200) {
+        print("SUCCESS");
+      } else
+        print("FAILURE TO SET");
+    }
   }
 
   getUsername() async {
