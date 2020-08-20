@@ -5,10 +5,8 @@ import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/errors/notServing.dart';
-// import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
-// import 'package:mvp/screens/storesList.dart';
 import 'dart:io';
 
 class LoadingScreen extends StatefulWidget {
