@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'graphics/lightBG.dart';
@@ -225,6 +227,50 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  _renderCartIcon() {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: IconButton(
+              color: ThemeColoursSeva().black,
+              iconSize: 30.0,
+              icon: Icon(Icons.shopping_basket),
+              onPressed: () {
+                // Handle shopping cart
+                Navigator.pushNamed(context, '/shoppingCartNew');
+              }),
+        ),
+        Positioned(
+          left: 28.0,
+          top: 10.0,
+          child: _checkCartItems(),
+        ),
+      ],
+    );
+  }
+
+  Widget _checkCartItems() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.1,
+      height: 22.0,
+      decoration: BoxDecoration(
+        color: ThemeColoursSeva().pallete1,
+        shape: BoxShape.circle,
+      ),
+      child: Consumer<NewCartModel>(
+        builder: (context, cart, child) {
+          return Center(
+            child: Text(
+              cart.totalItems == null ? '0' : cart.totalItems.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -310,14 +356,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               },
                               iconSize: 28.0,
                             ),
-                            IconButton(
-                              icon: Icon(Icons.shopping_basket),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, "/shoppingCartNew");
-                              },
-                              iconSize: 28.0,
-                            ),
+                            _renderCartIcon(),
                           ],
                         ),
                       ],
