@@ -69,12 +69,12 @@ class _IntroScreenState extends State<IntroScreen> {
           DescriptionIntro(
             img: 'images/ct1.png',
             descText:
-                "Order Fresh Fruits and Vegetables. You can pick them up from nearby stores or have it delivered to your doorstep!",
+                "Order Fresh Fruits and Vegetables. Get it delivered or pick it up yourself.",
           ),
           DescriptionIntro(
             img: 'images/ct2.png',
             descText:
-                "Delivery within an hour from your local stores. They are all within 2 kms of your delivery location!",
+                "Super fast delivery within 30-45 mins from your nearby stores. ",
           ),
           DescriptionIntro(
             img: 'images/ct3.png',
@@ -225,7 +225,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     children: <Widget>[
                       _buildButton(),
                       _index == 3
-                          ? RaisedButton(
+                          ? FlatButton(
                               onPressed: () {
                                 Navigator.pushNamedAndRemoveUntil(
                                     context, '/login', (route) => false);
@@ -237,7 +237,6 @@ class _IntroScreenState extends State<IntroScreen> {
                                     fontSize: 15.0),
                               ),
                               color: Colors.white,
-                              elevation: 0.0,
                             )
                           : Container(),
                     ],
@@ -245,7 +244,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   SizedBox(height: 20.0),
                   _index == 3
                       ? Container()
-                      : RaisedButton(
+                      : FlatButton(
                           onPressed: () {
                             setState(() {
                               _index = 3;
@@ -257,7 +256,6 @@ class _IntroScreenState extends State<IntroScreen> {
                                 TextStyle(color: Colors.grey, fontSize: 13.0),
                           ),
                           color: Colors.white,
-                          elevation: 0.0,
                         )
                 ],
               ),

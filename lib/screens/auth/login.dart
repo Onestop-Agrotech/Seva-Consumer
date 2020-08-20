@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: RaisedButton(
               color: ThemeColoursSeva().dkGreen,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+                borderRadius: BorderRadius.circular(12.0),
               ),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
@@ -96,9 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: const Text('Get OTP',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 17,
                     color: Colors.white,
-                    fontFamily: "Raleway",
                   )),
             ));
   }
