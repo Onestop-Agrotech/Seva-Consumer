@@ -31,7 +31,6 @@ class NewCartModel extends ChangeNotifier {
     if (_cartItems.length > 0) {
       // check if item already exists
       _cartItems.forEach((cartItem) {
-        print(cartItem.id + "-" + item.id);
         if (item.id == cartItem.id) {
           // already exists in cart- so add new quantity and new price
           cartItem.totalQuantity += q;
@@ -77,7 +76,6 @@ class NewCartModel extends ChangeNotifier {
           } else {
             // just remove the desired quantity
             if ((e.quantity.allowedQuantities[index].qty - 1) >= 0) {
-              print("remove desired qty");
               e.quantity.allowedQuantities[index].qty -= 1;
               e.totalPrice -= p;
               e.totalQuantity -= q;

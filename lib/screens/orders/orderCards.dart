@@ -32,10 +32,15 @@ class _OrdersCardState extends State<OrdersCard> {
     } else
       hour = time.hour;
     String timeString = "";
+    String minuteString = "";
+    if ("${time.minute}".length == 1) {
+      minuteString = "0${time.minute}";
+    } else
+      minuteString = "${time.minute}";
     if (isAM)
-      timeString = "$hour:${time.minute} AM";
+      timeString = "$hour:$minuteString AM";
     else
-      timeString = "$hour:${time.minute} PM";
+      timeString = "$hour:$minuteString PM";
     return Text(
       timeString,
       style: TextStyle(

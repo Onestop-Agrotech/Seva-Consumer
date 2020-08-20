@@ -24,10 +24,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   String _userMobile;
   String _userEmail;
   String _userOrders;
+  bool _allowedDeliveries;
 
   @override
   initState() {
     super.initState();
+    _allowedDeliveries = false;
+    getAllowedStatus();
     _getUserDetails();
     getKey();
     _rzp = Razorpay();
@@ -36,9 +39,22 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     _rzp.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
+  getAllowedStatus() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    String url = APIService.deliveriesAllowedAPI;
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      var x = json.decode(response.body)["obj"]["deliveries"];
+      setState(() {
+        _allowedDeliveries = x;
+      });
+    }
+  }
+
   // handle successful payment
   handlePaymentSuccess(PaymentSuccessResponse response) {
-    print("success");
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return OrderLoader(
         paymentId: response.paymentId,
@@ -49,7 +65,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   // handle payment failure
   handlePaymentError(PaymentFailureResponse response) {
-    print("fail");
     Fluttertoast.showToast(
         msg: "ERROR: " + response.code.toString() + " - " + response.message,
         toastLength: Toast.LENGTH_LONG,
@@ -58,7 +73,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   // handle external wallet
   handleExternalWallet(ExternalWalletResponse response) {
-    print("external");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return OrderLoader(
+        paymentId: response.walletName,
+        orders: _userOrders,
+      );
+    }));
   }
 
   // get user details
@@ -289,31 +309,34 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
           ],
         ),
       ),
-      floatingActionButton:
-          cart.totalItems > 0 && cart.getCartTotalPrice() > 100.0
-              ? RaisedButton(
-                  onPressed: () {
-                    // open the bottomsheet
-                    _showModal();
-                  },
-                  child: Text(
-                    "Proceed",
-                    style: TextStyle(color: Colors.white, fontSize: 20.0),
-                  ),
-                  color: ThemeColoursSeva().dkGreen,
-                )
-              : Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: Container(
-                    child: Text(
-                      "Minimum order is Rs 100",
-                      style: TextStyle(
-                          color: ThemeColoursSeva().pallete1,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
+      floatingActionButton: cart.totalItems > 0 &&
+              cart.getCartTotalPrice() >= 100.0 &&
+              _allowedDeliveries
+          ? RaisedButton(
+              onPressed: () {
+                // open the bottomsheet
+                _showModal();
+              },
+              child: Text(
+                "Proceed",
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+              ),
+              color: ThemeColoursSeva().dkGreen,
+            )
+          : Padding(
+              padding:
+                  const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
+              child: Container(
+                child: Text(
+                  _allowedDeliveries ? "Minimum order is Rs 100" : "",
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                      color: ThemeColoursSeva().pallete1,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w600),
                 ),
+              ),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

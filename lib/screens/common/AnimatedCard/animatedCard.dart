@@ -30,7 +30,6 @@ class _AnimatedCardState extends State<AnimatedCard>
   @override
   void initState() {
     super.initState();
-    print(this.widget.categorySelected);
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
   }
@@ -269,7 +268,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             height: newscreenheight * 0.65,
                                             child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: 3,
+                                              itemCount: widget.product.quantity
+                                                  .allowedQuantities.length,
                                               itemBuilder: (builder, i) {
                                                 return Column(
                                                   children: [
@@ -287,7 +287,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             height: newscreenheight * 0.65,
                                             child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: 3,
+                                              itemCount: widget.product.quantity
+                                                  .allowedQuantities.length,
                                               itemBuilder: (builder, i) {
                                                 return Column(
                                                   children: [

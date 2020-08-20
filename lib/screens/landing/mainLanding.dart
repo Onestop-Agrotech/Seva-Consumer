@@ -1,17 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'graphics/lightBG.dart';
@@ -35,6 +38,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _email;
   String _username;
   Timer x;
+  FirebaseMessaging _fcm;
 
   @override
   initState() {
@@ -58,6 +62,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     categories.add(e);
     categories.add(f);
     getUsername();
+    _fcm = new FirebaseMessaging();
+    _saveDeviceToken();
     x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
   }
 
@@ -65,6 +71,31 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   void dispose() {
     x.cancel();
     super.dispose();
+  }
+
+  /// Get the token, save it to the database for current user
+  _saveDeviceToken() async {
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    // Get the current user
+    String uid = await p.getId();
+    String token = await p.getToken();
+
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+    if (fcmToken != null) {
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      Map<String, String> body = {
+        "collection": "Consumer tokens",
+        "token": "$fcmToken",
+        "userId": "$uid"
+      };
+      String url = APIService.setDeviceTokenInFirestore;
+      var response = await http.post(url, headers: requestHeaders, body: body);
+      if (response.statusCode == 200) {
+        print("SUCCESS");
+      } else
+        print("FAILURE TO SET");
+    }
   }
 
   getUsername() async {
@@ -225,6 +256,50 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  _renderCartIcon() {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: IconButton(
+              color: ThemeColoursSeva().black,
+              iconSize: 30.0,
+              icon: Icon(Icons.shopping_basket),
+              onPressed: () {
+                // Handle shopping cart
+                Navigator.pushNamed(context, '/shoppingCartNew');
+              }),
+        ),
+        Positioned(
+          left: 28.0,
+          top: 10.0,
+          child: _checkCartItems(),
+        ),
+      ],
+    );
+  }
+
+  Widget _checkCartItems() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.1,
+      height: 22.0,
+      decoration: BoxDecoration(
+        color: ThemeColoursSeva().pallete1,
+        shape: BoxShape.circle,
+      ),
+      child: Consumer<NewCartModel>(
+        builder: (context, cart, child) {
+          return Center(
+            child: Text(
+              cart.totalItems == null ? '0' : cart.totalItems.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -310,14 +385,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               },
                               iconSize: 28.0,
                             ),
-                            IconButton(
-                              icon: Icon(Icons.shopping_basket),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, "/shoppingCartNew");
-                              },
-                              iconSize: 28.0,
-                            ),
+                            _renderCartIcon(),
                           ],
                         ),
                       ],

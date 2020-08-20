@@ -51,10 +51,8 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
 
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
-      print("denied location.hasPermission");
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        print("denied location.requestPermission");
         return;
       }
     }

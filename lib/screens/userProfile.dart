@@ -89,7 +89,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
-      // print(response.body);
       StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(json.decode(response.body)["token"]);
       await p.setUsername(json.decode(response.body)["username"]);
