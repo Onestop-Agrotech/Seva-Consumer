@@ -52,7 +52,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
       setState(() {
         _showLoginScreen = false;
       });
-          // _changePage();
     } else if (response.statusCode == 401) {
       // invalid token
       setState(() {

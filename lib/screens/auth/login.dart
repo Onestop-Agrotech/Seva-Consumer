@@ -131,11 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
       // successfully verified phone number
       var bdy = json.decode(response.body);
       String token = bdy["token"];
-      String far = bdy["far"];
-      // store the returned token
       StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(token);
-      await p.setFarStatus(far);
+      // await p.setFarStatus(far);
       setState(() {
         _loading = false;
         showOTPField = true;
@@ -172,8 +170,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
       await p.setEmail(jsonBdy["email"]);
-      // String far = jsonBdy["far"];
-      // await p.setFarStatus(far);
+      String far = jsonBdy["far"];
+      await p.setFarStatus(far);
       // grant access to the app
       Navigator.pushReplacementNamed(context, '/main');
     } else if (response.statusCode == 400) {
