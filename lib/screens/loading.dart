@@ -91,7 +91,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if (far == "false") {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => MainLandingScreen()));
-      } else if (far == "true") {
+      } else if (far == "true" || far == null) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
