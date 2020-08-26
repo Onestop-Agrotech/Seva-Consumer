@@ -31,7 +31,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-
         _connected = true;
         _checkForUserToken();
       }
@@ -88,19 +87,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
     } else if (_showLoginScreen == false) {
       StorageSharedPrefs p = new StorageSharedPrefs();
       String far = await p.getFarStatus();
-      String email = await p.getEmail();     
-
-      if (far == null) {
+      String email = await p.getEmail();
+      if (far == "false") {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => MainLandingScreen()));
       } else if (far == "true") {
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => NotServing(
-                      userEmail: email,
-                    )));
-                    
+          context,
+          MaterialPageRoute(
+            builder: (context) => NotServing(
+              userEmail: email,
+            ),
+          ),
+        );
       }
     }
   }

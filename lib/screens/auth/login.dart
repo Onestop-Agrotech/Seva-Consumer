@@ -133,7 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
       String token = bdy["token"];
       StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(token);
-      // await p.setFarStatus(far);
       setState(() {
         _loading = false;
         showOTPField = true;
@@ -170,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
       await p.setEmail(jsonBdy["email"]);
-      String far = jsonBdy["far"];
+      String far = jsonBdy["far"].toString();
       await p.setFarStatus(far);
       // grant access to the app
       Navigator.pushReplacementNamed(context, '/main');
