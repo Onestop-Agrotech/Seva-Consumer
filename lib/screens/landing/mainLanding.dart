@@ -46,12 +46,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     d = new StoreProduct(
       name: "Vegetables",
       pictureUrl:
-          "https://storepictures.theonestop.co.in/illustrations/vegetable.png",
+          "https://storepictures.theonestop.co.in/new2/AllVegetables.jpg",
     );
     e = new StoreProduct(
       name: "Fruits",
       pictureUrl:
-          "https://storepictures.theonestop.co.in/illustrations/viburnum-fruit.png",
+          "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
     );
     f = new StoreProduct(
       name: "Daily Essentials",
