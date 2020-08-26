@@ -50,9 +50,10 @@ class _AnimatedCardState extends State<AnimatedCard>
       p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
           widget.product.price;
     }
-    // For Pc and Kgs
+    // For Pc, Kgs & Ltr
     else if (widget.product.quantity.allowedQuantities[index].metric == "Pc" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Kgs") {
+        widget.product.quantity.allowedQuantities[index].metric == "Kgs" || 
+        widget.product.quantity.allowedQuantities[index].metric == "Ltr") {
       q = double.parse(
           "${widget.product.quantity.allowedQuantities[index].value}");
       p = widget.product.price * q;

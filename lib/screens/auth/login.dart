@@ -7,6 +7,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
+import 'package:mvp/screens/errors/notServing.dart';
 import 'dart:convert';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -131,7 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
       // successfully verified phone number
       var bdy = json.decode(response.body);
       String token = bdy["token"];
-      // store the returned token
       StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(token);
       setState(() {
@@ -170,10 +170,20 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
       await p.setEmail(jsonBdy["email"]);
-      bool far = jsonBdy["far"];
-      await p.setFarStatus(far.toString());
+      String far = jsonBdy["far"].toString();
+      await p.setFarStatus(far);
       // grant access to the app
-      Navigator.pushReplacementNamed(context, '/main');
+      if (far == "false" || far == null)
+        Navigator.pushReplacementNamed(context, '/main');
+      else
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NotServing(
+              userEmail: jsonBdy["email"],
+            ),
+          ),
+        );
     } else if (response.statusCode == 400) {
       // incorrect OTP
       setState(() {

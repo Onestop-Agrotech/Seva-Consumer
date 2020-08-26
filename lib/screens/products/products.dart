@@ -113,6 +113,7 @@ class _ProductsState extends State<Products> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<StoreProduct> arr = snapshot.data;
+          arr.sort((a, b) => a.name.compareTo(b.name));
           if (arr.length == 0) {
             return Center(
               child: Text("No Products Available!"),
