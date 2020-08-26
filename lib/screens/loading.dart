@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
@@ -91,7 +92,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       if (far == "false") {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => MainLandingScreen()));
-      } else if (far == "true" || far == null) {
+      } else if (far == "true") {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -99,6 +100,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
               userEmail: email,
             ),
           ),
+        );
+      } else if (far == null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
         );
       }
     }
