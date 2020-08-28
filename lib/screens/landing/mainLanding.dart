@@ -27,8 +27,9 @@ class MainLandingScreen extends StatefulWidget {
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var texts = [
-    "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
-    "Get a cashback of Rs 30 on your 4th order!"
+    "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
+    "Get exclusive cashbacks worth more than Rs 100 when you order.",
+    "Super fast delivery within 30 minutes!",
   ];
   List<StoreProduct> categories = [];
   // static categories
@@ -50,8 +51,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
     e = new StoreProduct(
       name: "Fruits",
-      pictureUrl:
-          "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
+      pictureUrl: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
     );
     f = new StoreProduct(
       name: "Daily Essentials",
@@ -412,7 +412,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         children: <Widget>[
                           Expanded(
                             child: ListView.builder(
-                              itemCount: 2,
+                              itemCount: texts.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return Row(

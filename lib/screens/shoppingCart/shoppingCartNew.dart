@@ -58,7 +58,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return OrderLoader(
         paymentId: response.paymentId,
-        orders: _userOrders,
       );
     }));
   }
@@ -76,7 +75,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return OrderLoader(
         paymentId: response.walletName,
-        orders: _userOrders,
       );
     }));
   }
@@ -168,10 +166,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             children: <Widget>[
                               Text("Delivery Fee: ",
                                   style: TextStyle(fontSize: 21)),
-                              Text(
-                                  double.parse(_userOrders) < 3
-                                      ? "Rs 0"
-                                      : "Rs 20",
+                              Text("Rs 0",
                                   style: TextStyle(
                                     fontSize: 21,
                                   ))
@@ -187,9 +182,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                               Consumer<NewCartModel>(
                                 builder: (context, newCart, child) {
                                   return Text(
-                                    double.parse(_userOrders) < 3
-                                        ? "Rs ${newCart.getCartTotalPrice()}"
-                                        : "Rs ${newCart.getCartTotalPrice() + 20.0}",
+                                    "Rs ${newCart.getCartTotalPrice()}",
                                     style: TextStyle(fontSize: 21),
                                   );
                                 },
@@ -309,9 +302,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
           ],
         ),
       ),
-      floatingActionButton: cart.totalItems > 0 &&
-              cart.getCartTotalPrice() >= 100.0 &&
-              _allowedDeliveries
+      floatingActionButton: cart.totalItems > 0 && _allowedDeliveries
           ? RaisedButton(
               onPressed: () {
                 // open the bottomsheet
@@ -328,7 +319,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                   const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
               child: Container(
                 child: Text(
-                  _allowedDeliveries ? "Minimum order is Rs 100" : "",
+                  _allowedDeliveries ? "" : "Deliveries closed",
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                       color: ThemeColoursSeva().pallete1,

@@ -10,8 +10,8 @@ import 'package:mvp/constants/apiCalls.dart';
 
 class OrderLoader extends StatefulWidget {
   final String paymentId;
-  final String orders;
-  OrderLoader({@required this.paymentId, @required this.orders});
+  // final String orders;
+  OrderLoader({@required this.paymentId});
 
   @override
   _OrderLoaderState createState() => _OrderLoaderState();
@@ -39,9 +39,9 @@ class _OrderLoaderState extends State<OrderLoader> {
         orderType: "delivery",
         finalItemsPrice: "${newCart.getCartTotalPrice()}",
         paymentType: "online",
-        deliveryPrice: "20",
+        deliveryPrice: "0",
         paymentTransactionId: responseId);
-    if (double.parse(this.widget.orders) < 3.0) newOrder.deliveryPrice = "0";
+    // if (double.parse(this.widget.orders) < 3.0) newOrder.deliveryPrice = "0";
     newOrder.customerFinalPrice =
         "${double.parse(newOrder.deliveryPrice) + double.parse(newOrder.finalItemsPrice)}";
     List<Item> itemList = [];
