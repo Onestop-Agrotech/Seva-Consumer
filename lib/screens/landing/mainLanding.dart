@@ -28,7 +28,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var texts = [
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
-    "Get exclusive cashbacks worth more than Rs 100!"
+    "Get exclusive cashbacks worth more than Rs 100 when you order.",
+    "Super fast delivery within 30 minutes!",
   ];
   List<StoreProduct> categories = [];
   // static categories
@@ -412,7 +413,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         children: <Widget>[
                           Expanded(
                             child: ListView.builder(
-                              itemCount: 2,
+                              itemCount: texts.length,
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return Row(
