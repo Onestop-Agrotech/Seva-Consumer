@@ -27,8 +27,8 @@ class MainLandingScreen extends StatefulWidget {
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var texts = [
-    "Free Delivery on your first 3 orders.\n" + "\nOrder Now!",
-    "Get a cashback of Rs 30 on your 4th order!"
+    "Free Deliveries and no minimum Order!\n" + "\nOrder Now.",
+    "Get exclusive cashbacks worth more than Rs 100!"
   ];
   List<StoreProduct> categories = [];
   // static categories
