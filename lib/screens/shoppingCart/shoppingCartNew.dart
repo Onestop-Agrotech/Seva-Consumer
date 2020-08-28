@@ -319,7 +319,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                   const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
               child: Container(
                 child: Text(
-                  _allowedDeliveries ? "Deliveries closed" : "",
+                  _allowedDeliveries ? "" : "Deliveries closed",
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                       color: ThemeColoursSeva().pallete1,
