@@ -20,7 +20,6 @@ class SevaApp extends StatefulWidget {
 }
 
 class _SevaAppState extends State<SevaApp> {
-
   @override
   void initState() {
     super.initState();
