@@ -10,8 +10,6 @@ import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
-import 'package:in_app_update/in_app_update.dart';
-
 void main() {
   runApp(SevaApp());
 }
@@ -22,29 +20,16 @@ class SevaApp extends StatefulWidget {
 }
 
 class _SevaAppState extends State<SevaApp> {
-  AppUpdateInfo _updateInfo;
 
   @override
   void initState() {
     super.initState();
-    checkForUpdate();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-
-  Future<void> checkForUpdate() async {
-    InAppUpdate.checkForUpdate().then((info) {
-      setState(() {
-        _updateInfo = info;
-      });
-    }).catchError((e) => print(e));
-    if (_updateInfo?.updateAvailable == true) {
-      InAppUpdate.performImmediateUpdate().catchError((e) => print(e));
-    }
   }
 
   @override

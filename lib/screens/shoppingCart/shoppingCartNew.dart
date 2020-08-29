@@ -23,13 +23,14 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   Razorpay _rzp;
   String _userMobile;
   String _userEmail;
-  String _userOrders;
   bool _allowedDeliveries;
+  bool _loadingDeliveries;
 
   @override
   initState() {
     super.initState();
     _allowedDeliveries = false;
+    _loadingDeliveries = true;
     getAllowedStatus();
     _getUserDetails();
     getKey();
@@ -49,6 +50,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
       var x = json.decode(response.body)["obj"]["deliveries"];
       setState(() {
         _allowedDeliveries = x;
+        _loadingDeliveries = false;
       });
     }
   }
@@ -90,12 +92,6 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     if (response.statusCode == 200) {
       this._userMobile = json.decode(response.body)["mobile"];
       this._userEmail = json.decode(response.body)["email"];
-      try {
-        this._userOrders = json.decode(response.body)["orders"];
-        if (_userOrders == null) _userOrders = "0";
-      } catch (e) {
-        _userOrders = "0";
-      }
     } else {
       throw Exception('something is wrong');
     }
@@ -160,7 +156,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         ),
                       ],
                     ),
-                    _userOrders != null
+                    this._userEmail != null
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
@@ -173,7 +169,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             ],
                           )
                         : Text(""),
-                    _userOrders != null
+                    this._userMobile != null
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
@@ -195,7 +191,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 ),
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
-                    return _userOrders != null
+                    return this._userEmail != null
                         ? ButtonTheme(
                             minWidth: 80.0,
                             height: 50.0,
@@ -203,10 +199,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                               color: ThemeColoursSeva().dkGreen,
                               onPressed: () {
                                 openCheckout(
-                                    double.parse(_userOrders) < 3
-                                        ? newCart.getCartTotalPrice()
-                                        : (newCart.getCartTotalPrice() + 20),
-                                    _rzpAPIKey);
+                                    newCart.getCartTotalPrice(), _rzpAPIKey);
                                 Navigator.pop(context);
                               },
                               child: Text(
@@ -222,6 +215,30 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
             );
           });
         });
+  }
+
+  properText() {
+    if (!_allowedDeliveries && _loadingDeliveries) {
+      return Text(
+        "Loading...",
+        overflow: TextOverflow.clip,
+        style: TextStyle(
+            color: ThemeColoursSeva().pallete1,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600),
+      );
+    }
+    // deliveries are closed
+    else if (!_allowedDeliveries && !_loadingDeliveries) {
+      return Text(
+        "Deliveries Closed",
+        overflow: TextOverflow.clip,
+        style: TextStyle(
+            color: ThemeColoursSeva().pallete1,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w600),
+      );
+    }
   }
 
   @override
@@ -318,14 +335,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
               padding:
                   const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
               child: Container(
-                child: Text(
-                  _allowedDeliveries ? "" : "Deliveries closed",
-                  overflow: TextOverflow.clip,
-                  style: TextStyle(
-                      color: ThemeColoursSeva().pallete1,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w600),
-                ),
+                child: properText(),
               ),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
