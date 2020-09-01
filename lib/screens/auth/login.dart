@@ -212,7 +212,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                     fontSize: 24.0,
                     color: ThemeColoursSeva().dkGreen,
-                    fontFamily: "Raleway",
                   ),
                 ),
               ],
@@ -227,14 +226,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                         color: ThemeColoursSeva().lgGreen,
                         fontSize: 45.0,
-                        fontFamily: "Raleway"),
+                       ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: Text(
                       "eva",
                       style: TextStyle(
-                          fontFamily: "Raleway",
                           color: ThemeColoursSeva().lgGreen,
                           fontSize: 25.0),
                     ),
@@ -251,7 +249,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     "Mobile:",
                     style: TextStyle(
                       fontSize: 24.0,
-                      fontFamily: "Raleway",
                     ),
                   ),
                 ],
@@ -301,7 +298,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 "Enter OTP:",
                                 style: TextStyle(
                                   fontSize: 24.0,
-                                  fontFamily: "Raleway",
                                 ),
                               ),
                             ),

@@ -367,14 +367,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style: TextStyle(
                                 color: ThemeColoursSeva().lgGreen,
                                 fontSize: 45.0,
-                                fontFamily: "Raleway"),
+                                ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Text(
                               "eva",
                               style: TextStyle(
-                                  fontFamily: "Raleway",
                                   color: ThemeColoursSeva().lgGreen,
                                   fontSize: 25.0),
                             ),

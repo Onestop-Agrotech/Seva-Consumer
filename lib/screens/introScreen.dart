@@ -45,7 +45,6 @@ class _IntroScreenState extends State<IntroScreen> {
             overflow: TextOverflow.clip,
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
-                fontFamily: "Raleway",
                 fontSize: 13.0),
           ),
           SizedBox(height: 83.0)
@@ -131,16 +130,14 @@ class _IntroScreenState extends State<IntroScreen> {
                       style: TextStyle(
                           fontSize: 45.0,
                           color: ThemeColoursSeva().lgGreen,
-                          fontFamily: "Raleway",
-                          fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w700),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 60.0),
                       child: Text(
                         "By ONESTOP",
                         style: TextStyle(
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.w300,
+                                        fontWeight: FontWeight.w300,
                             color: ThemeColoursSeva().lgGreen,
                             fontSize: 16.0),
                       ),
