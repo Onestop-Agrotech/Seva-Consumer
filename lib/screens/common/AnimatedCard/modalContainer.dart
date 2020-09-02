@@ -72,6 +72,26 @@ class _AddItemModalState extends State<AddItemModal> {
     );
   }
 
+  Text _showTotalItemQty(newCart) {
+    double totalQ = 0.0;
+    newCart.items.forEach((e) {
+      if (e.id == widget.product.id) {
+        for (var item in widget.product.quantity.allowedQuantities) {
+          if (item.qty > 0) totalQ += item.qty;
+        }
+      }
+    });
+
+    return Text(
+      totalQ != 0.0 ? "$totalQ" : "0",
+      style: TextStyle(
+        color: ThemeColoursSeva().dkGreen,
+        fontSize: 20.0,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
   Text _showTotalCartPrice(newCart) {
     double price;
     price = newCart.getCartTotalPrice();
@@ -220,6 +240,21 @@ class _AddItemModalState extends State<AddItemModal> {
                     fontSize: 20.0,
                     fontWeight: FontWeight.w300,
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Item Total Quantity",
+                      style: TextStyle(
+                        color: ThemeColoursSeva().dkGreen,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    _showTotalItemQty(newCart),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
