@@ -203,157 +203,158 @@ class _LoginScreenState extends State<LoginScreen> {
         painter: GreenPaintBgLogin(),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
-          child: ListView(children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Sign In",
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: ThemeColoursSeva().dkGreen,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 40.0),
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Row(
+          child: SafeArea(
+                      child: ListView(children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "S",
-                    style: TextStyle(
-                        color: ThemeColoursSeva().lgGreen,
-                        fontSize: 45.0,
-                       ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "eva",
-                      style: TextStyle(
-                          color: ThemeColoursSeva().lgGreen,
-                          fontSize: 25.0),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 30.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 40.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Mobile:",
+                    "Sign In",
                     style: TextStyle(
                       fontSize: 24.0,
+                      color: ThemeColoursSeva().dkGreen,
                     ),
                   ),
                 ],
               ),
-            ),
-            SizedBox(height: 20.0),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 260,
-                    child: TextFormField(
-                      enableInteractiveSelection: true,
-                      textInputAction: TextInputAction.next,
-                      autofocus: false,
-                      focusNode: _mobileFocus,
-                      keyboardType: TextInputType.number,
-                      controller: _mobileController,
-
-                      validator: (String val) {
-                        if (val.isEmpty || val.length < 10)
-                          return ('Min 10 digit number required!');
-                        else
-                          return (null);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: ThemeColoursSeva().dkGreen),
-                            borderRadius: BorderRadius.circular(10)),
-                        labelText: '+91',
+              SizedBox(height: 40.0),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "S",
+                      style: TextStyle(
+                        color: ThemeColoursSeva().lgGreen,
+                        fontSize: 45.0,
                       ),
-                      maxLength: 10,
-                      // onTap: ,
                     ),
-                  ),
-                  _showInvalidMobile(),
-                  SizedBox(height: 10.0),
-                  showOTPField
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 40.0),
-                              child: Text(
-                                "Enter OTP:",
-                                style: TextStyle(
-                                  fontSize: 24.0,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "eva",
+                        style: TextStyle(
+                            color: ThemeColoursSeva().lgGreen, fontSize: 25.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 30.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "Mobile:",
+                      style: TextStyle(
+                        fontSize: 24.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20.0),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 260,
+                      child: TextFormField(
+                        enableInteractiveSelection: true,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        focusNode: _mobileFocus,
+                        keyboardType: TextInputType.number,
+                        controller: _mobileController,
+
+                        validator: (String val) {
+                          if (val.isEmpty || val.length < 10)
+                            return ('Min 10 digit number required!');
+                          else
+                            return (null);
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: ThemeColoursSeva().dkGreen),
+                              borderRadius: BorderRadius.circular(10)),
+                          labelText: '+91',
+                        ),
+                        maxLength: 10,
+                        // onTap: ,
+                      ),
+                    ),
+                    _showInvalidMobile(),
+                    SizedBox(height: 10.0),
+                    showOTPField
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.only(left: 40.0),
+                                child: Text(
+                                  "Enter OTP:",
+                                  style: TextStyle(
+                                    fontSize: 24.0,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 40, right: 100),
-                              child: OTPTextField(
-                                length: 6,
-                                width: MediaQuery.of(context).size.width,
-                                fieldWidth: 30,
-                                style: TextStyle(fontSize: 20),
-                                textFieldAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                fieldStyle: FieldStyle.underline,
-                                onCompleted: (pin) async {
-                                  setState(() {
-                                    _otpLoader = true;
-                                    _invalidOTP = false;
-                                  });
-                                  await _verifyOTP(pin);
-                                },
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 40, right: 100),
+                                child: OTPTextField(
+                                  length: 6,
+                                  width: MediaQuery.of(context).size.width,
+                                  fieldWidth: 30,
+                                  style: TextStyle(fontSize: 20),
+                                  textFieldAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  fieldStyle: FieldStyle.underline,
+                                  onCompleted: (pin) async {
+                                    setState(() {
+                                      _otpLoader = true;
+                                      _invalidOTP = false;
+                                    });
+                                    await _verifyOTP(pin);
+                                  },
+                                ),
                               ),
+                            ],
+                          )
+                        : SizedBox(),
+                    _showInvalidOTP(),
+                    _showOTPLoader(),
+                    _showLoader(),
+                    SizedBox(
+                      height: 30.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Don't have an account? "),
+                        Material(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterScreen()));
+                            },
+                            child: Text(
+                              "Sign up",
+                              style: TextStyle(color: ThemeColoursSeva().dkGreen),
                             ),
-                          ],
-                        )
-                      : SizedBox(),
-                  _showInvalidOTP(),
-                  _showOTPLoader(),
-                  _showLoader(),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Don't have an account? "),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterScreen()));
-                          },
-                          child: Text(
-                            "Sign up",
-                            style: TextStyle(color: ThemeColoursSeva().dkGreen),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         ),
       ),
     );

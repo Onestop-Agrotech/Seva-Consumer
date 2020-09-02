@@ -339,85 +339,87 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Stack(
-        children: <Widget>[
-          CustomPaint(
-            painter: GreenPaintingBgAuth(),
-            child: Center(
-              child: null,
+          children: <Widget>[
+            CustomPaint(
+      painter: GreenPaintingBgAuth(),
+      child: Center(
+        child: null,
+      ),
             ),
-          ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Column(
-                  children: <Widget>[
-                    TopText(txt: "Create Account"),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "S",
-                            style: TextStyle(
-                                color: ThemeColoursSeva().lgGreen,
-                                fontSize: 45.0,
-                                ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Text(
-                              "eva",
-                              style: TextStyle(
-                                  color: ThemeColoursSeva().lgGreen,
-                                  fontSize: 25.0),
+            Positioned.fill(
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: SafeArea(
+                      child: Column(
+              children: <Widget>[
+                TopText(txt: "Create Account"),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "S",
+                        style: TextStyle(
+                            color: ThemeColoursSeva().lgGreen,
+                            fontSize: 45.0,
                             ),
-                          )
-                        ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    _buildStack(),
-                    SizedBox(height: 30.0),
-                    _showLoadingOrButton(),
-                    SizedBox(
-                      height: 50.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("Already have an account? "),
-                        Material(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginScreen()));
-                            },
-                            child: Text(
-                              "Sign in",
-                              style:
-                                  TextStyle(color: ThemeColoursSeva().dkGreen),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          "eva",
+                          style: TextStyle(
+                              color: ThemeColoursSeva().lgGreen,
+                              fontSize: 25.0),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 40.0,
+                ),
+                _buildStack(),
+                SizedBox(height: 30.0),
+                _showLoadingOrButton(),
+                SizedBox(
+                  height: 50.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Already have an account? "),
+                    Material(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
+                        },
+                        child: Text(
+                          "Sign in",
+                          style:
+                              TextStyle(color: ThemeColoursSeva().dkGreen),
+                        ),
+                      ),
+                    )
                   ],
                 ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
+            ),
+          ],
+        ),
     );
   }
 }
