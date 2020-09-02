@@ -1,3 +1,14 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+/**
+ * @fileoverview MainLanding Widget : This is the main landing screen after the user
+ * is logged in.
+ */
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';

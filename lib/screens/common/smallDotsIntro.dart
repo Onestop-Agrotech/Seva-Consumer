@@ -1,3 +1,14 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+/**
+ * @fileoverview SmallDotIntro Widget : These are the dots that are present on the
+ * home screen.
+ */
+
 import 'package:flutter/material.dart';
 
 class SmallDotsIntro extends StatefulWidget {
