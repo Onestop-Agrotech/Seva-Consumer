@@ -76,14 +76,12 @@ class _AddItemModalState extends State<AddItemModal> {
     double totalQ = 0.0;
     newCart.items.forEach((e) {
       if (e.id == widget.product.id) {
-        for (var item in widget.product.quantity.allowedQuantities) {
-          if (item.qty > 0) totalQ += item.qty;
-        }
+        totalQ = widget.product.totalQuantity;
       }
     });
 
     return Text(
-      totalQ != 0.0 ? "$totalQ" : "0",
+      totalQ != 0.0 ? "$totalQ ${widget.product.quantity.quantityMetric}" : "0",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
         fontSize: 20.0,
