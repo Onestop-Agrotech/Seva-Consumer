@@ -212,13 +212,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     "Sign In",
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 3.1 * SizeConfig.textMultiplier,
                       color: ThemeColoursSeva().dkGreen,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 4.69*SizeConfig.textMultiplier),
+              SizedBox(height: 4.00 * SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Row(
@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       "S",
                       style: TextStyle(
                         color: ThemeColoursSeva().lgGreen,
-                        fontSize: 45.0,
+                        fontSize: 5.25 * SizeConfig.textMultiplier,
                       ),
                     ),
                     Padding(
@@ -235,13 +235,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         "eva",
                         style: TextStyle(
-                            color: ThemeColoursSeva().lgGreen, fontSize: 25.0),
+                            color: ThemeColoursSeva().lgGreen,
+                            fontSize: 2.90 * SizeConfig.textMultiplier),
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 3.51*SizeConfig.textMultiplier),
+              SizedBox(height: 3.11 * SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.only(left: 40.0),
                 child: Row(
@@ -249,19 +250,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       "Mobile:",
                       style: TextStyle(
-                        fontSize: 24.0,
+                        fontSize: 2.8 * SizeConfig.textMultiplier,
                       ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 2.34*SizeConfig.textMultiplier),
+              SizedBox(height: 2.24 * SizeConfig.textMultiplier),
               Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
                     Container(
-                      width: 260,
+                      width: 220,
                       child: TextFormField(
                         enableInteractiveSelection: true,
                         textInputAction: TextInputAction.next,
@@ -277,6 +278,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             return (null);
                         },
                         decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 5),
                           border: OutlineInputBorder(
                               borderSide:
                                   BorderSide(color: ThemeColoursSeva().dkGreen),
@@ -288,7 +291,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     _showInvalidMobile(),
-              SizedBox(height: 1.2*SizeConfig.textMultiplier),
+                    SizedBox(height: 1.2 * SizeConfig.textMultiplier),
                     showOTPField
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,8 +331,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _showInvalidOTP(),
                     _showOTPLoader(),
                     _showLoader(),
-                              SizedBox(height: 3.69*SizeConfig.textMultiplier),
-
+                    SizedBox(height: 3.19 * SizeConfig.textMultiplier),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
