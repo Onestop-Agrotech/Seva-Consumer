@@ -204,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SafeArea(
-                      child: ListView(children: <Widget>[
+            child: ListView(children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -344,7 +344,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             },
                             child: Text(
                               "Sign up",
-                              style: TextStyle(color: ThemeColoursSeva().dkGreen),
+                              style:
+                                  TextStyle(color: ThemeColoursSeva().dkGreen),
                             ),
                           ),
                         )
@@ -352,6 +353,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).viewInsets.bottom,
               ),
             ]),
           ),
