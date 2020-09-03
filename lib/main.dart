@@ -7,6 +7,7 @@ import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/loading.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
@@ -35,16 +36,25 @@ class _SevaAppState extends State<SevaApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => NewCartModel())],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: LoadingScreen(),
-        routes: {
-          "/register": (context) => RegisterScreen(),
-          "/login": (context) => LoginScreen(),
-          "/main": (context) => MainLandingScreen(),
-          "/shoppingCartNew": (context) => ShoppingCartNew(),
-          "/ordersNew": (context) => NewOrdersScreen(),
-          "/notServing": (context) => NotServing()
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return OrientationBuilder(
+            builder: (context, orientation) {
+              SizeConfig().init(constraints, orientation);
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: LoadingScreen(),
+                routes: {
+                  "/register": (context) => RegisterScreen(),
+                  "/login": (context) => LoginScreen(),
+                  "/main": (context) => MainLandingScreen(),
+                  "/shoppingCartNew": (context) => ShoppingCartNew(),
+                  "/ordersNew": (context) => NewOrdersScreen(),
+                  "/notServing": (context) => NotServing()
+                },
+              );
+            },
+          );
         },
       ),
     );

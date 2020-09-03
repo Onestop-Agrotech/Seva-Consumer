@@ -8,6 +8,7 @@ import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -217,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 40.0),
+              SizedBox(height: 4.69*SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Row(
@@ -240,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 30.0),
+              SizedBox(height: 3.51*SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.only(left: 40.0),
                 child: Row(
@@ -254,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20.0),
+              SizedBox(height: 2.34*SizeConfig.textMultiplier),
               Form(
                 key: _formKey,
                 child: Column(
@@ -287,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     _showInvalidMobile(),
-                    SizedBox(height: 10.0),
+              SizedBox(height: 1.2*SizeConfig.textMultiplier),
                     showOTPField
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,9 +328,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     _showInvalidOTP(),
                     _showOTPLoader(),
                     _showLoader(),
-                    SizedBox(
-                      height: 30.0,
-                    ),
+                              SizedBox(height: 3.69*SizeConfig.textMultiplier),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -354,9 +354,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).viewInsets.bottom,
-              ),
+              // SizedBox(
+              //   height: MediaQuery.of(context).viewInsets.bottom,
+              // ),
             ]),
           ),
         ),
