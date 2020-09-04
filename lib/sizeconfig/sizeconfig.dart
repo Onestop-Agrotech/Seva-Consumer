@@ -40,5 +40,6 @@ class SizeConfig {
     print("bloclsi");
     print(_blockWidth);
     print(_blockHeight);
+    print(textMultiplier);
   }
 }

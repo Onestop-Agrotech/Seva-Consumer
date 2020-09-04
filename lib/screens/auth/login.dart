@@ -261,33 +261,37 @@ class _LoginScreenState extends State<LoginScreen> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    Container(
-                      width: 220,
-                      child: TextFormField(
-                        enableInteractiveSelection: true,
-                        textInputAction: TextInputAction.next,
-                        autofocus: false,
-                        focusNode: _mobileFocus,
-                        keyboardType: TextInputType.number,
-                        controller: _mobileController,
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 5 * SizeConfig.textMultiplier,
+                          right: 5 * SizeConfig.textMultiplier),
+                      child: Container(
+                        child: TextFormField(
+                          enableInteractiveSelection: true,
+                          textInputAction: TextInputAction.next,
+                          autofocus: false,
+                          focusNode: _mobileFocus,
+                          keyboardType: TextInputType.number,
+                          controller: _mobileController,
 
-                        validator: (String val) {
-                          if (val.isEmpty || val.length < 10)
-                            return ('Min 10 digit number required!');
-                          else
-                            return (null);
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 5),
-                          border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: ThemeColoursSeva().dkGreen),
-                              borderRadius: BorderRadius.circular(10)),
-                          labelText: '+91',
+                          validator: (String val) {
+                            if (val.isEmpty || val.length < 10)
+                              return ('Min 10 digit number required!');
+                            else
+                              return (null);
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 5),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: ThemeColoursSeva().dkGreen),
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: '+91',
+                          ),
+                          maxLength: 10,
+                          // onTap: ,
                         ),
-                        maxLength: 10,
-                        // onTap: ,
                       ),
                     ),
                     _showInvalidMobile(),
