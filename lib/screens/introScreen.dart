@@ -40,7 +40,7 @@ class _IntroScreenState extends State<IntroScreen> {
             ),
           ),
           SizedBox(
-            height: 12.2 * SizeConfig.textMultiplier,
+            height: 15.6 * SizeConfig.textMultiplier,
           ),
           Text(
             "Service available only in select areas of Bangalore.",
@@ -49,7 +49,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 color: ThemeColoursSeva().dkGreen,
                 fontSize: 1.7 * SizeConfig.textMultiplier),
           ),
-          SizedBox(height: 6.8 * SizeConfig.textMultiplier)
+          SizedBox(height: 3.5 * SizeConfig.textMultiplier)
         ],
       );
     } else
