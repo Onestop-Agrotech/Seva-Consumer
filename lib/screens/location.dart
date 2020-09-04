@@ -21,12 +21,13 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
 
   final LatLng _center = const LatLng(12.9716, 77.5946);
   LatLng _userPosition;
-  Set<Marker> _markers = {};
+  Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   bool _showActionBtn;
   Location location = new Location();
   bool _serviceEnabled;
   PermissionStatus _permissionGranted;
   LocationData _locationData;
+  int _markerIdCounter = 0;
 
   @override
   void initState() {
@@ -67,22 +68,53 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
+  String _markerIdVal({bool increment = false}) {
+    String val = 'marker_id_$_markerIdCounter';
+    if (increment) _markerIdCounter++;
+    return val;
+  }
+
   void getCurrentLocation(ld) async {
     LatLng coords = LatLng(ld.latitude, ld.longitude);
-    Marker mk1 = Marker(
-        markerId: MarkerId('current'),
-        position: coords,
-        draggable: true,
-        onDragEnd: ((value) {
-          setState(() {
-            coords = LatLng(value.latitude, value.longitude);
-            _userPosition = coords;
-          });
-        }));
+    // Marker mk1 = Marker(
+    //     markerId: MarkerId('current'),
+    //     position: coords,
+    //     draggable: true,
+    //     onDragEnd: ((value) {
+    //       setState(() {
+    //         coords = LatLng(value.latitude, value.longitude);
+    //         _userPosition = coords;
+    //       });
+    //     }));
+
+    // setState(() {
+    //   mapController.animateCamera(CameraUpdate.newCameraPosition(
+    //       CameraPosition(target: coords, zoom: 18.0)));
+    //   _markers.add(mk1);
+    //   _userPosition = coords;
+    //   _showActionBtn = true;
+    //   // dragabble
+    // });
+    MarkerId markerId = MarkerId(_markerIdVal());
+    LatLng position = coords;
+    Marker marker = Marker(
+      markerId: markerId,
+      position: position,
+      draggable: false,
+    );
     setState(() {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: coords, zoom: 18.0)));
-      _markers.add(mk1);
+      _markers[markerId] = marker;
+    });
+
+    Future.delayed(Duration(seconds: 1), () async {
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: position,
+            zoom: 17.0,
+          ),
+        ),
+      );
       _userPosition = coords;
       _showActionBtn = true;
     });
@@ -131,10 +163,16 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           children: <Widget>[
             Expanded(
               child: GoogleMap(
+                myLocationEnabled: true,
+                zoomGesturesEnabled: true,
+                scrollGesturesEnabled: true,
+                rotateGesturesEnabled: true,
+                zoomControlsEnabled: false,
+                myLocationButtonEnabled: true,
                 onMapCreated: _onMapCreated,
                 initialCameraPosition:
                     CameraPosition(target: _center, zoom: 15.0),
-                markers: Set.from(_markers),
+                markers: Set<Marker>.of(_markers.values),
                 onTap: (pos) {
                   // _showActionBtn = true;
                   // _userPosition = pos;
@@ -145,6 +183,20 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                   // setState(() {
                   //   _markers.add(mk1);
                   // });
+                },
+                onCameraMove: (CameraPosition position) {
+                  print(position);
+                  if (_markers.length > 0) {
+                    MarkerId markerId = MarkerId(_markerIdVal());
+                    Marker marker = _markers[markerId];
+                    Marker updatedMarker = marker.copyWith(
+                      positionParam: position.target,
+                    );
+
+                    setState(() {
+                      _markers[markerId] = updatedMarker;
+                    });
+                  }
                 },
               ),
             ),
