@@ -4,10 +4,10 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview MainLanding Widget : This is the main landing screen after the user
- * is logged in.
- */
+///
+///@fileoverview MainLanding Widget : This is the main landing screen after the user
+///is logged in.
+///
 
 import 'dart:async';
 import 'dart:convert';

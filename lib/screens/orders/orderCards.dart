@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview OrdersCards Widget : Card after the ordering of a product.
- */
+///
+/// @fileoverview OrdersCards Widget : Card after the ordering of a product.
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';

@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
-/**
- * @fileoverview Googlemaps Screen : Add address by selecting the location on Google Maps. 
- */
+///
+/// @fileoverview Googlemaps Screen : Add address by selecting the location on Google Maps. 
+///
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geoLoc;
@@ -16,7 +16,7 @@ import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
-import 'package:mvp/screens/userProfile.dart';
+// import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
@@ -28,10 +28,10 @@ class GoogleLocationScreen extends StatefulWidget {
 
 class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   GoogleMapController mapController;
-  TextEditingController _searchControl = new TextEditingController();
+  // TextEditingController _searchControl = new TextEditingController();
 
   final LatLng _center = const LatLng(12.9716, 77.5946);
-  LatLng _userPosition;
+  // LatLng _userPosition;
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   bool _showActionBtn;
   Location location = new Location();
@@ -108,7 +108,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           ),
         ),
       );
-      _userPosition = coords;
+      // LatLng _userPosition = coords;
       _showActionBtn = true;
     });
     Fluttertoast.showToast(

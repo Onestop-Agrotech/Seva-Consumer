@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Timer _timer;
+  // Timer _timer;
 
   @override
   initState() {
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _startTimer() {
     _start = 60;
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    new Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
