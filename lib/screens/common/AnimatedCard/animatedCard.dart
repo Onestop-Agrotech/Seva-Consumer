@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview AnimateCard Widget : .
- */
+///
+/// @fileoverview AnimateCard Widget : .
+/// 
 
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';

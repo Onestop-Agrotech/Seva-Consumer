@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview ThemeColoursSeva Class : colour scheme of the app.
- */
+///
+/// @fileoverview ThemeColoursSeva Class : colour scheme of the app.
+///
 
 import 'package:flutter/material.dart';
 

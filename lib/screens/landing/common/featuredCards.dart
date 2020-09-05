@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview FeaturedCards Widget: Reusable and Customizable Cards.
- */
+///
+/// @fileoverview FeaturedCards Widget: Reusable and Customizable Cards.
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';

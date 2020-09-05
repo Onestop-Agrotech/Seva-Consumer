@@ -4,10 +4,10 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview error @ NotServing Widget : Gives message if service not
- * available in the region.
- */
+///
+/// @fileoverview error @ NotServing Widget : Gives message if service not
+/// available in the region.
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';

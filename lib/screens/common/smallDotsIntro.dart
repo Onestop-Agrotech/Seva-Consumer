@@ -4,10 +4,10 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview SmallDotIntro Widget : These are the dots that are present on the
- * home screen.
- */
+///
+/// @fileoverview SmallDotIntro Widget : These are the dots that are present on the
+/// home screen.
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';

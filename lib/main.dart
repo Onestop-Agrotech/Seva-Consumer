@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
-/**
- * @fileoverview Main Dart File : All routes and landing screen are defined here. 
- */
+///
+/// @fileoverview Main Dart File : All routes and landing screen are defined here. 
+///
 
 
 import 'package:flutter/material.dart';

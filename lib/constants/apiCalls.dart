@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview APIService Class : having all the apis endpoint.
- */
+///
+/// @fileoverview APIService Class : having all the apis endpoint.
+///
 
 class APIService {
   static final String _api = "https://api.theonestop.co.in/api";

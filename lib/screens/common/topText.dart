@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview TopText Widget : Customizable Text Widget.
- */
+///
+/// @fileoverview TopText Widget : Customizable Text Widget.
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';

@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview Login Widget : MobileVerification,OTP are declared here. 
- */
+///
+/// @fileoverview Login Widget : MobileVerification,OTP are declared here. 
+///
 
 import 'dart:async';
 import 'package:flutter/material.dart';
