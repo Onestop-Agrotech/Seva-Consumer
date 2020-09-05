@@ -24,7 +24,6 @@ class InputTextField extends StatelessWidget {
           padding: const EdgeInsets.only(left: 40.0, bottom: 10.0),
           child: Text(lt,
               style: TextStyle(
-                  fontFamily: "Raleway",
                   color: ThemeColoursSeva().black,
                   fontSize: 18.0,
                   fontWeight: FontWeight.w500)),

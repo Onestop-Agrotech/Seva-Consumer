@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
 import 'package:mvp/screens/userProfile.dart';
 
@@ -98,20 +99,23 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
 
   _showFloatingActionButton() {
     if (_showActionBtn == true) {
-      return FloatingActionButton.extended(
-        backgroundColor: ThemeColoursSeva().dkGreen,
-        onPressed: () {
-          _searchControl.clear();
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => UserProfileScreen(
-                        coords: _userPosition,
-                        userEmail: widget.userEmail,
-                      )));
-        },
-        label: Text("Set as Delivery Address"),
-        icon: Icon(Icons.home),
+      return Padding(
+        padding: const EdgeInsets.all(40),
+        child: FloatingActionButton.extended(
+          backgroundColor: ThemeColoursSeva().dkGreen,
+          onPressed: () {
+            _searchControl.clear();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UserProfileScreen(
+                          coords: _userPosition,
+                          userEmail: widget.userEmail,
+                        )));
+          },
+          label: Text("Set as Delivery Address"),
+          icon: Icon(Icons.home),
+        ),
       );
     } else {
       return Container();
@@ -122,28 +126,45 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(target: _center, zoom: 15.0),
-            markers: Set.from(_markers),
-            onTap: (pos) {
-              // _showActionBtn = true;
-              // _userPosition = pos;
-              // Marker mk1 = Marker(
-              //   markerId: MarkerId('1'),
-              //   position: pos,
-              // );
-              // setState(() {
-              //   _markers.add(mk1);
-              // });
-            },
-          ),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: GoogleMap(
+                onMapCreated: _onMapCreated,
+                initialCameraPosition:
+                    CameraPosition(target: _center, zoom: 15.0),
+                markers: Set.from(_markers),
+                onTap: (pos) {
+                  // _showActionBtn = true;
+                  // _userPosition = pos;
+                  // Marker mk1 = Marker(
+                  //   markerId: MarkerId('1'),
+                  //   position: pos,
+                  // );
+                  // setState(() {
+                  //   _markers.add(mk1);
+                  // });
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: InputTextField(
+                lt: "Home address:",
+              ),
+            ),
+            Container(
+              child: _showFloatingActionButton(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).viewInsets.bottom,
+            ),
+          ],
+        ),
       ),
-      floatingActionButton: _showFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: _showFloatingActionButton(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
