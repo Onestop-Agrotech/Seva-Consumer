@@ -1,5 +1,14 @@
-import 'dart:async';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
 
+/**
+ * @fileoverview Products Widget : Shows all the products available.
+ */
+
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';

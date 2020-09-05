@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+/**
+ * @fileoverview APIService Class : having all the apis endpoint.
+ */
+
 class APIService {
   static final String _api = "https://api.theonestop.co.in/api";
 

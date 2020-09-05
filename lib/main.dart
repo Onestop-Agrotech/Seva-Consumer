@@ -1,3 +1,14 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+/**
+ * @fileoverview Main Dart File : All routes and landing screen are defined here. 
+ */
+
+
 import 'package:flutter/material.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';

@@ -1,3 +1,15 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+/**
+ * @fileoverview Loadingscreen : Check if user is connected to internet and route as per their login status. 
+ */
+
+
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
