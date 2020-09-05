@@ -126,7 +126,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             //               coords: _userPosition,
             //               userEmail: widget.userEmail,
             //             )));
-            
           },
           label: Text("Set as Delivery Address"),
           icon: Icon(Icons.home),
@@ -135,6 +134,34 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     } else {
       return Container();
     }
+  }
+
+  onMapsMove(position) async {
+    if (_markers.length > 0) {
+      MarkerId markerId = MarkerId(_markerIdVal());
+      Marker marker = _markers[markerId];
+      Marker updatedMarker = marker.copyWith(
+        positionParam: position.target,
+      );
+
+      setState(() {
+        _markers[markerId] = updatedMarker;
+      });
+    }
+    List<geoLoc.Placemark> placemarks = await geoLoc.placemarkFromCoordinates(
+        position.target.latitude, position.target.longitude);
+    geoLoc.Placemark placeMark = placemarks[0];
+    String name = placeMark.name;
+    String subLocality = placeMark.subLocality;
+    String locality = placeMark.locality;
+    String administrativeArea = placeMark.administrativeArea;
+    String postalCode = placeMark.postalCode;
+    String country = placeMark.country;
+    String address =
+        "$name, $subLocality, $locality, $administrativeArea $postalCode, $country";
+    this.setState(() {
+      _markerAddress = address;
+    });
   }
 
   @override
@@ -156,53 +183,29 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                 initialCameraPosition:
                     CameraPosition(target: _center, zoom: 15.0),
                 markers: Set<Marker>.of(_markers.values),
-                onTap: (pos) {
-                  // _showActionBtn = true;
-                  // _userPosition = pos;
-                  // Marker mk1 = Marker(
-                  //   markerId: MarkerId('1'),
-                  //   position: pos,
-                  // );
-                  // setState(() {
-                  //   _markers.add(mk1);
-                  // });
-                },
-                onCameraMove: (CameraPosition position) async {
-                  print(position.target.latitude);
-                  if (_markers.length > 0) {
-                    MarkerId markerId = MarkerId(_markerIdVal());
-                    Marker marker = _markers[markerId];
-                    Marker updatedMarker = marker.copyWith(
-                      positionParam: position.target,
-                    );
-
-                    setState(() {
-                      _markers[markerId] = updatedMarker;
-                    });
-                  }
-                  List<geoLoc.Placemark> placemarks =
-                      await geoLoc.placemarkFromCoordinates(
-                          position.target.latitude, position.target.longitude);
-                  geoLoc.Placemark placeMark = placemarks[0];
-                  String name = placeMark.name;
-                  String subLocality = placeMark.subLocality;
-                  String locality = placeMark.locality;
-                  String administrativeArea = placeMark.administrativeArea;
-                  String postalCode = placeMark.postalCode;
-                  String country = placeMark.country;
-                  String address =
-                      "$name, $subLocality, $locality, $administrativeArea $postalCode, $country";
-                  this.setState(() {
-                    _markerAddress = address;
-                  });
+                onTap: (pos) {},
+                onCameraMove: (CameraPosition position)  {
+                  onMapsMove(position);
                 },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
+              child: Text(_markerAddress),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
               child: InputTextField(
-                  lt: "Home address:",
-                  eC: TextEditingController()..text = _markerAddress),
+                  lt: "House No/Flat No:",
+                  // eC: TextEditingController()..text = _markerAddress
+                  ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InputTextField(
+                lt: "Landmark:",
+                // eC: TextEditingController()..text = _markerAddress
+              ),
             ),
             Container(
               child: _showFloatingActionButton(),
