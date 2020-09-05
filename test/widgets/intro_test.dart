@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
-/**
- * @fileoverview This a test widget.
- */
+///
+/// @fileoverview This a test widget.
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/screens/introScreen.dart';

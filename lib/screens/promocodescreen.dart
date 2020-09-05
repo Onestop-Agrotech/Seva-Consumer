@@ -4,9 +4,9 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
-/**
- * @fileoverview PromoCodes Screen : Apply promocode on payment. 
- */
+///
+/// @fileoverview PromoCodes Screen : Apply promocode on payment. 
+///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';

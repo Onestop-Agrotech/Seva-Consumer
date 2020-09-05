@@ -4,12 +4,9 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
-/**
- * @fileoverview Razorpay : Redirect to razorpay for payment. 
- */
-
-
-
+///
+/// @fileoverview Razorpay : Redirect to razorpay for payment. 
+///
 
 import 'package:http/http.dart' as http;
 import 'package:mvp/classes/storage_sharedPrefs.dart';
