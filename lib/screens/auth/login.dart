@@ -11,6 +11,7 @@ import 'package:mvp/screens/errors/notServing.dart';
 import 'dart:convert';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sms_user_consent/sms_user_consent.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -31,6 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Timer _timer;
   final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
   SmsUserConsent smsUserConsent;
+  TextEditingController textEditingController = TextEditingController();
+  String currentText = "";
 
   @override
   initState() {
@@ -49,7 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
               print(intRegex
                   .allMatches(smsUserConsent.receivedSms)
                   .map((m) => m.group(0))),
-              setState(() {})
+              // setState(() {
+              //   currentText=intRegex
+              //     .allMatches(smsUserConsent.receivedSms)
+              //     .map((m) => m.group(0)) as String;
+              // })
             });
   }
 
@@ -329,25 +336,38 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 40, right: 100),
-                                child: OTPTextField(
-                                  length: 6,
-                                  width: MediaQuery.of(context).size.width,
-                                  fieldWidth: 30,
-                                  style: TextStyle(fontSize: 20),
-                                  textFieldAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  fieldStyle: FieldStyle.underline,
-                                  onCompleted: (pin) async {
-                                    setState(() {
-                                      _otpLoader = true;
-                                      _invalidOTP = false;
-                                    });
-                                    await _verifyOTP(pin);
-                                  },
+                              PinCodeTextField(
+                                length: 6,
+                                obsecureText: false,
+                                animationType: AnimationType.fade,
+                                pinTheme: PinTheme(
+                                  shape: PinCodeFieldShape.box,
+                                  borderRadius: BorderRadius.circular(5),
+                                  fieldHeight: 50,
+                                  fieldWidth: 40,
+                                  activeFillColor: Colors.white,
                                 ),
+                                animationDuration:
+                                    Duration(milliseconds: 300),
+                                backgroundColor: Colors.blue.shade50,
+                                enableActiveFill: true,
+                                // errorAnimationController: errorController,
+                                controller: textEditingController,
+                                onCompleted: (v) {
+                                  print("Completed");
+                                },
+                                onChanged: (value) {
+                                  print(value);
+                                  setState(() {
+                                    currentText = value;
+                                  });
+                                },
+                                beforeTextPaste: (text) {
+                                  print("Allowing to paste $text");
+                                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                                  return true;
+                                },
                               ),
                             ],
                           )
