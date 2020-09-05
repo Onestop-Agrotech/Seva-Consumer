@@ -129,7 +129,7 @@ class _ProductsState extends State<Products> {
             );
           }
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.71,
             child: StaggeredGridView.countBuilder(
               crossAxisCount: 4,
               itemCount: arr.length,
