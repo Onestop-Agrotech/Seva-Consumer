@@ -476,6 +476,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  sms_user_consent:
+    dependency: "direct main"
+    description:
+      name: sms_user_consent
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6"
   source_span:
     dependency: transitive
     description:
@@ -625,4 +632,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.9.0-14.0.dev <3.0.0"
-  flutter: ">=1.16.3 <2.0.0"
+  flutter: ">=1.20.0 <2.0.0"

@@ -11,6 +11,7 @@ import 'package:mvp/screens/errors/notServing.dart';
 import 'dart:convert';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:sms_user_consent/sms_user_consent.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -28,16 +29,34 @@ class _LoginScreenState extends State<LoginScreen> {
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Timer _timer;
+  final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
+  SmsUserConsent smsUserConsent;
 
   @override
   initState() {
     super.initState();
     // _startTimer();
+    smsUserConsent = SmsUserConsent(
+        phoneNumberListener: () => {
+              // print(smsUserConsent.selectedPhoneNumber.substring(3)),
+              setState(() {
+                _mobileController.text =
+                    smsUserConsent.selectedPhoneNumber.substring(3);
+              }),
+            },
+        smsListener: () => {
+              print(smsUserConsent.receivedSms),
+              print(intRegex
+                  .allMatches(smsUserConsent.receivedSms)
+                  .map((m) => m.group(0))),
+              setState(() {})
+            });
   }
 
   @override
   void dispose() {
     // _timer.cancel();
+    smsUserConsent.dispose();
     super.dispose();
   }
 
@@ -130,6 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
       // successfully verified phone number
+      smsUserConsent.requestSms();
       var bdy = json.decode(response.body);
       String token = bdy["token"];
       StorageSharedPrefs p = new StorageSharedPrefs();
@@ -262,6 +282,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       width: 260,
                       child: TextFormField(
+                        onTap: () {
+                          smsUserConsent.requestPhoneNumber();
+                          // print(smsUserConsent.selectedPhoneNumber);
+                          // smsUserConsent.
+                          // smsUserConsent.selectedPhoneNumber;
+                          // print(smsUserConsent.selectedPhoneNumber);
+                        },
+
                         enableInteractiveSelection: true,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
