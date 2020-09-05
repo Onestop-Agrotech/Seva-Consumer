@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class SmallDotsIntro extends StatefulWidget {
   final Color bg;
-  SmallDotsIntro({this.bg});
+  final Key key;
+  SmallDotsIntro({this.bg,this.key});
 
   @override
   _SmallDotsIntroState createState() => _SmallDotsIntroState();

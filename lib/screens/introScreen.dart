@@ -43,9 +43,7 @@ class _IntroScreenState extends State<IntroScreen> {
           Text(
             "Service available only in select areas of Bangalore.",
             overflow: TextOverflow.clip,
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontSize: 13.0),
+            style: TextStyle(color: ThemeColoursSeva().dkGreen, fontSize: 13.0),
           ),
           SizedBox(height: 83.0)
         ],
@@ -130,14 +128,14 @@ class _IntroScreenState extends State<IntroScreen> {
                       style: TextStyle(
                           fontSize: 45.0,
                           color: ThemeColoursSeva().lgGreen,
-                                    fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w700),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 60.0),
                       child: Text(
                         "By ONESTOP",
                         style: TextStyle(
-                                        fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.w300,
                             color: ThemeColoursSeva().lgGreen,
                             fontSize: 16.0),
                       ),
@@ -168,6 +166,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("zero"),
                               bg: _index == 0
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -181,6 +180,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("one"),
                               bg: _index == 1
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -194,6 +194,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("two"),
                               bg: _index == 2
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -207,6 +208,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("three"),
                               bg: _index == 3
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
