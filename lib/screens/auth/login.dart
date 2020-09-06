@@ -21,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   int _start = 60;
-  bool showOTPField = true;
+  bool showOTPField = false;
   bool _loading = false;
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
               print(smsUserConsent.receivedSms),
               print(intRegex
                   .allMatches(smsUserConsent.receivedSms)
-                  .map((m) => m.group(0))),
+                  .map((m) => m.group(0).toString())),
               // setState(() {
               //   currentText=intRegex
               //     .allMatches(smsUserConsent.receivedSms)
@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: CustomPaint(
-        painter: GreenPaintBgLogin(),
+        painter: GreenPaintBgLogin(), 
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SafeArea(
@@ -327,10 +327,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 40.0),
+                              Center(
                                 child: Text(
-                                  "Enter OTP:",
+                                  "Enter OTP",
                                   style: TextStyle(
                                     fontSize: 24.0,
                                   ),
@@ -353,9 +352,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 backgroundColor: Colors.grey.shade50,
                                 enableActiveFill: true,
                                 // errorAnimationController: errorController,
-                                controller: textEditingController,
-                                onCompleted: (v) {
+                                // controller: textEditingController,
+                                onCompleted: (v) async{
                                   print("Completed");
+                                   setState(() {
+                                    _otpLoader = true;
+                                    _invalidOTP = false;
+                                  });
+                                  await _verifyOTP(v);
                                 },
                                 onChanged: (value) {
                                   print(value);
@@ -368,7 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
                                   //but you can show anything you want here, like your pop up saying wrong paste format or etc
                                   return true;
-                                },
+                                }, appContext: context,
                               ),
                             ],
                           )
