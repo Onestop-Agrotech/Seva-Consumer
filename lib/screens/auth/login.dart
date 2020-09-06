@@ -21,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   int _start = 60;
-  bool showOTPField = false;
+  bool showOTPField = true;
   bool _loading = false;
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
@@ -341,15 +341,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                 obsecureText: false,
                                 animationType: AnimationType.fade,
                                 pinTheme: PinTheme(
-                                  shape: PinCodeFieldShape.box,
-                                  borderRadius: BorderRadius.circular(5),
+                                  shape: PinCodeFieldShape.underline,
                                   fieldHeight: 50,
                                   fieldWidth: 40,
                                   activeFillColor: Colors.white,
+                                  inactiveFillColor:Colors.white,
+                                  selectedFillColor:Colors.white
                                 ),
                                 animationDuration:
                                     Duration(milliseconds: 300),
-                                backgroundColor: Colors.blue.shade50,
+                                backgroundColor: Colors.grey.shade50,
                                 enableActiveFill: true,
                                 // errorAnimationController: errorController,
                                 controller: textEditingController,
