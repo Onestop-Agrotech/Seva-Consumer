@@ -9,8 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'dart:convert';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sms_user_consent/sms_user_consent.dart';
 
@@ -30,33 +28,32 @@ class _LoginScreenState extends State<LoginScreen> {
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Timer _timer;
-  final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
   SmsUserConsent smsUserConsent;
-  TextEditingController textEditingController = TextEditingController();
-  String currentText = "";
+  final _otpEditingController = TextEditingController();
+  // to check for otp in sms
+  final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
 
   @override
   initState() {
     super.initState();
     // _startTimer();
     smsUserConsent = SmsUserConsent(
+        // to read the users phone number
         phoneNumberListener: () => {
-              // print(smsUserConsent.selectedPhoneNumber.substring(3)),
               setState(() {
                 _mobileController.text =
                     smsUserConsent.selectedPhoneNumber.substring(3);
               }),
             },
+        // to read users sms
         smsListener: () => {
-              print(smsUserConsent.receivedSms),
-              print(intRegex
-                  .allMatches(smsUserConsent.receivedSms)
-                  .map((m) => m.group(0).toString())),
-              // setState(() {
-              //   currentText=intRegex
-              //     .allMatches(smsUserConsent.receivedSms)
-              //     .map((m) => m.group(0)) as String;
-              // })
+              setState(() {
+                _otpEditingController.text = intRegex
+                    .allMatches(smsUserConsent.receivedSms)
+                    .map((m) => m.group(0))
+                    .toString()
+                    .substring(2);
+              })
             });
   }
 
@@ -64,6 +61,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     // _timer.cancel();
     smsUserConsent.dispose();
+    // _otpEditingController.dispose();
+    // _mobileController.dispose();
+// _formKey.currentState!=null&&!_formKey.currentState.validate() ? _formKey.currentState.dispose(): null;
+    // if (_formKey.currentState != null) {
+    //   _formKey.currentState.dispose();
+    // }
     super.dispose();
   }
 
@@ -227,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: CustomPaint(
-        painter: GreenPaintBgLogin(), 
+        painter: GreenPaintBgLogin(),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
           child: SafeArea(
@@ -291,10 +294,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextFormField(
                         onTap: () {
                           smsUserConsent.requestPhoneNumber();
-                          // print(smsUserConsent.selectedPhoneNumber);
-                          // smsUserConsent.
-                          // smsUserConsent.selectedPhoneNumber;
-                          // print(smsUserConsent.selectedPhoneNumber);
                         },
 
                         enableInteractiveSelection: true,
@@ -338,41 +337,29 @@ class _LoginScreenState extends State<LoginScreen> {
                               PinCodeTextField(
                                 length: 6,
                                 obsecureText: false,
-                                animationType: AnimationType.fade,
+                                animationType: AnimationType.scale,
                                 pinTheme: PinTheme(
                                   shape: PinCodeFieldShape.underline,
-                                  fieldHeight: 50,
                                   fieldWidth: 40,
                                   activeFillColor: Colors.white,
-                                  inactiveFillColor:Colors.white,
-                                  selectedFillColor:Colors.white
+                                  inactiveFillColor: Colors.white,
+                                  selectedFillColor: Colors.white,
                                 ),
-                                animationDuration:
-                                    Duration(milliseconds: 300),
+                                animationDuration: Duration(milliseconds: 300),
                                 backgroundColor: Colors.grey.shade50,
                                 enableActiveFill: true,
-                                // errorAnimationController: errorController,
-                                // controller: textEditingController,
-                                onCompleted: (v) async{
-                                  print("Completed");
-                                   setState(() {
+                                controller: _otpEditingController,
+                                onCompleted: (v) async {
+                                  setState(() {
                                     _otpLoader = true;
                                     _invalidOTP = false;
                                   });
                                   await _verifyOTP(v);
                                 },
                                 onChanged: (value) {
-                                  print(value);
-                                  setState(() {
-                                    currentText = value;
-                                  });
+                                  // print(value);
                                 },
-                                beforeTextPaste: (text) {
-                                  print("Allowing to paste $text");
-                                  //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                                  //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                                  return true;
-                                }, appContext: context,
+                                appContext: context,
                               ),
                             ],
                           )
