@@ -96,9 +96,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   // await SmsAutoFill().listenForCode;
                 }
               },
-              child: const Text('Get OTP',
+              child: Text('Get OTP',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 2.1 * SizeConfig.textMultiplier,
                     color: Colors.white,
                   )),
             ));
@@ -218,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 4.00 * SizeConfig.textMultiplier),
+              // SizedBox(height: 2.00 * SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Row(
@@ -242,7 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 3.11 * SizeConfig.textMultiplier),
+              // SizedBox(height: 3.11 * SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.only(left: 40.0),
                 child: Row(
@@ -256,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 2.24 * SizeConfig.textMultiplier),
+              SizedBox(height: 2.0 * SizeConfig.textMultiplier),
               Form(
                 key: _formKey,
                 child: Column(
@@ -279,10 +279,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               return ('Min 10 digit number required!');
                             else
                               return (null);
-                          },
+                          }, //increases the height of cursor
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 5),
+                                vertical: 10.0, horizontal: 10.0),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ThemeColoursSeva().dkGreen),
@@ -295,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     _showInvalidMobile(),
-                    SizedBox(height: 1.2 * SizeConfig.textMultiplier),
+                    // SizedBox(height: 1.2 * SizeConfig.textMultiplier),
                     showOTPField
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,7 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _showInvalidOTP(),
                     _showOTPLoader(),
                     _showLoader(),
-                    SizedBox(height: 3.19 * SizeConfig.textMultiplier),
+                    // SizedBox(height: 3.19 * SizeConfig.textMultiplier),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

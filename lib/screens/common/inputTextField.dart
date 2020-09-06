@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class InputTextField extends StatelessWidget {
   final TextEditingController eC;
@@ -25,7 +26,7 @@ class InputTextField extends StatelessWidget {
           child: Text(lt,
               style: TextStyle(
                   color: ThemeColoursSeva().black,
-                  fontSize: 18.0,
+                  fontSize: 2.1 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.w500)),
         ),
         Padding(
@@ -44,6 +45,9 @@ class InputTextField extends StatelessWidget {
                     keyboardType: keyBoardType,
                     controller: eC,
                     decoration: InputDecoration(
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 1 * SizeConfig.textMultiplier,
+                          horizontal: 10.0),
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
