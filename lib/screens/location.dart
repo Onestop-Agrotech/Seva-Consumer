@@ -30,6 +30,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   LocationData _locationData;
   int _markerIdCounter = 0;
   String _markerAddress = "";
+  bool _loader = true;
   @override
   void initState() {
     super.initState();
@@ -87,6 +88,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     );
     setState(() {
       _markers[markerId] = marker;
+      _loader = false;
     });
 
     Future.delayed(Duration(seconds: 1), () async {
@@ -169,52 +171,54 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: GoogleMap(
-                myLocationEnabled: true,
-                zoomGesturesEnabled: true,
-                scrollGesturesEnabled: true,
-                rotateGesturesEnabled: true,
-                zoomControlsEnabled: false,
-                myLocationButtonEnabled: true,
-                onMapCreated: _onMapCreated,
-                initialCameraPosition:
-                    CameraPosition(target: _center, zoom: 15.0),
-                markers: Set<Marker>.of(_markers.values),
-                onTap: (pos) {},
-                onCameraMove: (CameraPosition position)  {
-                  onMapsMove(position);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(_markerAddress),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InputTextField(
-                  lt: "House No/Flat No:",
-                  // eC: TextEditingController()..text = _markerAddress
+        child: _loader
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                children: <Widget>[
+                  Expanded(
+                    child: GoogleMap(
+                      myLocationEnabled: true,
+                      zoomGesturesEnabled: true,
+                      scrollGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                      zoomControlsEnabled: false,
+                      myLocationButtonEnabled: true,
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition:
+                          CameraPosition(target: _center, zoom: 15.0),
+                      markers: Set<Marker>.of(_markers.values),
+                      onTap: (pos) {},
+                      onCameraMove: (CameraPosition position) {
+                        onMapsMove(position);
+                      },
+                    ),
                   ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InputTextField(
-                lt: "Landmark:",
-                // eC: TextEditingController()..text = _markerAddress
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(_markerAddress),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InputTextField(
+                      lt: "House No/Flat No:",
+                      // eC: TextEditingController()..text = _markerAddress
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InputTextField(
+                      lt: "Landmark:",
+                      // eC: TextEditingController()..text = _markerAddress
+                    ),
+                  ),
+                  Container(
+                    child: _showFloatingActionButton(),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                ],
               ),
-            ),
-            Container(
-              child: _showFloatingActionButton(),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).viewInsets.bottom,
-            ),
-          ],
-        ),
       ),
     );
   }
