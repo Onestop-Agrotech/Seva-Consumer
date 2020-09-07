@@ -18,7 +18,6 @@ class GoogleLocationScreen extends StatefulWidget {
 
 class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   GoogleMapController mapController;
-  TextEditingController _searchControl = new TextEditingController();
 
   final LatLng _center = const LatLng(12.9716, 77.5946);
   LatLng _userPosition;
@@ -107,9 +106,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         msg: "Hold the marker and drag for accuracy.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM);
-    this.setState(() {
-      _loader = false;
-    });
+    // this.setState(() {
+    _loader = false;
+    // });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -123,14 +122,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         child: FloatingActionButton.extended(
           backgroundColor: ThemeColoursSeva().dkGreen,
           onPressed: () {
-            // _searchControl.clear();
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => UserProfileScreen(
-            //               coords: _userPosition,
-            //               userEmail: widget.userEmail,
-            //             )));
           },
           label: Text("Set as Delivery Address"),
           icon: Icon(Icons.home),
@@ -169,7 +160,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child: Column(
+        child:  Column(
                 children: <Widget>[
                   Expanded(
                     child: GoogleMap(
