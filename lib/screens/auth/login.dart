@@ -24,7 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
   bool _otpLoader = false;
-  final _mobileFocus = FocusNode();
+  bool _readonly = true;
+  var _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Timer _timer;
@@ -40,10 +41,24 @@ class _LoginScreenState extends State<LoginScreen> {
     smsUserConsent = SmsUserConsent(
         // to read the users phone number
         phoneNumberListener: () => {
-              setState(() {
-                _mobileController.text =
-                    smsUserConsent.selectedPhoneNumber.substring(3);
-              }),
+              if (smsUserConsent.selectedPhoneNumber == null)
+                {
+                  this.setState(() {
+                    _readonly = false;
+                  }),
+                  _mobileFocus.requestFocus(),
+                  print("null is here"),
+                }
+              else
+                {
+                  this.setState(() {
+                    _readonly = true;
+                  }),
+                  setState(() {
+                    _mobileController.text =
+                        smsUserConsent.selectedPhoneNumber.substring(3);
+                  }),
+                }
             },
         // to read users sms
         smsListener: () => {
@@ -153,6 +168,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _verifyMobile() async {
+    this.setState(() {
+                    _readonly = true;
+                  });
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -294,12 +312,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextFormField(
                         onTap: () {
                           smsUserConsent.requestPhoneNumber();
+                          this.setState(() {
+                            _readonly=true;
+                          });
                         },
 
                         enableInteractiveSelection: true,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         focusNode: _mobileFocus,
+                        readOnly: _readonly,
                         keyboardType: TextInputType.number,
                         controller: _mobileController,
 
