@@ -89,6 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
           if (_start == 0) {
             setState(() {
               showOTPField = false;
+              _invalidOTP = false;
+              _otpEditingController.clear();
             });
             timer.cancel();
           } else {
@@ -339,51 +341,51 @@ class _LoginScreenState extends State<LoginScreen> {
                     _showInvalidMobile(),
                     SizedBox(height: 10.0),
                     showOTPField
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Center(
-                                child: Text(
-                                  "Enter OTP",
-                                  style: TextStyle(
-                                    fontSize: 24.0,
-                                  ),
+                              Text(
+                                "OTP",
+                                style: TextStyle(
+                                  fontSize: 24.0,
                                 ),
                               ),
-                              PinCodeTextField(
-                                autofocus: false,
-                                controller: _otpEditingController,
-                                hideCharacter: false,
-                                highlight: true,
-                                highlightColor: Colors.blue,
-                                defaultBorderColor: Colors.black,
-                                hasTextBorderColor: Colors.green,
-                                maxLength: 6,
-                                onTextChanged: (text) {
-                                  if (text.length == 6) {
-                                    setState(() {
-                                      _otpLoader = true;
-                                      _invalidOTP = false;
-                                    });
-                                    _verifyOTP(text);
-                                  }
-                                },
-                                onDone: (text) {},
-                                pinBoxWidth: 50,
-                                pinBoxHeight: 64,
-                                hasUnderline: false,
-                                wrapAlignment: WrapAlignment.spaceAround,
-                                pinBoxDecoration: ProvidedPinBoxDecoration
-                                    .underlinedPinBoxDecoration,
-                                pinTextStyle: TextStyle(fontSize: 20.0),
-                                pinTextAnimatedSwitcherTransition:
-                                    ProvidedPinBoxTextAnimation
-                                        .scalingTransition,
-                                pinTextAnimatedSwitcherDuration:
-                                    Duration(milliseconds: 300),
-                                highlightAnimationBeginColor: Colors.black,
-                                highlightAnimationEndColor: Colors.white12,
-                                keyboardType: TextInputType.number,
+                              Center(
+                                child: PinCodeTextField(
+                                  autofocus: false,
+                                  controller: _otpEditingController,
+                                  hideCharacter: false,
+                                  highlight: true,
+                                  highlightColor: Colors.blue,
+                                  defaultBorderColor: Colors.black,
+                                  hasTextBorderColor: Colors.green,
+                                  maxLength: 6,
+                                  onTextChanged: (text) {
+                                    if (text.length == 6) {
+                                      setState(() {
+                                        _otpLoader = true;
+                                        _invalidOTP = false;
+                                      });
+                                      _verifyOTP(text);
+                                    }
+                                  },
+                                  onDone: (text) {},
+                                  pinBoxWidth: 25,
+                                  pinBoxHeight: 40,
+                                  hasUnderline: false,
+                                  wrapAlignment: WrapAlignment.spaceAround,
+                                  pinBoxDecoration: ProvidedPinBoxDecoration
+                                      .underlinedPinBoxDecoration,
+                                  pinTextStyle: TextStyle(fontSize: 15.0),
+                                  pinTextAnimatedSwitcherTransition:
+                                      ProvidedPinBoxTextAnimation
+                                          .scalingTransition,
+                                  pinTextAnimatedSwitcherDuration:
+                                      Duration(milliseconds: 300),
+                                  highlightAnimationBeginColor: Colors.black,
+                                  highlightAnimationEndColor: Colors.white12,
+                                  keyboardType: TextInputType.number,
+                                ),
                               ),
                             ],
                           )
