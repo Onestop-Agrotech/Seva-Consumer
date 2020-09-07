@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
 class AddItemModal extends StatefulWidget {
@@ -65,7 +66,7 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 20.0,
+        fontSize: 2.30 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -78,7 +79,7 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 20.0,
+        fontSize: 2.30 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -90,9 +91,9 @@ class _AddItemModalState extends State<AddItemModal> {
       child: Consumer<NewCartModel>(
         builder: (context, newCart, child) {
           return Container(
-            width: MediaQuery.of(context).size.width - 50,
+            width: MediaQuery.of(context).size.width - 40,
             height: MediaQuery.of(context).size.height - 300,
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(2 * SizeConfig.widthMultiplier),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,7 +108,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       widget.product.name,
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 22.0,
+                        fontSize: 2.8 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w300,
                       ),
                     ),
@@ -128,7 +129,7 @@ class _AddItemModalState extends State<AddItemModal> {
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
-                    fontSize: 20.0,
+                    fontSize: 2.5 * SizeConfig.heightMultiplier,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -145,7 +146,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       Column(
                         children: [
                           SizedBox(
-                            height: 125.0,
+                            height: 15.625 * SizeConfig.heightMultiplier,
                             width: 80.0,
                             child: ListView.builder(
                               itemCount: widget
@@ -158,7 +159,8 @@ class _AddItemModalState extends State<AddItemModal> {
                                       "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}",
                                       style: TextStyle(
                                           color: ThemeColoursSeva().dkGreen,
-                                          fontSize: 17.0,
+                                          fontSize:
+                                              2.3 * SizeConfig.textMultiplier,
                                           fontWeight: FontWeight.w300),
                                     ),
                                     SizedBox(height: 10.0)
@@ -172,7 +174,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       Column(
                         children: [
                           SizedBox(
-                            height: 125.0,
+                            height: 15.625 * SizeConfig.heightMultiplier,
                             width: 110.0,
                             child: ListView.builder(
                               itemCount: widget
@@ -228,7 +230,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
+                        fontSize: 2.3 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -243,7 +245,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Cart Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
+                        fontSize: 2.3 * SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

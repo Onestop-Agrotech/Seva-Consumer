@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class FeaturedCards extends StatelessWidget {
   final String textToDisplay;
@@ -10,7 +11,7 @@ class FeaturedCards extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Container(
       // fallback height
-      height: height * 0.2,
+      height: 20 * SizeConfig.heightMultiplier,
       width: width * 0.7,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
@@ -21,7 +22,9 @@ class FeaturedCards extends StatelessWidget {
         child: Text(
           textToDisplay,
           style: TextStyle(
-              color: Colors.white, fontSize: 23.0, fontWeight: FontWeight.w500),
+              color: Colors.white,
+              fontSize: 2.4 * SizeConfig.textMultiplier,
+              fontWeight: FontWeight.w500),
           overflow: TextOverflow.clip,
         ),
       ),
