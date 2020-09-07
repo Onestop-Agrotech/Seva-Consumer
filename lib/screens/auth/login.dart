@@ -335,7 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _showInvalidOTP(),
                     _showOTPLoader(),
                     _showLoader(),
-                    // SizedBox(height: 3.19 * SizeConfig.textMultiplier),
+                    SizedBox(height: 3 * SizeConfig.textMultiplier),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

@@ -389,9 +389,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       _buildStack(),
                       // SizedBox(height: 4.6 * SizeConfig.textMultiplier),
                       _showLoadingOrButton(),
-                      // SizedBox(
-                      //   height: 7.9 * SizeConfig.textMultiplier,
-                      // ),
+                      SizedBox(height: 3 * SizeConfig.textMultiplier),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
