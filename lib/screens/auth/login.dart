@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'dart:convert';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:sms_user_consent/sms_user_consent.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _invalidOTP = false;
   bool _otpLoader = false;
   bool _readonly = true;
-  var _mobileFocus = FocusNode();
+  final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Timer _timer;
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     .allMatches(smsUserConsent.receivedSms)
                     .map((m) => m.group(0))
                     .toString()
-                    .substring(2);
+                    .substring(2, 8);
               })
             });
   }
@@ -76,12 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     // _timer.cancel();
     smsUserConsent.dispose();
-    // _otpEditingController.dispose();
-    // _mobileController.dispose();
-// _formKey.currentState!=null&&!_formKey.currentState.validate() ? _formKey.currentState.dispose(): null;
-    // if (_formKey.currentState != null) {
-    //   _formKey.currentState.dispose();
-    // }
     super.dispose();
   }
 
@@ -169,8 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _verifyMobile() async {
     this.setState(() {
-                    _readonly = true;
-                  });
+      _readonly = true;
+    });
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -313,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           smsUserConsent.requestPhoneNumber();
                           this.setState(() {
-                            _readonly=true;
+                            _readonly = true;
                           });
                         },
 
@@ -357,31 +351,39 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                               PinCodeTextField(
-                                length: 6,
-                                obsecureText: false,
-                                animationType: AnimationType.scale,
-                                pinTheme: PinTheme(
-                                  shape: PinCodeFieldShape.underline,
-                                  fieldWidth: 40,
-                                  activeFillColor: Colors.white,
-                                  inactiveFillColor: Colors.white,
-                                  selectedFillColor: Colors.white,
-                                ),
-                                animationDuration: Duration(milliseconds: 300),
-                                backgroundColor: Colors.grey.shade50,
-                                enableActiveFill: true,
+                                autofocus: false,
                                 controller: _otpEditingController,
-                                onCompleted: (v) async {
-                                  setState(() {
-                                    _otpLoader = true;
-                                    _invalidOTP = false;
-                                  });
-                                  await _verifyOTP(v);
+                                hideCharacter: false,
+                                highlight: true,
+                                highlightColor: Colors.blue,
+                                defaultBorderColor: Colors.black,
+                                hasTextBorderColor: Colors.green,
+                                maxLength: 6,
+                                onTextChanged: (text) {
+                                  if (text.length == 6) {
+                                    setState(() {
+                                      _otpLoader = true;
+                                      _invalidOTP = false;
+                                    });
+                                    _verifyOTP(text);
+                                  }
                                 },
-                                onChanged: (value) {
-                                  // print(value);
-                                },
-                                appContext: context,
+                                onDone: (text) {},
+                                pinBoxWidth: 50,
+                                pinBoxHeight: 64,
+                                hasUnderline: false,
+                                wrapAlignment: WrapAlignment.spaceAround,
+                                pinBoxDecoration: ProvidedPinBoxDecoration
+                                    .underlinedPinBoxDecoration,
+                                pinTextStyle: TextStyle(fontSize: 20.0),
+                                pinTextAnimatedSwitcherTransition:
+                                    ProvidedPinBoxTextAnimation
+                                        .scalingTransition,
+                                pinTextAnimatedSwitcherDuration:
+                                    Duration(milliseconds: 300),
+                                highlightAnimationBeginColor: Colors.black,
+                                highlightAnimationEndColor: Colors.white12,
+                                keyboardType: TextInputType.number,
                               ),
                             ],
                           )
