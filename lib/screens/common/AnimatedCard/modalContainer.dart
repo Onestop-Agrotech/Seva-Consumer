@@ -92,7 +92,7 @@ class _AddItemModalState extends State<AddItemModal> {
         builder: (context, newCart, child) {
           return Container(
             width: MediaQuery.of(context).size.width - 40,
-            height: 300,
+            height: 350,
             padding: EdgeInsets.all(2 * SizeConfig.widthMultiplier),
             color: Colors.white,
             child: Column(
@@ -104,12 +104,16 @@ class _AddItemModalState extends State<AddItemModal> {
                     Container(
                       width: 30.0,
                     ),
-                    Text(
-                      widget.product.name,
-                      style: TextStyle(
-                        color: ThemeColoursSeva().dkGreen,
-                        fontSize: 2.8 * SizeConfig.heightMultiplier,
-                        fontWeight: FontWeight.w300,
+                    Expanded(
+                                          child: Text(
+                        widget.product.name,
+                        overflow: TextOverflow.clip,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: ThemeColoursSeva().dkGreen,
+                          fontSize: 2.8 * SizeConfig.heightMultiplier,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
                     GestureDetector(
