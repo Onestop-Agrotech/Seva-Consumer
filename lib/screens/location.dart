@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart' as geoLoc;
+import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
@@ -31,6 +31,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   int _markerIdCounter = 0;
   String _markerAddress = "";
   bool _loader = true;
+  
   @override
   void initState() {
     super.initState();
@@ -140,29 +141,24 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
 
   onMapsMove(position) async {
     if (_markers.length > 0) {
-      MarkerId markerId = MarkerId(_markerIdVal());
-      Marker marker = _markers[markerId];
-      Marker updatedMarker = marker.copyWith(
-        positionParam: position.target,
-      );
-
       setState(() {
+        MarkerId markerId = MarkerId(_markerIdVal());
+        Marker marker = _markers[markerId];
+        Marker updatedMarker = marker.copyWith(
+          positionParam: position.target,
+        );
         _markers[markerId] = updatedMarker;
       });
     }
-    List<geoLoc.Placemark> placemarks = await geoLoc.placemarkFromCoordinates(
-        position.target.latitude, position.target.longitude);
-    geoLoc.Placemark placeMark = placemarks[0];
-    String name = placeMark.name;
-    String subLocality = placeMark.subLocality;
-    String locality = placeMark.locality;
-    String administrativeArea = placeMark.administrativeArea;
-    String postalCode = placeMark.postalCode;
-    String country = placeMark.country;
-    String address =
-        "$name, $subLocality, $locality, $administrativeArea $postalCode, $country";
+
+    final coordinates =
+        new Coordinates(position.target.latitude, position.target.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    final address=first.addressLine;
     this.setState(() {
-      _markerAddress = address;
+      _markerAddress =address;
     });
   }
 
