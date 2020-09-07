@@ -4,6 +4,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/AnimatedCard/modalContainer.dart';
 import 'package:mvp/screens/products/products.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
   final StoreProduct sp;
@@ -78,7 +79,7 @@ class _ShowCardsState extends State<ShowCards> {
                         color: !this.widget.sp.outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
-                        fontSize: 15.0,
+                        fontSize: 3.4 * SizeConfig.widthMultiplier,
                         fontWeight: FontWeight.w700),
                   )
                 : SizedBox.shrink(),
@@ -101,7 +102,7 @@ class _ShowCardsState extends State<ShowCards> {
                         color: !this.widget.sp.outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
-                        fontSize: 15.0,
+                        fontSize: 3.4 * SizeConfig.widthMultiplier,
                         fontWeight: FontWeight.w700),
                   )
                 : Text(
@@ -109,7 +110,7 @@ class _ShowCardsState extends State<ShowCards> {
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
-                        fontSize: 15.0,
+                        fontSize: 3.4 * SizeConfig.widthMultiplier,
                         fontWeight: FontWeight.w700),
                   )
           ],

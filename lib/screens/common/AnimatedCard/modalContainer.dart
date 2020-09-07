@@ -92,7 +92,7 @@ class _AddItemModalState extends State<AddItemModal> {
         builder: (context, newCart, child) {
           return Container(
             width: MediaQuery.of(context).size.width - 40,
-            height: MediaQuery.of(context).size.height - 300,
+            height: 300,
             padding: EdgeInsets.all(2 * SizeConfig.widthMultiplier),
             color: Colors.white,
             child: Column(

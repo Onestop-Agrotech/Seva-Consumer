@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
 import 'modalContainer.dart';
@@ -159,15 +160,18 @@ class _AnimatedCardState extends State<AnimatedCard>
                             SizedBox(
                               height: 15,
                             ),
-                            Text(
-                              this.widget.product.name,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                  color: !this.widget.product.outOfStock
-                                      ? ThemeColoursSeva().pallete1
-                                      : ThemeColoursSeva().grey,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w700),
+                            Center(
+                              child: Text(
+                                this.widget.product.name,
+                                overflow: TextOverflow.clip,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: !this.widget.product.outOfStock
+                                        ? ThemeColoursSeva().pallete1
+                                        : ThemeColoursSeva().grey,
+                                    fontSize: 3.4 * SizeConfig.widthMultiplier,
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ),
                             SizedBox(height: 10),
                             Row(
@@ -226,7 +230,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         color: ThemeColoursSeva().pallete1,
-                                        fontSize: 15.0,
+                                        fontSize:
+                                            3.4 * SizeConfig.widthMultiplier,
                                         fontWeight: FontWeight.w700))
                                 : Text("Out of stock",
                                     overflow: TextOverflow.clip,
