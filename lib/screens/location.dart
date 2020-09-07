@@ -31,7 +31,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   int _markerIdCounter = 0;
   String _markerAddress = "";
   bool _loader = true;
-  
+
   @override
   void initState() {
     super.initState();
@@ -89,7 +89,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     );
     setState(() {
       _markers[markerId] = marker;
-      _loader = false;
     });
 
     Future.delayed(Duration(seconds: 1), () async {
@@ -108,6 +107,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         msg: "Hold the marker and drag for accuracy.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM);
+    this.setState(() {
+      _loader = false;
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -156,9 +158,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
-    final address=first.addressLine;
+    final address = first.addressLine;
     this.setState(() {
-      _markerAddress =address;
+      _markerAddress = address;
     });
   }
 
@@ -167,9 +169,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child: _loader
-            ? Center(child: CircularProgressIndicator())
-            : Column(
+        child: Column(
                 children: <Widget>[
                   Expanded(
                     child: GoogleMap(
@@ -180,9 +180,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                       zoomControlsEnabled: false,
                       myLocationButtonEnabled: true,
                       onMapCreated: _onMapCreated,
+                      markers: Set<Marker>.of(_markers.values),
                       initialCameraPosition:
                           CameraPosition(target: _center, zoom: 15.0),
-                      markers: Set<Marker>.of(_markers.values),
                       onTap: (pos) {},
                       onCameraMove: (CameraPosition position) {
                         onMapsMove(position);
