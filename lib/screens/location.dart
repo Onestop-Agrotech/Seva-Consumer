@@ -70,12 +70,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
-// for changing marker pos
-  String _markerIdVal({bool increment = false}) {
-    String val = 'marker_id_$_markerIdCounter';
-    if (increment) _markerIdCounter++;
-    return val;
-  }
 
   void getCurrentLocation(ld) async {
     LatLng coords = LatLng(ld.latitude, ld.longitude);
@@ -131,7 +125,13 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       return Container();
     }
   }
-
+// for changing marker pos
+  String _markerIdVal({bool increment = false}) {
+    String val = 'marker_id_$_markerIdCounter';
+    if (increment) _markerIdCounter++;
+    return val;
+  }
+  // on dragging maps
   onMapsMove(position) async {
     if (_markers.length > 0) {
       setState(() {
