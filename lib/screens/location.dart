@@ -149,12 +149,18 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     var subLocality;
+   
     if (first.subLocality != null) {
       subLocality = first.subLocality;
-    } else {
+    } else if (first.subAdminArea != null) {
       subLocality = first.subAdminArea;
+    } else if(first.countryName!=null) {
+      subLocality =first.countryName;
     }
-    final subArea = first.subAdminArea;
+    else{
+      subLocality="None";
+    }
+ final subArea = first.subAdminArea;
     final state = first.adminArea;
     final pincode = first.postalCode;
     final country = first.countryName;
@@ -177,7 +183,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                 children: [
                   GoogleMap(
                     myLocationEnabled: true,
-                    zoomGesturesEnabled: false,
+                    zoomGesturesEnabled: true,
                     scrollGesturesEnabled: true,
                     rotateGesturesEnabled: true,
                     zoomControlsEnabled: false,
@@ -211,10 +217,11 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                 if(_subLocality!="") Icon(
-                    Icons.location_on,
-                    color: Colors.red,
-                  ),
+                  if (_subLocality != "")
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                    ),
                   Text(
                     _subLocality,
                     style:
