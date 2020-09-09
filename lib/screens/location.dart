@@ -20,7 +20,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   GoogleMapController mapController;
 
   final LatLng _center = const LatLng(12.9716, 77.5946);
-  LatLng _userPosition;
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   bool _showActionBtn;
   Location location = new Location();
@@ -29,7 +28,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   LocationData _locationData;
   int _markerIdCounter = 0;
   String _markerAddress = "";
-  bool _loader = true;
+  bool _loader = false;
 
   @override
   void initState() {
@@ -70,8 +69,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
-
   void getCurrentLocation(ld) async {
+    this.setState(() {
+      _loader = true;
+    });
     LatLng coords = LatLng(ld.latitude, ld.longitude);
     MarkerId markerId = MarkerId(_markerIdVal());
     LatLng position = coords;
@@ -85,7 +86,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
 
     Future.delayed(Duration(seconds: 1), () async {
-      mapController.animateCamera(
+      await mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: position,
@@ -93,16 +94,16 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           ),
         ),
       );
-      _userPosition = coords;
       _showActionBtn = true;
+      this.setState(() {
+        _loader = false;
+      });
     });
-    Fluttertoast.showToast(
-        msg: "Hold the marker and drag for accuracy.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM);
-    // this.setState(() {
-    _loader = false;
-    // });
+
+    // Fluttertoast.showToast(
+    //     msg: "Hold the marker and drag for accuracy.",
+    //     toastLength: Toast.LENGTH_LONG,
+    //     gravity: ToastGravity.BOTTOM);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -115,8 +116,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         padding: const EdgeInsets.all(40),
         child: FloatingActionButton.extended(
           backgroundColor: ThemeColoursSeva().dkGreen,
-          onPressed: () {
-          },
+          onPressed: () {},
           label: Text("Set as Delivery Address"),
           icon: Icon(Icons.home),
         ),
@@ -125,12 +125,14 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       return Container();
     }
   }
+
 // for changing marker pos
   String _markerIdVal({bool increment = false}) {
     String val = 'marker_id_$_markerIdCounter';
     if (increment) _markerIdCounter++;
     return val;
   }
+
   // on dragging maps
   onMapsMove(position) async {
     if (_markers.length > 0) {
@@ -163,21 +165,34 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         child:  Column(
                 children: <Widget>[
                   Expanded(
-                    child: GoogleMap(
-                      myLocationEnabled: true,
-                      zoomGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      zoomControlsEnabled: false,
-                      myLocationButtonEnabled: true,
-                      onMapCreated: _onMapCreated,
-                      markers: Set<Marker>.of(_markers.values),
-                      initialCameraPosition:
-                          CameraPosition(target: _center, zoom: 15.0),
-                      onTap: (pos) {},
-                      onCameraMove: (CameraPosition position) {
-                        onMapsMove(position);
-                      },
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                          myLocationEnabled: true,
+                          zoomGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          rotateGesturesEnabled: true,
+                          zoomControlsEnabled: false,
+                          myLocationButtonEnabled: true,
+                          onMapCreated: _onMapCreated,
+                          markers: Set<Marker>.of(_markers.values),
+                          initialCameraPosition:
+                              CameraPosition(target: _center, zoom: 15.0),
+                          onTap: (pos) {},
+                          onCameraMove: (CameraPosition position) {
+                            onMapsMove(position);
+                          },
+                        ),
+                        if (_loader)
+                          Container(
+                            color: Colors.white,
+                            constraints: BoxConstraints(
+                                maxHeight: MediaQuery.of(context).size.height),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   Padding(
