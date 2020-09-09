@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview Login Widget : MobileVerification,OTP are declared here. 
+/// @fileoverview Login Widget : MobileVerification,OTP are declared here.
 ///
 
 import 'dart:async';
@@ -223,6 +223,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setUsername(jsonBdy["username"]);
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
+      await p.sethubId(jsonBdy["hubId"]);
+      print(jsonBdy["hubId"]);
       await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
       await p.setFarStatus(far);
@@ -332,25 +334,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.number,
                         controller: _mobileController,
 
-                          validator: (String val) {
-                            if (val.isEmpty || val.length < 10)
-                              return ('Min 10 digit number required!');
-                            else
-                              return (null);
-                          }, //increases the height of cursor
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10.0, horizontal: 10.0),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: ThemeColoursSeva().dkGreen),
-                                borderRadius: BorderRadius.circular(10)),
-                            labelText: '+91',
-                          ),
-                          maxLength: 10,
-                          // onTap: ,
+                        validator: (String val) {
+                          if (val.isEmpty || val.length < 10)
+                            return ('Min 10 digit number required!');
+                          else
+                            return (null);
+                        }, //increases the height of cursor
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: ThemeColoursSeva().dkGreen),
+                              borderRadius: BorderRadius.circular(10)),
+                          labelText: '+91',
                         ),
+                        maxLength: 10,
+                        // onTap: ,
                       ),
+                    ),
                     _showInvalidMobile(),
                     // SizedBox(height: 1.2 * SizeConfig.textMultiplier),
                     showOTPField

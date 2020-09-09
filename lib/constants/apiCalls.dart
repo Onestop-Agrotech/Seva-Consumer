@@ -9,7 +9,7 @@
 ///
 
 class APIService {
-  static final String _api = "https://api.theonestop.co.in/api";
+  static final String _api = "http://localhost:8000/api";
 
   // USERS
   static final String loginAPI = "$_api/users/login/";

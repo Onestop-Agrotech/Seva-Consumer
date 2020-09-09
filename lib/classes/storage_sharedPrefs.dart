@@ -31,6 +31,12 @@ class StorageSharedPrefs {
     await prefs.setString('id', id);
   }
 
+  // set hubid to storage
+  Future<void> sethubId(String hubId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('hubId', hubId);
+  }
+
   // get Far status from storage
   Future<String> getFarStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -64,5 +70,12 @@ class StorageSharedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String id = await prefs.get('id');
     return id;
+  }
+
+  // get hubid from storage
+  Future<String> gethubid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String hubId = await prefs.get('hub');
+    return hubId;
   }
 }
