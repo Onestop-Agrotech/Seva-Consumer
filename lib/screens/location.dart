@@ -6,7 +6,6 @@ import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
-import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
@@ -29,7 +28,8 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   int _markerIdCounter = 0;
   String _markerAddress = "";
   bool _loader = false;
-
+  Coordinates coordinates;
+  String _subLocality = "";
   @override
   void initState() {
     super.initState();
@@ -99,11 +99,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         _loader = false;
       });
     });
-
-    // Fluttertoast.showToast(
-    //     msg: "Hold the marker and drag for accuracy.",
-    //     toastLength: Toast.LENGTH_LONG,
-    //     gravity: ToastGravity.BOTTOM);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -113,7 +108,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   _showFloatingActionButton() {
     if (_showActionBtn == true) {
       return Padding(
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(20),
         child: FloatingActionButton.extended(
           backgroundColor: ThemeColoursSeva().dkGreen,
           onPressed: () {},
@@ -145,15 +140,28 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         _markers[markerId] = updatedMarker;
       });
     }
-
-    final coordinates =
+    coordinates =
         new Coordinates(position.target.latitude, position.target.longitude);
+  }
+
+  onMapsStop(coordinates) async {
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
-    final address = first.addressLine;
+    var subLocality;
+    if (first.subLocality != null) {
+      subLocality = first.subLocality;
+    } else {
+      subLocality = first.subAdminArea;
+    }
+    final subArea = first.subAdminArea;
+    final state = first.adminArea;
+    final pincode = first.postalCode;
+    final country = first.countryName;
+    final address = "$subArea,$state,$pincode,$country";
     this.setState(() {
       _markerAddress = address;
+      _subLocality = subLocality;
     });
   }
 
@@ -162,65 +170,88 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child:  Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          myLocationEnabled: true,
-                          zoomGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          rotateGesturesEnabled: true,
-                          zoomControlsEnabled: false,
-                          myLocationButtonEnabled: true,
-                          onMapCreated: _onMapCreated,
-                          markers: Set<Marker>.of(_markers.values),
-                          initialCameraPosition:
-                              CameraPosition(target: _center, zoom: 15.0),
-                          onTap: (pos) {},
-                          onCameraMove: (CameraPosition position) {
-                            onMapsMove(position);
-                          },
-                        ),
-                        if (_loader)
-                          Container(
-                            color: Colors.white,
-                            constraints: BoxConstraints(
-                                maxHeight: MediaQuery.of(context).size.height),
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          ),
-                      ],
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    zoomGesturesEnabled: false,
+                    scrollGesturesEnabled: true,
+                    rotateGesturesEnabled: true,
+                    zoomControlsEnabled: false,
+                    myLocationButtonEnabled: true,
+                    onMapCreated: _onMapCreated,
+                    markers: Set<Marker>.of(_markers.values),
+                    initialCameraPosition:
+                        CameraPosition(target: _center, zoom: 15.0),
+                    onTap: (pos) {},
+                    onCameraMove: (CameraPosition position) {
+                      onMapsMove(position);
+                    },
+                    onCameraIdle: () {
+                      onMapsStop(coordinates);
+                    },
+                  ),
+                  if (_loader)
+                    Container(
+                      color: Colors.white,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                 if(_subLocality!="") Icon(
+                    Icons.location_on,
+                    color: Colors.red,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text(_markerAddress),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: InputTextField(
-                      lt: "House No/Flat No:",
-                      // eC: TextEditingController()..text = _markerAddress
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: InputTextField(
-                      lt: "Landmark:",
-                      // eC: TextEditingController()..text = _markerAddress
-                    ),
-                  ),
-                  Container(
-                    child: _showFloatingActionButton(),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).viewInsets.bottom,
+                  Text(
+                    _subLocality,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                   ),
                 ],
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Text(
+                _markerAddress,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InputTextField(
+                lt: "House No/Flat No:",
+                // eC: TextEditingController()..text = _markerAddress
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: InputTextField(
+                lt: "Landmark:",
+                // eC: TextEditingController()..text = _markerAddress
+              ),
+            ),
+            Container(
+              child: _showFloatingActionButton(),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).viewInsets.bottom,
+            ),
+          ],
+        ),
       ),
     );
   }
