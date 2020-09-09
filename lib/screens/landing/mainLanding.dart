@@ -25,6 +25,7 @@ import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -224,17 +225,20 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   itemCount: itemsList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: ShowCards(
-                            sp: itemsList[index],
-                            store: store,
-                            index: index,
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 6.0, right: 12.0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 6.0),
+                            child: ShowCards(
+                              sp: itemsList[index],
+                              store: store,
+                              index: index,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   }))
         ],
@@ -253,7 +257,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontWeight: FontWeight.w900,
-                fontSize: 17.0),
+                fontSize: 2.5 * SizeConfig.textMultiplier),
           ),
           Text(
             rightText,
@@ -315,165 +319,166 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        drawer: SizedBox(
-    width: MediaQuery.of(context).size.width * 0.5,
-    child: Drawer(
-        child: ListView(
-    padding: EdgeInsets.zero,
-    children: <Widget>[
-      SizedBox(
-        height: MediaQuery.of(context).size.height * 0.15,
-        child: DrawerHeader(
-          child:
-              TopText(txt: _username != null ? _username : "Username"),
-          decoration: BoxDecoration(
-            color: Colors.white,
+      key: _scaffoldKey,
+      backgroundColor: Colors.white,
+      drawer: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.5,
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: DrawerHeader(
+                  child:
+                      TopText(txt: _username != null ? _username : "Username"),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: Text('My orders'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/ordersNew');
+                },
+              ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () async {
+                  SharedPreferences preferences =
+                      await SharedPreferences.getInstance();
+                  preferences.clear();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login', (Route<dynamic> route) => false);
+                },
+              ),
+            ],
           ),
         ),
       ),
-      ListTile(
-        title: Text('My orders'),
-        onTap: () {
-          Navigator.pop(context);
-          Navigator.pushNamed(context, '/ordersNew');
-        },
-      ),
-      ListTile(
-        title: Text('Logout'),
-        onTap: () async {
-          SharedPreferences preferences =
-              await SharedPreferences.getInstance();
-          preferences.clear();
-          Navigator.of(context).pushNamedAndRemoveUntil(
-              '/login', (Route<dynamic> route) => false);
-        },
-      ),
-    ],
-        ),
-      ),
-        ),
-        body: Stack(
-    children: <Widget>[
-      CustomPaint(
-        painter: LightBlueBG(),
-        child: Container(),
-      ),
-      CustomPaint(
-        painter: DarkColourBG(),
-        child: Container(),
-      ),
-      Positioned.fill(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: SafeArea(
-                      child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: Stack(
+        children: <Widget>[
+          CustomPaint(
+            painter: LightBlueBG(),
+            child: Container(),
+          ),
+          CustomPaint(
+            painter: DarkColourBG(),
+            child: Container(),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
                     children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.menu),
-                        onPressed: () {
-                          _scaffoldKey.currentState.openDrawer();
-                        },
-                        iconSize: 28.0,
-                      ),
-                      Text(
-                        "Welcome",
-                        style: TextStyle(
-                            color: ThemeColoursSeva().dkGreen,
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold),
-                      ),
                       Row(
-                        children: [
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
                           IconButton(
-                            icon: Icon(Icons.location_on),
+                            icon: Icon(Icons.menu),
                             onPressed: () {
-                              _showLocation();
+                              _scaffoldKey.currentState.openDrawer();
                             },
                             iconSize: 28.0,
                           ),
-                          _renderCartIcon(),
+                          Text(
+                            "Welcome",
+                            style: TextStyle(
+                                color: ThemeColoursSeva().dkGreen,
+                                fontSize: 3.70 * SizeConfig.textMultiplier,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.location_on),
+                                onPressed: () {
+                                  _showLocation();
+                                },
+                                iconSize: 28.0,
+                              ),
+                              _renderCartIcon(),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(11.0),
-                        child: Text(
-                          "Featured",
-                          style: TextStyle(
-                              color: ThemeColoursSeva().dkGreen,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 17.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(11.0),
+                            child: Text(
+                              "Featured",
+                              style: TextStyle(
+                                  color: ThemeColoursSeva().dkGreen,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 2.9 * SizeConfig.textMultiplier),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: height * 0.2,
+                        width: double.infinity,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: texts.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 12.0),
+                                        child: FeaturedCards(
+                                          textToDisplay: texts[index],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      // SizedBox(height: 9.0),
+                      commonText(height, "Best Sellers", ""),
+                      SizedBox(height: 9.0),
+                      FutureBuilder(
+                          future: _fetchBestSellers(),
+                          builder: (builder, snapshot) {
+                            if (snapshot.hasData) {
+                              List<StoreProduct> bestSellers = snapshot.data;
+                              if (bestSellers.length > 0) {
+                                return commonWidget(height, bestSellers, true);
+                              } else
+                                return Container(
+                                  child:
+                                      Center(child: Text("No products found!")),
+                                );
+                            }
+                            return Container();
+                          }),
+                      // SizedBox(height: 9.0),
+                      commonText(height, "Categories", ""),
+                      SizedBox(height: 9.0),
+                      commonWidget(height, categories, false),
+                      SizedBox(height: 9.0)
                     ],
                   ),
-                  Container(
-                    height: height * 0.2,
-                    width: double.infinity,
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: texts.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(left: 12.0),
-                                    child: FeaturedCards(
-                                      textToDisplay: texts[index],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 9.0),
-                  commonText(height, "Best Sellers", ""),
-                  SizedBox(height: 9.0),
-                  FutureBuilder(
-                      future: _fetchBestSellers(),
-                      builder: (builder, snapshot) {
-                        if (snapshot.hasData) {
-                          List<StoreProduct> bestSellers = snapshot.data;
-                          if (bestSellers.length > 0) {
-                            return commonWidget(height, bestSellers, true);
-                          } else
-                            return Container(
-                              child:
-                                  Center(child: Text("No products found!")),
-                            );
-                        }
-                        return Container();
-                      }),
-                  SizedBox(height: 9.0),
-                  commonText(height, "Categories", ""),
-                  SizedBox(height: 9.0),
-                  commonWidget(height, categories, false),
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
-    ],
-        ),
-      );
+    );
   }
 }

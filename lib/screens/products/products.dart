@@ -17,6 +17,7 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/animatedCard/animatedCard.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
@@ -129,7 +130,8 @@ class _ProductsState extends State<Products> {
             );
           }
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.71,
+            height: MediaQuery.of(context).size.height * 0.80,
+            // height: 25.0,
             child: StaggeredGridView.countBuilder(
               crossAxisCount: 4,
               itemCount: arr.length,
@@ -157,7 +159,7 @@ class _ProductsState extends State<Products> {
             ),
           );
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -168,7 +170,7 @@ class _ProductsState extends State<Products> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Column(
+          child: ListView(
         children: <Widget>[
           SizedBox(height: 20),
           Row(
@@ -188,14 +190,14 @@ class _ProductsState extends State<Products> {
                 _renderTopText(),
                 style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
-                    fontSize: 20,
+                    fontSize: 2.9 * SizeConfig.textMultiplier,
                     fontWeight: FontWeight.w600),
               ),
               _renderCartIcon(),
             ],
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -215,6 +217,7 @@ class _ProductsState extends State<Products> {
                   child: Text(
                     categories[i],
                     style: TextStyle(
+                        fontSize: 3.2 * SizeConfig.widthMultiplier,
                         color: tapped == i
                             ? Colors.white
                             : ThemeColoursSeva().dkGreen),
@@ -223,7 +226,7 @@ class _ProductsState extends State<Products> {
             ],
           ),
           SizedBox(
-            height: 30,
+            height: 5,
           ),
           Consumer<NewCartModel>(
             builder: (context, newCart, child) {
