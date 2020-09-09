@@ -9,14 +9,13 @@
 ///
 
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart' as geoLoc;
+import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
-// import 'package:mvp/screens/userProfile.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
@@ -28,10 +27,8 @@ class GoogleLocationScreen extends StatefulWidget {
 
 class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   GoogleMapController mapController;
-  // TextEditingController _searchControl = new TextEditingController();
 
   final LatLng _center = const LatLng(12.9716, 77.5946);
-  // LatLng _userPosition;
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   bool _showActionBtn;
   Location location = new Location();
@@ -40,6 +37,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   LocationData _locationData;
   int _markerIdCounter = 0;
   String _markerAddress = "";
+  bool _loader = false;
+  Coordinates coordinates;
+  String _subLocality = "";
   @override
   void initState() {
     super.initState();
@@ -79,14 +79,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
-// for changing marker pos
-  String _markerIdVal({bool increment = false}) {
-    String val = 'marker_id_$_markerIdCounter';
-    if (increment) _markerIdCounter++;
-    return val;
-  }
-
   void getCurrentLocation(ld) async {
+    this.setState(() {
+      _loader = true;
+    });
     LatLng coords = LatLng(ld.latitude, ld.longitude);
     MarkerId markerId = MarkerId(_markerIdVal());
     LatLng position = coords;
@@ -100,7 +96,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
 
     Future.delayed(Duration(seconds: 1), () async {
-      mapController.animateCamera(
+      await mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: position,
@@ -108,13 +104,11 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           ),
         ),
       );
-      // LatLng _userPosition = coords;
       _showActionBtn = true;
+      this.setState(() {
+        _loader = false;
+      });
     });
-    Fluttertoast.showToast(
-        msg: "Hold the marker and drag for accuracy.",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM);
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -124,19 +118,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   _showFloatingActionButton() {
     if (_showActionBtn == true) {
       return Padding(
-        padding: const EdgeInsets.all(40),
+        padding: const EdgeInsets.all(20),
         child: FloatingActionButton.extended(
           backgroundColor: ThemeColoursSeva().dkGreen,
-          onPressed: () {
-            // _searchControl.clear();
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => UserProfileScreen(
-            //               coords: _userPosition,
-            //               userEmail: widget.userEmail,
-            //             )));
-          },
+          onPressed: () {},
           label: Text("Set as Delivery Address"),
           icon: Icon(Icons.home),
         ),
@@ -146,31 +131,53 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     }
   }
 
+// for changing marker pos
+  String _markerIdVal({bool increment = false}) {
+    String val = 'marker_id_$_markerIdCounter';
+    if (increment) _markerIdCounter++;
+    return val;
+  }
+
+  // on dragging maps
   onMapsMove(position) async {
     if (_markers.length > 0) {
-      MarkerId markerId = MarkerId(_markerIdVal());
-      Marker marker = _markers[markerId];
-      Marker updatedMarker = marker.copyWith(
-        positionParam: position.target,
-      );
-
       setState(() {
+        MarkerId markerId = MarkerId(_markerIdVal());
+        Marker marker = _markers[markerId];
+        Marker updatedMarker = marker.copyWith(
+          positionParam: position.target,
+        );
         _markers[markerId] = updatedMarker;
       });
     }
-    List<geoLoc.Placemark> placemarks = await geoLoc.placemarkFromCoordinates(
-        position.target.latitude, position.target.longitude);
-    geoLoc.Placemark placeMark = placemarks[0];
-    String name = placeMark.name;
-    String subLocality = placeMark.subLocality;
-    String locality = placeMark.locality;
-    String administrativeArea = placeMark.administrativeArea;
-    String postalCode = placeMark.postalCode;
-    String country = placeMark.country;
-    String address =
-        "$name, $subLocality, $locality, $administrativeArea $postalCode, $country";
+    coordinates =
+        new Coordinates(position.target.latitude, position.target.longitude);
+  }
+
+  onMapsStop(coordinates) async {
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    var subLocality;
+   
+    if (first.subLocality != null) {
+      subLocality = first.subLocality;
+    } else if (first.subAdminArea != null) {
+      subLocality = first.subAdminArea;
+    } else if(first.countryName!=null) {
+      subLocality =first.countryName;
+    }
+    else{
+      subLocality="None";
+    }
+ final subArea = first.subAdminArea;
+    final state = first.adminArea;
+    final pincode = first.postalCode;
+    final country = first.countryName;
+    final address = "$subArea,$state,$pincode,$country";
     this.setState(() {
       _markerAddress = address;
+      _subLocality = subLocality;
     });
   }
 
@@ -182,33 +189,70 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: GoogleMap(
-                myLocationEnabled: true,
-                zoomGesturesEnabled: true,
-                scrollGesturesEnabled: true,
-                rotateGesturesEnabled: true,
-                zoomControlsEnabled: false,
-                myLocationButtonEnabled: true,
-                onMapCreated: _onMapCreated,
-                initialCameraPosition:
-                    CameraPosition(target: _center, zoom: 15.0),
-                markers: Set<Marker>.of(_markers.values),
-                onTap: (pos) {},
-                onCameraMove: (CameraPosition position)  {
-                  onMapsMove(position);
-                },
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    myLocationEnabled: true,
+                    zoomGesturesEnabled: true,
+                    scrollGesturesEnabled: true,
+                    rotateGesturesEnabled: true,
+                    zoomControlsEnabled: false,
+                    myLocationButtonEnabled: true,
+                    onMapCreated: _onMapCreated,
+                    markers: Set<Marker>.of(_markers.values),
+                    initialCameraPosition:
+                        CameraPosition(target: _center, zoom: 15.0),
+                    onTap: (pos) {},
+                    onCameraMove: (CameraPosition position) {
+                      onMapsMove(position);
+                    },
+                    onCameraIdle: () {
+                      onMapsStop(coordinates);
+                    },
+                  ),
+                  if (_loader)
+                    Container(
+                      color: Colors.white,
+                      constraints: BoxConstraints(
+                          maxHeight: MediaQuery.of(context).size.height),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (_subLocality != "")
+                    Icon(
+                      Icons.location_on,
+                      color: Colors.red,
+                    ),
+                  Text(
+                    _subLocality,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                  ),
+                ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Text(_markerAddress),
+              child: Text(
+                _markerAddress,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: InputTextField(
-                  lt: "House No/Flat No:",
-                  // eC: TextEditingController()..text = _markerAddress
-                  ),
+                lt: "House No/Flat No:",
+                // eC: TextEditingController()..text = _markerAddress
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
