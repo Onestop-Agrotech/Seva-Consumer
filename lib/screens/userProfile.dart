@@ -5,9 +5,8 @@
 // Date-{03-09-2020}
 
 ///
-/// @fileoverview Userprofile Screen : Edit Users address by selecting the location on Google Maps. 
+/// @fileoverview Userprofile Screen : Edit Users address by selecting the location on Google Maps.
 ///
-
 
 import 'dart:convert';
 

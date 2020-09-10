@@ -23,7 +23,6 @@ void main() {
 
     final getSignupButton = find.text("Sign up");
     expect(getSignupButton, findsOneWidget);
-
   });
 }
 

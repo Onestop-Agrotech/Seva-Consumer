@@ -5,7 +5,7 @@
 // Date-{03-09-2020}
 
 ///
-/// @fileoverview PromoCodes Screen : Apply promocode on payment. 
+/// @fileoverview PromoCodes Screen : Apply promocode on payment.
 ///
 
 import 'package:flutter/material.dart';

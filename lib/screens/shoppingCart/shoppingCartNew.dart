@@ -5,9 +5,8 @@
 // Date-{03-09-2020}
 
 ///
-/// @fileoverview Shopping Cart Screen : Edit Cart Added items. 
+/// @fileoverview Shopping Cart Screen : Edit Cart Added items.
 ///
-
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

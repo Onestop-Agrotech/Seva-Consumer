@@ -5,7 +5,7 @@
 // Date-{03-09-2020}
 
 ///
-/// @fileoverview Loadingscreen : Check if user is connected to internet and route as per their login status. 
+/// @fileoverview Loadingscreen : Check if user is connected to internet and route as per their login status.
 ///
 
 import 'package:flutter/material.dart';

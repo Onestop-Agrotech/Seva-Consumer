@@ -5,9 +5,8 @@
 // Date-{03-09-2020}
 
 ///
-/// @fileoverview Introscreen : Screen visible on opening app for first time. 
+/// @fileoverview Introscreen : Screen visible on opening app for first time.
 ///
-
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';

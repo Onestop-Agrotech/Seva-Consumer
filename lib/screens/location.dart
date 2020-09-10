@@ -149,18 +149,17 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     var subLocality;
-   
+
     if (first.subLocality != null) {
       subLocality = first.subLocality;
     } else if (first.subAdminArea != null) {
       subLocality = first.subAdminArea;
-    } else if(first.countryName!=null) {
-      subLocality =first.countryName;
+    } else if (first.countryName != null) {
+      subLocality = first.countryName;
+    } else {
+      subLocality = "None";
     }
-    else{
-      subLocality="None";
-    }
- final subArea = first.subAdminArea;
+    final subArea = first.subAdminArea;
     final state = first.adminArea;
     final pincode = first.postalCode;
     final country = first.countryName;

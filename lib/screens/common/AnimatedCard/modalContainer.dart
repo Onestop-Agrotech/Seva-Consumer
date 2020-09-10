@@ -6,8 +6,7 @@
 
 ///
 /// @fileoverview ModalContainer : .
-/// 
-
+///
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -135,7 +134,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       width: 30.0,
                     ),
                     Expanded(
-                                          child: Text(
+                      child: Text(
                         widget.product.name,
                         overflow: TextOverflow.clip,
                         textAlign: TextAlign.center,
