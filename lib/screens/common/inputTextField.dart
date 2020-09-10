@@ -18,13 +18,15 @@ class InputTextField extends StatelessWidget {
   final bool pwdType;
   final String ht;
   final TextInputType keyBoardType;
+  final Key key;
 
   InputTextField(
       {this.eC,
       this.lt,
       this.pwdType = false,
       this.ht = '',
-      this.keyBoardType});
+      this.keyBoardType,
+      this.key});
 
   @override
   Widget build(BuildContext context) {

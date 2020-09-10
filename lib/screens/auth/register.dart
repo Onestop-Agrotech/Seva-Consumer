@@ -308,16 +308,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       children: <Widget>[
         Column(
           children: <Widget>[
-            InputTextField(eC: _username, lt: "Username"),
+            InputTextField(
+              eC: _username,
+              lt: "Username",
+              key: Key('usernamekey'),
+            ),
             _showUserEmpty(),
             SizedBox(
               height: 1.5 * SizeConfig.textMultiplier,
             ),
             InputTextField(
-              eC: _emailAddress,
-              lt: "Email Address:",
-              keyBoardType: TextInputType.emailAddress,
-            ),
+                eC: _emailAddress,
+                lt: "Email Address:",
+                keyBoardType: TextInputType.emailAddress,
+                key: Key('emailkey')),
             _showEmailEmpty(),
             _showEmailError(),
             _showError(),
@@ -329,6 +333,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Column(
           children: <Widget>[
             InputTextField(
+              key: Key('mobilekey'),
               eC: _mobile,
               lt: "Mobile:",
               keyBoardType: TextInputType.phone,

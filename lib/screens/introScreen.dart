@@ -182,6 +182,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("zero"),
                               bg: _index == 0
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -195,6 +196,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("one"),
                               bg: _index == 1
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -208,6 +210,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("two"),
                               bg: _index == 2
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -221,6 +224,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("three"),
                               bg: _index == 3
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
