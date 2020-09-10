@@ -58,16 +58,16 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     super.initState();
     d = new StoreProduct(
       name: "Vegetables",
-      pictureUrl:
+      pictureURL:
           "https://storepictures.theonestop.co.in/new2/AllVegetables.jpg",
     );
     e = new StoreProduct(
       name: "Fruits",
-      pictureUrl: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
+      pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
     );
     f = new StoreProduct(
       name: "Daily Essentials",
-      pictureUrl:
+      pictureURL:
           "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
     );
     categories.add(d);
