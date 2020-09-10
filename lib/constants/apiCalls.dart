@@ -9,7 +9,7 @@
 ///
 
 class APIService {
-  static final String _api = "http://localhost:8000/api";
+  static final String _api = "http://192.168.0.104:8000/api";
 
   // USERS
   static final String loginAPI = "$_api/users/login/";
@@ -22,9 +22,6 @@ class APIService {
   static final String getUserAPI = "$_api/users/";
   // storesList.dart - _fetchUserAddress function
   static final String getAddressAPI = "$_api/users/user-address/";
-
-  // PRODUCTS
-  static final String getBestSellersAPI = "$_api/products/all/bestsellers";
 
   // ORDERS
   // shopping cart file - _postOrderToServer function
@@ -42,4 +39,10 @@ class APIService {
   static final String mainTokenAPI = "https://api.theonestop.co.in/token";
   static final String deliveriesAllowedAPI =
       "https://api.theonestop.co.in/api/deliveries/allowed";
+
+  // Get Best Sellers
+  static getBestSellers(String hubid) {
+    // PRODUCTS
+    return "$_api/products/all/bestsellers/hub/:$hubid";
+  }
 }

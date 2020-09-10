@@ -76,12 +76,9 @@ class _ShowCardsState extends State<ShowCards> {
                     width: 1.5,
                   )
                 : Border.all(
-                    color: 
-                      !this.widget.dt.outOfStock
-                          ? ThemeColoursSeva().pallete3
-                          : ThemeColoursSeva().grey,
-           
-                      
+                    color: !this.widget.dt.outOfStock
+                        ? ThemeColoursSeva().pallete3
+                        : ThemeColoursSeva().grey,
                     width: !this.widget.dt.outOfStock ? 1.5 : 0.2,
                   ),
             borderRadius: BorderRadius.circular(20.0)),

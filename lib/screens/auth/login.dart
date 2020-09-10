@@ -223,8 +223,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setUsername(jsonBdy["username"]);
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
-      await p.sethubId(jsonBdy["hubId"]);
-      print(jsonBdy["hubId"]);
+      await p.sethub(jsonBdy["hub"]);
+      print('hub,$jsonBdy["hub"]');
       await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
       await p.setFarStatus(far);
