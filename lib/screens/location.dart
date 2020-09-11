@@ -41,7 +41,8 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   TextEditingController _landmark = new TextEditingController();
   bool _housenoEmpty = false;
   bool _landmarkEmpty = false;
-
+  double _lat;
+  double _lng;
   @override
   void setState(fn) {
     if (mounted) {
@@ -131,10 +132,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         child: FloatingActionButton.extended(
           backgroundColor: ThemeColoursSeva().dkGreen,
           onPressed: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
             _handleAddressAddition();
           },
           label: Text("Set as Delivery Address"),
@@ -192,6 +193,8 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     this.setState(() {
       _markerAddress = address;
       _subLocality = subLocality;
+      _lat = first.coordinates.longitude;
+      _lng = first.coordinates.latitude;
     });
   }
 
@@ -233,10 +236,13 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         _housenoEmpty = false;
       });
       UserModel user = new UserModel();
-      String houseno = _houreNo.text;
-      String landmark = _landmark.text;
+      String houseno = _houreNo.text.trim();
+      String landmark = _landmark.text.trim();
       String geocodedaddress = _markerAddress;
+      user.email = widget.userEmail;
       user.address = '$houseno,$landmark,$geocodedaddress';
+      user.latitude = _lat.toString();
+      user.longitude = _lng.toString();
       _submitToDb(user, context);
     }
   }
@@ -245,8 +251,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     String url = APIService.registerAddressAPI;
     Map<String, String> headers = {"Content-Type": "application/json"};
     String getJson = userModelAddress(user);
+    print(getJson);
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
+      print(response.body);
       StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(json.decode(response.body)["token"]);
       await p.setUsername(json.decode(response.body)["username"]);
