@@ -36,6 +36,14 @@ class _ProductsState extends State<Products> {
   int tapped;
   String selected;
   Timer x;
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   @override
   void initState() {
     super.initState();

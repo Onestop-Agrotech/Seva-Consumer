@@ -45,6 +45,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   initState() {
     super.initState();
     // _startTimer();

@@ -30,6 +30,14 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   bool _loader = false;
   Coordinates coordinates;
   String _subLocality = "";
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   @override
   void initState() {
     super.initState();

@@ -54,6 +54,13 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   FirebaseMessaging _fcm;
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   initState() {
     super.initState();
     d = new StoreProduct(

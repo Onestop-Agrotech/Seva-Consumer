@@ -37,6 +37,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   bool _loadingDeliveries;
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   initState() {
     super.initState();
     _allowedDeliveries = false;

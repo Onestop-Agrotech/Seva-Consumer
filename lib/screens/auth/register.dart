@@ -50,6 +50,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _emailAddress = new TextEditingController();
   TextEditingController _mobile = new TextEditingController();
 
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   // show loading indicator
   _showLoadingOrButton() {
     if (_loading == true) {
