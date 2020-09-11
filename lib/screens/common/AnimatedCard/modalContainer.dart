@@ -6,8 +6,7 @@
 
 ///
 /// @fileoverview ModalContainer : .
-/// 
-
+///
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,7 @@ import 'package:provider/provider.dart';
 
 class AddItemModal extends StatefulWidget {
   final StoreProduct product;
-  final Details details;
-  AddItemModal({@required this.product,this.details});
+  AddItemModal({@required this.product});
   @override
   _AddItemModalState createState() => _AddItemModalState();
 }
@@ -32,24 +30,34 @@ class _AddItemModalState extends State<AddItemModal> {
     // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
-    if (widget.details.quantity.allowedQuantities[index].metric == "Kg") {
+    if (widget.product.details[0].quantity.allowedQuantities[index].metric ==
+        "Kg") {
       q = 1;
-      p = double.parse("${widget.details.price}");
+      p = double.parse("${widget.product.details[0].price}");
     }
     // For Gms && ML
-    else if (widget.details.quantity.allowedQuantities[index].metric == "Gms" ||
-        widget.details.quantity.allowedQuantities[index].metric == "ML") {
-      q = (widget.details.quantity.allowedQuantities[index].value / 1000.0);
-      p = (widget.details.quantity.allowedQuantities[index].value / 1000.0) *
-          widget.details.price;
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Gms" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "ML") {
+      q = (widget.product.details[0].quantity.allowedQuantities[index].value /
+          1000.0);
+      p = (widget.product.details[0].quantity.allowedQuantities[index].value /
+              1000.0) *
+          widget.product.details[0].price;
     }
     // For Pc, Kgs & Ltr
-    else if (widget.details.quantity.allowedQuantities[index].metric == "Pc" ||
-        widget.details.quantity.allowedQuantities[index].metric == "Kgs" ||
-        widget.details.quantity.allowedQuantities[index].metric == "Ltr") {
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pc" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Kgs" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Ltr") {
       q = double.parse(
-          "${widget.details.quantity.allowedQuantities[index].value}");
-      p = widget.details.price * q;
+          "${widget.product.details[0].quantity.allowedQuantities[index].value}");
+      p = widget.product.details[0].price * q;
     }
 
     if (addToCart)
@@ -94,7 +102,9 @@ class _AddItemModalState extends State<AddItemModal> {
     });
 
     return Text(
-      totalQ != 0.0 ? "$totalQ ${widget.details.quantity.quantityMetric}" : "0",
+      totalQ != 0.0
+          ? "$totalQ ${widget.product.details[0].quantity.quantityMetric}"
+          : "0",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
         fontSize: 20.0,
@@ -136,7 +146,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       width: 30.0,
                     ),
                     Expanded(
-                                          child: Text(
+                      child: Text(
                         widget.product.name,
                         overflow: TextOverflow.clip,
                         textAlign: TextAlign.center,
@@ -160,7 +170,7 @@ class _AddItemModalState extends State<AddItemModal> {
                   ],
                 ),
                 Text(
-                  "Rs ${widget.details.price} for ${widget.details.quantity.quantityValue} ${widget.details.quantity.quantityMetric}",
+                  "Rs ${widget.product.details[0].price} for ${widget.product.details[0].quantity.quantityValue} ${widget.product.details[0].quantity.quantityMetric}",
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
@@ -184,14 +194,14 @@ class _AddItemModalState extends State<AddItemModal> {
                             height: 15.625 * SizeConfig.heightMultiplier,
                             width: 80.0,
                             child: ListView.builder(
-                              itemCount: widget
-                                  .details.quantity.allowedQuantities.length,
+                              itemCount: widget.product.details[0].quantity
+                                  .allowedQuantities.length,
                               itemBuilder: (builder, i) {
                                 return Column(
                                   children: [
                                     SizedBox(height: 10.0),
                                     Text(
-                                      "${widget.details.quantity.allowedQuantities[i].value} ${widget.details.quantity.allowedQuantities[i].metric}",
+                                      "${widget.product.details[0].quantity.allowedQuantities[i].value} ${widget.product.details[0].quantity.allowedQuantities[i].metric}",
                                       style: TextStyle(
                                           color: ThemeColoursSeva().dkGreen,
                                           fontSize:
@@ -212,8 +222,8 @@ class _AddItemModalState extends State<AddItemModal> {
                             height: 15.625 * SizeConfig.heightMultiplier,
                             width: 110.0,
                             child: ListView.builder(
-                              itemCount: widget
-                                  .details.quantity.allowedQuantities.length,
+                              itemCount: widget.product.details[0].quantity
+                                  .allowedQuantities.length,
                               itemBuilder: (builder, i) {
                                 return Column(
                                   children: [
@@ -253,7 +263,7 @@ class _AddItemModalState extends State<AddItemModal> {
                 //       : widget.product.funFact,
                 //   style: TextStyle(
                 //     color: ThemeColoursSeva().dkGreen,
-                //     fontSize: 20.0,  
+                //     fontSize: 20.0,
                 //     fontWeight: FontWeight.w300,
                 //   ),
                 // ),

@@ -18,10 +18,9 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
   final StoreProduct sp;
-  final Details dt;
   final bool store;
   final int index;
-  ShowCards({this.sp, this.store, @required this.index, this.dt});
+  ShowCards({this.sp, this.store, @required this.index});
 
   @override
   _ShowCardsState createState() => _ShowCardsState();
@@ -62,7 +61,7 @@ class _ShowCardsState extends State<ShowCards> {
           // this.widget.sp.details.forEach((element) {
           //   if (!element.outOfStock) onClickProduct();
           // });
-          if (!this.widget.dt.outOfStock) onClickProduct();
+          if (!this.widget.sp.details[0].outOfStock) onClickProduct();
         }
       },
       child: Container(
@@ -76,10 +75,10 @@ class _ShowCardsState extends State<ShowCards> {
                     width: 1.5,
                   )
                 : Border.all(
-                    color: !this.widget.dt.outOfStock
+                    color: !this.widget.sp.details[0].outOfStock
                         ? ThemeColoursSeva().pallete3
                         : ThemeColoursSeva().grey,
-                    width: !this.widget.dt.outOfStock ? 1.5 : 0.2,
+                    width: !this.widget.sp.details[0].outOfStock ? 1.5 : 0.2,
                   ),
             borderRadius: BorderRadius.circular(20.0)),
         child: Column(
@@ -90,7 +89,7 @@ class _ShowCardsState extends State<ShowCards> {
                     "${widget.sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: !this.widget.dt.outOfStock
+                        color: !this.widget.sp.details[0].outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
                         fontSize: 3.4 * SizeConfig.widthMultiplier,
@@ -108,12 +107,12 @@ class _ShowCardsState extends State<ShowCards> {
             ),
             widget.store
                 ? Text(
-                    !this.widget.dt.outOfStock
-                        ? "Rs ${widget.dt.price} - ${widget.dt.quantity.quantityValue} ${widget.dt.quantity.quantityMetric}"
+                    !this.widget.sp.details[0].outOfStock
+                        ? "Rs ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
                         : "Out of Stock",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: !this.widget.dt.outOfStock
+                        color: !this.widget.sp.details[0].outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
                         fontSize: 3.4 * SizeConfig.widthMultiplier,

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 List<StoreProduct> jsonToStoreProductModel(String str) =>
     List<StoreProduct>.from(
-        json.decode(str).map((x) => StoreProduct.fromJson(x)));
+        json.decode(str)['products'].map((x) => StoreProduct.fromJson(x)));
 
 String storeProductTojsonModel(List<StoreProduct> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -115,7 +115,7 @@ class AllowedQuantity {
   String metric;
   int qty;
 
-  AllowedQuantity({this.id, this.value, this.metric,this.qty = 0});
+  AllowedQuantity({this.id, this.value, this.metric, this.qty = 0});
 
   factory AllowedQuantity.fromJson(Map<String, dynamic> json) =>
       AllowedQuantity(

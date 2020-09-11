@@ -138,16 +138,13 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
     String hub = await p.gethub();
-    print("a");
-    print(hub);
+
     Map<String, String> requestHeaders = {'x-auth-token': token};
     // String url = APIService.getBestSellers(hub);
     String url =
         'http://192.168.0.104:8000/api/products/all/bestsellers/hub/$hub';
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
-      print("object");
-      print(jsonToStoreProductModel(response.body));
       return jsonToStoreProductModel(response.body);
     } else {
       throw Exception('something is wrong');
@@ -463,8 +460,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           builder: (builder, snapshot) {
                             if (snapshot.hasData) {
                               List<StoreProduct> bestSellers = snapshot.data;
-                              print("Data");
-                              print(bestSellers);
+
                               if (bestSellers.length > 0) {
                                 return commonWidget(height, bestSellers, true);
                               } else
