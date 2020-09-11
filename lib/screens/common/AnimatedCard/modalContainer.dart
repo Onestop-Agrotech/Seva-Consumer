@@ -1,8 +1,19 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview ModalContainer : .
+///
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
 class AddItemModal extends StatefulWidget {
@@ -19,23 +30,34 @@ class _AddItemModalState extends State<AddItemModal> {
     // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
-    if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
+    if (widget.product.details[0].quantity.allowedQuantities[index].metric ==
+        "Kg") {
       q = 1;
-      p = double.parse("${widget.product.price}");
+      p = double.parse("${widget.product.details[0].price}");
     }
-    // For Gms
-    else if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
-      q = (widget.product.quantity.allowedQuantities[index].value / 1000.0);
-      p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
-          widget.product.price;
+    // For Gms && ML
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Gms" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "ML") {
+      q = (widget.product.details[0].quantity.allowedQuantities[index].value /
+          1000.0);
+      p = (widget.product.details[0].quantity.allowedQuantities[index].value /
+              1000.0) *
+          widget.product.details[0].price;
     }
     // For Pc, Kgs & Ltr
-    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Kgs" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Ltr") {
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pc" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Kgs" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Ltr") {
       q = double.parse(
-          "${widget.product.quantity.allowedQuantities[index].value}");
-      p = widget.product.price * q;
+          "${widget.product.details[0].quantity.allowedQuantities[index].value}");
+      p = widget.product.details[0].price * q;
     }
 
     if (addToCart)
@@ -65,6 +87,26 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
+        fontSize: 2.30 * SizeConfig.textMultiplier,
+        fontWeight: FontWeight.w500,
+      ),
+    );
+  }
+
+  Text _showTotalItemQty(newCart) {
+    double totalQ = 0.0;
+    newCart.items.forEach((e) {
+      if (e.id == widget.product.id) {
+        totalQ = widget.product.totalQuantity;
+      }
+    });
+
+    return Text(
+      totalQ != 0.0
+          ? "$totalQ ${widget.product.details[0].quantity.quantityMetric}"
+          : "0",
+      style: TextStyle(
+        color: ThemeColoursSeva().dkGreen,
         fontSize: 20.0,
         fontWeight: FontWeight.w500,
       ),
@@ -78,7 +120,7 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 20.0,
+        fontSize: 2.30 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -90,9 +132,9 @@ class _AddItemModalState extends State<AddItemModal> {
       child: Consumer<NewCartModel>(
         builder: (context, newCart, child) {
           return Container(
-            width: MediaQuery.of(context).size.width - 50,
-            height: MediaQuery.of(context).size.height - 300,
-            padding: EdgeInsets.all(20),
+            width: MediaQuery.of(context).size.width - 40,
+            height: 350,
+            padding: EdgeInsets.all(2 * SizeConfig.widthMultiplier),
             color: Colors.white,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -103,12 +145,16 @@ class _AddItemModalState extends State<AddItemModal> {
                     Container(
                       width: 30.0,
                     ),
-                    Text(
-                      widget.product.name,
-                      style: TextStyle(
-                        color: ThemeColoursSeva().dkGreen,
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w300,
+                    Expanded(
+                      child: Text(
+                        widget.product.name,
+                        overflow: TextOverflow.clip,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: ThemeColoursSeva().dkGreen,
+                          fontSize: 2.8 * SizeConfig.heightMultiplier,
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
                     GestureDetector(
@@ -124,11 +170,11 @@ class _AddItemModalState extends State<AddItemModal> {
                   ],
                 ),
                 Text(
-                  "Rs ${widget.product.price} for ${widget.product.quantity.quantityValue} ${widget.product.quantity.quantityMetric}",
+                  "Rs ${widget.product.details[0].price} for ${widget.product.details[0].quantity.quantityValue} ${widget.product.details[0].quantity.quantityMetric}",
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
-                    fontSize: 20.0,
+                    fontSize: 2.5 * SizeConfig.heightMultiplier,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -141,24 +187,25 @@ class _AddItemModalState extends State<AddItemModal> {
                       CachedNetworkImage(
                           width: 90,
                           height: 120,
-                          imageUrl: widget.product.pictureUrl),
+                          imageUrl: widget.product.pictureURL),
                       Column(
                         children: [
                           SizedBox(
-                            height: 125.0,
+                            height: 15.625 * SizeConfig.heightMultiplier,
                             width: 80.0,
                             child: ListView.builder(
-                              itemCount: widget
-                                  .product.quantity.allowedQuantities.length,
+                              itemCount: widget.product.details[0].quantity
+                                  .allowedQuantities.length,
                               itemBuilder: (builder, i) {
                                 return Column(
                                   children: [
                                     SizedBox(height: 10.0),
                                     Text(
-                                      "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}",
+                                      "${widget.product.details[0].quantity.allowedQuantities[i].value} ${widget.product.details[0].quantity.allowedQuantities[i].metric}",
                                       style: TextStyle(
                                           color: ThemeColoursSeva().dkGreen,
-                                          fontSize: 17.0,
+                                          fontSize:
+                                              2.3 * SizeConfig.textMultiplier,
                                           fontWeight: FontWeight.w300),
                                     ),
                                     SizedBox(height: 10.0)
@@ -172,11 +219,11 @@ class _AddItemModalState extends State<AddItemModal> {
                       Column(
                         children: [
                           SizedBox(
-                            height: 125.0,
+                            height: 15.625 * SizeConfig.heightMultiplier,
                             width: 110.0,
                             child: ListView.builder(
-                              itemCount: widget
-                                  .product.quantity.allowedQuantities.length,
+                              itemCount: widget.product.details[0].quantity
+                                  .allowedQuantities.length,
                               itemBuilder: (builder, i) {
                                 return Column(
                                   children: [
@@ -209,16 +256,31 @@ class _AddItemModalState extends State<AddItemModal> {
                     ],
                   ),
                 ),
-                Text(
-                  (widget.product.funFact == "" ||
-                          widget.product.funFact == null)
-                      ? ""
-                      : widget.product.funFact,
-                  style: TextStyle(
-                    color: ThemeColoursSeva().dkGreen,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w300,
-                  ),
+                // Text(
+                //   (widget.product.funFact == "" ||
+                //           widget.product.funFact == null)
+                //       ? ""
+                //       : widget.product.funFact,
+                //   style: TextStyle(
+                //     color: ThemeColoursSeva().dkGreen,
+                //     fontSize: 20.0,
+                //     fontWeight: FontWeight.w300,
+                //   ),
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Item Total Quantity",
+                      style: TextStyle(
+                        color: ThemeColoursSeva().dkGreen,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    _showTotalItemQty(newCart),
+                  ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,7 +290,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
+                        fontSize: 2.3 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -243,7 +305,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Cart Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
+                        fontSize: 2.3 * SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

@@ -1,5 +1,16 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+///@fileoverview InputTextField : customizable input field.
+/// 
+
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class InputTextField extends StatelessWidget {
   final TextEditingController eC;
@@ -24,9 +35,8 @@ class InputTextField extends StatelessWidget {
           padding: const EdgeInsets.only(left: 40.0, bottom: 10.0),
           child: Text(lt,
               style: TextStyle(
-                  fontFamily: "Raleway",
                   color: ThemeColoursSeva().black,
-                  fontSize: 18.0,
+                  fontSize: 2.1 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.w500)),
         ),
         Padding(
@@ -45,6 +55,9 @@ class InputTextField extends StatelessWidget {
                     keyboardType: keyBoardType,
                     controller: eC,
                     decoration: InputDecoration(
+                      contentPadding: new EdgeInsets.symmetric(
+                          vertical: 1 * SizeConfig.textMultiplier,
+                          horizontal: 10.0),
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
