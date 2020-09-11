@@ -251,7 +251,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     String url = APIService.registerAddressAPI;
     Map<String, String> headers = {"Content-Type": "application/json"};
     String getJson = userModelAddress(user);
-    print(getJson);
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
       print(response.body);
@@ -259,6 +258,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       await p.setToken(json.decode(response.body)["token"]);
       await p.setUsername(json.decode(response.body)["username"]);
       await p.setId(json.decode(response.body)["id"]);
+      await p.sethub(json.decode(response.body)["hub"]);
       bool far = json.decode(response.body)["far"];
       await p.setFarStatus(far.toString());
       await p.setEmail(json.decode(response.body)["email"]);
