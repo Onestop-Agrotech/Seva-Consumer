@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Timer _timer;
+  // Timer _timer;
   SmsUserConsent smsUserConsent;
   final _otpEditingController = TextEditingController();
   // to check for otp in sms
