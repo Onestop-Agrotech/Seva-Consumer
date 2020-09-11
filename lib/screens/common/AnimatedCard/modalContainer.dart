@@ -70,7 +70,7 @@ class _AddItemModalState extends State<AddItemModal> {
     int qty = 0;
     newCart.items.forEach((e) {
       if (e.id == item.id) {
-        qty = e.quantity.allowedQuantities[index].qty;
+        qty = e.details[0].quantity.allowedQuantities[index].qty;
       }
     });
     return Text("$qty");
@@ -103,7 +103,7 @@ class _AddItemModalState extends State<AddItemModal> {
 
     return Text(
       totalQ != 0.0
-          ? "$totalQ ${widget.product.details[0].quantity.quantityMetric}"
+          ? "${totalQ.toStringAsFixed(2)} ${widget.product.details[0].quantity.quantityMetric}"
           : "0",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,

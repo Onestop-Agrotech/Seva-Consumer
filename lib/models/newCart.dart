@@ -16,9 +16,7 @@ class NewCartModel extends ChangeNotifier {
     double sum = 0;
     if (_cartItems.length > 0) {
       _cartItems.forEach((element) {
-        element.details.forEach((e) {
-          sum += e.price;
-        });
+        sum += element.totalPrice;
       });
     }
     return sum;
