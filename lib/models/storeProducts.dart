@@ -2,6 +2,11 @@ import 'dart:convert';
 
 List<StoreProduct> jsonToStoreProductModel(String str) =>
     List<StoreProduct>.from(
+        json.decode(str).map((x) => StoreProduct.fromJson(x)));
+
+
+List<StoreProduct> jsonToCateogrywiseProductModel(String str) =>
+    List<StoreProduct>.from(
         json.decode(str)['products'].map((x) => StoreProduct.fromJson(x)));
 
 String storeProductTojsonModel(List<StoreProduct> data) =>

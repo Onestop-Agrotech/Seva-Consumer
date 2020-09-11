@@ -9,7 +9,7 @@
 ///
 
 class APIService {
-  static final String _api = "http://192.168.0.104:8000/api";
+  static final String _api = "http://192.168.0.108:8000/api";
 
   // USERS
   static final String loginAPI = "$_api/users/login/";
@@ -43,6 +43,13 @@ class APIService {
   // Get Best Sellers
   static getBestSellers(String hubid) {
     // PRODUCTS
-    return "$_api/products/all/bestsellers/hub/:$hubid";
+    return "$_api/products/all/bestsellers/hub/$hubid";
+  }
+
+  
+  // Get category wise produtcs
+  static getCategorywiseProducts(String hubid,String type) {
+    // PRODUCTS
+    return "$_api/products/hub/$hubid/$type";
   }
 }

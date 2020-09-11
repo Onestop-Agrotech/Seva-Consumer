@@ -140,9 +140,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     String hub = await p.gethub();
 
     Map<String, String> requestHeaders = {'x-auth-token': token};
-    // String url = APIService.getBestSellers(hub);
-    String url =
-        'http://192.168.0.104:8000/api/products/all/bestsellers/hub/$hub';
+    String url = APIService.getBestSellers(hub);
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       return jsonToStoreProductModel(response.body);

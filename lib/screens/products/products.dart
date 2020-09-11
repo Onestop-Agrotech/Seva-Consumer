@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -54,11 +55,10 @@ class _ProductsState extends State<Products> {
     String token = await p.getToken();
     String hub = await p.gethub();
     Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = "http://192.168.0.104:8000/api/products/hub/$hub/$type";
-    print(url);
+    String url = APIService.getCategorywiseProducts(hub, type);
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
-      List<StoreProduct> x = jsonToStoreProductModel(response.body);
+      List<StoreProduct> x = jsonToCateogrywiseProductModel(response.body);
       return x;
     } else {
       return prods;
@@ -126,7 +126,6 @@ class _ProductsState extends State<Products> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<StoreProduct> arr = snapshot.data;
-          print(arr);
           arr.sort((a, b) => a.name.compareTo(b.name));
           if (arr.length == 0) {
             return Center(
