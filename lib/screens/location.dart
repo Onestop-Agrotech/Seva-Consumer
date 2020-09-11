@@ -193,8 +193,8 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     this.setState(() {
       _markerAddress = address;
       _subLocality = subLocality;
-      _lat = first.coordinates.longitude;
-      _lng = first.coordinates.latitude;
+      _lng = first.coordinates.longitude;
+      _lat = first.coordinates.latitude;
     });
   }
 
@@ -252,7 +252,12 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       _loader = true;
     });
     String url = APIService.registerAddressAPI;
-    Map<String, String> headers = {"Content-Type": "application/json"};
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "x-auth-token": token
+    };
     String getJson = userModelAddress(user);
     var response = await http.post(url, body: getJson, headers: headers);
     print(response.statusCode);
@@ -260,8 +265,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       setState(() {
         _loader = false;
       });
-      print(response.body);
-      StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(json.decode(response.body)["token"]);
       await p.setUsername(json.decode(response.body)["username"]);
       await p.setId(json.decode(response.body)["id"]);
