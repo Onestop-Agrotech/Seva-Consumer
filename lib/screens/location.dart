@@ -1,11 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:location/location.dart';
+import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
+import 'package:http/http.dart' as http;
+import 'package:mvp/screens/errors/notServing.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
@@ -30,7 +37,12 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   bool _loader = false;
   Coordinates coordinates;
   String _subLocality = "";
-
+  TextEditingController _houreNo = new TextEditingController();
+  TextEditingController _landmark = new TextEditingController();
+  bool _housenoEmpty = false;
+  bool _landmarkEmpty = false;
+  double _lat;
+  double _lng;
   @override
   void setState(fn) {
     if (mounted) {
@@ -91,6 +103,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     );
     setState(() {
       _markers[markerId] = marker;
+      _showActionBtn = true;
     });
 
     Future.delayed(Duration(seconds: 1), () async {
@@ -102,7 +115,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
           ),
         ),
       );
-      _showActionBtn = true;
       this.setState(() {
         _loader = false;
       });
@@ -119,7 +131,13 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         padding: const EdgeInsets.all(20),
         child: FloatingActionButton.extended(
           backgroundColor: ThemeColoursSeva().dkGreen,
-          onPressed: () {},
+          onPressed: () {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+            _handleAddressAddition();
+          },
           label: Text("Set as Delivery Address"),
           icon: Icon(Icons.home),
         ),
@@ -175,7 +193,102 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     this.setState(() {
       _markerAddress = address;
       _subLocality = subLocality;
+      _lng = first.coordinates.longitude;
+      _lat = first.coordinates.latitude;
     });
+  }
+
+  _showHouseEmptyError() {
+    if (_housenoEmpty == true) {
+      return Text(
+        'Please enter the House No',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  _showLandmarkEmptyError() {
+    if (_landmarkEmpty == true) {
+      return Text(
+        'Please enter the Landmark',
+        style: TextStyle(color: Colors.red),
+      );
+    } else
+      return Container();
+  }
+
+  _handleAddressAddition() async {
+    if (_houreNo.text == '') {
+      // handle empty error
+      this.setState(() {
+        _housenoEmpty = true;
+      });
+    }
+    if (_landmark.text == '') {
+      // handle empty error
+      setState(() {
+        _landmarkEmpty = true;
+      });
+    } else {
+      setState(() {
+        _landmarkEmpty = false;
+        _housenoEmpty = false;
+      });
+      UserModel user = new UserModel();
+      String houseno = _houreNo.text.trim();
+      String landmark = _landmark.text.trim();
+      String geocodedaddress = _markerAddress;
+      user.email = widget.userEmail;
+      user.address = '$houseno,$landmark,$geocodedaddress';
+      user.latitude = _lat.toString();
+      user.longitude = _lng.toString();
+      _submitToDb(user, context);
+    }
+  }
+
+  _submitToDb(UserModel user, context) async {
+    setState(() {
+      _loader = true;
+    });
+    String url = APIService.registerAddressAPI;
+    StorageSharedPrefs p = new StorageSharedPrefs();
+    String token = await p.getToken();
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "x-auth-token": token
+    };
+    String getJson = userModelAddress(user);
+    var response = await http.post(url, body: getJson, headers: headers);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      setState(() {
+        _loader = false;
+      });
+      await p.setToken(json.decode(response.body)["token"]);
+      await p.setUsername(json.decode(response.body)["username"]);
+      await p.setId(json.decode(response.body)["id"]);
+      await p.sethub(json.decode(response.body)["hub"]);
+      bool far = json.decode(response.body)["far"];
+      await p.setFarStatus(far.toString());
+      await p.setEmail(json.decode(response.body)["email"]);
+      if (!far) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/main', ModalRoute.withName('/main'));
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return NotServing(
+            userEmail: widget.userEmail,
+          );
+        }));
+      }
+    } else {
+      setState(() {
+        _loader = false;
+      });
+      throw Exception('Server error');
+    }
   }
 
   @override
@@ -246,18 +359,14 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: InputTextField(
-                lt: "House No/Flat No:",
-                // eC: TextEditingController()..text = _markerAddress
-              ),
+              child: InputTextField(lt: "House No/Flat No:", eC: _houreNo),
             ),
+            _showHouseEmptyError(),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: InputTextField(
-                lt: "Landmark:",
-                // eC: TextEditingController()..text = _markerAddress
-              ),
+              child: InputTextField(lt: "Landmark:", eC: _landmark),
             ),
+            _showLandmarkEmptyError(),
             Container(
               child: _showFloatingActionButton(),
             ),
