@@ -366,12 +366,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Text(
-                                "OTP",
-                                style: TextStyle(
-                                  fontSize: 24.0,
-                                ),
-                              ),
                               Center(
                                 child: PinCodeTextField(
                                   autofocus: false,
