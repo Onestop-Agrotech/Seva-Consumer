@@ -46,9 +46,8 @@ class APIService {
     return "$_api/products/all/bestsellers/hub/$hubid";
   }
 
-  
   // Get category wise produtcs
-  static getCategorywiseProducts(String hubid,String type) {
+  static getCategorywiseProducts(String hubid, String type) {
     // PRODUCTS
     return "$_api/products/hub/$hubid/$type";
   }
