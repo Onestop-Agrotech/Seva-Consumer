@@ -248,11 +248,18 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   }
 
   _submitToDb(UserModel user, context) async {
+    setState(() {
+      _loader = true;
+    });
     String url = APIService.registerAddressAPI;
     Map<String, String> headers = {"Content-Type": "application/json"};
     String getJson = userModelAddress(user);
     var response = await http.post(url, body: getJson, headers: headers);
+    print(response.statusCode);
     if (response.statusCode == 200) {
+      setState(() {
+        _loader = false;
+      });
       print(response.body);
       StorageSharedPrefs p = new StorageSharedPrefs();
       await p.setToken(json.decode(response.body)["token"]);
@@ -274,6 +281,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         }));
       }
     } else {
+      setState(() {
+        _loader = false;
+      });
       throw Exception('Server error');
     }
   }
