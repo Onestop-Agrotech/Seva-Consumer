@@ -1,5 +1,14 @@
-import 'dart:async';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
 
+///
+/// @fileoverview Login Widget : MobileVerification,OTP are declared here.
+///
+
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
@@ -8,9 +17,10 @@ import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:sms_user_consent/sms_user_consent.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -24,33 +34,80 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
   bool _otpLoader = false;
+  bool _readonly = true;
   final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Timer _timer;
+  // Timer _timer;
+  SmsUserConsent smsUserConsent;
+  final _otpEditingController = TextEditingController();
+  // to check for otp in sms
+  final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   initState() {
     super.initState();
     // _startTimer();
+    smsUserConsent = SmsUserConsent(
+        // to read the users phone number
+        phoneNumberListener: () => {
+              if (smsUserConsent.selectedPhoneNumber == null)
+                {
+                  this.setState(() {
+                    _readonly = false;
+                  }),
+                  _mobileFocus.requestFocus(),
+                  print("null is here"),
+                }
+              else
+                {
+                  this.setState(() {
+                    _readonly = true;
+                  }),
+                  setState(() {
+                    _mobileController.text =
+                        smsUserConsent.selectedPhoneNumber.substring(3);
+                  }),
+                }
+            },
+        // to read users sms
+        smsListener: () => {
+              setState(() {
+                _otpEditingController.text = intRegex
+                    .allMatches(smsUserConsent.receivedSms)
+                    .map((m) => m.group(0))
+                    .toString()
+                    .substring(2, 8);
+              })
+            });
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    // _timer.cancel();
+    smsUserConsent.dispose();
     super.dispose();
   }
 
   _startTimer() {
     _start = 60;
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    new Timer.periodic(
       oneSec,
       (Timer timer) => setState(
         () {
           if (_start == 0) {
             setState(() {
               showOTPField = false;
+              _invalidOTP = false;
+              _otpEditingController.clear();
             });
             timer.cancel();
           } else {
@@ -95,9 +152,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   // await SmsAutoFill().listenForCode;
                 }
               },
-              child: const Text('Get OTP',
+              child: Text('Get OTP',
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 2.1 * SizeConfig.textMultiplier,
                     color: Colors.white,
                   )),
             ));
@@ -124,12 +181,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _verifyMobile() async {
+    this.setState(() {
+      _readonly = true;
+    });
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
       // successfully verified phone number
+      smsUserConsent.requestSms();
       var bdy = json.decode(response.body);
       String token = bdy["token"];
       StorageSharedPrefs p = new StorageSharedPrefs();
@@ -169,6 +230,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await p.setUsername(jsonBdy["username"]);
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
+      await p.sethub(jsonBdy["hub"]);
+      print('hub,$jsonBdy["hub"]');
       await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
       await p.setFarStatus(far);
@@ -203,161 +266,185 @@ class _LoginScreenState extends State<LoginScreen> {
         painter: GreenPaintBgLogin(),
         child: Padding(
           padding: const EdgeInsets.all(30.0),
-          child: ListView(children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Sign In",
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    color: ThemeColoursSeva().dkGreen,
-                    fontFamily: "Raleway",
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 40.0),
-            Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Row(
+          child: SafeArea(
+            child: ListView(children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "S",
+                    "Sign In",
                     style: TextStyle(
-                        color: ThemeColoursSeva().lgGreen,
-                        fontSize: 45.0,
-                        fontFamily: "Raleway"),
+                      fontSize: 3.1 * SizeConfig.textMultiplier,
+                      color: ThemeColoursSeva().dkGreen,
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Text(
-                      "eva",
+                ],
+              ),
+              // SizedBox(height: 2.00 * SizeConfig.textMultiplier),
+              Padding(
+                padding: const EdgeInsets.all(25.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "S",
                       style: TextStyle(
-                          fontFamily: "Raleway",
-                          color: ThemeColoursSeva().lgGreen,
-                          fontSize: 25.0),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 30.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 40.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Mobile:",
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontFamily: "Raleway",
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20.0),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: 260,
-                    child: TextFormField(
-                      enableInteractiveSelection: true,
-                      textInputAction: TextInputAction.next,
-                      autofocus: false,
-                      focusNode: _mobileFocus,
-                      keyboardType: TextInputType.number,
-                      controller: _mobileController,
-
-                      validator: (String val) {
-                        if (val.isEmpty || val.length < 10)
-                          return ('Min 10 digit number required!');
-                        else
-                          return (null);
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: ThemeColoursSeva().dkGreen),
-                            borderRadius: BorderRadius.circular(10)),
-                        labelText: '+91',
+                        color: ThemeColoursSeva().lgGreen,
+                        fontSize: 5.25 * SizeConfig.textMultiplier,
                       ),
-                      maxLength: 10,
-                      // onTap: ,
                     ),
-                  ),
-                  _showInvalidMobile(),
-                  SizedBox(height: 10.0),
-                  showOTPField
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 40.0),
-                              child: Text(
-                                "Enter OTP:",
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        "eva",
+                        style: TextStyle(
+                            color: ThemeColoursSeva().lgGreen,
+                            fontSize: 2.90 * SizeConfig.textMultiplier),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // SizedBox(height: 3.11 * SizeConfig.textMultiplier),
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "Mobile:",
+                      style: TextStyle(
+                        fontSize: 2.8 * SizeConfig.textMultiplier,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 2.0 * SizeConfig.textMultiplier),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 260,
+                      child: TextFormField(
+                        onTap: () {
+                          smsUserConsent.requestPhoneNumber();
+                          this.setState(() {
+                            _readonly = true;
+                          });
+                        },
+
+                        enableInteractiveSelection: true,
+                        textInputAction: TextInputAction.next,
+                        autofocus: false,
+                        focusNode: _mobileFocus,
+                        readOnly: _readonly,
+                        keyboardType: TextInputType.number,
+                        controller: _mobileController,
+
+                        validator: (String val) {
+                          if (val.isEmpty || val.length < 10)
+                            return ('Min 10 digit number required!');
+                          else
+                            return (null);
+                        }, //increases the height of cursor
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 10.0),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: ThemeColoursSeva().dkGreen),
+                              borderRadius: BorderRadius.circular(10)),
+                          labelText: '+91',
+                        ),
+                        maxLength: 10,
+                        // onTap: ,
+                      ),
+                    ),
+                    _showInvalidMobile(),
+                    // SizedBox(height: 1.2 * SizeConfig.textMultiplier),
+                    showOTPField
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text(
+                                "OTP",
                                 style: TextStyle(
                                   fontSize: 24.0,
-                                  fontFamily: "Raleway",
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 40, right: 100),
-                              child: OTPTextField(
-                                length: 6,
-                                width: MediaQuery.of(context).size.width,
-                                fieldWidth: 30,
-                                style: TextStyle(fontSize: 20),
-                                textFieldAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                fieldStyle: FieldStyle.underline,
-                                onCompleted: (pin) async {
-                                  setState(() {
-                                    _otpLoader = true;
-                                    _invalidOTP = false;
-                                  });
-                                  await _verifyOTP(pin);
-                                },
+                              Center(
+                                child: PinCodeTextField(
+                                  autofocus: false,
+                                  controller: _otpEditingController,
+                                  hideCharacter: false,
+                                  highlight: true,
+                                  highlightColor: Colors.blue,
+                                  defaultBorderColor: Colors.black,
+                                  hasTextBorderColor: Colors.green,
+                                  maxLength: 6,
+                                  onTextChanged: (text) {
+                                    if (text.length == 6) {
+                                      setState(() {
+                                        _otpLoader = true;
+                                        _invalidOTP = false;
+                                      });
+                                      _verifyOTP(text);
+                                    }
+                                  },
+                                  onDone: (text) {},
+                                  pinBoxWidth: 25,
+                                  pinBoxHeight: 40,
+                                  hasUnderline: false,
+                                  wrapAlignment: WrapAlignment.spaceAround,
+                                  pinBoxDecoration: ProvidedPinBoxDecoration
+                                      .underlinedPinBoxDecoration,
+                                  pinTextStyle: TextStyle(fontSize: 15.0),
+                                  pinTextAnimatedSwitcherTransition:
+                                      ProvidedPinBoxTextAnimation
+                                          .scalingTransition,
+                                  pinTextAnimatedSwitcherDuration:
+                                      Duration(milliseconds: 300),
+                                  highlightAnimationBeginColor: Colors.black,
+                                  highlightAnimationEndColor: Colors.white12,
+                                  keyboardType: TextInputType.number,
+                                ),
                               ),
+                            ],
+                          )
+                        : SizedBox(),
+                    _showInvalidOTP(),
+                    _showOTPLoader(),
+                    _showLoader(),
+                    SizedBox(height: 3 * SizeConfig.textMultiplier),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("Don't have an account? "),
+                        Material(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterScreen()));
+                            },
+                            child: Text(
+                              "Sign up",
+                              style:
+                                  TextStyle(color: ThemeColoursSeva().dkGreen),
                             ),
-                          ],
-                        )
-                      : SizedBox(),
-                  _showInvalidOTP(),
-                  _showOTPLoader(),
-                  _showLoader(),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("Don't have an account? "),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterScreen()));
-                          },
-                          child: Text(
-                            "Sign up",
-                            style: TextStyle(color: ThemeColoursSeva().dkGreen),
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ]),
+              // SizedBox(
+              //   height: MediaQuery.of(context).viewInsets.bottom,
+              // ),
+            ]),
+          ),
         ),
       ),
     );

@@ -1,13 +1,25 @@
-import 'dart:async';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
 
+///
+/// @fileoverview Products Widget : Shows all the products available.
+///
+
+import 'dart:async';
+// import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/animatedCard/animatedCard.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
@@ -24,6 +36,14 @@ class _ProductsState extends State<Products> {
   int tapped;
   String selected;
   Timer x;
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -41,11 +61,12 @@ class _ProductsState extends State<Products> {
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
+    String hub = await p.gethub();
     Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = "https://api.theonestop.co.in/api/products/$type";
+    String url = APIService.getCategorywiseProducts(hub, type);
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
-      List<StoreProduct> x = jsonToStoreProductModel(response.body);
+      List<StoreProduct> x = jsonToCateogrywiseProductModel(response.body);
       return x;
     } else {
       return prods;
@@ -120,7 +141,8 @@ class _ProductsState extends State<Products> {
             );
           }
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.75,
+            height: MediaQuery.of(context).size.height * 0.80,
+            // height: 25.0,
             child: StaggeredGridView.countBuilder(
               crossAxisCount: 4,
               itemCount: arr.length,
@@ -148,7 +170,7 @@ class _ProductsState extends State<Products> {
             ),
           );
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       },
     );
@@ -159,7 +181,7 @@ class _ProductsState extends State<Products> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Column(
+          child: ListView(
         children: <Widget>[
           SizedBox(height: 20),
           Row(
@@ -179,14 +201,14 @@ class _ProductsState extends State<Products> {
                 _renderTopText(),
                 style: TextStyle(
                     color: ThemeColoursSeva().dkGreen,
-                    fontSize: 20,
+                    fontSize: 2.9 * SizeConfig.textMultiplier,
                     fontWeight: FontWeight.w600),
               ),
               _renderCartIcon(),
             ],
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -206,6 +228,7 @@ class _ProductsState extends State<Products> {
                   child: Text(
                     categories[i],
                     style: TextStyle(
+                        fontSize: 3.2 * SizeConfig.widthMultiplier,
                         color: tapped == i
                             ? Colors.white
                             : ThemeColoursSeva().dkGreen),
@@ -214,7 +237,7 @@ class _ProductsState extends State<Products> {
             ],
           ),
           SizedBox(
-            height: 30,
+            height: 5,
           ),
           Consumer<NewCartModel>(
             builder: (context, newCart, child) {

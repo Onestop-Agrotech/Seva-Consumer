@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+///
+/// @fileoverview Loadingscreen : Check if user is connected to internet and route as per their login status.
+///
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -7,7 +17,6 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/introScreen.dart';
-import 'package:mvp/screens/landing/mainLanding.dart';
 import 'dart:io';
 
 class LoadingScreen extends StatefulWidget {
@@ -19,6 +28,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   bool _showLoginScreen;
   String _showText;
   bool _connected = false;
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   initState() {
@@ -90,8 +106,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       String far = await p.getFarStatus();
       String email = await p.getEmail();
       if (far == "false") {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => MainLandingScreen()));
+        Navigator.pushNamed(context, '/main');
       } else if (far == "true") {
         Navigator.pushReplacement(
           context,

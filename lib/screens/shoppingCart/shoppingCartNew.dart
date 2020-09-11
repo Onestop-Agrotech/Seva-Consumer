@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+///
+/// @fileoverview Shopping Cart Screen : Edit Cart Added items.
+///
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,6 +35,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
   String _userEmail;
   bool _allowedDeliveries;
   bool _loadingDeliveries;
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   initState() {

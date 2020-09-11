@@ -1,9 +1,20 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview ShowCards Widget : .
+///
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/AnimatedCard/modalContainer.dart';
 import 'package:mvp/screens/products/products.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
   final StoreProduct sp;
@@ -47,7 +58,10 @@ class _ShowCardsState extends State<ShowCards> {
           );
         else {
           // open the modal container
-          if (!this.widget.sp.outOfStock) onClickProduct();
+          // this.widget.sp.details.forEach((element) {
+          //   if (!element.outOfStock) onClickProduct();
+          // });
+          if (!this.widget.sp.details[0].outOfStock) onClickProduct();
         }
       },
       child: Container(
@@ -61,10 +75,10 @@ class _ShowCardsState extends State<ShowCards> {
                     width: 1.5,
                   )
                 : Border.all(
-                    color: !this.widget.sp.outOfStock
+                    color: !this.widget.sp.details[0].outOfStock
                         ? ThemeColoursSeva().pallete3
                         : ThemeColoursSeva().grey,
-                    width: !this.widget.sp.outOfStock ? 1.5 : 0.2,
+                    width: !this.widget.sp.details[0].outOfStock ? 1.5 : 0.2,
                   ),
             borderRadius: BorderRadius.circular(20.0)),
         child: Column(
@@ -75,17 +89,17 @@ class _ShowCardsState extends State<ShowCards> {
                     "${widget.sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: !this.widget.sp.outOfStock
+                        color: !this.widget.sp.details[0].outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
-                        fontSize: 15.0,
+                        fontSize: 3.4 * SizeConfig.widthMultiplier,
                         fontWeight: FontWeight.w700),
                   )
                 : SizedBox.shrink(),
             Container(
               height: height * 0.1,
               child: CachedNetworkImage(
-                imageUrl: widget.sp.pictureUrl,
+                imageUrl: widget.sp.pictureURL,
                 placeholder: (context, url) =>
                     Container(height: 50.0, child: Text("Loading...")),
                 errorWidget: (context, url, error) => Icon(Icons.error),
@@ -93,15 +107,15 @@ class _ShowCardsState extends State<ShowCards> {
             ),
             widget.store
                 ? Text(
-                    !this.widget.sp.outOfStock
-                        ? "Rs ${widget.sp.price} - ${widget.sp.quantity.quantityValue} ${widget.sp.quantity.quantityMetric}"
+                    !this.widget.sp.details[0].outOfStock
+                        ? "Rs ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
                         : "Out of Stock",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: !this.widget.sp.outOfStock
+                        color: !this.widget.sp.details[0].outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
-                        fontSize: 15.0,
+                        fontSize: 3.4 * SizeConfig.widthMultiplier,
                         fontWeight: FontWeight.w700),
                   )
                 : Text(
@@ -109,7 +123,7 @@ class _ShowCardsState extends State<ShowCards> {
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,
-                        fontSize: 15.0,
+                        fontSize: 3.4 * SizeConfig.widthMultiplier,
                         fontWeight: FontWeight.w700),
                   )
           ],

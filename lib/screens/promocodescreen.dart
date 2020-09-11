@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+///
+/// @fileoverview PromoCodes Screen : Apply promocode on payment.
+///
+
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 

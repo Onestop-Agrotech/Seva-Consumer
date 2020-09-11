@@ -1,8 +1,19 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+///
+/// @fileoverview Introscreen : Screen visible on opening app for first time.
+///
+
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenIntro.dart';
 import 'package:mvp/screens/common/descriptionIntro.dart';
 import 'package:mvp/screens/common/smallDotsIntro.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class IntroScreen extends StatefulWidget {
   @override
@@ -32,23 +43,23 @@ class _IntroScreenState extends State<IntroScreen> {
               padding: const EdgeInsets.only(left: 30.0),
               child: Text(
                 "In light of #Covid19, now buy your essentials while following the safety measures!",
-                style:
-                    TextStyle(fontSize: 15, color: ThemeColoursSeva().dkGreen),
+                style: TextStyle(
+                    fontSize: 1.9 * SizeConfig.textMultiplier,
+                    color: ThemeColoursSeva().dkGreen),
               ),
             ),
           ),
           SizedBox(
-            height: 80.0,
+            height: 15.6 * SizeConfig.textMultiplier,
           ),
           Text(
             "Service available only in select areas of Bangalore.",
             overflow: TextOverflow.clip,
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
-                fontFamily: "Raleway",
-                fontSize: 13.0),
+                fontSize: 1.7 * SizeConfig.textMultiplier),
           ),
-          SizedBox(height: 83.0)
+          SizedBox(height: 3.5 * SizeConfig.textMultiplier)
         ],
       );
     } else
@@ -88,8 +99,8 @@ class _IntroScreenState extends State<IntroScreen> {
 
   ButtonTheme _buildButton() {
     return ButtonTheme(
-      minWidth: 50.0,
-      height: 30.0,
+      minWidth: 13.5 * SizeConfig.textMultiplier,
+      height: 5 * SizeConfig.textMultiplier,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -111,6 +122,7 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     double sWidth = MediaQuery.of(context).size.width;
     double sHeight = MediaQuery.of(context).size.height;
+    print(sHeight);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -129,9 +141,8 @@ class _IntroScreenState extends State<IntroScreen> {
                     Text(
                       "Seva",
                       style: TextStyle(
-                          fontSize: 45.0,
+                          fontSize: 6.2 * SizeConfig.textMultiplier,
                           color: ThemeColoursSeva().lgGreen,
-                          fontFamily: "Raleway",
                           fontWeight: FontWeight.w700),
                     ),
                     Padding(
@@ -139,19 +150,18 @@ class _IntroScreenState extends State<IntroScreen> {
                       child: Text(
                         "By ONESTOP",
                         style: TextStyle(
-                            fontFamily: "Raleway",
                             fontWeight: FontWeight.w300,
                             color: ThemeColoursSeva().lgGreen,
-                            fontSize: 16.0),
+                            fontSize: 2.1 * SizeConfig.textMultiplier),
                       ),
                     ),
                   ],
                 ),
               ),
-              top: 90),
+              top: 10.0 * SizeConfig.textMultiplier),
           Positioned(
             left: sWidth * 0.075,
-            top: sHeight * 0.26,
+            top: 26.8 * SizeConfig.textMultiplier,
             child: Container(
               height: sHeight * 0.80,
               width: sWidth * 0.85,
@@ -159,7 +169,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 children: <Widget>[
                   _buildStack(),
                   _lastContent(context),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 4 * SizeConfig.textMultiplier),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -171,6 +181,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("zero"),
                               bg: _index == 0
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -184,6 +195,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("one"),
                               bg: _index == 1
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -197,6 +209,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("two"),
                               bg: _index == 2
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -210,6 +223,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             });
                           },
                           child: SmallDotsIntro(
+                              key: Key("three"),
                               bg: _index == 3
                                   ? ThemeColoursSeva().black
                                   : ThemeColoursSeva().grey),
@@ -218,7 +232,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 30.0,
+                    height: 3.5 * SizeConfig.textMultiplier,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

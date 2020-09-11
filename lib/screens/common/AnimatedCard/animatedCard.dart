@@ -1,10 +1,20 @@
-import 'dart:math';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
 
+///
+/// @fileoverview AnimateCard Widget : .
+///
+
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
 import 'modalContainer.dart';
@@ -40,23 +50,35 @@ class _AnimatedCardState extends State<AnimatedCard>
     // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
-    if (widget.product.quantity.allowedQuantities[index].metric == "Kg") {
+
+    if (widget.product.details[0].quantity.allowedQuantities[index].metric ==
+        "Kg") {
       q = 1;
-      p = double.parse("${widget.product.price}");
+      p = double.parse("${widget.product.details[0].price}");
     }
-    // For Gms
-    else if (widget.product.quantity.allowedQuantities[index].metric == "Gms") {
-      q = (widget.product.quantity.allowedQuantities[index].value / 1000.0);
-      p = (widget.product.quantity.allowedQuantities[index].value / 1000.0) *
-          widget.product.price;
+    // For Gms && ML
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Gms" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "ML") {
+      q = (widget.product.details[0].quantity.allowedQuantities[index].value /
+          1000.0);
+      p = (widget.product.details[0].quantity.allowedQuantities[index].value /
+              1000.0) *
+          widget.product.details[0].price;
     }
     // For Pc, Kgs & Ltr
-    else if (widget.product.quantity.allowedQuantities[index].metric == "Pc" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Kgs" ||
-        widget.product.quantity.allowedQuantities[index].metric == "Ltr") {
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pc" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Kgs" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Ltr") {
       q = double.parse(
-          "${widget.product.quantity.allowedQuantities[index].value}");
-      p = widget.product.price * q;
+          "${widget.product.details[0].quantity.allowedQuantities[index].value}");
+      p = widget.product.details[0].price * q;
     }
 
     if (addToCart)
@@ -140,17 +162,19 @@ class _AnimatedCardState extends State<AnimatedCard>
                   ? GestureDetector(
                       onTap: () {
                         if (!this.widget.shopping &&
-                            !this.widget.product.outOfStock)
+                            !this.widget.product.details[0].outOfStock)
                           onClickProduct(context);
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           border: Border.all(
-                            color: !this.widget.product.outOfStock
+                            color: !this.widget.product.details[0].outOfStock
                                 ? ThemeColoursSeva().pallete3
                                 : ThemeColoursSeva().grey,
-                            width: !this.widget.product.outOfStock ? 1.5 : 0.2,
+                            width: !this.widget.product.details[0].outOfStock
+                                ? 1.5
+                                : 0.2,
                           ),
                           borderRadius: BorderRadius.circular(20.0),
                         ),
@@ -159,15 +183,22 @@ class _AnimatedCardState extends State<AnimatedCard>
                             SizedBox(
                               height: 15,
                             ),
-                            Text(
-                              this.widget.product.name,
-                              overflow: TextOverflow.clip,
-                              style: TextStyle(
-                                  color: !this.widget.product.outOfStock
-                                      ? ThemeColoursSeva().pallete1
-                                      : ThemeColoursSeva().grey,
-                                  fontSize: 15.0,
-                                  fontWeight: FontWeight.w700),
+                            Center(
+                              child: Text(
+                                this.widget.product.name,
+                                overflow: TextOverflow.clip,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: !this
+                                            .widget
+                                            .product
+                                            .details[0]
+                                            .outOfStock
+                                        ? ThemeColoursSeva().pallete1
+                                        : ThemeColoursSeva().grey,
+                                    fontSize: 3.4 * SizeConfig.widthMultiplier,
+                                    fontWeight: FontWeight.w700),
+                              ),
                             ),
                             SizedBox(height: 10),
                             Row(
@@ -196,7 +227,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                   constraints: BoxConstraints(
                                       maxWidth: 90, maxHeight: 130),
                                   child: CachedNetworkImage(
-                                      imageUrl: this.widget.product.pictureUrl),
+                                      imageUrl: this.widget.product.pictureURL),
                                 ),
                                 this.widget.shopping
                                     ? Consumer<NewCartModel>(
@@ -218,15 +249,16 @@ class _AnimatedCardState extends State<AnimatedCard>
                               ],
                             ),
                             SizedBox(height: 20),
-                            !this.widget.product.outOfStock
+                            !this.widget.product.details[0].outOfStock
                                 ? Text(
                                     !this.widget.shopping
-                                        ? "Rs ${this.widget.product.price} - ${this.widget.product.quantity.quantityValue} ${this.widget.product.quantity.quantityMetric}"
-                                        : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.quantity.quantityMetric}",
+                                        ? "Rs ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
+                                        : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
                                     overflow: TextOverflow.clip,
                                     style: TextStyle(
                                         color: ThemeColoursSeva().pallete1,
-                                        fontSize: 15.0,
+                                        fontSize:
+                                            3.4 * SizeConfig.widthMultiplier,
                                         fontWeight: FontWeight.w700))
                                 : Text("Out of stock",
                                     overflow: TextOverflow.clip,
@@ -269,14 +301,18 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             height: newscreenheight * 0.65,
                                             child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: widget.product.quantity
-                                                  .allowedQuantities.length,
+                                              itemCount: widget
+                                                  .product
+                                                  .details[0]
+                                                  .quantity
+                                                  .allowedQuantities
+                                                  .length,
                                               itemBuilder: (builder, i) {
                                                 return Column(
                                                   children: [
                                                     SizedBox(height: 10.0),
                                                     Text(
-                                                        "${widget.product.quantity.allowedQuantities[i].value} ${widget.product.quantity.allowedQuantities[i].metric}"),
+                                                        "${widget.product.details[0].quantity.allowedQuantities[i].value} ${widget.product.details[0].quantity.allowedQuantities[i].metric}"),
                                                     SizedBox(height: 10.0),
                                                   ],
                                                 );
@@ -288,8 +324,12 @@ class _AnimatedCardState extends State<AnimatedCard>
                                             height: newscreenheight * 0.65,
                                             child: ListView.builder(
                                               scrollDirection: Axis.vertical,
-                                              itemCount: widget.product.quantity
-                                                  .allowedQuantities.length,
+                                              itemCount: widget
+                                                  .product
+                                                  .details[0]
+                                                  .quantity
+                                                  .allowedQuantities
+                                                  .length,
                                               itemBuilder: (builder, i) {
                                                 return Column(
                                                   children: [
@@ -309,7 +349,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                         ),
                                                         SizedBox(width: 5.0),
                                                         Text(
-                                                            "${widget.product.quantity.allowedQuantities[i].qty}"),
+                                                            "${widget.product.details[0].quantity.allowedQuantities[i].qty}"),
                                                         SizedBox(width: 5.0),
                                                         GestureDetector(
                                                             child:

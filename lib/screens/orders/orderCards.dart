@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview OrdersCards Widget : Card after the ordering of a product.
+///
+
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';

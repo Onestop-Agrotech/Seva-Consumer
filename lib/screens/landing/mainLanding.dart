@@ -1,3 +1,14 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+///@fileoverview MainLanding Widget : This is the main landing screen after the user
+///is logged in.
+///
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +25,7 @@ import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,20 +54,27 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   FirebaseMessaging _fcm;
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   initState() {
     super.initState();
     d = new StoreProduct(
       name: "Vegetables",
-      pictureUrl:
+      pictureURL:
           "https://storepictures.theonestop.co.in/new2/AllVegetables.jpg",
     );
     e = new StoreProduct(
       name: "Fruits",
-      pictureUrl: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
+      pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
     );
     f = new StoreProduct(
       name: "Daily Essentials",
-      pictureUrl:
+      pictureURL:
           "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
     );
     categories.add(d);
@@ -125,8 +144,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Future<List<StoreProduct>> _fetchBestSellers() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
+    String hub = await p.gethub();
+
     Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = APIService.getBestSellersAPI;
+    String url = APIService.getBestSellers(hub);
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       return jsonToStoreProductModel(response.body);
@@ -213,17 +234,20 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   itemCount: itemsList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
-                    return Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: ShowCards(
-                            sp: itemsList[index],
-                            store: store,
-                            index: index,
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 6.0, right: 12.0),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 6.0),
+                            child: ShowCards(
+                              sp: itemsList[index],
+                              store: store,
+                              index: index,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   }))
         ],
@@ -242,7 +266,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontWeight: FontWeight.w900,
-                fontSize: 17.0),
+                fontSize: 2.5 * SizeConfig.textMultiplier),
           ),
           Text(
             rightText,
@@ -356,105 +380,108 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
           Positioned.fill(
             child: Align(
               alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                          icon: Icon(Icons.menu),
-                          onPressed: () {
-                            _scaffoldKey.currentState.openDrawer();
-                          },
-                          iconSize: 28.0,
-                        ),
-                        Text(
-                          "Welcome",
-                          style: TextStyle(
-                              color: ThemeColoursSeva().dkGreen,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.location_on),
-                              onPressed: () {
-                                _showLocation();
-                              },
-                              iconSize: 28.0,
-                            ),
-                            _renderCartIcon(),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(11.0),
-                          child: Text(
-                            "Featured",
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          IconButton(
+                            icon: Icon(Icons.menu),
+                            onPressed: () {
+                              _scaffoldKey.currentState.openDrawer();
+                            },
+                            iconSize: 28.0,
+                          ),
+                          Text(
+                            "Welcome",
                             style: TextStyle(
                                 color: ThemeColoursSeva().dkGreen,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 17.0),
+                                fontSize: 3.70 * SizeConfig.textMultiplier,
+                                fontWeight: FontWeight.bold),
                           ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: height * 0.2,
-                      width: double.infinity,
-                      child: Row(
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.location_on),
+                                onPressed: () {
+                                  _showLocation();
+                                },
+                                iconSize: 28.0,
+                              ),
+                              _renderCartIcon(),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: texts.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return Row(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 12.0),
-                                      child: FeaturedCards(
-                                        textToDisplay: texts[index],
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
+                          Padding(
+                            padding: const EdgeInsets.all(11.0),
+                            child: Text(
+                              "Featured",
+                              style: TextStyle(
+                                  color: ThemeColoursSeva().dkGreen,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 2.9 * SizeConfig.textMultiplier),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 9.0),
-                    commonText(height, "Best Sellers", ""),
-                    SizedBox(height: 9.0),
-                    FutureBuilder(
-                        future: _fetchBestSellers(),
-                        builder: (builder, snapshot) {
-                          if (snapshot.hasData) {
-                            List<StoreProduct> bestSellers = snapshot.data;
-                            if (bestSellers.length > 0) {
-                              return commonWidget(height, bestSellers, true);
-                            } else
-                              return Container(
-                                child:
-                                    Center(child: Text("No products found!")),
-                              );
-                          }
-                          return Container();
-                        }),
-                    SizedBox(height: 9.0),
-                    commonText(height, "Categories", ""),
-                    SizedBox(height: 9.0),
-                    commonWidget(height, categories, false),
-                  ],
+                      Container(
+                        height: height * 0.2,
+                        width: double.infinity,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ListView.builder(
+                                itemCount: texts.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 12.0),
+                                        child: FeaturedCards(
+                                          textToDisplay: texts[index],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // SizedBox(height: 9.0),
+                      commonText(height, "Best Sellers", ""),
+                      SizedBox(height: 9.0),
+                      FutureBuilder(
+                          future: _fetchBestSellers(),
+                          builder: (builder, snapshot) {
+                            if (snapshot.hasData) {
+                              List<StoreProduct> bestSellers = snapshot.data;
+                              if (bestSellers.length > 0) {
+                                return commonWidget(height, bestSellers, true);
+                              } else
+                                return Container(
+                                  child:
+                                      Center(child: Text("No products found!")),
+                                );
+                            }
+                            return Container();
+                          }),
+                      // SizedBox(height: 9.0),
+                      commonText(height, "Categories", ""),
+                      SizedBox(height: 9.0),
+                      commonWidget(height, categories, false),
+                      SizedBox(height: 9.0)
+                    ],
+                  ),
                 ),
               ),
             ),
