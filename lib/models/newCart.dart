@@ -16,7 +16,9 @@ class NewCartModel extends ChangeNotifier {
     double sum = 0;
     if (_cartItems.length > 0) {
       _cartItems.forEach((element) {
-        sum += element.totalPrice;
+        element.details.forEach((e) {
+          sum += e.price;
+        });
       });
     }
     return sum;
@@ -35,7 +37,11 @@ class NewCartModel extends ChangeNotifier {
           // already exists in cart- so add new quantity and new price
           cartItem.totalQuantity += q;
           cartItem.totalPrice += p;
-          cartItem.quantity.allowedQuantities[index].qty += 1;
+          // cartItem.details.quantity.allowedQuantities[index].qty += 1;
+          cartItem.details.forEach((element) {
+            element.quantity.allowedQuantities[index].qty += 1;
+          });
+
           return;
         } else {
           // // doesn't exist in cart so add as new
@@ -46,14 +52,18 @@ class NewCartModel extends ChangeNotifier {
         // doesnt exist in cart, so add it
         item.totalQuantity = q;
         item.totalPrice = p;
-        item.quantity.allowedQuantities[index].qty += 1;
+        item.details.forEach((element) {
+          element.quantity.allowedQuantities[index].qty += 1;
+        });
         _cartItems.add(item);
       }
     } else {
       // add to cart when cart length is 0
       item.totalQuantity = q;
       item.totalPrice = p;
-      item.quantity.allowedQuantities[index].qty += 1;
+      item.details.forEach((element) {
+        element.quantity.allowedQuantities[index].qty += 1;
+      });
       _cartItems.add(item);
     }
     notifyListeners();
@@ -75,18 +85,23 @@ class NewCartModel extends ChangeNotifier {
             return;
           } else {
             // just remove the desired quantity
-            if ((e.quantity.allowedQuantities[index].qty - 1) >= 0) {
-              e.quantity.allowedQuantities[index].qty -= 1;
-              e.totalPrice -= p;
-              e.totalQuantity -= q;
-            }
+            item.details.forEach((element) {
+              if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
+                element.quantity.allowedQuantities[index].qty -= 1;
+                e.totalPrice -= p;
+                e.totalQuantity -= q;
+              }
+            });
+
             return;
           }
         }
       });
     }
     if (remove) {
-      item.quantity.allowedQuantities[index].qty -= 1;
+      item.details.forEach((element) {
+        element.quantity.allowedQuantities[index].qty -= 1;
+      });
       item.totalPrice -= p;
       item.totalQuantity -= q;
       int i = _cartItems.indexOf(item);
@@ -107,9 +122,12 @@ class NewCartModel extends ChangeNotifier {
       });
     }
     if (remove) {
-      item.quantity.allowedQuantities.forEach((element) {
-        element.qty = 0;
+      item.details.forEach((element) {
+        element.quantity.allowedQuantities.forEach((element) {
+          element.qty = 0;
+        });
       });
+
       item.totalPrice = 0;
       item.totalQuantity = 0;
       int i = _cartItems.indexOf(item);

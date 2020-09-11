@@ -58,7 +58,10 @@ class _ShowCardsState extends State<ShowCards> {
           );
         else {
           // open the modal container
-          if (!this.widget.sp.outOfStock) onClickProduct();
+          // this.widget.sp.details.forEach((element) {
+          //   if (!element.outOfStock) onClickProduct();
+          // });
+          if (!this.widget.sp.details[0].outOfStock) onClickProduct();
         }
       },
       child: Container(
@@ -72,10 +75,10 @@ class _ShowCardsState extends State<ShowCards> {
                     width: 1.5,
                   )
                 : Border.all(
-                    color: !this.widget.sp.outOfStock
+                    color: !this.widget.sp.details[0].outOfStock
                         ? ThemeColoursSeva().pallete3
                         : ThemeColoursSeva().grey,
-                    width: !this.widget.sp.outOfStock ? 1.5 : 0.2,
+                    width: !this.widget.sp.details[0].outOfStock ? 1.5 : 0.2,
                   ),
             borderRadius: BorderRadius.circular(20.0)),
         child: Column(
@@ -86,7 +89,7 @@ class _ShowCardsState extends State<ShowCards> {
                     "${widget.sp.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: !this.widget.sp.outOfStock
+                        color: !this.widget.sp.details[0].outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
                         fontSize: 3.4 * SizeConfig.widthMultiplier,
@@ -96,7 +99,7 @@ class _ShowCardsState extends State<ShowCards> {
             Container(
               height: height * 0.1,
               child: CachedNetworkImage(
-                imageUrl: widget.sp.pictureUrl,
+                imageUrl: widget.sp.pictureURL,
                 placeholder: (context, url) =>
                     Container(height: 50.0, child: Text("Loading...")),
                 errorWidget: (context, url, error) => Icon(Icons.error),
@@ -104,12 +107,12 @@ class _ShowCardsState extends State<ShowCards> {
             ),
             widget.store
                 ? Text(
-                    !this.widget.sp.outOfStock
-                        ? "Rs ${widget.sp.price} - ${widget.sp.quantity.quantityValue} ${widget.sp.quantity.quantityMetric}"
+                    !this.widget.sp.details[0].outOfStock
+                        ? "Rs ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
                         : "Out of Stock",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
-                        color: !this.widget.sp.outOfStock
+                        color: !this.widget.sp.details[0].outOfStock
                             ? ThemeColoursSeva().pallete1
                             : ThemeColoursSeva().grey,
                         fontSize: 3.4 * SizeConfig.widthMultiplier,

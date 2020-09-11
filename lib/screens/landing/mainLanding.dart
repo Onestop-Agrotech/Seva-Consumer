@@ -58,16 +58,16 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     super.initState();
     d = new StoreProduct(
       name: "Vegetables",
-      pictureUrl:
+      pictureURL:
           "https://storepictures.theonestop.co.in/new2/AllVegetables.jpg",
     );
     e = new StoreProduct(
       name: "Fruits",
-      pictureUrl: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
+      pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
     );
     f = new StoreProduct(
       name: "Daily Essentials",
-      pictureUrl:
+      pictureURL:
           "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
     );
     categories.add(d);
@@ -137,8 +137,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Future<List<StoreProduct>> _fetchBestSellers() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
+    String hub = await p.gethub();
+
     Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = APIService.getBestSellersAPI;
+    String url = APIService.getBestSellers(hub);
     var response = await http.get(url, headers: requestHeaders);
     if (response.statusCode == 200) {
       return jsonToStoreProductModel(response.body);

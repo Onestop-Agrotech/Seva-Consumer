@@ -23,9 +23,6 @@ class APIService {
   // storesList.dart - _fetchUserAddress function
   static final String getAddressAPI = "$_api/users/user-address/";
 
-  // PRODUCTS
-  static final String getBestSellersAPI = "$_api/products/all/bestsellers";
-
   // ORDERS
   // shopping cart file - _postOrderToServer function
   static final String ordersAPI = "$_api/orders/";
@@ -42,4 +39,17 @@ class APIService {
   static final String mainTokenAPI = "https://api.theonestop.co.in/token";
   static final String deliveriesAllowedAPI =
       "https://api.theonestop.co.in/api/deliveries/allowed";
+
+  // Get Best Sellers
+  static getBestSellers(String hubid) {
+    // PRODUCTS
+    return "$_api/products/all/bestsellers/hub/$hubid";
+  }
+
+  
+  // Get category wise produtcs
+  static getCategorywiseProducts(String hubid,String type) {
+    // PRODUCTS
+    return "$_api/products/hub/$hubid/$type";
+  }
 }
