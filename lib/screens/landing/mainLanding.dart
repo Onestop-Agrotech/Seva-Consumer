@@ -458,7 +458,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           builder: (builder, snapshot) {
                             if (snapshot.hasData) {
                               List<StoreProduct> bestSellers = snapshot.data;
-
                               if (bestSellers.length > 0) {
                                 return commonWidget(height, bestSellers, true);
                               } else
