@@ -8,6 +8,8 @@
 /// @fileoverview Login Widget : MobileVerification,OTP are declared here.
 ///
 
+import 'package:flutter/services.dart';
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -43,6 +45,24 @@ class _LoginScreenState extends State<LoginScreen> {
   final _otpEditingController = TextEditingController();
   // to check for otp in sms
   final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
+
+  /// ************************ PLATFORM SPECIFIC ***************************
+
+  // platform client
+  static const platform = const MethodChannel('sms_user_api');
+
+  Future<void> _getPhoneNumber() async {
+    String phoneNumber;
+    try {
+      final String result = await platform.invokeMethod('getPhoneNumber');
+      phoneNumber = 'Phone number $result % .';
+    } on PlatformException catch (e) {
+      phoneNumber = "Failed to get phone number: '${e.message}'.";
+    }
+    print(phoneNumber);
+  }
+
+  /// ************************ PLATFORM SPECIFIC ***************************
 
   @override
   void setState(fn) {
@@ -141,16 +161,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(12.0),
               ),
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  _mobileFocus.unfocus();
-                  setState(() {
-                    _loading = true;
-                    _inavlidMobile = false;
-                  });
-                  // Here submit the form
-                  await _verifyMobile();
-                  // await SmsAutoFill().listenForCode;
-                }
+                // if (_formKey.currentState.validate()) {
+                //   _mobileFocus.unfocus();
+                //   setState(() {
+                //     _loading = true;
+                //     _inavlidMobile = false;
+                //   });
+                //   // Here submit the form
+                //   await _verifyMobile();
+
+                // }
+                await _getPhoneNumber();
               },
               child: Text('Get OTP',
                   style: TextStyle(
