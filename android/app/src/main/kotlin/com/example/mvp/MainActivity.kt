@@ -1,10 +1,10 @@
 package com.example.mvp
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
+import android.content.*
+import android.os.Build
+import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -35,13 +35,19 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-                .setMethodCallHandler{
+        channel.setMethodCallHandler{
                     call, result ->
-                    if(call.method == "getPhoneNumber"){
-                        requestHint()
-                    }else if(call.method == "getSMS"){
-                        val task = SmsRetriever.getClient(context).startSmsUserConsent(null /* or null */)
+                    when(call.method){
+                        "getPhoneNumber" ->
+                            requestHint()
+                        "getSMS" ->
+                            {   Log.d("msg", "getSMS Method Handler")
+                                val senderPhoneNumber=null
+                                val task = SmsRetriever.getClient(context).startSmsUserConsent(senderPhoneNumber /* or null */)
+                                print(task)
+                                registerReceiver(smsVerificationReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
+                            }
+
                     }
 
                 }
@@ -60,6 +66,7 @@ class MainActivity: FlutterActivity() {
                             try {
                                 // Start activity to show consent dialog to user, activity must be started in
                                 // 5 minutes,
+                                Log.d("msg","Start listening activity")
                                 startActivityForResult(consentIntent, SMS_CONSENT_REQUEST)
                             } catch (e: ActivityNotFoundException) {
                                 // Handle the exception ...
@@ -109,7 +116,9 @@ class MainActivity: FlutterActivity() {
                     // `message` contains the entire text of the SMS message, so you will need
                     // to parse the string.
                     // TODO: Send back the OTP to flutter client
+                    Log.d("msg",message)
                     val oneTimeCode = parseOneTimeCode(message) // define this function
+
 
                     // send one time code to the server
                 } else {

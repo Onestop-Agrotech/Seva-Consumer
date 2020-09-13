@@ -167,6 +167,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _verifyMobile() async {
+    if(Platform.isAndroid){
+      print("Invoking method - getSMS");
+      await platform.invokeMethod("getSMS");
+    }
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
