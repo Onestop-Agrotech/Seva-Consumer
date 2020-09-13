@@ -7,6 +7,7 @@
 ///
 /// @fileoverview Login Widget : MobileVerification,OTP are declared here.
 ///
+import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
 
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
   bool _otpLoader = false;
-  bool _readonly = true;
+  // bool _readonly = true;
   final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -50,14 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
   static const platform = const MethodChannel('sms_user_api');
 
   Future<void> _getPhoneNumber() async {
-    String phoneNumber;
-    try {
-      final String result = await platform.invokeMethod('getPhoneNumber');
-      phoneNumber = 'Phone number $result % .';
-    } on PlatformException catch (e) {
-      phoneNumber = "Failed to get phone number: '${e.message}'.";
-    }
-    print(phoneNumber);
+    await platform.invokeMethod("getPhoneNumber");
   }
 
   /// ************************ PLATFORM SPECIFIC ***************************
@@ -72,6 +66,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
+    try {
+      platform.setMethodCallHandler((call) {
+        switch (call.method) {
+          case "phone":
+            print("In flutter - ${call.arguments}");
+            _mobileController.text = call.arguments.toString().substring(3);
+            break;
+        }
+      });
+    } catch (e) {}
   }
 
   @override
@@ -132,9 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                   // Here submit the form
                   await _verifyMobile();
-
                 }
-                // await _getPhoneNumber();
               },
               child: Text('Get OTP',
                   style: TextStyle(
@@ -329,7 +331,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: '+91',
                         ),
                         maxLength: 10,
-                        // onTap: ,
+                        onTap: () async {
+                          if (Platform.isAndroid) {
+                            // only Android has sms user consent api
+                            if (_mobileController.text == null ||
+                                _mobileController.text == "") {
+                              await _getPhoneNumber();
+                            }
+                          }
+                        },
                       ),
                     ),
                     _showInvalidMobile(),

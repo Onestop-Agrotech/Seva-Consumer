@@ -19,9 +19,12 @@ import com.google.android.gms.auth.api.credentials.HintRequest
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 
+import android.util.Log
+
 class MainActivity: FlutterActivity() {
 
     private val CHANNEL = "sms_user_api"
+    private lateinit var channel: MethodChannel
 
     // For request hint code
     private val CREDENTIAL_PICKER_REQUEST = 1  // Set to an unused request code
@@ -31,6 +34,7 @@ class MainActivity: FlutterActivity() {
     // Flutter Method Channel API
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
                 .setMethodCallHandler{
                     call, result ->
@@ -93,7 +97,8 @@ class MainActivity: FlutterActivity() {
                 if(resultCode == Activity.RESULT_OK && data != null){
                     val credential = data.getParcelableExtra<Credential>(Credential.EXTRA_KEY)
                     // credential.id()
-                    // TODO: Send back the phone number here
+                    channel.invokeMethod("phone", credential.id)
+
                 }
             SMS_CONSENT_REQUEST ->
                 // Obtain the phone number from the result
