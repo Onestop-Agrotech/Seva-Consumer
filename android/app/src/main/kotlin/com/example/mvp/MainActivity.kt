@@ -41,10 +41,9 @@ class MainActivity: FlutterActivity() {
                         "getPhoneNumber" ->
                             requestHint()
                         "getSMS" ->
-                            {   Log.d("msg", "getSMS Method Handler")
+                            {
                                 val senderPhoneNumber=null
-                                val task = SmsRetriever.getClient(context).startSmsUserConsent(senderPhoneNumber /* or null */)
-                                print(task)
+                                SmsRetriever.getClient(context).startSmsUserConsent(senderPhoneNumber /* or null */)
                                 registerReceiver(smsVerificationReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
                             }
 
@@ -66,7 +65,6 @@ class MainActivity: FlutterActivity() {
                             try {
                                 // Start activity to show consent dialog to user, activity must be started in
                                 // 5 minutes,
-                                Log.d("msg","Start listening activity")
                                 startActivityForResult(consentIntent, SMS_CONSENT_REQUEST)
                             } catch (e: ActivityNotFoundException) {
                                 // Handle the exception ...
@@ -115,10 +113,9 @@ class MainActivity: FlutterActivity() {
                     // Extract one-time code from the message and complete verification
                     // `message` contains the entire text of the SMS message, so you will need
                     // to parse the string.
-                    // TODO: Send back the OTP to flutter client
-                    Log.d("msg",message)
-                    val oneTimeCode = parseOneTimeCode(message) // define this function
 
+                    val oneTimeCode = parseOneTimeCode(message) // define this function
+                    channel.invokeMethod("sms",oneTimeCode.toString())
 
                     // send one time code to the server
                 } else {
@@ -128,9 +125,8 @@ class MainActivity: FlutterActivity() {
     }
 
     // Parse the message and return the code only
-    // TODO: Parse the OTP
     private fun parseOneTimeCode(message: String?): Any {
-        return "otp"
+        return message?.filter { it.isDigit() } ?: ""
     }
 
 

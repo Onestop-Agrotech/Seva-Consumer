@@ -67,14 +67,18 @@ class _LoginScreenState extends State<LoginScreen> {
   initState() {
     super.initState();
     try {
-      platform.setMethodCallHandler((call) {
-        switch (call.method) {
-          case "phone":
-            print("In flutter - ${call.arguments}");
-            _mobileController.text = call.arguments.toString().substring(3);
-            break;
-        }
-      });
+      if (Platform.isAndroid) {
+        platform.setMethodCallHandler((call) {
+          switch (call.method) {
+            case "phone":
+              _mobileController.text = call.arguments.toString().substring(3);
+              break;
+            case "sms":
+              _otpEditingController.text = call.arguments.toString();
+              break;
+          }
+        });
+      }
     } catch (e) {}
   }
 
@@ -167,9 +171,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _verifyMobile() async {
-    if(Platform.isAndroid){
-      print("Invoking method - getSMS");
-      await platform.invokeMethod("getSMS");
+    if (Platform.isAndroid) {
+      platform.invokeMethod("getSMS");
     }
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
