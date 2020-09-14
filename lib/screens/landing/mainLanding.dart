@@ -506,10 +506,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               child: Container(
                                 child: _shimmerLayout(height),
                               ),
-                              // period: Duration(milliseconds: time),
                             );
                           }),
-                      // SizedBox(height: 9.0),
                       commonText(height, "Categories", ""),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
