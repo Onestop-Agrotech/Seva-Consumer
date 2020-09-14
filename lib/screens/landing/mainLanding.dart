@@ -28,6 +28,7 @@ import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'graphics/lightBG.dart';
 
@@ -52,7 +53,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _username;
   Timer x;
   FirebaseMessaging _fcm;
-
   @override
   void setState(fn) {
     if (mounted) {
@@ -324,6 +324,33 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  _shimmerLayout(height) {
+    double width = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Container(
+            height: height * 0.20,
+            width: width * 0.27,
+            color: Colors.grey,
+          ),
+          Container(
+            height: height * 0.20,
+            width: width * 0.27,
+            color: Colors.grey,
+          ),
+          Container(
+            height: height * 0.20,
+            width: width * 0.27,
+            color: Colors.grey,
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -473,7 +500,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                       Center(child: Text("No products found!")),
                                 );
                             }
-                            return Container();
+                            return Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey[300],
+                              child: Container(
+                                child: _shimmerLayout(height),
+                              ),
+                              // period: Duration(milliseconds: time),
+                            );
                           }),
                       // SizedBox(height: 9.0),
                       commonText(height, "Categories", ""),
