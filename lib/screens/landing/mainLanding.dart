@@ -324,28 +324,21 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-  _shimmerLayout(height) {
-    double width = MediaQuery.of(context).size.width;
+  _shimmerLayout(height, width) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(
-            height: height * 0.20,
-            width: width * 0.27,
-            color: Colors.grey,
-          ),
-          Container(
-            height: height * 0.20,
-            width: width * 0.27,
-            color: Colors.grey,
-          ),
-          Container(
-            height: height * 0.20,
-            width: width * 0.27,
-            color: Colors.grey,
-          )
+          for (int i = 0; i < 3; i++)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+              ),
+              height: height * 0.20,
+              width: width * 0.27,
+            )
         ],
       ),
     );
@@ -354,17 +347,18 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
+        width: width * 0.5,
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
+                height: height * 0.15,
                 child: DrawerHeader(
                   child:
                       TopText(txt: _username != null ? _username : "Username"),
@@ -504,7 +498,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               highlightColor: Colors.white,
                               baseColor: Colors.grey[300],
                               child: Container(
-                                child: _shimmerLayout(height),
+                                child: _shimmerLayout(height, width),
                               ),
                             );
                           }),
