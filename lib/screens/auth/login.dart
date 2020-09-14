@@ -7,6 +7,9 @@
 ///
 /// @fileoverview Login Widget : MobileVerification,OTP are declared here.
 ///
+import 'dart:io' show Platform;
+
+import 'package:flutter/services.dart';
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -20,7 +23,6 @@ import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
-import 'package:sms_user_consent/sms_user_consent.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -34,15 +36,25 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
   bool _otpLoader = false;
-  bool _readonly = true;
+  // bool _readonly = true;
   final _mobileFocus = FocusNode();
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   // Timer _timer;
-  SmsUserConsent smsUserConsent;
   final _otpEditingController = TextEditingController();
   // to check for otp in sms
   final intRegex = RegExp(r'\s+(\d+)\s+', multiLine: true);
+
+  /// ************************ PLATFORM SPECIFIC ***************************
+
+  // platform client
+  static const platform = const MethodChannel('sms_user_api');
+
+  Future<void> _getPhoneNumber() async {
+    await platform.invokeMethod("getPhoneNumber");
+  }
+
+  /// ************************ PLATFORM SPECIFIC ***************************
 
   @override
   void setState(fn) {
@@ -54,45 +66,24 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
-    // _startTimer();
-    smsUserConsent = SmsUserConsent(
-        // to read the users phone number
-        phoneNumberListener: () => {
-              if (smsUserConsent.selectedPhoneNumber == null)
-                {
-                  this.setState(() {
-                    _readonly = false;
-                  }),
-                  _mobileFocus.requestFocus(),
-                  print("null is here"),
-                }
-              else
-                {
-                  this.setState(() {
-                    _readonly = true;
-                  }),
-                  setState(() {
-                    _mobileController.text =
-                        smsUserConsent.selectedPhoneNumber.substring(3);
-                  }),
-                }
-            },
-        // to read users sms
-        smsListener: () => {
-              setState(() {
-                _otpEditingController.text = intRegex
-                    .allMatches(smsUserConsent.receivedSms)
-                    .map((m) => m.group(0))
-                    .toString()
-                    .substring(2, 8);
-              })
-            });
+    try {
+      if (Platform.isAndroid) {
+        platform.setMethodCallHandler((call) {
+          switch (call.method) {
+            case "phone":
+              _mobileController.text = call.arguments.toString().substring(3);
+              break;
+            case "sms":
+              _otpEditingController.text = call.arguments.toString();
+              break;
+          }
+        });
+      }
+    } catch (e) {}
   }
 
   @override
   void dispose() {
-    // _timer.cancel();
-    smsUserConsent.dispose();
     super.dispose();
   }
 
@@ -149,7 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                   // Here submit the form
                   await _verifyMobile();
-                  // await SmsAutoFill().listenForCode;
                 }
               },
               child: Text('Get OTP',
@@ -181,16 +171,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _verifyMobile() async {
-    this.setState(() {
-      _readonly = true;
-    });
+    if (Platform.isAndroid) {
+      platform.invokeMethod("getSMS");
+    }
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
       // successfully verified phone number
-      smsUserConsent.requestSms();
       var bdy = json.decode(response.body);
       String token = bdy["token"];
       StorageSharedPrefs p = new StorageSharedPrefs();
@@ -326,18 +315,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       width: 260,
                       child: TextFormField(
-                        onTap: () {
-                          smsUserConsent.requestPhoneNumber();
-                          this.setState(() {
-                            _readonly = true;
-                          });
-                        },
-
                         enableInteractiveSelection: true,
                         textInputAction: TextInputAction.next,
                         autofocus: false,
                         focusNode: _mobileFocus,
-                        readOnly: _readonly,
                         keyboardType: TextInputType.number,
                         controller: _mobileController,
 
@@ -357,7 +338,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: '+91',
                         ),
                         maxLength: 10,
-                        // onTap: ,
+                        onTap: () async {
+                          if (Platform.isAndroid) {
+                            // only Android has sms user consent api
+                            if (_mobileController.text == null ||
+                                _mobileController.text == "") {
+                              await _getPhoneNumber();
+                            }
+                          }
+                        },
                       ),
                     ),
                     _showInvalidMobile(),
