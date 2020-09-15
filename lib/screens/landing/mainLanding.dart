@@ -11,6 +11,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 
@@ -28,6 +29,7 @@ import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'graphics/lightBG.dart';
 
@@ -52,6 +54,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _username;
   Timer x;
   FirebaseMessaging _fcm;
+  int _current = 0;
 
   @override
   void setState(fn) {
@@ -303,6 +306,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+// check for cart items
   Widget _checkCartItems() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.1,
@@ -324,20 +328,42 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+// shimmer layout before page loads
+  _shimmerLayout(height, width) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          for (int i = 0; i < 3; i++)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+              ),
+              height: height * 0.20,
+              width: width * 0.27,
+            )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
+        width: width * 0.5,
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
+                height: height * 0.15,
                 child: DrawerHeader(
                   child:
                       TopText(txt: _username != null ? _username : "Username"),
@@ -430,34 +456,68 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           ),
                         ],
                       ),
+
+                      // carousel with indicator
                       Container(
                         height: height * 0.2,
                         width: double.infinity,
-                        child: Row(
+                        child: Column(
                           children: <Widget>[
                             Expanded(
-                              child: ListView.builder(
-                                itemCount: texts.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 12.0),
-                                        child: FeaturedCards(
-                                          textToDisplay: texts[index],
-                                        ),
-                                      ),
-                                    ],
+                              child: CarouselSlider(
+                                items: texts.map((i) {
+                                  return Builder(
+                                    builder: (BuildContext context) {
+                                      return FeaturedCards(
+                                        textToDisplay: i,
+                                      );
+                                    },
                                   );
-                                },
+                                }).toList(),
+                                options: CarouselOptions(
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _current = index;
+                                    });
+                                  },
+                                  height: 400,
+                                  aspectRatio: 16 / 9,
+                                  viewportFraction: 0.8,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: true,
+                                  reverse: false,
+                                  autoPlay: true,
+                                  autoPlayInterval: Duration(seconds: 2),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 600),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enlargeCenterPage: false,
+                                  // onPageChanged: callbackFunction,
+                                  scrollDirection: Axis.horizontal,
+                                ),
                               ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: texts.map((url) {
+                                int index = texts.indexOf(url);
+                                return Container(
+                                  width: 8.0,
+                                  height: 8.0,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 2.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: _current == index
+                                        ? Color.fromRGBO(0, 0, 0, 0.9)
+                                        : Color.fromRGBO(0, 0, 0, 0.4),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ],
                         ),
                       ),
-                      // SizedBox(height: 9.0),
                       commonText(height, "Best Sellers", ""),
                       SizedBox(height: 9.0),
                       FutureBuilder(
@@ -473,9 +533,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                       Center(child: Text("No products found!")),
                                 );
                             }
-                            return Container();
+                            return Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey[300],
+                              child: Container(
+                                child: _shimmerLayout(height, width),
+                              ),
+                            );
                           }),
-                      // SizedBox(height: 9.0),
                       commonText(height, "Categories", ""),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
