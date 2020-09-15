@@ -1,5 +1,14 @@
-import 'dart:collection';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
 
+///
+/// @fileoverview new cart model : models the cart with database.
+///
+
+import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:mvp/models/storeProducts.dart';
 

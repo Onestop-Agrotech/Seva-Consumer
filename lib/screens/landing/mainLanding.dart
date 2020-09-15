@@ -14,7 +14,6 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
@@ -120,6 +119,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
+  // get user name from the local storage
   getUsername() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     var x = await p.getUsername();
@@ -128,6 +128,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     });
   }
 
+  //fetch the user address (maps)
   Future<String> _fetchUserAddress() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -144,6 +145,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
+  // fetches the best selling products for a particular hub
   Future<List<StoreProduct>> _fetchBestSellers() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -159,6 +161,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
+  //shows the delivery address
   _showLocation() {
     showDialog(
       context: context,
@@ -227,6 +230,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  //common widget
   Widget commonWidget(height, itemsList, store) {
     return Container(
       height: height * 0.22,

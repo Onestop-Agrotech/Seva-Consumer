@@ -1,7 +1,16 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview users model : models the user when a user logs in or registers.
+///
+
 import 'dart:convert';
 
 UserModel jsonToUserModel(String str) => UserModel.fromJson(json.decode(str));
-
 String userModelRegister(UserModel data) => json.encode(data.toRegisterJson());
 String userModelAddress(UserModel data) => json.encode(data.toAddressJson());
 String userModelLogin(UserModel data) => json.encode(data.toLoginJson());

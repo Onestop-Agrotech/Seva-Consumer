@@ -57,6 +57,7 @@ class _ProductsState extends State<Products> {
     super.dispose();
   }
 
+  // get all the available product.
   Future<List<StoreProduct>> getProducts(String type) async {
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
@@ -73,6 +74,7 @@ class _ProductsState extends State<Products> {
     }
   }
 
+  // pushing order in the cart of the user.
   _renderCartIcon() {
     return Stack(
       children: [
@@ -96,6 +98,7 @@ class _ProductsState extends State<Products> {
     );
   }
 
+  // products in the cart of the user.
   Widget _checkCartItems() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.1,
@@ -117,6 +120,7 @@ class _ProductsState extends State<Products> {
     );
   }
 
+  // different categories available.
   String _renderTopText() {
     String text = "";
     if (tapped == 0)
@@ -128,6 +132,7 @@ class _ProductsState extends State<Products> {
     return text;
   }
 
+  // shows the products if available.
   FutureBuilder _buildProducts(type) {
     return FutureBuilder(
       future: getProducts(type),

@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview ModalContainer : .
+/// @fileoverview ModalContainer modal : contains the info about the product.
 ///
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -66,6 +66,7 @@ class _AddItemModalState extends State<AddItemModal> {
       newCart.removeFromNewCart(widget.product, p, q, index);
   }
 
+  // shows/edit the quantity of the product
   Text _showQ(newCart, item, index) {
     int qty = 0;
     newCart.items.forEach((e) {
@@ -76,6 +77,7 @@ class _AddItemModalState extends State<AddItemModal> {
     return Text("$qty");
   }
 
+  // shows/edit the total price of a particular item
   Text _showItemTotalPrice(newCart) {
     double price = 0;
     newCart.items.forEach((e) {
@@ -93,6 +95,7 @@ class _AddItemModalState extends State<AddItemModal> {
     );
   }
 
+  // shows/edit the total quantity of the product
   Text _showTotalItemQty(newCart) {
     double totalQ = 0.0;
     newCart.items.forEach((e) {
@@ -113,6 +116,7 @@ class _AddItemModalState extends State<AddItemModal> {
     );
   }
 
+  // shows/edit the total cart price
   Text _showTotalCartPrice(newCart) {
     double price;
     price = newCart.getCartTotalPrice();

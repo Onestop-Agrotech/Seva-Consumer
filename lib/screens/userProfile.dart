@@ -9,7 +9,6 @@
 ///
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';

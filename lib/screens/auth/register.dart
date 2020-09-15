@@ -176,6 +176,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return Container();
   }
 
+  // sign up validity and api call for registerung the user
   _handleSignUp() async {
     UserModel user = new UserModel();
     if (_username.text == '') {
@@ -288,6 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  // back icon on the registration screen
   _showBack() {
     if (_index == 1) {
       return Row(
@@ -309,6 +311,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return Container();
   }
 
+  // registration screen
   IndexedStack _buildStack() {
     return IndexedStack(
       index: _index,

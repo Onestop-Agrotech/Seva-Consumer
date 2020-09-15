@@ -6,7 +6,7 @@
 
 ///
 /// @fileoverview SmallDotIntro Widget : These are the dots that are present on the
-/// home screen.
+/// intro screen.
 ///
 
 import 'package:flutter/material.dart';

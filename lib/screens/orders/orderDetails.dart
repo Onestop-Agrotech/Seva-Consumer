@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-///@fileoverview OrderDetais Widget : .
+///@fileoverview OrderDetais Widget : main order details of the cart .
 ///
 
 import 'package:flutter/material.dart';
