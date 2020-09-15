@@ -28,6 +28,7 @@ import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'graphics/lightBG.dart';
 
@@ -52,7 +53,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _username;
   Timer x;
   FirebaseMessaging _fcm;
-
   @override
   void setState(fn) {
     if (mounted) {
@@ -324,20 +324,41 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  _shimmerLayout(height, width) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          for (int i = 0; i < 3; i++)
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+              ),
+              height: height * 0.20,
+              width: width * 0.27,
+            )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.5,
+        width: width * 0.5,
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.15,
+                height: height * 0.15,
                 child: DrawerHeader(
                   child:
                       TopText(txt: _username != null ? _username : "Username"),
@@ -473,9 +494,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                       Center(child: Text("No products found!")),
                                 );
                             }
-                            return Container();
+                            return Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey[300],
+                              child: Container(
+                                child: _shimmerLayout(height, width),
+                              ),
+                            );
                           }),
-                      // SizedBox(height: 9.0),
                       commonText(height, "Categories", ""),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
