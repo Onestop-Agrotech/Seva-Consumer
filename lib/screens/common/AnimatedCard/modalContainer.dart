@@ -97,7 +97,7 @@ class _AddItemModalState extends State<AddItemModal> {
     double totalQ = 0.0;
     newCart.items.forEach((e) {
       if (e.id == widget.product.id) {
-        totalQ =e.totalQuantity;
+        totalQ = e.totalQuantity;
       }
     });
 
