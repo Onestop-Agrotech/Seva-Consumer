@@ -21,6 +21,7 @@ import 'package:mvp/screens/common/animatedCard/animatedCard.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Products extends StatefulWidget {
   final int type;
@@ -128,7 +129,32 @@ class _ProductsState extends State<Products> {
     return text;
   }
 
+// shimmer layout before page loads
+  _shimmerLayout(height, width) {
+    return SizedBox(
+        height: MediaQuery.of(context).size.height * 0.80,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: StaggeredGridView.countBuilder(
+            crossAxisCount: 4,
+            itemCount: 10,
+            staggeredTileBuilder: (int index) =>
+                StaggeredTile.count(2, index.isEven ? 2 : 1),
+            mainAxisSpacing: 8.0,
+            crossAxisSpacing: 8.0,
+            itemBuilder: (BuildContext context, int index) => Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ));
+  }
+
   FutureBuilder _buildProducts(type) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return FutureBuilder(
       future: getProducts(type),
       builder: (context, snapshot) {
@@ -170,7 +196,13 @@ class _ProductsState extends State<Products> {
             ),
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return Shimmer.fromColors(
+            highlightColor: Colors.white,
+            baseColor: Colors.grey[300],
+            child: Container(
+              child: _shimmerLayout(height, width),
+            ),
+          );
         }
       },
     );
