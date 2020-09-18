@@ -487,7 +487,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                   enableInfiniteScroll: true,
                                   reverse: false,
                                   autoPlay: true,
-                                  autoPlayInterval: Duration(seconds: 2),
+                                  autoPlayInterval: Duration(seconds: 4),
                                   autoPlayAnimationDuration:
                                       Duration(milliseconds: 600),
                                   autoPlayCurve: Curves.fastOutSlowIn,
