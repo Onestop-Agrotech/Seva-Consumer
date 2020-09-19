@@ -412,7 +412,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 title: Text('Share app'),
                 onTap: () {
                   String msg = ''' 
-                  Order Fresh Fruits 🍎🍐🍊, Vegetables 🥦🥕🧅 and Daily Essentials 🥚🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
+                  Order Fresh Fruits 🍎 🍐 🍊, Vegetables 🥦 🥕 🧅 and Daily Essentials 🥚 🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
                   ''';
                   Share.share(msg);
                 },
