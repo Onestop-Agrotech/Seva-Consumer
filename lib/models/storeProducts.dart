@@ -1,3 +1,14 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview store product model : models all the products visible in the product
+/// section with the database.
+///
+
 import 'dart:convert';
 
 List<StoreProduct> jsonToStoreProductModel(String str) =>
@@ -11,6 +22,7 @@ List<StoreProduct> jsonToCateogrywiseProductModel(String str) =>
 String storeProductTojsonModel(List<StoreProduct> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
+// main store product model
 class StoreProduct {
   String id;
   String name;
@@ -58,6 +70,7 @@ class StoreProduct {
       };
 }
 
+// details of a particular item [array]
 class Details {
   Quantity quantity;
   String id;
@@ -93,6 +106,7 @@ class Details {
       };
 }
 
+// quantity of the item
 class Quantity {
   Quantity({this.quantityValue, this.quantityMetric, this.allowedQuantities});
 

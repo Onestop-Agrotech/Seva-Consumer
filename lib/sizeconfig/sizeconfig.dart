@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
+
+///
+/// @fileoverview sizeconfig : gets the screen height for differnet factors(responsiveness).
+///
+
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 

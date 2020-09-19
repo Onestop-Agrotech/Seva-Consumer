@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview orders model: models the orders that a user place with the database.
+///
+
 import 'dart:convert';
 
 OrderModel toOrderModelFromJson(String str) =>
@@ -8,6 +18,7 @@ String fromOrderModelToJson(OrderModel data) => json.encode(data.toJson());
 List<OrderModel> toOrdersFromJson(b) =>
     List<OrderModel>.from(b.map((x) => OrderModel.fromJson(x)));
 
+// main order model
 class OrderModel {
   OrderModel({
     this.time,
@@ -75,6 +86,7 @@ class OrderModel {
       };
 }
 
+// contains the item information
 class Item {
   Item({
     this.id,

@@ -5,7 +5,7 @@
 // Date-{03-09-2020}
 
 ///
-/// @fileoverview Shopping Cart Screen : Edit Cart Added items.
+/// @fileoverview Shopping Cart Screen : Summary of the shopping cart .
 ///
 
 import 'package:flutter/material.dart';
@@ -57,6 +57,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     _rzp.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   }
 
+  //
   getAllowedStatus() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();

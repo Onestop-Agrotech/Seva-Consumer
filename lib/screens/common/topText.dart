@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview TopText Widget : Customizable Text Widget.
+/// @fileoverview TopText Widget : common Text Widget.
 ///
 
 import 'package:flutter/material.dart';

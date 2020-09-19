@@ -1,16 +1,24 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview loading widget : loader for placing an order.
+///
+
 import 'package:flutter/material.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 
 class OrderLoader extends StatefulWidget {
   final String paymentId;
-  // final String orders;
   OrderLoader({@required this.paymentId});
 
   @override
@@ -41,7 +49,6 @@ class _OrderLoaderState extends State<OrderLoader> {
         paymentType: "online",
         deliveryPrice: "0",
         paymentTransactionId: responseId);
-    // if (double.parse(this.widget.orders) < 3.0) newOrder.deliveryPrice = "0";
     newOrder.customerFinalPrice =
         "${double.parse(newOrder.deliveryPrice) + double.parse(newOrder.finalItemsPrice)}";
     List<Item> itemList = [];

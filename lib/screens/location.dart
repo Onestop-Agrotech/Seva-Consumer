@@ -1,5 +1,14 @@
-import 'dart:convert';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{03-09-2020}
 
+///
+/// @fileoverview location widget : contains map for the location of the user.
+///
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -37,7 +46,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   bool _loader = false;
   Coordinates coordinates;
   String _subLocality = "";
-  TextEditingController _houreNo = new TextEditingController();
+  TextEditingController _houseno = new TextEditingController();
   TextEditingController _landmark = new TextEditingController();
   bool _housenoEmpty = false;
   bool _landmarkEmpty = false;
@@ -56,6 +65,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     getPermissions();
   }
 
+  // permission for the GPS(location)
   void getPermissions() async {
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
@@ -89,6 +99,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
+  // gets the current location of the user.
   void getCurrentLocation(ld) async {
     this.setState(() {
       _loader = true;
@@ -121,10 +132,12 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
+  // creates the map.
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
+  // sets the address of the delivery.
   _showFloatingActionButton() {
     if (_showActionBtn == true) {
       return Padding(
@@ -170,6 +183,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         new Coordinates(position.target.latitude, position.target.longitude);
   }
 
+  // change the location when switch to a different position on map.
   onMapsStop(coordinates) async {
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
@@ -198,6 +212,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
+  // field validation
   _showHouseEmptyError() {
     if (_housenoEmpty == true) {
       return Text(
@@ -208,6 +223,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       return Container();
   }
 
+  // field validation
   _showLandmarkEmptyError() {
     if (_landmarkEmpty == true) {
       return Text(
@@ -218,8 +234,9 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       return Container();
   }
 
+  // hits the api and stores the address in the database.
   _handleAddressAddition() async {
-    if (_houreNo.text == '') {
+    if (_houseno.text == '') {
       // handle empty error
       this.setState(() {
         _housenoEmpty = true;
@@ -236,18 +253,18 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         _housenoEmpty = false;
       });
       UserModel user = new UserModel();
-      String houseno = _houreNo.text.trim();
+      String houseno = _houseno.text.trim();
       String landmark = _landmark.text.trim();
       String geocodedaddress = _markerAddress;
       user.email = widget.userEmail;
       user.address = '$houseno,$landmark,$geocodedaddress';
       user.latitude = _lat.toString();
       user.longitude = _lng.toString();
-      _submitToDb(user, context);
+      _submitToDbhelper(user, context);
     }
   }
 
-  _submitToDb(UserModel user, context) async {
+  _submitToDbhelper(UserModel user, context) async {
     setState(() {
       _loader = true;
     });
@@ -359,7 +376,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
-              child: InputTextField(lt: "House No/Flat No:", eC: _houreNo),
+              child: InputTextField(lt: "House No/Flat No:", eC: _houseno),
             ),
             _showHouseEmptyError(),
             Padding(

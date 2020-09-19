@@ -7,10 +7,9 @@
 ///
 /// @fileoverview Login Widget : MobileVerification,OTP are declared here.
 ///
+
 import 'dart:io' show Platform;
-
 import 'package:flutter/services.dart';
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -94,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // otp timer
   _startTimer() {
     _start = 60;
     const oneSec = const Duration(seconds: 1);
@@ -116,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // shows the otp loader till the sms mssg arrives
   _showOTPLoader() {
     if (_otpLoader)
       return CircularProgressIndicator();
@@ -123,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return Container();
   }
 
+  // basic loader
   _showLoader() {
     if (_loading) {
       return CircularProgressIndicator();
@@ -157,6 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ));
   }
 
+  // error check for invalid mobile
   _showInvalidMobile() {
     if (_inavlidMobile)
       return Text(
@@ -167,6 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return Container();
   }
 
+  // error check for invalid otp
   _showInvalidOTP() {
     if (_invalidOTP)
       return Text(
@@ -177,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return Container();
   }
 
+  // verifies the mobile
   _verifyMobile() async {
     if (Platform.isAndroid) {
       platform.invokeMethod("getSMS");
@@ -210,6 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  //verifies the otp
   _verifyOTP(otp) async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -276,7 +282,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              // SizedBox(height: 2.00 * SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.all(25.0),
                 child: Row(
@@ -300,7 +305,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              // SizedBox(height: 3.11 * SizeConfig.textMultiplier),
               Padding(
                 padding: const EdgeInsets.only(left: 40.0),
                 child: Row(
@@ -356,7 +360,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     _showInvalidMobile(),
-                    // SizedBox(height: 1.2 * SizeConfig.textMultiplier),
                     showOTPField
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -429,9 +432,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: MediaQuery.of(context).viewInsets.bottom,
-              // ),
             ]),
           ),
         ),

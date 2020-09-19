@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview AnimateCard Widget : .
+/// @fileoverview AnimateCard Modal : common product card.
 ///
 
 import 'dart:math';
@@ -16,7 +16,6 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
-
 import 'modalContainer.dart';
 
 class AnimatedCard extends StatefulWidget {
@@ -110,6 +109,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       ? animationController.forward()
       : animationController.reverse();
 
+  // alert box while deleting
   void _showDeleteAlert(newCart, context) {
     showDialog(
         context: context,
