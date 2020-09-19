@@ -11,6 +11,9 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
@@ -363,11 +366,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       drawer: SizedBox(
         width: width * 0.5,
         child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
+          child: Column(
+            // padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
                 height: height * 0.15,
+                width: width * 0.5,
                 child: DrawerHeader(
                   child:
                       TopText(txt: _username != null ? _username : "Username"),
@@ -392,6 +396,40 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/login', (Route<dynamic> route) => false);
                 },
+              ),
+              ListTile(
+                title: Text('Help'),
+                subtitle: Text("Reach us on whatsapp"),
+                onTap: () async {
+                  var url = DotEnv().env['MSG_URL'];
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+              ),
+              ListTile(
+                title: Text('Share app'),
+                onTap: () {
+                  String msg = ''' 
+                  Order Fresh Fruits 🍎 🍐 🍊, Vegetables 🥦 🥕 🧅 and Daily Essentials 🥚 🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
+                  ''';
+                  Share.share(msg);
+                },
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: ListTile(
+                      title: Text('App version - Beta'),
+                      subtitle: Text("0.4.9"),
+                      onTap: null,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
