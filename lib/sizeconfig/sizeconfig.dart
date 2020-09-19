@@ -36,5 +36,7 @@ class SizeConfig {
     imageSizeMultiplier = _blockWidth;
     heightMultiplier = _blockHeight;
     widthMultiplier = _blockWidth;
+    print(textMultiplier);
   }
+
 }

@@ -480,7 +480,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                       _current = index;
                                     });
                                   },
-                                  height: 400,
+                                  height: SizeConfig.heightMultiplier*48.2,
                                   aspectRatio: 16 / 9,
                                   viewportFraction: 0.8,
                                   initialPage: 0,
