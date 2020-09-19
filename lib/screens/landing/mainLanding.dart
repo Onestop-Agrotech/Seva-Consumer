@@ -366,11 +366,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       drawer: SizedBox(
         width: width * 0.5,
         child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
+          child: Column(
+            // padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
                 height: height * 0.15,
+                width: width*0.5,
                 child: DrawerHeader(
                   child:
                       TopText(txt: _username != null ? _username : "Username"),
@@ -417,10 +418,18 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   Share.share(msg);
                 },
               ),
-              ListTile(
-                title: Text('App version - Beta'),
-                subtitle: Text("0.4.9"),
-                onTap: null,
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: ListTile(
+                      title: Text('App version - Beta'),
+                      subtitle: Text("0.4.9"),
+                      onTap: null,
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
