@@ -11,6 +11,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
@@ -391,6 +392,24 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   preferences.clear();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/login', (Route<dynamic> route) => false);
+                },
+              ),
+              ListTile(
+                title: Text('Help'),
+                subtitle: Text("Reach us on whatsapp"),
+                onTap: () async {
+                  const url = 'https://api.whatsapp.com/send?phone=+918595179521';
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+              ),
+              ListTile(
+                title: Text('Share app'),
+                onTap: ()  {
+                  
                 },
               ),
             ],
