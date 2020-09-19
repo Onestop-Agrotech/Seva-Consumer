@@ -24,7 +24,7 @@ class ProductsUINew extends StatefulWidget {
 class _ProductsUINewState extends State<ProductsUINew> {
   // TODO: Need to convert this static array to dynamic
   // will receive from server
-  /// This Array is populated by the ListView Builder to show on 
+  /// This Array is populated by the ListView Builder to show on
   /// the left side of the screen (1st row)
   final List<String> catArray = [
     "Vegetables",
@@ -38,10 +38,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
     "Snacks",
     "Ready to Eat",
   ];
-  /// This tag will be used for 2 things mainly - 
+
+  /// This tag will be used for 2 things mainly -
   /// 1. To make sure the API calls are dynamic
   /// 2. To handle any UI chnanges (for eg - TextStyle change if selected)
-  /// We can pass in the tag through constructor as well when we click on 
+  /// We can pass in the tag through constructor as well when we click on
   /// one of the categories from MainLanding screen
   /// and tag value is not mutated but same value can be
   /// used by multiple instances, so we can use - static
@@ -50,15 +51,16 @@ class _ProductsUINewState extends State<ProductsUINew> {
   @override
   initState() {
     super.initState();
+
     /// Intialize it to 0 - by default to get Vegetables
     /// as it is on the first List Tile
     tag = 0;
   }
 
   /// A common [Future] to GET products as per the category
-  /// It depends on the [tag] variable and also this can 
-  /// be optimised instead of [Switch] statement 
-  /// This is should be replaced by the Generic API system 
+  /// It depends on the [tag] variable and also this can
+  /// be optimised instead of [Switch] statement
+  /// This is should be replaced by the Generic API system
   /// which also has BLOC pattern
   Future<List<StoreProduct>> getProducts() async {
     String type = '';
@@ -91,14 +93,14 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   /// this func returns the cards widget
   /// Currently it only shows 2 things
-  /// 1. Picture 
+  /// 1. Picture
   /// 2. Name of product
-  /// It requires the [StoreProduct] object to extract 
+  /// It requires the [StoreProduct] object to extract
   /// picture and name from the object
   Widget getCard(StoreProduct p) {
     /// The entire card is Gesture Detector widget so that if the user
     /// taps on the card, there is a smooth animation to the Product
-    /// Details screen of the particular product, and it requires the same 
+    /// Details screen of the particular product, and it requires the same
     /// instance of the [StoreProduct] to be sent
     return GestureDetector(
       onTap: () {
@@ -112,13 +114,14 @@ class _ProductsUINewState extends State<ProductsUINew> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            /// This shows the picture in a constrained box to make sure the 
+            /// This shows the picture in a constrained box to make sure the
             /// resolution is maintained and it is not distorted
             /// Can be edited if the need arises to optimise
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 60, maxHeight: 60),
-              /// The hero animation when tapped, makes sure there is a smooth 
-              /// transition to the details page. [tag] & [imageUrl] should be same here 
+
+              /// The hero animation when tapped, makes sure there is a smooth
+              /// transition to the details page. [tag] & [imageUrl] should be same here
               /// and in the product details page for the animation to work
               child: Hero(
                 tag: p.name,

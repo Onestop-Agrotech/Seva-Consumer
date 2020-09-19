@@ -15,18 +15,15 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(maxWidth: 200, maxHeight: 220),
-            child: Hero(
-              tag: this.widget.p.name,
-              child: CachedNetworkImage(
-                  imageUrl: this.widget.p.pictureURL),
-            ),
+          child: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: 200, maxHeight: 220),
+          child: Hero(
+            tag: this.widget.p.name,
+            child: CachedNetworkImage(imageUrl: this.widget.p.pictureURL),
           ),
-        )
-      ),
-      
+        ),
+      )),
     );
   }
 }
