@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview AnimateCard Widget : .
+/// @fileoverview AnimateCard Modal : common product card.
 ///
 
 import 'dart:math';
@@ -16,7 +16,6 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
-
 import 'modalContainer.dart';
 
 class AnimatedCard extends StatefulWidget {
@@ -68,14 +67,16 @@ class _AnimatedCardState extends State<AnimatedCard>
               1000.0) *
           widget.product.details[0].price;
     }
-    // For Pc, Kgs & Ltr
+    // For Pc, Pack, Kgs & Ltr
     else if (widget
                 .product.details[0].quantity.allowedQuantities[index].metric ==
             "Pc" ||
         widget.product.details[0].quantity.allowedQuantities[index].metric ==
             "Kgs" ||
         widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "Ltr") {
+            "Ltr" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pack") {
       q = double.parse(
           "${widget.product.details[0].quantity.allowedQuantities[index].value}");
       p = widget.product.details[0].price * q;
@@ -110,6 +111,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       ? animationController.forward()
       : animationController.reverse();
 
+  // alert box while deleting
   void _showDeleteAlert(newCart, context) {
     showDialog(
         context: context,

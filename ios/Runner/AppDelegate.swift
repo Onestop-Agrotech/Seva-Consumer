@@ -9,9 +9,13 @@ import Firebase
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    var flutter_native_splash = 1
+
     UIApplication.shared.isStatusBarHidden = false
-    GMSServices.provideAPIKey("AIzaSyDsyD8-n3nXwZuyE4nOu9VEWUb9iJJYbD4")
+    let filePath = Bundle.main.path(forResource: "Keys", ofType: "plist")
+    let k = NSDictionary(contentsOfFile:filePath!)
+    let GmapsAPIKey = k?.object(forKey: "GoogleMapsAPIKey") as! String
+    
+    GMSServices.provideAPIKey(GmapsAPIKey)
     FirebaseApp.configure()
 
     GeneratedPluginRegistrant.register(with: self)

@@ -32,6 +32,7 @@ class _IntroScreenState extends State<IntroScreen> {
     });
   }
 
+  // last content displayed on the intro screen.
   Column _lastContent(context) {
     double sWidth = MediaQuery.of(context).size.width;
     if (_index == 3) {
@@ -68,6 +69,7 @@ class _IntroScreenState extends State<IntroScreen> {
       );
   }
 
+  // content displayed on the intro screen
   IndexedStack _buildStack() {
     if (_index == 3)
       return IndexedStack(
@@ -97,6 +99,7 @@ class _IntroScreenState extends State<IntroScreen> {
     }
   }
 
+  // register and next button.
   ButtonTheme _buildButton() {
     return ButtonTheme(
       minWidth: 13.5 * SizeConfig.textMultiplier,

@@ -17,6 +17,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/screens/orders/orderCards.dart';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 
 class NewOrdersScreen extends StatefulWidget {
   @override
@@ -35,6 +36,27 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
   void dispose() {
     x.cancel();
     super.dispose();
+  }
+
+// shimmer layout before page loads
+  _shimmerLayout(width, height) {
+    return ListView(
+      children: <Widget>[
+        SizedBox(height: 10),
+        for (int i = 0; i < 6; i++)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey,
+              ),
+              width: height * 0.45,
+              height: height * 0.18,
+            ),
+          )
+      ],
+    );
   }
 
   _getOrderOfUser() async {
@@ -56,6 +78,8 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -122,7 +146,13 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
                 )),
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Shimmer.fromColors(
+                highlightColor: Colors.white,
+                baseColor: Colors.grey[300],
+                child: Container(
+                  child: _shimmerLayout(width, height),
+                ),
+              );
             }
           }),
     );

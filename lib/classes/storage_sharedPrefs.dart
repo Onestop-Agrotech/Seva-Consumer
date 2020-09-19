@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+/// @fileoverview storage preferences : sets and gets all the tokens and ids.
+///
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageSharedPrefs {

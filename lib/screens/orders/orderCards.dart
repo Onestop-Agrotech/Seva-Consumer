@@ -23,6 +23,7 @@ class OrdersCard extends StatefulWidget {
 }
 
 class _OrdersCardState extends State<OrdersCard> {
+  // shows the details of the order
   void showDetails() {
     showModalBottomSheet(
         context: context,
@@ -33,6 +34,7 @@ class _OrdersCardState extends State<OrdersCard> {
         });
   }
 
+  // returning time of the order
   Text returnOrderTime(DateTime time) {
     var hour;
     var isAM = true;

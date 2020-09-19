@@ -44,6 +44,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     _checkConnection();
   }
 
+  // check the connectivity of the user.
   _checkConnection() async {
     try {
       final result = await InternetAddress.lookup('google.com');
@@ -58,6 +59,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
+  // according to the connectivity send responses to the server.
   _sendReqToServer(token) async {
     String url = APIService.mainTokenAPI;
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -82,6 +84,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     _changePage();
   }
 
+  // looks for the token of the user.
   _checkForUserToken() async {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -97,6 +100,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
+  // route to the intro screen if user gets connected to the internet.
   _changePage() async {
     if (_showLoginScreen == true) {
       Navigator.pushReplacement(

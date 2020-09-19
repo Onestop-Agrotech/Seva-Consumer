@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview DescriptionIntro Widget : gives the description of the intro screen.
+/// @fileoverview DescriptionIntro Widget: Intro Seva loader.
 ///
 
 import 'package:flutter/material.dart';

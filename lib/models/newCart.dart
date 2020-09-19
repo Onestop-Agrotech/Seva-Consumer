@@ -1,5 +1,14 @@
-import 'dart:collection';
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
 
+///
+/// @fileoverview new cart model : models the cart with database.
+///
+
+import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:mvp/models/storeProducts.dart';
 
@@ -73,26 +82,24 @@ class NewCartModel extends ChangeNotifier {
     // check if items exist in cart
     if (_cartItems.length > 0) {
       // check if product exist in cart
-      _cartItems.forEach((e) {
-        if (e.id == item.id) {
+      _cartItems.forEach((cartitem) {
+        if (cartitem.id == item.id) {
           // check for total Price of that item
-          double pDiff = e.totalPrice - p;
-          if (pDiff == 0) {
-            // remove from cart
-            remove = true;
-            return;
-          } else {
-            // just remove the desired quantity
-            item.details.forEach((element) {
-              if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
-                element.quantity.allowedQuantities[index].qty -= 1;
-                e.totalPrice -= p;
-                e.totalQuantity -= q;
+          // just remove the desired quantity
+          cartitem.details.forEach((element) {
+            if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
+              element.quantity.allowedQuantities[index].qty -= 1;
+              cartitem.totalPrice -= p;
+              cartitem.totalQuantity -= q;
+              if (cartitem.totalPrice == 0) {
+                // remove from cart
+                remove = true;
+                return;
               }
-            });
+            }
+          });
 
-            return;
-          }
+          return;
         }
       });
     }
@@ -103,7 +110,9 @@ class NewCartModel extends ChangeNotifier {
       item.totalPrice -= p;
       item.totalQuantity -= q;
       int i = _cartItems.indexOf(item);
-      _cartItems.removeAt(i);
+      if (i >= 0) {
+        _cartItems.removeAt(i);
+      }
     }
     notifyListeners();
   }

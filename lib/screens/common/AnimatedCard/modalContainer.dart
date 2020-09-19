@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview ModalContainer : .
+/// @fileoverview ModalContainer modal : contains the info about the product.
 ///
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -47,14 +47,16 @@ class _AddItemModalState extends State<AddItemModal> {
               1000.0) *
           widget.product.details[0].price;
     }
-    // For Pc, Kgs & Ltr
+    // For Pc, Pack, Kgs & Ltr
     else if (widget
                 .product.details[0].quantity.allowedQuantities[index].metric ==
             "Pc" ||
         widget.product.details[0].quantity.allowedQuantities[index].metric ==
             "Kgs" ||
         widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "Ltr") {
+            "Ltr" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pack") {
       q = double.parse(
           "${widget.product.details[0].quantity.allowedQuantities[index].value}");
       p = widget.product.details[0].price * q;
@@ -66,6 +68,7 @@ class _AddItemModalState extends State<AddItemModal> {
       newCart.removeFromNewCart(widget.product, p, q, index);
   }
 
+  // shows/edit the quantity of the product
   Text _showQ(newCart, item, index) {
     int qty = 0;
     newCart.items.forEach((e) {
@@ -76,6 +79,7 @@ class _AddItemModalState extends State<AddItemModal> {
     return Text("$qty");
   }
 
+  // shows/edit the total price of a particular item
   Text _showItemTotalPrice(newCart) {
     double price = 0;
     newCart.items.forEach((e) {
@@ -87,12 +91,13 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 2.30 * SizeConfig.textMultiplier,
+        fontSize: 1.9 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
   }
 
+  // shows/edit the total quantity of the product
   Text _showTotalItemQty(newCart) {
     double totalQ = 0.0;
     newCart.items.forEach((e) {
@@ -107,12 +112,13 @@ class _AddItemModalState extends State<AddItemModal> {
           : "0",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 20.0,
+        fontSize: 1.9 * SizeConfig.heightMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
   }
 
+  // shows/edit the total cart price
   Text _showTotalCartPrice(newCart) {
     double price;
     price = newCart.getCartTotalPrice();
@@ -120,7 +126,7 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 2.30 * SizeConfig.textMultiplier,
+        fontSize: 1.9 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -205,7 +211,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                       style: TextStyle(
                                           color: ThemeColoursSeva().dkGreen,
                                           fontSize:
-                                              2.3 * SizeConfig.textMultiplier,
+                                              1.9 * SizeConfig.textMultiplier,
                                           fontWeight: FontWeight.w300),
                                     ),
                                     SizedBox(height: 10.0)
@@ -275,7 +281,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Quantity",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
+                        fontSize: 1.9 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -290,7 +296,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 2.3 * SizeConfig.heightMultiplier,
+                        fontSize: 1.9 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -305,7 +311,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Cart Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 2.3 * SizeConfig.textMultiplier,
+                        fontSize: 1.9 * SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
