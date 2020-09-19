@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/details.dart';
+import 'package:mvp/productsNew/details.dart';
 import 'package:http/http.dart' as http;
 
 class ProductsUINew extends StatefulWidget {

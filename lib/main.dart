@@ -16,7 +16,7 @@ import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/loading.dart';
-import 'package:mvp/screens/newUI.dart';
+import 'package:mvp/productsNew/newUI.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
