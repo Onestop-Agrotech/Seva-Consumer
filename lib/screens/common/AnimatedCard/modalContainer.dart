@@ -47,14 +47,16 @@ class _AddItemModalState extends State<AddItemModal> {
               1000.0) *
           widget.product.details[0].price;
     }
-    // For Pc, Kgs & Ltr
+    // For Pc, Pack, Kgs & Ltr
     else if (widget
                 .product.details[0].quantity.allowedQuantities[index].metric ==
             "Pc" ||
         widget.product.details[0].quantity.allowedQuantities[index].metric ==
             "Kgs" ||
         widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "Ltr") {
+            "Ltr" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pack") {
       q = double.parse(
           "${widget.product.details[0].quantity.allowedQuantities[index].value}");
       p = widget.product.details[0].price * q;
