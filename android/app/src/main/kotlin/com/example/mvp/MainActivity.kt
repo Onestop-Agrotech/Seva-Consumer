@@ -104,6 +104,9 @@ class MainActivity: FlutterActivity() {
                     // credential.id()
                     channel.invokeMethod("phone", credential.id)
 
+                } else {
+                    // none of the above
+                    channel.invokeMethod("phone",null)
                 }
             SMS_CONSENT_REQUEST ->
                 // Obtain the phone number from the result

@@ -107,7 +107,7 @@ class _AddItemModalState extends State<AddItemModal> {
           : "0",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 20.0,
+        fontSize: 2.3 * SizeConfig.heightMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -275,7 +275,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Quantity",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 20.0,
+                        fontSize: 2.3 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

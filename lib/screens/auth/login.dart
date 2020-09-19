@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _invalidOTP = false;
   bool _otpLoader = false;
   // bool _readonly = true;
-  final _mobileFocus = FocusNode();
+  FocusNode _mobileFocus;
   final _mobileController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   // Timer _timer;
@@ -66,17 +66,23 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   initState() {
     super.initState();
+    _mobileFocus = FocusNode();
     try {
       if (Platform.isAndroid) {
         platform.setMethodCallHandler((call) {
           switch (call.method) {
             case "phone":
-              _mobileController.text = call.arguments.toString().substring(3);
+              if (call.arguments.toString() == "null") {
+                _mobileFocus.requestFocus();
+              } else
+                _mobileController.text = call.arguments.toString().substring(3);
               break;
             case "sms":
               _otpEditingController.text = call.arguments.toString();
               break;
+            default:
           }
+          return;
         });
       }
     } catch (e) {}
@@ -84,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _mobileFocus.dispose();
     super.dispose();
   }
 
@@ -341,8 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () async {
                           if (Platform.isAndroid) {
                             // only Android has sms user consent api
-                            if (_mobileController.text == null ||
-                                _mobileController.text == "") {
+                            if (!_mobileFocus.hasFocus) {
                               await _getPhoneNumber();
                             }
                           }

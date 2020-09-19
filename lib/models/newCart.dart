@@ -73,21 +73,21 @@ class NewCartModel extends ChangeNotifier {
     // check if items exist in cart
     if (_cartItems.length > 0) {
       // check if product exist in cart
-      _cartItems.forEach((e) {
-        if (e.id == item.id) {
+      _cartItems.forEach((cartitem) {
+        if (cartitem.id == item.id) {
           // check for total Price of that item
-          double pDiff = e.totalPrice - p;
+          double pDiff = cartitem.totalPrice;
           if (pDiff == 0) {
             // remove from cart
             remove = true;
             return;
           } else {
             // just remove the desired quantity
-            item.details.forEach((element) {
+            cartitem.details.forEach((element) {
               if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
                 element.quantity.allowedQuantities[index].qty -= 1;
-                e.totalPrice -= p;
-                e.totalQuantity -= q;
+                cartitem.totalPrice -= p;
+                cartitem.totalQuantity -= q;
               }
             });
 
