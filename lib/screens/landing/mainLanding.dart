@@ -371,7 +371,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             children: <Widget>[
               SizedBox(
                 height: height * 0.15,
-                width: width*0.5,
+                width: width * 0.5,
                 child: DrawerHeader(
                   child:
                       TopText(txt: _username != null ? _username : "Username"),
