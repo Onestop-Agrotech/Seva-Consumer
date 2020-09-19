@@ -11,6 +11,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -399,8 +400,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 title: Text('Help'),
                 subtitle: Text("Reach us on whatsapp"),
                 onTap: () async {
-                  const url =
-                      'https://api.whatsapp.com/send?phone=+918595179521';
+                  var url = DotEnv().env['MSG_URL'];
                   if (await canLaunch(url)) {
                     await launch(url);
                   } else {

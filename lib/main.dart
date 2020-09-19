@@ -9,6 +9,7 @@
 ///
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
@@ -21,7 +22,8 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+Future main() async {
+  await DotEnv().load('.env');
   runApp(SevaApp());
 }
 
