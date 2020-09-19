@@ -76,23 +76,21 @@ class NewCartModel extends ChangeNotifier {
       _cartItems.forEach((cartitem) {
         if (cartitem.id == item.id) {
           // check for total Price of that item
-          double pDiff = cartitem.totalPrice;
-          if (pDiff == 0) {
-            // remove from cart
-            remove = true;
-            return;
-          } else {
-            // just remove the desired quantity
-            cartitem.details.forEach((element) {
-              if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
-                element.quantity.allowedQuantities[index].qty -= 1;
-                cartitem.totalPrice -= p;
-                cartitem.totalQuantity -= q;
+          // just remove the desired quantity
+          cartitem.details.forEach((element) {
+            if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
+              element.quantity.allowedQuantities[index].qty -= 1;
+              cartitem.totalPrice -= p;
+              cartitem.totalQuantity -= q;
+              if (cartitem.totalPrice == 0) {
+                // remove from cart
+                remove = true;
+                return;
               }
-            });
+            }
+          });
 
-            return;
-          }
+          return;
         }
       });
     }
@@ -103,7 +101,9 @@ class NewCartModel extends ChangeNotifier {
       item.totalPrice -= p;
       item.totalQuantity -= q;
       int i = _cartItems.indexOf(item);
-      _cartItems.removeAt(i);
+      if (i >= 0) {
+        _cartItems.removeAt(i);
+      }
     }
     notifyListeners();
   }

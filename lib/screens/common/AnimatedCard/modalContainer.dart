@@ -87,7 +87,7 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 2.30 * SizeConfig.textMultiplier,
+        fontSize: 1.9 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -107,7 +107,7 @@ class _AddItemModalState extends State<AddItemModal> {
           : "0",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 2.3 * SizeConfig.heightMultiplier,
+        fontSize: 1.9 * SizeConfig.heightMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -120,7 +120,7 @@ class _AddItemModalState extends State<AddItemModal> {
       "Rs $price",
       style: TextStyle(
         color: ThemeColoursSeva().dkGreen,
-        fontSize: 2.30 * SizeConfig.textMultiplier,
+        fontSize: 1.9 * SizeConfig.textMultiplier,
         fontWeight: FontWeight.w500,
       ),
     );
@@ -205,7 +205,7 @@ class _AddItemModalState extends State<AddItemModal> {
                                       style: TextStyle(
                                           color: ThemeColoursSeva().dkGreen,
                                           fontSize:
-                                              2.3 * SizeConfig.textMultiplier,
+                                              1.9 * SizeConfig.textMultiplier,
                                           fontWeight: FontWeight.w300),
                                     ),
                                     SizedBox(height: 10.0)
@@ -275,7 +275,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Quantity",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 2.3 * SizeConfig.heightMultiplier,
+                        fontSize: 1.9 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -290,7 +290,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Item Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 2.3 * SizeConfig.heightMultiplier,
+                        fontSize: 1.9 * SizeConfig.heightMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -305,7 +305,7 @@ class _AddItemModalState extends State<AddItemModal> {
                       "Cart Total Price",
                       style: TextStyle(
                         color: ThemeColoursSeva().dkGreen,
-                        fontSize: 2.3 * SizeConfig.textMultiplier,
+                        fontSize: 1.9 * SizeConfig.textMultiplier,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
