@@ -12,6 +12,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
@@ -409,7 +410,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ),
               ListTile(
                 title: Text('Share app'),
-                onTap: () {},
+                onTap: () {
+                  String msg = ''' 
+                  Order Fresh Fruits 🍎🍐🍊, Vegetables 🥦🥕🧅 and Daily Essentials 🥚🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
+                  ''';
+                  Share.share(msg);
+                },
               ),
               ListTile(
                 title: Text('App version - Beta'),
