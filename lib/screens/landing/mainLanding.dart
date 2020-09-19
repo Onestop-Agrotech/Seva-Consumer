@@ -398,7 +398,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 title: Text('Help'),
                 subtitle: Text("Reach us on whatsapp"),
                 onTap: () async {
-                  const url = 'https://api.whatsapp.com/send?phone=+918595179521';
+                  const url =
+                      'https://api.whatsapp.com/send?phone=+918595179521';
                   if (await canLaunch(url)) {
                     await launch(url);
                   } else {
@@ -408,9 +409,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ),
               ListTile(
                 title: Text('Share app'),
-                onTap: ()  {
-                  
-                },
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text('App version - Beta'),
+                subtitle: Text("0.4.9"),
+                onTap: null,
               ),
             ],
           ),
