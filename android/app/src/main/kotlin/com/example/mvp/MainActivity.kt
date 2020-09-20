@@ -20,13 +20,11 @@ import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 
 // FOR IN APP UPDATES
-import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 
+// Utilities
 import android.util.Log
 
 class MainActivity: FlutterActivity() {
@@ -76,10 +74,9 @@ class MainActivity: FlutterActivity() {
 
             }
         }
-
-
     }
 
+    // check for update, if exists then update
     private fun doUpdate(){
         // Creates instance of the manager.
         val appUpdateManager = AppUpdateManagerFactory.create(context)
