@@ -34,7 +34,6 @@ class SevaApp extends StatefulWidget {
 }
 
 class _SevaAppState extends State<SevaApp> {
-
   /// platform client for invoking in-app updates
   static const platform = const MethodChannel('update_app');
 
@@ -42,10 +41,11 @@ class _SevaAppState extends State<SevaApp> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
     /// check for update, if one exists, then perform the update
     /// else just continue with app
-    /// Only supported for android 
-    if(Platform.isAndroid){
+    /// Only supported for android
+    if (Platform.isAndroid) {
       platform.invokeMethod("checkForUpdate");
     }
   }
