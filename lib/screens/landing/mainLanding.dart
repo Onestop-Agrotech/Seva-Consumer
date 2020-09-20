@@ -1,8 +1,8 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{02-09-2020}
+// Version-0.5.0
+// Date-{20-09-2020}
 
 ///
 ///@fileoverview MainLanding Widget : This is the main landing screen after the user
@@ -116,9 +116,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       String url = APIService.setDeviceTokenInFirestore;
       var response = await http.post(url, headers: requestHeaders, body: body);
       if (response.statusCode == 200) {
-        print("SUCCESS");
-      } else
-        print("FAILURE TO SET");
+        /// ("SUCCESS");
+      } else {
+        /// ("FAILURE TO SET");
+      }
     }
   }
 
