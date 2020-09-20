@@ -56,6 +56,7 @@ class MainActivity: FlutterActivity() {
                                 SmsRetriever.getClient(context).startSmsUserConsent(senderPhoneNumber /* or null */)
                                 registerReceiver(smsVerificationReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
                             }
+                        "unregisterReceiver" -> unregisterReceiver(smsVerificationReceiver)
 
                     }
 
