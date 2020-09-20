@@ -1,10 +1,7 @@
-package com.example.mvp
+package com.theonestop.seva
 
 import android.app.Activity
 import android.content.*
-import android.os.Build
-import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
