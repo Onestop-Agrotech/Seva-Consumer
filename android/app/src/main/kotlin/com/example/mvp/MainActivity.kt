@@ -19,6 +19,12 @@ import com.google.android.gms.auth.api.credentials.HintRequest
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.common.api.CommonStatusCodes
 
+// FOR IN APP UPDATES
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+
+// Utilities
 import android.util.Log
 
 class MainActivity: FlutterActivity() {
@@ -26,14 +32,21 @@ class MainActivity: FlutterActivity() {
     private val CHANNEL = "sms_user_api"
     private lateinit var channel: MethodChannel
 
+    // For In App Updates
+    private val UPDATECHANNEL = "update_app"
+    private lateinit var updateChannel: MethodChannel
+
     // For request hint code
     private val CREDENTIAL_PICKER_REQUEST = 1  // Set to an unused request code
     // For getting back the SMS
     private val SMS_CONSENT_REQUEST = 2
+    // For in app update call back
+    private val IN_APP_UPDATE = 3
 
     // Flutter Method Channel API
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        // SMS USER CONSENT
         channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
         channel.setMethodCallHandler{
                     call, result ->
@@ -50,6 +63,45 @@ class MainActivity: FlutterActivity() {
                     }
 
                 }
+        // IN APP UPDATES
+        updateChannel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, UPDATECHANNEL)
+        updateChannel.setMethodCallHandler {
+            call, result ->
+            when(call.method){
+                "checkForUpdate" -> {
+                    doUpdate()
+                }
+
+            }
+        }
+    }
+
+    // check for update, if exists then update
+    private fun doUpdate(){
+        // Creates instance of the manager.
+        val appUpdateManager = AppUpdateManagerFactory.create(context)
+
+        // Returns an intent object that you use to check for an update.
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    // check if update type - IMMEDIATE can be allowed
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                // Request the update.
+                appUpdateManager.startUpdateFlowForResult(
+                        // Pass the intent that is returned by 'getAppUpdateInfo()'.
+                        appUpdateInfo,
+                        // Or 'AppUpdateType.FLEXIBLE' for flexible updates.
+                        AppUpdateType.IMMEDIATE,
+                        // The current activity making the update request.
+                        this,
+                        // Include a request code to later monitor this update request.
+                        IN_APP_UPDATE)
+            }
+        }
     }
 
     private val smsVerificationReceiver = object : BroadcastReceiver(){
@@ -123,6 +175,11 @@ class MainActivity: FlutterActivity() {
                     // send one time code to the server
                 } else {
                     // Consent denied. User can type OTC manually.
+                }
+            IN_APP_UPDATE ->
+                if(resultCode != Activity.RESULT_OK){
+                    // update has failed
+                    Log.d("update", "Android failed to update")
                 }
         }
     }
