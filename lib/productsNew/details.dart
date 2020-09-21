@@ -17,7 +17,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-              child: Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
@@ -27,7 +27,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   constraints: BoxConstraints(maxWidth: 200, maxHeight: 220),
                   child: Hero(
                     tag: this.widget.p.name,
-                    child: CachedNetworkImage(imageUrl: this.widget.p.pictureURL),
+                    child:
+                        CachedNetworkImage(imageUrl: this.widget.p.pictureURL),
                   ),
                 ),
               ],

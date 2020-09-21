@@ -15,6 +15,7 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/productsNew/details.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ProductsUINew extends StatefulWidget {
   @override
@@ -111,32 +112,32 @@ class _ProductsUINewState extends State<ProductsUINew> {
         }));
       },
       child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-      /// This shows the picture in a constrained box to make sure the
-      /// resolution is maintained and it is not distorted
-      /// Can be edited if the need arises to optimise
-      ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 60, maxHeight: 60),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            /// This shows the picture in a constrained box to make sure the
+            /// resolution is maintained and it is not distorted
+            /// Can be edited if the need arises to optimise
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: 60, maxHeight: 60),
 
-        /// The hero animation when tapped, makes sure there is a smooth
-        /// transition to the details page. [tag] & [imageUrl] should be same here
-        /// and in the product details page for the animation to work
-        child: Hero(
-          tag: p.name,
-          child: CachedNetworkImage(imageUrl: p.pictureURL),
+              /// The hero animation when tapped, makes sure there is a smooth
+              /// transition to the details page. [tag] & [imageUrl] should be same here
+              /// and in the product details page for the animation to work
+              child: Hero(
+                tag: p.name,
+                child: CachedNetworkImage(imageUrl: p.pictureURL),
+              ),
+            ),
+            Text(
+              p.name,
+              style: TextStyle(fontSize: 1.5 * SizeConfig.textMultiplier),
+              overflow: TextOverflow.clip,
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
-      Text(
-        p.name,
-        style: TextStyle(fontSize: 14.0),
-        overflow: TextOverflow.clip,
-        textAlign: TextAlign.center,
-      ),
-            ],
-          ),
-        ),
     );
   }
 
@@ -162,7 +163,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
             child: Align(
               alignment: Alignment.topLeft,
               child: SizedBox(
-                width: width * 0.13,
+                width: width * 0.17,
                 child: Container(
                   decoration: BoxDecoration(color: Colors.grey.shade200),
                   child: ListView.builder(
@@ -185,7 +186,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                             title: Text(
                               catArray[index],
                               style: TextStyle(
-                                fontSize: 13.0,
+                                fontSize: 1.7 * SizeConfig.textMultiplier,
                                 // decoration: tag == index
                                 //     ? TextDecoration.underline
                                 //     : TextDecoration.none
@@ -212,10 +213,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
               // height: height * 0.89,
-              width: width * 0.320,
+              width: 69 * SizeConfig.widthMultiplier,
+              // width: 65 * SizeConfig.widthMultiplier,
               child: FutureBuilder(
                   future: getProducts(),
                   builder: (context, snapshot) {
