@@ -150,6 +150,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Exp UI"),
+        // backgroundColor: Colors.white,
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
