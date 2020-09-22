@@ -6,7 +6,8 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ProductDetails extends StatefulWidget {
   final StoreProduct p;
-  ProductDetails({@required this.p});
+  final String cat;
+  ProductDetails({@required this.p,this.cat});
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
@@ -16,10 +17,16 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(widget.cat),
+      ),
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(
+              height: 30,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

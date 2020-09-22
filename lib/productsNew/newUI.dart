@@ -40,7 +40,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     "Snacks",
     "Ready to Eat",
   ];
-
+String _category;
   /// This tag will be used for 2 things mainly -
   /// 1. To make sure the API calls are dynamic
   /// 2. To handle any UI chnanges (for eg - TextStyle change if selected)
@@ -78,6 +78,9 @@ class _ProductsUINewState extends State<ProductsUINew> {
         break;
       default:
     }
+    this.setState(() {
+      _category=catArray[tag];
+    });
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -95,7 +98,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   // shimmer layout before page loads
   _shimmerLayout() {
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12];
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: GridView.count(
@@ -130,6 +133,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return ProductDetails(
             p: p,
+            cat:_category
           );
         }));
       },
@@ -203,7 +207,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                             title: Text(
                               catArray[index],
                               style: TextStyle(
-                                fontSize: 1.7 * SizeConfig.textMultiplier,
+                                fontSize: 1.5 * SizeConfig.textMultiplier,
                               ),
                             ),
                             onTap: () {
