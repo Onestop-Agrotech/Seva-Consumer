@@ -16,6 +16,7 @@ import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/productsNew/details.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductsUINew extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class ProductsUINew extends StatefulWidget {
 }
 
 class _ProductsUINewState extends State<ProductsUINew> {
-  // TODO: Need to convert this static array to dynamic
+  // Todo: Need to convert this static array to dynamic
   // will receive from server
   /// This Array is populated by the ListView Builder to show on
   /// the left side of the screen (1st row)
@@ -92,6 +93,27 @@ class _ProductsUINewState extends State<ProductsUINew> {
     }
   }
 
+  // shimmer layout before page loads
+  _shimmerLayout() {
+    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        children: array.map((e) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey,
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   /// this func returns the cards widget
   /// Currently it only shows 2 things
   /// 1. Picture
@@ -143,15 +165,12 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   @override
   Widget build(BuildContext context) {
-    // height of screen
-    double height = MediaQuery.of(context).size.height;
     // width of screen
     double width = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Exp UI"),
-        // backgroundColor: Colors.white,
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -171,7 +190,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
                       itemCount: catArray.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          // height:height*0.07,
                           decoration: BoxDecoration(
                             color: tag == index
                                 ? Colors.white
@@ -181,15 +199,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                   BorderSide(width: 1.0, color: Colors.grey),
                             ),
                           ),
-                          // margin: EdgeInsets.only(top: 6.0, bottom: 6.0),
                           child: ListTile(
                             title: Text(
                               catArray[index],
                               style: TextStyle(
                                 fontSize: 1.7 * SizeConfig.textMultiplier,
-                                // decoration: tag == index
-                                //     ? TextDecoration.underline
-                                //     : TextDecoration.none
                               ),
                             ),
                             onTap: () {
@@ -200,7 +214,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                 /// triggers the [build] method again when the [tag] is set to
                                 /// the [index] from the [catArray], this way the future method
                                 /// [getProducts] is called again as the widget tree rebuilds
-                                setState(() {
+                                this.setState(() {
                                   tag = index;
                                 });
                               }
@@ -215,15 +229,25 @@ class _ProductsUINewState extends State<ProductsUINew> {
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
-              // height: height * 0.89,
               width: 69 * SizeConfig.widthMultiplier,
-              // width: 65 * SizeConfig.widthMultiplier,
               child: FutureBuilder(
                   future: getProducts(),
                   builder: (context, snapshot) {
+                    // shimmer when snapshot has no data
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Shimmer.fromColors(
+                        highlightColor: Colors.white,
+                        baseColor: Colors.grey[300],
+                        child: Container(
+                          child: _shimmerLayout(),
+                        ),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Text("SERVER ERROR - Relaunch app");
+                    }
                     if (snapshot.hasData) {
                       List<StoreProduct> arr = snapshot.data;
-                      // arr.sort((a, b) => a.name.compareTo(b.name));
                       return GridView.count(
                         // Create a grid with 2 columns. If you change the scrollDirection to
                         // horizontal, this produces 2 rows.
@@ -232,10 +256,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
                           return getCard(e);
                         }).toList(),
                       );
-                    } else if (snapshot.hasError) {
-                      return Text("SERVER ERROR - Relaunch app");
-                    } else
-                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Text("no data");
                   }),
             ),
           ),
