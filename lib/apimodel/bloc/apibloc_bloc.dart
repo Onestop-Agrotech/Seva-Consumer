@@ -8,25 +8,23 @@ import 'package:mvp/models/storeProducts.dart';
 part 'apibloc_event.dart';
 part 'apibloc_state.dart';
 
-
-
 class ApiblocBloc extends Bloc<ApiblocEvent, ApiblocState> {
   final ApiRepository repository;
-
-  ApiblocBloc({@required this.repository}) : assert(repository != null), super(null);
+   ApiblocBloc(this.repository) : super(null);
 
   @override
-  ApiblocState get initialState => ApiblocInitial();
+  ApiblocState get initialState => ApiInitial();
 
   @override
   Stream<ApiblocState> mapEventToState(ApiblocEvent event) async* {
+          yield ApiLoading();
     if (event is GetBestSellers) {
-      yield LoadingState();
       try {
-        final List<StoreProduct> quote = await repository.getBSellers(event.hubid);
-        yield LoadedState();
+        final List<StoreProduct> quote =
+            await repository.getBSellers();
+        yield ApiLoaded(quote);
       } catch (_) {
-        yield ErrorState();
+        yield ApiError("There is some error");
       }
     }
   }

@@ -5,7 +5,10 @@ abstract class ApiblocEvent {
   const ApiblocEvent();
 }
 
-class GetBestSellers extends ApiblocEvent{
-  final String hubid;
-  GetBestSellers({@required this.hubid}) : assert(hubid!=null);
+class GetBestSellers extends ApiblocEvent {
+
+  const GetBestSellers();
+
+  @override
+  List<Object> get props => [];
 }

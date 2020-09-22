@@ -4,7 +4,7 @@ import 'package:mvp/models/storeProducts.dart';
 class ApiRepository {
   ApiDataProvider _playerApiProvider = ApiDataProvider();
 
-  Future<List<StoreProduct>> getBSellers(String hubid) =>
-      _playerApiProvider.getBestSellers(hubid);
+  Future<List<StoreProduct>> getBSellers() =>
+      _playerApiProvider.getBestSellers();
  
 }
