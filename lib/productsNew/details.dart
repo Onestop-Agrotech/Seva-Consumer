@@ -85,84 +85,100 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
             SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  this.widget.p.name,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                )
-              ],
-            ),
-            Consumer<NewCartModel>(
-              builder: (context, newCart, child) {
-                return Padding(
-                  padding: EdgeInsets.only(top:SizeConfig.heightMultiplier*3),
-                  child: Row(
-                    
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // daalo
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: widget
-                              .p.details[0].quantity.allowedQuantities.length,
-                          itemBuilder: (builder, i) {
-                            return Column(
-                              children: [
-                                SizedBox(height: 10.0),
-                                Text(
-                                    "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}"),
-                                SizedBox(height: 10.0),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: widget
-                              .p.details[0].quantity.allowedQuantities.length,
-                          itemBuilder: (builder, i) {
-                            return Column(
-                              children: [
-                                SizedBox(height: 5.0),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    GestureDetector(
-                                      child: Icon(Icons.remove),
-                                      onTap: () {
-                                        helper(i, newCart, false);
-                                      },
-                                    ),
-                                    SizedBox(width: 5.0),
-                                    Text(
-                                        "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
-                                    SizedBox(width: 5.0),
-                                    GestureDetector(
-                                        child: Icon(Icons.add),
-                                        onTap: () {
-                                          helper(i, newCart, true);
-                                        }),
-                                  ],
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Column(children: [
+                    Text(widget.p.name,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+
+                    // AB
+                    Consumer<NewCartModel>(
+                      builder: (context, newCart, child) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              top: SizeConfig.heightMultiplier * 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // daalo
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: widget.p.details[0].quantity
+                                      .allowedQuantities.length,
+                                  itemBuilder: (builder, i) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(height: 10.0),
+                                        Text(
+                                            "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}"),
+                                        SizedBox(height: 10.0),
+                                      ],
+                                    );
+                                  },
                                 ),
-                                SizedBox(height: 5.0),
-                              ],
-                            );
-                          },
+                              ),
+                              SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: widget.p.details[0].quantity
+                                      .allowedQuantities.length,
+                                  itemBuilder: (builder, i) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(height: 5.0),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GestureDetector(
+                                              child: Icon(Icons.remove),
+                                              onTap: () {
+                                                helper(i, newCart, false);
+                                              },
+                                            ),
+                                            SizedBox(width: 5.0),
+                                            Text(
+                                                "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
+                                            SizedBox(width: 5.0),
+                                            GestureDetector(
+                                                child: Icon(Icons.add),
+                                                onTap: () {
+                                                  helper(i, newCart, true);
+                                                }),
+                                          ],
+                                        ),
+                                        SizedBox(height: 5.0),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ]),
+                  Column(
+                    children: [
+                      Text(
+                        "Rs ${widget.p.details[0].price} for ${widget.p.details[0].quantity.quantityValue} ${widget.p.details[0].quantity.quantityMetric}",
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                          color: ThemeColoursSeva().dkGreen,
+                          fontSize: 2.5 * SizeConfig.heightMultiplier,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],
-                  ),
-                );
-              },
-            ),
+                  )
+                ])
           ],
         ),
       ),
