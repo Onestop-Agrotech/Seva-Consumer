@@ -8,8 +8,8 @@ class UninitializedState extends ApiState {}
 class FetchingState extends ApiState {}
 
 class FetchedState extends ApiState {
-  final List<StoreProduct> players;
-  FetchedState({@required this.players});
+  final List<StoreProduct> p;
+  FetchedState({@required this.p});
 }
 
 class ErrorState extends ApiState {}

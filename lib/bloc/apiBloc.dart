@@ -7,8 +7,8 @@ import 'package:mvp/bloc/apiState.dart';
 import 'package:mvp/models/storeProducts.dart';
 
 class ApiBloc extends Bloc<ApiEvent, ApiState> {
-  final ApiRepository playerRepository;
-  ApiBloc({this.playerRepository}) : assert(playerRepository != null), super(null);
+  final ApiRepository apiRepository;
+  ApiBloc({this.apiRepository}) : assert(apiRepository != null), super(null);
 
 
   @override
@@ -17,16 +17,16 @@ class ApiBloc extends Bloc<ApiEvent, ApiState> {
   @override
   Stream<ApiState> mapEventToState(ApiEvent event) async* {
      yield FetchingState();
-      List<StoreProduct> players;
+      List<StoreProduct> products;
       try {
         if (event is Getbestsellers) {
-          players = await playerRepository
+          products = await apiRepository
               .getBSellers();
         }
-        if (players.length == 0) {
+        if (products.length == 0) {
           yield EmptyState();
         } else {
-          yield FetchedState(players: players);
+          yield FetchedState(p: products);
         }
       } catch (_) {
         yield ErrorState();

@@ -38,8 +38,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'graphics/lightBG.dart';
 
 class MainLandingScreen extends StatefulWidget {
-   final ApiRepository playerRepository;
-  MainLandingScreen({this.playerRepository});
+   final ApiRepository p;
+  MainLandingScreen({this.p});
   @override
   _MainLandingScreenState createState() => _MainLandingScreenState();
 }
@@ -95,7 +95,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     _saveDeviceToken();
     x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
 
-    articleBloc=ApiBloc(playerRepository: widget.playerRepository);
+    articleBloc=ApiBloc(apiRepository: widget.p);
 
   }
 
