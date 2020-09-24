@@ -234,6 +234,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                 this.widget.shopping
                                     ? Consumer<NewCartModel>(
                                         builder: (context, newCart, child) {
+                                          
                                           return Expanded(
                                             child: IconButton(
                                                 icon: Icon(Icons.delete),

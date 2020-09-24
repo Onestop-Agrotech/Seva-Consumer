@@ -15,6 +15,8 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductsUINew extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class ProductsUINew extends StatefulWidget {
 }
 
 class _ProductsUINewState extends State<ProductsUINew> {
-  // TODO: Need to convert this static array to dynamic
+  // Todo: Need to convert this static array to dynamic
   // will receive from server
   /// This Array is populated by the ListView Builder to show on
   /// the left side of the screen (1st row)
@@ -38,7 +40,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     "Snacks",
     "Ready to Eat",
   ];
-
+String _category;
   /// This tag will be used for 2 things mainly -
   /// 1. To make sure the API calls are dynamic
   /// 2. To handle any UI chnanges (for eg - TextStyle change if selected)
@@ -76,6 +78,9 @@ class _ProductsUINewState extends State<ProductsUINew> {
         break;
       default:
     }
+    this.setState(() {
+      _category=catArray[tag];
+    });
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
     String token = await p.getToken();
@@ -89,6 +94,27 @@ class _ProductsUINewState extends State<ProductsUINew> {
     } else {
       return prods;
     }
+  }
+
+  // shimmer layout before page loads
+  _shimmerLayout() {
+    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12];
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        children: array.map((e) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey,
+            ),
+          );
+        }).toList(),
+      ),
+    );
   }
 
   /// this func returns the cards widget
@@ -107,6 +133,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return ProductDetails(
             p: p,
+            cat:_category
           );
         }));
       },
@@ -130,7 +157,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
             ),
             Text(
               p.name,
-              style: TextStyle(fontSize: 14.0),
+              style: TextStyle(fontSize: 1.5 * SizeConfig.textMultiplier),
               overflow: TextOverflow.clip,
               textAlign: TextAlign.center,
             ),
@@ -142,8 +169,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   @override
   Widget build(BuildContext context) {
-    // height of screen
-    double height = MediaQuery.of(context).size.height;
     // width of screen
     double width = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -157,54 +182,76 @@ class _ProductsUINewState extends State<ProductsUINew> {
         /// This is the main row that seperates 2 cols
         children: [
           /// The first column to the left side
-          Container(
-            child: SizedBox(
-              height: height * 0.89,
-              width: width * 0.15,
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: catArray.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 6.0),
-                      child: ListTile(
-                        title: Text(
-                          catArray[index],
-                          style: TextStyle(
-                              fontSize: 13.0,
-                              decoration: tag == index
-                                  ? TextDecoration.underline
-                                  : TextDecoration.none),
-                        ),
-                        onTap: () {
-                          /// This [if] condition exists because we have only 3 types
-                          /// of categories in the DB, as we add them up, this should be
-                          /// dynamic, for now it is static
-                          if (index < 3) {
-                            /// triggers the [build] method again when the [tag] is set to
-                            /// the [index] from the [catArray], this way the future method
-                            /// [getProducts] is called again as the widget tree rebuilds
-                            setState(() {
-                              tag = index;
-                            });
-                          }
-                        },
-                      ),
-                    );
-                  }),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: SizedBox(
+                width: width * 0.17,
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.grey.shade200),
+                  child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: catArray.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: tag == index
+                                ? Colors.white
+                                : Colors.grey.shade200,
+                            border: Border(
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.grey),
+                            ),
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              catArray[index],
+                              style: TextStyle(
+                                fontSize: 1.5 * SizeConfig.textMultiplier,
+                              ),
+                            ),
+                            onTap: () {
+                              /// This [if] condition exists because we have only 3 types
+                              /// of categories in the DB, as we add them up, this should be
+                              /// dynamic, for now it is static
+                              if (index < 3) {
+                                /// triggers the [build] method again when the [tag] is set to
+                                /// the [index] from the [catArray], this way the future method
+                                /// [getProducts] is called again as the widget tree rebuilds
+                                this.setState(() {
+                                  tag = index;
+                                });
+                              }
+                            },
+                          ),
+                        );
+                      }),
+                ),
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 18.0),
+            padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
-              height: height * 0.89,
-              width: width * 0.278,
+              width: 69 * SizeConfig.widthMultiplier,
               child: FutureBuilder(
                   future: getProducts(),
                   builder: (context, snapshot) {
+                    // shimmer when snapshot has no data
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return Shimmer.fromColors(
+                        highlightColor: Colors.white,
+                        baseColor: Colors.grey[300],
+                        child: Container(
+                          child: _shimmerLayout(),
+                        ),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Text("SERVER ERROR - Relaunch app");
+                    }
                     if (snapshot.hasData) {
                       List<StoreProduct> arr = snapshot.data;
-                      // arr.sort((a, b) => a.name.compareTo(b.name));
                       return GridView.count(
                         // Create a grid with 2 columns. If you change the scrollDirection to
                         // horizontal, this produces 2 rows.
@@ -213,10 +260,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
                           return getCard(e);
                         }).toList(),
                       );
-                    } else if (snapshot.hasError) {
-                      return Text("SERVER ERROR - Relaunch app");
-                    } else
-                      return Center(child: CircularProgressIndicator());
+                    }
+                    return Text("no data");
                   }),
             ),
           ),
