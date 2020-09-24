@@ -15,6 +15,47 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  // shows/edit the total quantity of the product
+  Text _showTotalItemQty(newCart) {
+    double totalQ = 0.0;
+    newCart.items.forEach((e) {
+      if (e.id == widget.p.id) {
+        totalQ = e.totalQuantity;
+      }
+    });
+
+    return Text(
+      totalQ != 0.0
+          ? "${totalQ.toStringAsFixed(2)} ${widget.p.details[0].quantity.quantityMetric}"
+          : "0",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+    );
+  }
+
+  // shows/edit the total price of a particular item
+  Text _showItemTotalPrice(newCart) {
+    double price = 0;
+    newCart.items.forEach((e) {
+      if (e.id == widget.p.id) {
+        price = e.totalPrice;
+      }
+    });
+    return Text(
+      "Rs $price",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+    );
+  }
+
+  // shows/edit the total cart price
+  Text _showTotalCartPrice(newCart) {
+    double price;
+    price = newCart.getCartTotalPrice();
+    return Text(
+      "Rs $price",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+    );
+  }
+
   void helper(int index, newCart, bool addToCart) {
     double p, q;
 
@@ -67,7 +108,9 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -103,66 +146,117 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            "500 Gms",
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Icon(
-                                Icons.remove,
-                                color: Colors.white,
-                              )),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "0",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              )),
-                        ],
-                      ),
-                    ],
+                  Consumer<NewCartModel>(
+                    builder: (context, newCart, child) {
+                      return SizedBox(
+                        width: 100,
+                        height: 100,
+                        child: ListView.builder(
+                          itemCount: widget
+                              .p.details[0].quantity.allowedQuantities.length,
+                          itemBuilder: (builder, i) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Icon(
+                                            Icons.remove,
+                                            color: Colors.white,
+                                          )),
+                                      onTap: () {
+                                        helper(i, newCart, false);
+                                      },
+                                    ),
+                                    Text(
+                                        "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
+                                    GestureDetector(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.green,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Icon(Icons.add,
+                                              color: Colors.white),
+                                        ),
+                                        onTap: () {
+                                          helper(i, newCart, true);
+                                        }),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 25),
-                      Text("Item Total Quantity",
-                          style: TextStyle(fontSize: 17)),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        "2 Kgs",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      )
-                    ],
-                  )
+                  Consumer<NewCartModel>(builder: (context, newCart, child) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 25),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Item Total Quantity",
+                                style: TextStyle(fontSize: 17)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            _showTotalItemQty(newCart),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Item Total Price",
+                                style: TextStyle(fontSize: 17)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            _showItemTotalPrice(newCart),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Cart Total Price",
+                                style: TextStyle(fontSize: 17)),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            _showTotalCartPrice(newCart),
+                          ],
+                        ),
+                      ],
+                    );
+                  }),
                 ],
               ),
             ),
@@ -172,75 +266,3 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 }
-
-//  Consumer<NewCartModel>(
-//                       builder: (context, newCart, child) {
-//                         return Padding(
-//                           padding: EdgeInsets.only(
-//                               top: SizeConfig.heightMultiplier * 3),
-//                           child: Row(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: [
-//                               // daalo
-//                               SizedBox(
-//                                 width: 100,
-//                                 height: 100,
-//                                 child: ListView.builder(
-//                                   scrollDirection: Axis.vertical,
-//                                   itemCount: widget.p.details[0].quantity
-//                                       .allowedQuantities.length,
-//                                   itemBuilder: (builder, i) {
-//                                     return Column(
-//                                       children: [
-//                                         SizedBox(height: 10.0),
-//                                         Text(
-//                                             "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}"),
-//                                         SizedBox(height: 10.0),
-//                                       ],
-//                                     );
-//                                   },
-//                                 ),
-//                               ),
-//                               SizedBox(
-//                                 width: 100,
-//                                 height: 100,
-//                                 child: ListView.builder(
-//                                   scrollDirection: Axis.vertical,
-//                                   itemCount: widget.p.details[0].quantity
-//                                       .allowedQuantities.length,
-//                                   itemBuilder: (builder, i) {
-//                                     return Column(
-//                                       children: [
-//                                         SizedBox(height: 5.0),
-//                                         Row(
-//                                           mainAxisAlignment:
-//                                               MainAxisAlignment.center,
-//                                           children: [
-//                                             GestureDetector(
-//                                               child: Icon(Icons.remove),
-//                                               onTap: () {
-//                                                 helper(i, newCart, false);
-//                                               },
-//                                             ),
-//                                             SizedBox(width: 5.0),
-//                                             Text(
-//                                                 "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
-//                                             SizedBox(width: 5.0),
-//                                             GestureDetector(
-//                                                 child: Icon(Icons.add),
-//                                                 onTap: () {
-//                                                   helper(i, newCart, true);
-//                                                 }),
-//                                           ],
-//                                         ),
-//                                         SizedBox(height: 5.0),
-//                                       ],
-//                                     );
-//                                   },
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         );
-//                       },
-//                     ),
