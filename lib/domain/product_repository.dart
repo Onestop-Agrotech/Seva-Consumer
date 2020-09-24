@@ -39,12 +39,10 @@ class ProductRepositoryImpl implements ProductRepository {
     switch (response.statusCode) {
       case 200:
         return jsonToCateogrywiseProductModel(response.body);
-      case 400:
-        throw BadRequestException(response.body.toString());
       case 401:
-          print(UnauthorisedException(response.body.toString()).x);
-        throw UnauthorisedException(response.body.toString());
+        throw UnauthorisedException(response.statusCode.toString());
       case 500:
+        throw InternalServerError();
       default:
         throw FetchDataException(
             'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
