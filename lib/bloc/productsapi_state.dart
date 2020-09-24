@@ -7,6 +7,14 @@ class ProductsapiInitial extends ProductsapiState {}
 
 class ProductsapiLoading extends ProductsapiState{}
 
-class ProductsapiLoaded extends ProductsapiState{}
+class ProductsapiLoaded extends ProductsapiState{
+  final List<StoreProduct> products;
 
-class ProductsapiError extends ProductsapiState{}
+  ProductsapiLoaded(this.products);
+}
+
+class ProductsapiError extends ProductsapiState{
+  final String msg;
+
+  ProductsapiError(this.msg);
+}
