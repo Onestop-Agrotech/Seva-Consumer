@@ -54,6 +54,15 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// used by multiple instances, so we can use - static
   static int tag;
 
+  /// safer way to intialise the bloc
+  /// and also dispose it properly
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    apiBloc = BlocProvider.of<ProductsapiBloc>(context);
+    if(tag==0) apiBloc.add(GetVegetables());
+  }
+
   @override
   initState() {
     super.initState();
@@ -170,8 +179,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   @override
   Widget build(BuildContext context) {
-    apiBloc = context.bloc<ProductsapiBloc>();
-    apiBloc.add(GetVegetables());
     // width of screen
     double width = MediaQuery.of(context).size.height;
     return Scaffold(
