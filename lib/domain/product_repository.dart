@@ -19,7 +19,7 @@ class ProductRepositoryImpl implements ProductRepository {
       String token = await p.getToken();
       String hub = await p.gethub();
       print(token);
-      Map<String, String> requestHeaders = {'x-auth-token': ""};
+      Map<String, String> requestHeaders = {'x-auth-token': token};
       String url = APIService.getCategorywiseProducts(hub, "vegetable");
       final response = await http.get(url, headers: requestHeaders);
       responseJson = _returnResponse(response);
