@@ -9,18 +9,23 @@
 ///
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/loading.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+
+import 'bloc/productsapi_bloc.dart';
 
 Future main() async {
   await DotEnv().load('.env');
@@ -55,7 +60,10 @@ class _SevaAppState extends State<SevaApp> {
               SizeConfig().init(constraints, orientation);
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: LoadingScreen(),
+                home: BlocProvider(
+                    create: (BuildContext context) =>
+                        ProductsapiBloc(ProductRepositoryImpl()),
+                    child: ProductsUINew()),
                 routes: {
                   "/register": (context) => RegisterScreen(),
                   "/login": (context) => LoginScreen(),

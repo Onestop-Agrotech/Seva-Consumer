@@ -8,14 +8,9 @@
 ///@fileoverview MainLanding Widget : This is the main landing screen after the user
 ///is logged in.
 ///
-
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mvp/apimodel/bloc/apiRepository.dart';
-import 'package:mvp/bloc/apiBloc.dart';
-import 'package:mvp/bloc/apiState.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -35,11 +30,11 @@ import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
+
 import 'graphics/lightBG.dart';
 
 class MainLandingScreen extends StatefulWidget {
-   final ApiRepository p;
-  MainLandingScreen({this.p});
   @override
   _MainLandingScreenState createState() => _MainLandingScreenState();
 }
@@ -61,7 +56,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Timer x;
   FirebaseMessaging _fcm;
   int _current = 0;
-  ApiBloc articleBloc;
 
   @override
   void setState(fn) {
@@ -94,9 +88,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
     x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
-
-    articleBloc=ApiBloc(apiRepository: widget.p);
-
   }
 
   @override
@@ -570,42 +561,27 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       ),
                       commonText(height, "Best Sellers", ""),
                       SizedBox(height: 9.0),
-                      BlocBuilder<ApiBloc, ApiState>(
-                          builder: (context, state) {
-                        if (state is UninitializedState) {
-                          return CircularProgressIndicator();
-                        }
-                        else if (state is FetchingState) {
-                          print("first if");
-                          return CircularProgressIndicator();
-                        } else if (state is FetchedState) {
-                          return Text("output fetched");
-                        } else if (state is ErrorState) {
-                          return Text("somw erroe");
-                        }
-                        return Container();
-                      }),
-                      // FutureBuilder(
-                      //     future: _fetchBestSellers(),
-                      //     builder: (builder, snapshot) {
-                      //       if (snapshot.hasData) {
-                      //         List<StoreProduct> bestSellers = snapshot.data;
-                      //         if (bestSellers.length > 0) {
-                      //           return commonWidget(height, bestSellers, true);
-                      //         } else
-                      //           return Container(
-                      //             child:
-                      //                 Center(child: Text("No products found!")),
-                      //           );
-                      //       }
-                      //       return Shimmer.fromColors(
-                      //         highlightColor: Colors.white,
-                      //         baseColor: Colors.grey[300],
-                      //         child: Container(
-                      //           child: _shimmerLayout(height, width),
-                      //         ),
-                      //       );
-                      //     }),
+                      FutureBuilder(
+                          future: _fetchBestSellers(),
+                          builder: (builder, snapshot) {
+                            if (snapshot.hasData) {
+                              List<StoreProduct> bestSellers = snapshot.data;
+                              if (bestSellers.length > 0) {
+                                return commonWidget(height, bestSellers, true);
+                              } else
+                                return Container(
+                                  child:
+                                      Center(child: Text("No products found!")),
+                                );
+                            }
+                            return Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey[300],
+                              child: Container(
+                                child: _shimmerLayout(height, width),
+                              ),
+                            );
+                          }),
                       commonText(height, "Categories", ""),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
