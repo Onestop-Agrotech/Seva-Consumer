@@ -10,6 +10,8 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -24,23 +26,25 @@ class ProductsUINew extends StatefulWidget {
 }
 
 class _ProductsUINewState extends State<ProductsUINew> {
+  ProductsapiBloc apiBloc;
   // Todo: Need to convert this static array to dynamic
   // will receive from server
   /// This Array is populated by the ListView Builder to show on
   /// the left side of the screen (1st row)
   final List<String> catArray = [
     "Vegetables",
-    "Fruits",
-    "Milk, Eggs & Bread",
-    "Fresh Greens & Herbs",
-    "Nuts & Dry Fruits",
-    "Dairy Items",
-    "Daily needs",
-    "Non Veg",
-    "Snacks",
-    "Ready to Eat",
+    // "Fruits",
+    // "Milk, Eggs & Bread",
+    // "Fresh Greens & Herbs",
+    // "Nuts & Dry Fruits",
+    // "Dairy Items",
+    // "Daily needs",
+    // "Non Veg",
+    // "Snacks",
+    // "Ready to Eat",
   ];
-String _category;
+  String _category;
+
   /// This tag will be used for 2 things mainly -
   /// 1. To make sure the API calls are dynamic
   /// 2. To handle any UI chnanges (for eg - TextStyle change if selected)
@@ -79,7 +83,7 @@ String _category;
       default:
     }
     this.setState(() {
-      _category=catArray[tag];
+      _category = catArray[tag];
     });
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
@@ -98,7 +102,7 @@ String _category;
 
   // shimmer layout before page loads
   _shimmerLayout() {
-    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12];
+    var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: GridView.count(
@@ -131,10 +135,7 @@ String _category;
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(
-            p: p,
-            cat:_category
-          );
+          return ProductDetails(p: p, cat: _category);
         }));
       },
       child: Container(
@@ -169,6 +170,8 @@ String _category;
 
   @override
   Widget build(BuildContext context) {
+    apiBloc = context.bloc<ProductsapiBloc>();
+    apiBloc.add(GetVegetables());
     // width of screen
     double width = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -234,35 +237,59 @@ String _category;
             padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
               width: 69 * SizeConfig.widthMultiplier,
-              child: FutureBuilder(
-                  future: getProducts(),
-                  builder: (context, snapshot) {
-                    // shimmer when snapshot has no data
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Shimmer.fromColors(
-                        highlightColor: Colors.white,
-                        baseColor: Colors.grey[300],
-                        child: Container(
-                          child: _shimmerLayout(),
-                        ),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return Text("SERVER ERROR - Relaunch app");
-                    }
-                    if (snapshot.hasData) {
-                      List<StoreProduct> arr = snapshot.data;
-                      return GridView.count(
-                        // Create a grid with 2 columns. If you change the scrollDirection to
-                        // horizontal, this produces 2 rows.
-                        crossAxisCount: 2,
-                        children: arr.map((e) {
-                          return getCard(e);
-                        }).toList(),
-                      );
-                    }
-                    return Text("no data");
-                  }),
+              // child: FutureBuilder(
+              //     future: getProducts(),
+              //     builder: (context, snapshot) {
+              //       // shimmer when snapshot has no data
+              //       if (snapshot.connectionState != ConnectionState.done) {
+              // return Shimmer.fromColors(
+              //   highlightColor: Colors.white,
+              //   baseColor: Colors.grey[300],
+              //   child: Container(
+              //     child: _shimmerLayout(),
+              //   ),
+              // );
+              //       }
+              //       if (snapshot.hasError) {
+              //         return Text("SERVER ERROR - Relaunch app");
+              //       }
+              // if (snapshot.hasData) {
+              //   List<StoreProduct> arr = snapshot.data;
+              //   return GridView.count(
+              //     // Create a grid with 2 columns. If you change the scrollDirection to
+              //     // horizontal, this produces 2 rows.
+              //     crossAxisCount: 2,
+              //     children: arr.map((e) {
+              //       return getCard(e);
+              //     }).toList(),
+              //   );
+              // }
+              //       return Text("no data");
+              //     }),
+              child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
+                builder: (context, state) {
+                  if (state is ProductsapiInitial ||
+                      state is ProductsapiLoading) {
+                    return Shimmer.fromColors(
+                      highlightColor: Colors.white,
+                      baseColor: Colors.grey[300],
+                      child: Container(
+                        child: _shimmerLayout(),
+                      ),
+                    );
+                  } else if (state is ProductsapiLoaded) {
+                    List<StoreProduct> arr = state.products;
+                    return GridView.count(
+                      // Create a grid with 2 columns. If you change the scrollDirection to
+                      // horizontal, this produces 2 rows.
+                      crossAxisCount: 2,
+                      children: arr.map((e) {
+                        return getCard(e);
+                      }).toList(),
+                    );
+                  } else return CircularProgressIndicator();
+                },
+              ),
             ),
           ),
         ],

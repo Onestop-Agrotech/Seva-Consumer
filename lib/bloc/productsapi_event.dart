@@ -4,7 +4,8 @@ part of 'productsapi_bloc.dart';
 abstract class ProductsapiEvent {}
 
 class GetVegetables extends ProductsapiEvent{
-  final List<StoreProduct> products;
+//   final List<StoreProduct> products;
 
-  GetVegetables(this.products);
+//   GetVegetables(this.products);
+// }
 }
