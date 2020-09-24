@@ -15,6 +15,7 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  int i;
   // shows/edit the total quantity of the product
   Text _showTotalItemQty(newCart) {
     double totalQ = 0.0;
@@ -146,69 +147,133 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Consumer<NewCartModel>(
-                    builder: (context, newCart, child) {
-                      return SizedBox(
-                        width: 100,
-                        height: 100,
-                        child: ListView.builder(
-                          itemCount: widget
-                              .p.details[0].quantity.allowedQuantities.length,
-                          itemBuilder: (builder, i) {
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}",
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.green,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Icon(
-                                            Icons.remove,
-                                            color: Colors.white,
-                                          )),
-                                      onTap: () {
-                                        helper(i, newCart, false);
-                                      },
-                                    ),
-                                    Text(
-                                        "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
-                                    GestureDetector(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.green,
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Icon(Icons.add,
-                                              color: Colors.white),
-                                        ),
-                                        onTap: () {
-                                          helper(i, newCart, true);
-                                        }),
-                                  ],
-                                ),
-                              ],
-                            );
-                          },
+                  Consumer<NewCartModel>(builder: (context, newCart, child) {
+                    return Column(children: [
+                      for (i = 0;
+                          i <
+                              widget.p.details[0].quantity.allowedQuantities
+                                  .length;
+                          i++)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                        Row(children: [
+                          Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                )),
+                                        Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                )),
+                        ],)
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     GestureDetector(
+                            // child: Container(
+                            //     decoration: BoxDecoration(
+                            //         color: Colors.green,
+                            //         borderRadius: BorderRadius.circular(20)),
+                            //     child: Icon(
+                            //       Icons.remove,
+                            //       color: Colors.white,
+                            //     )),
+                      //       onTap: () {
+                      //         helper(i, newCart, false);
+                      //       },
+                      //     ),
+                      //     Text(
+                      //         "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
+                      //     GestureDetector(
+                      //         child: Container(
+                      //           decoration: BoxDecoration(
+                      //               color: Colors.green,
+                      //               borderRadius: BorderRadius.circular(20)),
+                      //           child: Icon(Icons.add, color: Colors.white),
+                      //         ),
+                      //         onTap: () {
+                      //           helper(i, newCart, true);
+                      //         }),
+                      //   ],
+                      // ),
+                    ]);
+                  }),
+                  // Text("hauksdh");
+                  // return SizedBox(
+                  //   width: 100,
+                  //   height: 100,
+                  //   child:
+                  //   ListView.builder(
+                  // itemCount: widget
+                  //     .p.details[0].quantity.allowedQuantities.length,
+                  //     itemBuilder: (builder, i) {
+                  //       return Column(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //         children: [
+                  // Row(
+                  //   mainAxisAlignment:
+                  //       MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}",
+                  //       style: TextStyle(fontSize: 18),
+                  //     ),
+                  //   ],
+                  // ),
+                  // Row(
+                  //   mainAxisAlignment:
+                  //       MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     GestureDetector(
+                  //       child: Container(
+                  //           decoration: BoxDecoration(
+                  //               color: Colors.green,
+                  //               borderRadius:
+                  //                   BorderRadius.circular(20)),
+                  //           child: Icon(
+                  //             Icons.remove,
+                  //             color: Colors.white,
+                  //           )),
+                  //       onTap: () {
+                  //         helper(i, newCart, false);
+                  //       },
+                  //     ),
+                  //     Text(
+                  //         "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
+                  //     GestureDetector(
+                  //         child: Container(
+                  //           decoration: BoxDecoration(
+                  //               color: Colors.green,
+                  //               borderRadius:
+                  //                   BorderRadius.circular(20)),
+                  //           child: Icon(Icons.add,
+                  //               color: Colors.white),
+                  //         ),
+                  //         onTap: () {
+                  //           helper(i, newCart, true);
+                  //         }),
+                  //   ],
+                  // ),
+                  //         ],
+                  //       );
+                  //     },
+                  //   ),
+                  // );
                   Consumer<NewCartModel>(builder: (context, newCart, child) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
