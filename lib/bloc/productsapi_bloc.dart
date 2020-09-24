@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mvp/models/storeProducts.dart';
 
 part 'productsapi_event.dart';
 part 'productsapi_state.dart';
