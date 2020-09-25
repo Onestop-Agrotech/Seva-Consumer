@@ -144,7 +144,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(p: p, cat: "_category");
+          return ProductDetails(p: p,);
         }));
       },
       child: Container(
@@ -294,7 +294,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         return getCard(e);
                       }).toList(),
                     );
-                  } else return CircularProgressIndicator();
+                  }
+                  else if(state is ProductsapiError){
+                    return Text(state.msg);
+                  }
+                   else return CircularProgressIndicator();
                 },
               ),
             ),
