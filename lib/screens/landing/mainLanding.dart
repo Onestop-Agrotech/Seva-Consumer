@@ -8,7 +8,6 @@
 ///@fileoverview MainLanding Widget : This is the main landing screen after the user
 ///is logged in.
 ///
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -334,34 +333,26 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       ),
     );
   }
- 
+
 // shimmer layout before page loads
   _shimmerLayout(height, width) {
-    return  Container(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          for (int i = 0; i < 3; i++)
+            Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey,
               ),
-              width: 60,
-              height: 40,
-            );
-    // return ListView(
-    //   children: <Widget>[
-    //     SizedBox(height: 10),
-    //     for (int i = 0; i < 6; i++)
-    //       Padding(
-    //         padding: const EdgeInsets.only(bottom: 20),
-    //         child: Container(
-    //           decoration: BoxDecoration(
-    //             borderRadius: BorderRadius.circular(10),
-    //             color: Colors.grey,
-    //           ),
-    //           width: height * 0.45,
-    //           height: height * 0.18,
-    //         ),
-    //       )
-    //   ],
-    // );
+              height: height * 0.20,
+              width: width * 0.27,
+            )
+        ],
+      ),
+    );
   }
 
   @override

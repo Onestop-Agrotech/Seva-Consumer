@@ -294,7 +294,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         return getCard(e);
                       }).toList(),
                     );
-                  } else return CircularProgressIndicator();
+                  }
+                  else if(state is ProductsapiError){
+                    return Text(state.msg);
+                  }
+                   else return CircularProgressIndicator();
                 },
               ),
             ),

@@ -22,9 +22,15 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
       try{
         yield ProductsapiLoading();
         final products = await _productRepository.fetchVegetables();
+        print("so the products are $products");
         yield ProductsapiLoaded(products);
-      } on Exception{
-        yield ProductsapiError("Some error occured!");
+      } 
+      catch (err){
+        print(err);
+        // if(err=="401"){
+        //   final products = await _productRepository.fetchVegetables();
+        // }
+        yield ProductsapiError(err.toString());
       }
     }
   }
