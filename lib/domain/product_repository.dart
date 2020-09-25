@@ -18,12 +18,10 @@ class ProductRepositoryImpl implements ProductRepository {
       StorageSharedPrefs p = new StorageSharedPrefs();
       String token = await p.getToken();
       String hub = await p.gethub();
-      print(token);
       Map<String, String> requestHeaders = {'x-auth-token': token};
       String url = APIService.getCategorywiseProducts(hub, "vegetable");
       final response = await http.get(url, headers: requestHeaders);
       responseJson = _returnResponse(response);
-      print("wokring$responseJson");
      return responseJson;
     }
     
@@ -35,7 +33,6 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   List<StoreProduct> _returnResponse(http.Response response) {
-    print(response.statusCode);
     switch (response.statusCode) {
       case 200:
         return jsonToCateogrywiseProductModel(response.body);
