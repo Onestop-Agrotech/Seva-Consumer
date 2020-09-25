@@ -144,7 +144,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(p: p, cat: _category);
+          return ProductDetails(p: p,);
         }));
       },
       child: Container(

@@ -8,8 +8,7 @@ import 'package:provider/provider.dart';
 
 class ProductDetails extends StatefulWidget {
   final StoreProduct p;
-  final String cat;
-  ProductDetails({@required this.p, this.cat});
+  ProductDetails({@required this.p});
   @override
   _ProductDetailsState createState() => _ProductDetailsState();
 }
@@ -54,134 +53,124 @@ class _ProductDetailsState extends State<ProductDetails> {
       newCart.removeFromNewCart(widget.p, p, q, index);
   }
 
+  Widget getNameAndPrice(height, width) {
+    return Container(
+      height: height * 0.08,
+      width: width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(widget.p.name),
+          Text(
+              "Rs ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}")
+        ],
+      ),
+    );
+  }
+
+  Widget getImage(height, width) {
+    return Container(
+      width: width,
+      height: height * 0.2,
+      child: Hero(
+          tag: widget.p.name,
+          child: CachedNetworkImage(imageUrl: widget.p.pictureURL)),
+    );
+  }
+
+  Widget getQuantities(String quantity, double height) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+      child: Column(
+        children: [
+          Text(
+            quantity,
+            style: TextStyle(fontSize: 24.0, color: Colors.deepPurpleAccent),
+          ),
+          SizedBox(height: height * 0.009),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [Icon(Icons.remove), Text("0"), Icon(Icons.add)],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(
     BuildContext context,
   ) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(widget.cat),
-      ),
-      body: SafeArea(
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: 200, maxHeight: 220),
-                  child: Hero(
-                    tag: this.widget.p.name,
-                    child:
-                        CachedNetworkImage(imageUrl: this.widget.p.pictureURL),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("Product name"),
+        ),
+        body: Container(
+          height: height * 0.88,
+          width: width,
+          child: Column(
+            children: [
+              getImage(height, width),
+              getNameAndPrice(height, width),
+              Container(
+                height: height * 0.4,
+                width: width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: width * 0.33,
+                      height: height * 0.4,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: widget.p.details[0].quantity
+                                  .allowedQuantities.length,
+                              itemBuilder: (context, index) {
+                                return getQuantities(
+                                    "${widget.p.details[0].quantity.allowedQuantities[index].value} ${widget.p.details[0].quantity.allowedQuantities[index].metric}",
+                                    height);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(
+                          children: [Text("Item Total Quantity"), Text("2kgs")],
+                        ),
+                        Column(
+                          children: [Text("Item Total Quantity"), Text("2kgs")],
+                        ),
+                        Column(
+                          children: [Text("Item Total Quantity"), Text("2kgs")],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: height * 0.035),
+              Container(
+                height: height * 0.1,
+                width: width,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Text(
+                    "A fun fact or some kind of product description over here, which may include product grade, quality etc.",
+                    style: TextStyle(fontSize: 20.0, color: Colors.blueGrey),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Column(children: [
-                    Text(widget.p.name,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-
-                    // AB
-                    Consumer<NewCartModel>(
-                      builder: (context, newCart, child) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              top: SizeConfig.heightMultiplier * 3),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // daalo
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: widget.p.details[0].quantity
-                                      .allowedQuantities.length,
-                                  itemBuilder: (builder, i) {
-                                    return Column(
-                                      children: [
-                                        SizedBox(height: 10.0),
-                                        Text(
-                                            "${widget.p.details[0].quantity.allowedQuantities[i].value} ${widget.p.details[0].quantity.allowedQuantities[i].metric}"),
-                                        SizedBox(height: 10.0),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: widget.p.details[0].quantity
-                                      .allowedQuantities.length,
-                                  itemBuilder: (builder, i) {
-                                    return Column(
-                                      children: [
-                                        SizedBox(height: 5.0),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            GestureDetector(
-                                              child: Icon(Icons.remove),
-                                              onTap: () {
-                                                helper(i, newCart, false);
-                                              },
-                                            ),
-                                            SizedBox(width: 5.0),
-                                            Text(
-                                                "${widget.p.details[0].quantity.allowedQuantities[i].qty}"),
-                                            SizedBox(width: 5.0),
-                                            GestureDetector(
-                                                child: Icon(Icons.add),
-                                                onTap: () {
-                                                  helper(i, newCart, true);
-                                                }),
-                                          ],
-                                        ),
-                                        SizedBox(height: 5.0),
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ]),
-                  Column(
-                    children: [
-                      Text(
-                        "Rs ${widget.p.details[0].price} for ${widget.p.details[0].quantity.quantityValue} ${widget.p.details[0].quantity.quantityMetric}",
-                        overflow: TextOverflow.clip,
-                        style: TextStyle(
-                          color: ThemeColoursSeva().dkGreen,
-                          fontSize: 2.5 * SizeConfig.heightMultiplier,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  )
-                ])
-          ],
-        ),
-      ),
-    );
+              ),
+            ],
+          ),
+        ));
   }
 }
