@@ -27,7 +27,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ? "${totalQ.toStringAsFixed(2)} ${widget.p.details[0].quantity.quantityMetric}"
           : "0",
       style: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontSize: SizeConfig.textMultiplier * 2.1,
           color: Colors.blueGrey),
     );
@@ -44,7 +44,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text(
       "Rs $price",
       style: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontSize: SizeConfig.textMultiplier * 2.1,
           color: Colors.blueGrey),
     );
@@ -57,7 +57,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text(
       "Rs $price",
       style: TextStyle(
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
           fontSize: SizeConfig.textMultiplier * 2.1,
           color: Colors.blueGrey),
     );
@@ -124,13 +124,13 @@ class _ProductDetailsState extends State<ProductDetails> {
             widget.p.name,
             style: TextStyle(
                 fontSize: SizeConfig.textMultiplier * 2.5,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w500,
                 color: Colors.black54),
           ),
           Text(
               "Rs ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w500,
                   fontSize: SizeConfig.textMultiplier * 2.5,
                   color: Colors.blueGrey))
         ],
@@ -203,15 +203,23 @@ class _ProductDetailsState extends State<ProductDetails> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text("Product name"),
-        ),
         body: Consumer<NewCartModel>(builder: (context, newCart, child) {
           return Container(
-            height: height * 0.88,
             width: width,
             child: ListView(
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: Colors.blueGrey,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(null),
+                    ),
+                  ],
+                ),
                 getImage(height, width),
                 getNameAndPrice(height, width),
                 Container(
@@ -251,6 +259,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Text(
                                 "Item Total Quantity",
                                 style: TextStyle(
+                                    fontWeight: FontWeight.w400,
                                     fontSize: SizeConfig.textMultiplier * 2.1,
                                     color: Colors.black54),
                               ),
@@ -266,6 +275,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Text(
                                 "Item Total Price",
                                 style: TextStyle(
+                                    fontWeight: FontWeight.w400,
                                     fontSize: SizeConfig.textMultiplier * 2.1,
                                     color: Colors.black54),
                               ),
@@ -281,6 +291,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Text(
                                 "Cart Total Price",
                                 style: TextStyle(
+                                    fontWeight: FontWeight.w400,
                                     fontSize: SizeConfig.textMultiplier * 2.1,
                                     color: Colors.black54),
                               ),
@@ -300,13 +311,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                   height: height * 0.1,
                   width: width,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
+                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                     child: Text(
                       "A fun fact or some kind of product description over here, which may include product grade, quality etc.",
                       style: TextStyle(
-                          fontSize: SizeConfig.textMultiplier * 2.5,
+                          fontSize: SizeConfig.textMultiplier * 2.2,
                           color: Colors.black54,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w300),
                     ),
                   ),
                 ),
