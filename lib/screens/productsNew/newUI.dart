@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:http/http.dart' as http;
@@ -33,15 +34,15 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// the left side of the screen (1st row)
   final List<String> catArray = [
     "Vegetables",
-    // "Fruits",
-    // "Milk, Eggs & Bread",
-    // "Fresh Greens & Herbs",
-    // "Nuts & Dry Fruits",
-    // "Dairy Items",
-    // "Daily needs",
-    // "Non Veg",
-    // "Snacks",
-    // "Ready to Eat",
+    "Fruits",
+    "Milk, Eggs & Bread",
+    "Fresh Greens & Herbs",
+    "Nuts & Dry Fruits",
+    "Dairy Items",
+    "Daily needs",
+    "Non Veg",
+    "Snacks",
+    "Ready to Eat",
   ];
   String _category;
 
@@ -57,10 +58,10 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// safer way to intialise the bloc
   /// and also dispose it properly
   @override
-  void didChangeDependencies(){
+  void didChangeDependencies() {
     super.didChangeDependencies();
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
-    if(tag==0) apiBloc.add(GetVegetables());
+    if (tag == 0) apiBloc.add(GetVegetables());
   }
 
   @override
@@ -144,7 +145,9 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(p: p,);
+          return ProductDetails(
+            p: p,
+          );
         }));
       },
       child: Container(
@@ -184,7 +187,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Exp UI"),
+        title: Text("Categories"),
+        backgroundColor: ThemeColoursSeva().lgGreen,
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -206,11 +210,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         return Container(
                           decoration: BoxDecoration(
                             color: tag == index
-                                ? Colors.white
-                                : Colors.grey.shade200,
+                                ? ThemeColoursSeva().vlgGreen
+                                : Colors.white,
                             border: Border(
-                              bottom:
-                                  BorderSide(width: 1.0, color: Colors.grey),
+                              bottom: BorderSide(
+                                  width: 1.0, color: Colors.greenAccent),
                             ),
                           ),
                           child: ListTile(
@@ -218,6 +222,9 @@ class _ProductsUINewState extends State<ProductsUINew> {
                               catArray[index],
                               style: TextStyle(
                                 fontSize: 1.5 * SizeConfig.textMultiplier,
+                                color: tag == index
+                                    ? ThemeColoursSeva().dkGreen
+                                    : Colors.black,
                               ),
                             ),
                             onTap: () {
@@ -244,35 +251,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
             padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
               width: 69 * SizeConfig.widthMultiplier,
-              // child: FutureBuilder(
-              //     future: getProducts(),
-              //     builder: (context, snapshot) {
-              //       // shimmer when snapshot has no data
-              //       if (snapshot.connectionState != ConnectionState.done) {
-              // return Shimmer.fromColors(
-              //   highlightColor: Colors.white,
-              //   baseColor: Colors.grey[300],
-              //   child: Container(
-              //     child: _shimmerLayout(),
-              //   ),
-              // );
-              //       }
-              //       if (snapshot.hasError) {
-              //         return Text("SERVER ERROR - Relaunch app");
-              //       }
-              // if (snapshot.hasData) {
-              //   List<StoreProduct> arr = snapshot.data;
-              //   return GridView.count(
-              //     // Create a grid with 2 columns. If you change the scrollDirection to
-              //     // horizontal, this produces 2 rows.
-              //     crossAxisCount: 2,
-              //     children: arr.map((e) {
-              //       return getCard(e);
-              //     }).toList(),
-              //   );
-              // }
-              //       return Text("no data");
-              //     }),
               child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
                 builder: (context, state) {
                   if (state is ProductsapiInitial ||
@@ -294,11 +272,10 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         return getCard(e);
                       }).toList(),
                     );
-                  }
-                  else if(state is ProductsapiError){
+                  } else if (state is ProductsapiError) {
                     return Text(state.msg);
-                  }
-                   else return CircularProgressIndicator();
+                  } else
+                    return CircularProgressIndicator();
                 },
               ),
             ),
