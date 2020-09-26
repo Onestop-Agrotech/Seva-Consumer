@@ -170,7 +170,10 @@ class _ProductsUINewState extends State<ProductsUINew> {
             ),
             Text(
               p.name,
-              style: TextStyle(fontSize: 1.5 * SizeConfig.textMultiplier),
+              style: TextStyle(
+                  fontSize: 1.5 * SizeConfig.textMultiplier,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87),
               overflow: TextOverflow.clip,
               textAlign: TextAlign.center,
             ),
@@ -187,8 +190,20 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Categories"),
-        backgroundColor: ThemeColoursSeva().lgGreen,
+        title: Text(
+          "Categories",
+          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400),
+        ),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black54,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -221,11 +236,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                             title: Text(
                               catArray[index],
                               style: TextStyle(
-                                fontSize: 1.5 * SizeConfig.textMultiplier,
-                                color: tag == index
-                                    ? ThemeColoursSeva().dkGreen
-                                    : Colors.black,
-                              ),
+                                  fontSize: 1.5 * SizeConfig.textMultiplier,
+                                  color: tag == index
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w300),
                             ),
                             onTap: () {
                               /// This [if] condition exists because we have only 3 types
