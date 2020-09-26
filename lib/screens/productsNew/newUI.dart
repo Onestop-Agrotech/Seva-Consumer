@@ -221,11 +221,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                             title: Text(
                               catArray[index],
                               style: TextStyle(
-                                fontSize: 1.5 * SizeConfig.textMultiplier,
-                                color: tag == index
-                                    ? ThemeColoursSeva().dkGreen
-                                    : Colors.black,
-                              ),
+                                  fontSize: 1.5 * SizeConfig.textMultiplier,
+                                  color: tag == index
+                                      ? ThemeColoursSeva().dkGreen
+                                      : Colors.black,
+                                  fontWeight: FontWeight.w500),
                             ),
                             onTap: () {
                               /// This [if] condition exists because we have only 3 types
