@@ -36,13 +36,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
     "Vegetables",
     "Fruits",
     "Milk, Eggs & Bread",
-    "Fresh Greens & Herbs",
-    "Nuts & Dry Fruits",
-    "Dairy Items",
-    "Daily needs",
-    "Non Veg",
-    "Snacks",
-    "Ready to Eat",
+    "Coming Soon!",
+    "Coming Soon!"
   ];
   String _category;
 
@@ -217,7 +212,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
               child: SizedBox(
                 width: width * 0.17,
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.grey.shade200),
+                  decoration: BoxDecoration(color: Colors.grey.shade100),
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: catArray.length,
