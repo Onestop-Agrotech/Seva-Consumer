@@ -12,6 +12,20 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:mvp/models/storeProducts.dart';
 
+class CartUtilityModel {
+  StoreProduct product;
+  double price;
+  double quantity;
+  int index;
+  bool addNew;
+  CartUtilityModel(
+      {@required this.product,
+      @required this.price,
+      @required this.quantity,
+      @required this.index,
+      @required this.addNew});
+}
+
 class NewCartModel extends ChangeNotifier {
   // private to the model only - non-readable var
   List<StoreProduct> _cartItems = [];
@@ -149,5 +163,58 @@ class NewCartModel extends ChangeNotifier {
       _cartItems.clear();
     }
     notifyListeners();
+  }
+
+  ///****************** NEW CODE ************* */
+
+  void addToCart(
+      {@required StoreProduct item,
+      @required double price,
+      @required double quantity,
+      @required int index}) {
+    CartUtilityModel cm = CartUtilityModel(
+        product: item,
+        price: price,
+        quantity: quantity,
+        index: index,
+        addNew: true);
+    // check the length of cart items
+    switch (_cartItems.length) {
+      // no items in cart
+      case 0:
+        add(cm);
+        break;
+      // there are items in cart
+      default:
+        StoreProduct p =
+            _cartItems.singleWhere((i) => i.id == item.id, orElse: () => null);
+        // case 1 when passed item doesn't exist in cart
+        if (p == null) {
+          add(cm);
+        }
+
+        // case 2 when passed item exist in cart
+        else {
+          cm.product = p;
+          cm.addNew = false;
+          add(cm);
+        }
+    }
+    notifyListeners();
+  }
+
+/****************** NEW CODE ************* */
+
+  /// UTILITY FUNCTIONS
+  void add(CartUtilityModel i) {
+    if (i.addNew) {
+      i.product.totalQuantity = i.quantity;
+      i.product.totalPrice = i.price;
+    } else {
+      i.product.totalQuantity += i.quantity;
+      i.product.totalPrice += i.price;
+    }
+    i.product.details[0].quantity.allowedQuantities[i.index].qty++;
+    if (i.addNew) _cartItems.add(i.product);
   }
 }

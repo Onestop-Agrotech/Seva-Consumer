@@ -74,7 +74,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text("$qty");
   }
 
-  void helper(int index, newCart, bool addToCart) {
+  void helper(int index, NewCartModel newCart, bool addToCart) {
     double p, q;
 
     // Kg, Kgs, Gms, Pc - Types of Quantities
@@ -108,7 +108,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
 
     if (addToCart)
-      newCart.addToNewCart(widget.p, p, q, index);
+      // newCart.addToNewCart(widget.p, p, q, index);
+      newCart.addToCart(item: widget.p, price: p, quantity: q, index: index);
     else
       newCart.removeFromNewCart(widget.p, p, q, index);
   }
