@@ -48,48 +48,6 @@ class NewCartModel extends ChangeNotifier {
   // get total Items in cart
   int get totalItems => _cartItems.length;
 
-  // Add item accordingly
-  void addToNewCart(StoreProduct item, double p, double q, int index) {
-    int unmatched = 0;
-    if (_cartItems.length > 0) {
-      // check if item already exists
-      _cartItems.forEach((cartItem) {
-        if (item.id == cartItem.id) {
-          // already exists in cart- so add new quantity and new price
-          cartItem.totalQuantity += q;
-          cartItem.totalPrice += p;
-          // cartItem.details.quantity.allowedQuantities[index].qty += 1;
-          cartItem.details.forEach((element) {
-            element.quantity.allowedQuantities[index].qty += 1;
-          });
-
-          return;
-        } else {
-          // // doesn't exist in cart so add as new
-          unmatched++;
-        }
-      });
-      if (unmatched == _cartItems.length) {
-        // doesnt exist in cart, so add it
-        item.totalQuantity = q;
-        item.totalPrice = p;
-        item.details.forEach((element) {
-          element.quantity.allowedQuantities[index].qty += 1;
-        });
-        _cartItems.add(item);
-      }
-    } else {
-      // add to cart when cart length is 0
-      item.totalQuantity = q;
-      item.totalPrice = p;
-      item.details.forEach((element) {
-        element.quantity.allowedQuantities[index].qty += 1;
-      });
-      _cartItems.add(item);
-    }
-    notifyListeners();
-  }
-
   // Remove item or quantity
   void removeFromNewCart(StoreProduct item, double p, double q, int index) {
     bool remove = false;
@@ -207,13 +165,10 @@ class NewCartModel extends ChangeNotifier {
 
   /// UTILITY FUNCTIONS
   void add(CartUtilityModel i) {
-    if (i.addNew) {
-      i.product.totalQuantity = i.quantity;
-      i.product.totalPrice = i.price;
-    } else {
-      i.product.totalQuantity += i.quantity;
-      i.product.totalPrice += i.price;
-    }
+    i.addNew
+        ? i.product.totalQuantity = i.quantity
+        : i.product.totalQuantity += i.quantity;
+    i.addNew ? i.product.totalPrice = i.price : i.product.totalPrice += i.price;
     i.product.details[0].quantity.allowedQuantities[i.index].qty++;
     if (i.addNew) _cartItems.add(i.product);
   }
