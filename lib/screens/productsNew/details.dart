@@ -66,7 +66,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   // shows/edit the quantity of the product
   Text _showQ(NewCartModel newCart, StoreProduct item, int index) {
     int qty = 0;
-    qty=item.details[0].quantity.allowedQuantities[index].qty;
+    qty = item.details[0].quantity.allowedQuantities[index].qty;
     // newCart.items.forEach((e) {
     //   if (e.id == item.id) {
     //     qty = e.details[0].quantity.allowedQuantities[index].qty;
@@ -108,15 +108,10 @@ class _ProductDetailsState extends State<ProductDetails> {
       p = widget.p.details[0].price * q;
     }
 
-    if (addToCart)
-      // newCart.addToNewCart(widget.p, p, q, index);
-      newCart.addToCart(
-          item: widget.p,
-          price: p,
-          quantity: q,
-          allowdQid: widget.p.details[0].quantity.allowedQuantities[index].id);
-    else
-      newCart.removeFromNewCart(widget.p, p, q, index);
+    //
+    addToCart
+        ? newCart.addToCart(widget.p, index, p, q)
+        : newCart.removeFromCart(widget.p, index, p, q);
   }
 
   Widget getNameAndPrice(height, width) {
@@ -154,7 +149,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Widget getQuantities(String quantity, double height, NewCartModel newCart, int index) {
+  Widget getQuantities(
+      String quantity, double height, NewCartModel newCart, int index) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: Column(
@@ -319,7 +315,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                     child: Text(
-                      "A fun fact or some kind of product description over here, which may include product grade, quality etc.",
+                      "",
                       style: TextStyle(
                           fontSize: SizeConfig.textMultiplier * 2.2,
                           color: Colors.black54,

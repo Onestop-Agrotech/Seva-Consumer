@@ -12,19 +12,19 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:mvp/models/storeProducts.dart';
 
-class CartUtilityModel {
-  StoreProduct product;
-  double price;
-  double quantity;
-  bool addNew;
-  String allowdQid;
-  CartUtilityModel(
-      {@required this.product,
-      @required this.price,
-      @required this.quantity,
-      @required this.addNew,
-      @required this.allowdQid});
-}
+// class CartUtilityModel {
+//   StoreProduct product;
+//   double price;
+//   double quantity;
+//   bool addNew;
+//   String allowdQid;
+//   CartUtilityModel(
+//       {@required this.product,
+//       @required this.price,
+//       @required this.quantity,
+//       @required this.addNew,
+//       @required this.allowdQid});
+// }
 
 class NewCartModel extends ChangeNotifier {
   // private to the model only - non-readable var
@@ -48,73 +48,6 @@ class NewCartModel extends ChangeNotifier {
   // get total Items in cart
   int get totalItems => _cartItems.length;
 
-  // Remove item or quantity
-  void removeFromNewCart(StoreProduct item, double p, double q, int index) {
-    bool remove = false;
-    // check if items exist in cart
-    if (_cartItems.length > 0) {
-      // check if product exist in cart
-      _cartItems.forEach((cartitem) {
-        if (cartitem.id == item.id) {
-          // check for total Price of that item
-          // just remove the desired quantity
-          cartitem.details.forEach((element) {
-            if ((element.quantity.allowedQuantities[index].qty - 1) >= 0) {
-              element.quantity.allowedQuantities[index].qty -= 1;
-              cartitem.totalPrice -= p;
-              cartitem.totalQuantity -= q;
-              if (cartitem.totalPrice == 0) {
-                // remove from cart
-                remove = true;
-                return;
-              }
-            }
-          });
-
-          return;
-        }
-      });
-    }
-    if (remove) {
-      item.details.forEach((element) {
-        element.quantity.allowedQuantities[index].qty -= 1;
-      });
-      item.totalPrice -= p;
-      item.totalQuantity -= q;
-      int i = _cartItems.indexOf(item);
-      if (i >= 0) {
-        _cartItems.removeAt(i);
-      }
-    }
-    notifyListeners();
-  }
-
-  // Remove item from cart completely
-  void removeItemFromNewCart(StoreProduct item) {
-    bool remove = false;
-    if (_cartItems.length > 0) {
-      _cartItems.forEach((element) {
-        if (element.id == item.id) {
-          remove = true;
-          return;
-        }
-      });
-    }
-    if (remove) {
-      item.details.forEach((element) {
-        element.quantity.allowedQuantities.forEach((element) {
-          element.qty = 0;
-        });
-      });
-
-      item.totalPrice = 0;
-      item.totalQuantity = 0;
-      int i = _cartItems.indexOf(item);
-      _cartItems.removeAt(i);
-    }
-    notifyListeners();
-  }
-
   // Clear the cart
   void clearCart() {
     if (_cartItems.length > 0) {
@@ -125,77 +58,53 @@ class NewCartModel extends ChangeNotifier {
 
   ///****************** NEW CODE ************* */
 
-  void addToCart(
-      {@required StoreProduct item,
-      @required double price,
-      @required double quantity,
-      @required String allowdQid}) {
-    CartUtilityModel cm = CartUtilityModel(
-        product: item,
-        price: price,
-        quantity: quantity,
-        addNew: true,
-        allowdQid: allowdQid);
-    // check the length of cart items
-    switch (_cartItems.length) {
-      // no items in cart
-      case 0:
-        add(cm);
-        break;
-      // there are items in cart
-      default:
-        StoreProduct p =
-            _cartItems.singleWhere((i) => i.id == item.id, orElse: () => null);
-        // case 1 when passed item doesn't exist in cart
-        if (p == null) {
-          add(cm);
-        }
-
-        // case 2 when passed item exist in cart
-        else {
-          cm.addNew = false;
-          add(cm);
-        }
-    }
-    notifyListeners();
-  }
-
-  void removeFromCart(
-      {@required StoreProduct item,
-      @required double price,
-      @required double quantity,
-      @required int index,
-      @required String allowdQid}) {
-    CartUtilityModel cm = CartUtilityModel(
-        product: item,
-        price: price,
-        quantity: quantity,
-        addNew: true,
-        allowdQid: allowdQid);
-    if (_cartItems.length > 0) {
-      StoreProduct p =
-          _cartItems.singleWhere((i) => i.id == item.id, orElse: () => null);
-      if (p != null) {
-        // remove here
-        remove(cm);
+  void addToCart(StoreProduct item, int i, double p, double q) {
+    if (_cartItems.length == 0) {
+      addNew(item, p, q, i, true);
+    } else if (_cartItems.length > 0) {
+      StoreProduct product =
+          _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
+      if (product != null) {
+        // item exists
+        addNew(item, p, q, i, false);
+      } else if (product == null) {
+        // item does not exist
+        addNew(item, p, q, i, true);
       }
     }
+  }
+
+  void addNew(StoreProduct item, double p, double q, int i, bool n) {
+    item.totalPrice += p;
+    item.totalQuantity += q;
+    item.details[0].quantity.allowedQuantities[i].qty++;
+    if (n) _cartItems.add(item);
     notifyListeners();
   }
 
-/****************** NEW CODE ************* */
-
-  /// UTILITY FUNCTIONS
-  void add(CartUtilityModel i) {
-    i.addNew
-        ? i.product.totalQuantity = i.quantity
-        : i.product.totalQuantity += i.quantity;
-    i.addNew ? i.product.totalPrice = i.price : i.product.totalPrice += i.price;
-    i.product.details[0].quantity.allowedQuantities.forEach((a) {
-      if (a.id == i.allowdQid) a.qty++;
-    });
-    if (i.addNew) _cartItems.add(i.product);
+  void removeFromCart(StoreProduct item, int i, double p, double q) {
+    if (_cartItems.length > 0) {
+      StoreProduct product =
+          _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
+      if (product != null) {
+        subtract(item, p, q, i);
+      }
+    }
   }
 
-  void remove(CartUtilityModel i) {}
+  void subtract(StoreProduct item, double p, double q, int i) {
+    if (item.totalQuantity - q >= 0 &&
+        item.totalPrice - p >= 0 &&
+        item.details[0].quantity.allowedQuantities[i].qty - 1 >= 0) {
+      item.totalPrice -= p;
+      item.totalQuantity -= q;
+      item.details[0].quantity.allowedQuantities[i].qty--;
+      if (item.totalPrice == 0 &&
+          item.totalQuantity == 0 &&
+          item.details[0].quantity.allowedQuantities[i].qty == 0) {
+        _cartItems.removeWhere((z) => z.id == item.id);
+      }
+      notifyListeners();
+    }
+  }
 }

@@ -44,7 +44,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   var texts = [
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
     "Get exclusive cashbacks worth more than Rs 100 when you order.",
-    "Super fast delivery within 30 minutes!",
+    "Super fast delivery within 45 minutes!",
+    "Order Now and support your local stores."
   ];
   List<StoreProduct> categories = [];
   // static categories

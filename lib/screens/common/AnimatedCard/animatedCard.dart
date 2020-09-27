@@ -82,10 +82,9 @@ class _AnimatedCardState extends State<AnimatedCard>
       p = widget.product.details[0].price * q;
     }
 
-    if (addToCart)
-      newCart.addToNewCart(widget.product, p, q, index);
-    else
-      newCart.removeFromNewCart(widget.product, p, q, index);
+    addToCart
+        ? newCart.addToCart(widget.product, index, p, q)
+        : newCart.removeFromCart(widget.product, index, p, q);
   }
 
   // open the modal for product addition
@@ -234,7 +233,6 @@ class _AnimatedCardState extends State<AnimatedCard>
                                 this.widget.shopping
                                     ? Consumer<NewCartModel>(
                                         builder: (context, newCart, child) {
-                                          
                                           return Expanded(
                                             child: IconButton(
                                                 icon: Icon(Icons.delete),
