@@ -12,12 +12,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
-import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/productsNew/details.dart';
-import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,6 +24,7 @@ class ProductsUINew extends StatefulWidget {
 }
 
 class _ProductsUINewState extends State<ProductsUINew> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsapiBloc apiBloc;
   // Todo: Need to convert this static array to dynamic
   // will receive from server
@@ -67,43 +65,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
     tag = 0;
   }
 
-  /// A common [Future] to GET products as per the category
-  /// It depends on the [tag] variable and also this can
-  /// be optimised instead of [Switch] statement
-  /// This is should be replaced by the Generic API system
-  /// which also has BLOC pattern
-  Future<List<StoreProduct>> getProducts() async {
-    String type = '';
-    switch (tag) {
-      case 0:
-        type = "vegetable";
-        break;
-      case 1:
-        type = "fruit";
-        break;
-      case 2:
-        type = "dailyEssential";
-        break;
-      default:
-    }
-    this.setState(() {
-      // _category = catArray[tag];
-    });
-    List<StoreProduct> prods = [];
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
-    String hub = await p.gethub();
-    Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = APIService.getCategorywiseProducts(hub, type);
-    var response = await http.get(url, headers: requestHeaders);
-    if (response.statusCode == 200) {
-      List<StoreProduct> x = jsonToCateogrywiseProductModel(response.body);
-      return x;
-    } else {
-      return prods;
-    }
-  }
-
   // shimmer layout before page loads
   _shimmerLayout() {
     var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -138,11 +99,16 @@ class _ProductsUINewState extends State<ProductsUINew> {
     /// instance of the [StoreProduct] to be sent
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(
-            p: p,
-          );
-        }));
+        if (!p.details[0].outOfStock) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ProductDetails(
+              p: p,
+            );
+          }));
+        } else {
+          final snackBar = SnackBar(content: Text("Item is Out of stock!"));
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+        }
       },
       child: Container(
         child: Column(
@@ -152,7 +118,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
             /// resolution is maintained and it is not distorted
             /// Can be edited if the need arises to optimise
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 60, maxHeight: 60),
+              constraints: BoxConstraints(maxWidth: 70, maxHeight: 70),
 
               /// The hero animation when tapped, makes sure there is a smooth
               /// transition to the details page. [tag] & [imageUrl] should be same here
@@ -165,9 +131,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
             Text(
               p.name,
               style: TextStyle(
-                  fontSize: 1.5 * SizeConfig.textMultiplier,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black87),
+                  fontSize: 1.65 * SizeConfig.textMultiplier,
+                  fontWeight: FontWeight.w500,
+                  color: p.details[0].outOfStock
+                      ? Colors.grey
+                      : ThemeColoursSeva().pallete1),
               overflow: TextOverflow.clip,
               textAlign: TextAlign.center,
             ),
@@ -182,6 +150,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     // width of screen
     double width = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
