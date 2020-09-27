@@ -105,6 +105,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
+// Check whether the product is outOfStock and show according
   Widget _returnFilteredImage(StoreProduct p) {
     if (p.details[0].outOfStock) {
       return ColorFiltered(
@@ -117,6 +118,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       return CachedNetworkImage(imageUrl: p.pictureURL);
   }
 
+// Cart icon visible at the top left of the screen
   _renderCartIcon() {
     return Stack(
       children: [
@@ -320,6 +322,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
               ),
             ),
           ),
+          // Using Bloc to change the state as per the State Set
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
