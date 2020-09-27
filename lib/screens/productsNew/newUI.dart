@@ -118,7 +118,15 @@ class _ProductsUINewState extends State<ProductsUINew> {
             );
           }));
         } else {
-          final snackBar = SnackBar(content: Text("Item is Out of stock!"));
+          final snackBar = SnackBar(
+            content: Text("Item is Out of stock!"),
+            action: SnackBarAction(
+                textColor: ThemeColoursSeva().pallete1,
+                label: "OK",
+                onPressed: () {
+                  _scaffoldKey.currentState.hideCurrentSnackBar();
+                }),
+          );
           _scaffoldKey.currentState.showSnackBar(snackBar);
         }
       },
@@ -167,7 +175,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
       appBar: AppBar(
         title: Text(
           "Products",
-          style: TextStyle(color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,

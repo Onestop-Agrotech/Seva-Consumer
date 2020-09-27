@@ -123,7 +123,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           Text(
             widget.p.name,
             style: TextStyle(
-                fontSize: SizeConfig.textMultiplier * 2.5,
+                fontSize: SizeConfig.textMultiplier * 2,
                 fontWeight: FontWeight.w500,
                 color: Colors.black54),
           ),
@@ -131,7 +131,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               "Rs ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  fontSize: SizeConfig.textMultiplier * 2.5,
+                  fontSize: SizeConfig.textMultiplier * 2,
                   color: Colors.blueGrey))
         ],
       ),
