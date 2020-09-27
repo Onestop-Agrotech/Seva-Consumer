@@ -19,6 +19,8 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductsUINew extends StatefulWidget {
+  final int tagFromMain;
+  ProductsUINew({this.tagFromMain});
   @override
   _ProductsUINewState createState() => _ProductsUINewState();
 }
@@ -53,7 +55,18 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
-    if (tag == 0) apiBloc.add(GetVegetables());
+    switch (tag) {
+      case 0:
+        apiBloc.add(GetVegetables());
+        break;
+      case 1:
+        apiBloc.add(GetFruits());
+        break;
+      case 2:
+        apiBloc.add(GetDailyEssentials());
+        break;
+      default:
+    }
   }
 
   @override
@@ -62,7 +75,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
     /// Intialize it to 0 - by default to get Vegetables
     /// as it is on the first List Tile
-    tag = 0;
+    /// Or get it from the Main Landing UI
+    if (widget.tagFromMain != null)
+      tag = widget.tagFromMain;
+    else
+      tag = 0;
   }
 
   // shimmer layout before page loads
