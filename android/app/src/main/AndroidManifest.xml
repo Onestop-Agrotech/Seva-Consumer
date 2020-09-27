@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.mvp">
+    package="com.theonestop.seva">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -15,7 +15,7 @@
             android:value="@string/google_maps_api_key" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.theonestop.seva.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

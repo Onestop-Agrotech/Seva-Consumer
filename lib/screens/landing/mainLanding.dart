@@ -115,9 +115,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       String url = APIService.setDeviceTokenInFirestore;
       var response = await http.post(url, headers: requestHeaders, body: body);
       if (response.statusCode == 200) {
-        print("SUCCESS");
-      } else
-        print("FAILURE TO SET");
+        /// ("SUCCESS");
+      } else {
+        /// ("FAILURE TO SET");
+      }
     }
   }
 

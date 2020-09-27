@@ -8,6 +8,7 @@
 /// @fileoverview Main Dart File : All routes and landing screen are defined here.
 ///
 
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -37,10 +38,20 @@ class SevaApp extends StatefulWidget {
 }
 
 class _SevaAppState extends State<SevaApp> {
+  /// platform client for invoking in-app updates
+  static const platform = const MethodChannel('update_app');
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+    /// check for update, if one exists, then perform the update
+    /// else just continue with app
+    /// Only supported for android
+    if (Platform.isAndroid) {
+      platform.invokeMethod("checkForUpdate");
+    }
   }
 
   @override
