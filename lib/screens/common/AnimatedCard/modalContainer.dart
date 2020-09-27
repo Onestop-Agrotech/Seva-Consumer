@@ -24,7 +24,7 @@ class AddItemModal extends StatefulWidget {
 }
 
 class _AddItemModalState extends State<AddItemModal> {
-  void helper(int index, newCart, bool addToCart) {
+  void helper(int index, NewCartModel newCart, bool addToCart) {
     double p, q;
 
     // Kg, Kgs, Gms, Pc - Types of Quantities
@@ -62,10 +62,9 @@ class _AddItemModalState extends State<AddItemModal> {
       p = widget.product.details[0].price * q;
     }
 
-    if (addToCart)
-      newCart.addToNewCart(widget.product, p, q, index);
-    else
-      newCart.removeFromNewCart(widget.product, p, q, index);
+    addToCart
+        ? newCart.addToCart(widget.product, index, p, q)
+        : newCart.removeFromCart(widget.product, index, p, q);
   }
 
   // shows/edit the quantity of the product
@@ -262,17 +261,6 @@ class _AddItemModalState extends State<AddItemModal> {
                     ],
                   ),
                 ),
-                // Text(
-                //   (widget.product.funFact == "" ||
-                //           widget.product.funFact == null)
-                //       ? ""
-                //       : widget.product.funFact,
-                //   style: TextStyle(
-                //     color: ThemeColoursSeva().dkGreen,
-                //     fontSize: 20.0,
-                //     fontWeight: FontWeight.w300,
-                //   ),
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
