@@ -241,12 +241,21 @@ class _ProductsUINewState extends State<ProductsUINew> {
                               /// of categories in the DB, as we add them up, this should be
                               /// dynamic, for now it is static
                               if (index < 3) {
-                                /// triggers the [build] method again when the [tag] is set to
-                                /// the [index] from the [catArray], this way the future method
-                                /// [getProducts] is called again as the widget tree rebuilds
-                                this.setState(() {
+                                setState(() {
                                   tag = index;
                                 });
+                                switch (index) {
+                                  case 0:
+                                    apiBloc.add(GetVegetables());
+                                    break;
+                                  case 1:
+                                    apiBloc.add(GetFruits());
+                                    break;
+                                  case 2:
+                                    apiBloc.add(GetDailyEssentials());
+                                    break;
+                                  default:
+                                }
                               }
                             },
                           ),
