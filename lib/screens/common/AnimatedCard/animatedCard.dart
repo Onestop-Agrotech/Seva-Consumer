@@ -111,7 +111,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       : animationController.reverse();
 
   // alert box while deleting
-  void _showDeleteAlert(newCart, context) {
+  void _showDeleteAlert(NewCartModel newCart, context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -134,7 +134,7 @@ class _AnimatedCardState extends State<AnimatedCard>
               RaisedButton(
                 onPressed: () {
                   // delete the item
-                  newCart.removeItemFromNewCart(widget.product);
+                  newCart.remove(widget.product);
                   Navigator.pop(context);
                 },
                 child: Text(

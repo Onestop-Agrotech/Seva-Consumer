@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
@@ -27,7 +28,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ? "${totalQ.toStringAsFixed(2)} ${widget.p.details[0].quantity.quantityMetric}"
           : "0",
       style: TextStyle(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
           color: Colors.blueGrey),
     );
@@ -44,7 +45,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text(
       "Rs $price",
       style: TextStyle(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
           color: Colors.blueGrey),
     );
@@ -57,7 +58,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text(
       "Rs $price",
       style: TextStyle(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
           color: Colors.blueGrey),
     );
@@ -67,11 +68,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   Text _showQ(NewCartModel newCart, StoreProduct item, int index) {
     int qty = 0;
     qty = item.details[0].quantity.allowedQuantities[index].qty;
-    // newCart.items.forEach((e) {
-    //   if (e.id == item.id) {
-    //     qty = e.details[0].quantity.allowedQuantities[index].qty;
-    //   }
-    // });
     return Text("$qty");
   }
 
@@ -125,15 +121,15 @@ class _ProductDetailsState extends State<ProductDetails> {
             widget.p.name,
             style: TextStyle(
                 fontSize: SizeConfig.textMultiplier * 2,
-                fontWeight: FontWeight.w500,
-                color: Colors.black54),
+                fontWeight: FontWeight.w700,
+                color: ThemeColoursSeva().pallete1),
           ),
           Text(
               "Rs ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
               style: TextStyle(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w700,
                   fontSize: SizeConfig.textMultiplier * 2,
-                  color: Colors.blueGrey))
+                  color: ThemeColoursSeva().pallete1))
         ],
       ),
     );
@@ -154,16 +150,20 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            quantity,
-            style: TextStyle(
-                fontSize: SizeConfig.textMultiplier * 2.5,
-                color: Colors.black54),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              quantity,
+              style: TextStyle(
+                  fontSize: SizeConfig.textMultiplier * 2.1,
+                  color: ThemeColoursSeva().black),
+            ),
           ),
-          SizedBox(height: height * 0.009),
+          SizedBox(height: height * 0.02),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               GestureDetector(
                 onTap: () {
@@ -175,7 +175,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.green),
-                    child: Icon(Icons.remove, color: Colors.white54)),
+                    child: Icon(Icons.remove, color: Colors.white)),
               ),
               _showQ(newCart, widget.p, index),
               GestureDetector(
@@ -188,7 +188,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.green),
-                    child: Icon(Icons.add, color: Colors.white54)),
+                    child: Icon(Icons.add, color: Colors.white)),
               )
             ],
           )
@@ -214,9 +214,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     IconButton(
+                      iconSize: 40.0,
                       icon: Icon(
                         Icons.close,
-                        color: Colors.blueGrey,
+                        color: ThemeColoursSeva().pallete1,
                       ),
                       onPressed: () => Navigator.of(context).pop(null),
                     ),
@@ -258,13 +259,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Item Total Quantity",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: SizeConfig.textMultiplier * 2.1,
-                                    color: Colors.black54),
-                              ),
+                              HeaderText(text: "Item Total Quantity"),
                               SizedBox(
                                 height: 10,
                               ),
@@ -274,12 +269,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Item Total Price",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: SizeConfig.textMultiplier * 2.1,
-                                    color: Colors.black54),
+                              HeaderText(
+                                text: "Item Total Price",
                               ),
                               SizedBox(
                                 height: 10,
@@ -290,12 +281,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Cart Total Price",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: SizeConfig.textMultiplier * 2.1,
-                                    color: Colors.black54),
+                              HeaderText(
+                                text: "Cart Total Price",
                               ),
                               SizedBox(
                                 height: 10,
@@ -327,5 +314,24 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           );
         }));
+  }
+}
+
+class HeaderText extends StatelessWidget {
+  final String text;
+  const HeaderText({
+    @required this.text,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: SizeConfig.textMultiplier * 2.1,
+          color: ThemeColoursSeva().black),
+    );
   }
 }

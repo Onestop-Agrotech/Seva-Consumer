@@ -93,4 +93,12 @@ class NewCartModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void remove(StoreProduct item){
+    if(_cartItems.length > 0){
+      _cartItems.removeWhere((n) => n.id == item.id);
+      notifyListeners();
+    }
+  }
+
 }
