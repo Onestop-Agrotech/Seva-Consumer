@@ -67,7 +67,11 @@ class _ProductDetailsState extends State<ProductDetails> {
   // shows/edit the quantity of the product
   Text _showQ(NewCartModel newCart, StoreProduct item, int index) {
     int qty = 0;
-    qty = item.details[0].quantity.allowedQuantities[index].qty;
+    newCart.items.forEach((e) {
+      if (e.id == item.id) {
+        qty = e.details[0].quantity.allowedQuantities[index].qty;
+      }
+    });
     return Text("$qty");
   }
 
