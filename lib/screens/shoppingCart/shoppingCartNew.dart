@@ -21,7 +21,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-import '../common/animatedCard/animatedCard.dart';
+import '../common/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
   @override
