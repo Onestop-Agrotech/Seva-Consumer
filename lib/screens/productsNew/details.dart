@@ -110,6 +110,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         : newCart.removeFromCart(widget.p, index, p, q);
   }
 
+  //it will get the name and the price of that product.
   Widget getNameAndPrice(height, width) {
     return Container(
       height: height * 0.08,
@@ -135,6 +136,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
+  //returns a widget image of the clicked product [with a hero animation]
   Widget getImage(height, width) {
     return Container(
       width: width,
@@ -145,6 +147,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
+  // return all the quantites available for that product
   Widget getQuantities(
       String quantity, double height, NewCartModel newCart, int index) {
     return Padding(
@@ -177,6 +180,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         color: Colors.green),
                     child: Icon(Icons.remove, color: Colors.white)),
               ),
+              // shows the quantity available.
               _showQ(newCart, widget.p, index),
               GestureDetector(
                 onTap: () {

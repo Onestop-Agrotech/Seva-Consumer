@@ -82,9 +82,10 @@ class _AnimatedCardState extends State<AnimatedCard>
       p = widget.product.details[0].price * q;
     }
 
-    addToCart
-        ? newCart.addToCart(widget.product, index, p, q)
-        : newCart.removeFromCart(widget.product, index, p, q);
+    if (addToCart)
+      newCart.addToNewCart(widget.product, p, q, index);
+    else
+      newCart.removeFromNewCart(widget.product, p, q, index);
   }
 
   // open the modal for product addition
@@ -111,7 +112,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       : animationController.reverse();
 
   // alert box while deleting
-  void _showDeleteAlert(NewCartModel newCart, context) {
+  void _showDeleteAlert(newCart, context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -134,7 +135,7 @@ class _AnimatedCardState extends State<AnimatedCard>
               RaisedButton(
                 onPressed: () {
                   // delete the item
-                  newCart.remove(widget.product);
+                  newCart.removeItemFromNewCart(widget.product);
                   Navigator.pop(context);
                 },
                 child: Text(
