@@ -86,6 +86,18 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
+  Widget _returnFilteredImage(StoreProduct p) {
+    if (p.details[0].outOfStock) {
+      return ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Colors.grey,
+            BlendMode.saturation,
+          ),
+          child: CachedNetworkImage(imageUrl: p.pictureURL));
+    } else
+      return CachedNetworkImage(imageUrl: p.pictureURL);
+  }
+
   /// this func returns the cards widget
   /// Currently it only shows 2 things
   /// 1. Picture
@@ -125,7 +137,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
               /// and in the product details page for the animation to work
               child: Hero(
                 tag: p.name,
-                child: CachedNetworkImage(imageUrl: p.pictureURL),
+                child: _returnFilteredImage(p),
               ),
             ),
             Text(
