@@ -12,7 +12,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/common/AnimatedCard/modalContainer.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
