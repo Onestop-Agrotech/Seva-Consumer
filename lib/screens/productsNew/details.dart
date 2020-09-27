@@ -64,13 +64,14 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   // shows/edit the quantity of the product
-  Text _showQ(newCart, item, index) {
+  Text _showQ(NewCartModel newCart, StoreProduct item, int index) {
     int qty = 0;
-    newCart.items.forEach((e) {
-      if (e.id == item.id) {
-        qty = e.details[0].quantity.allowedQuantities[index].qty;
-      }
-    });
+    qty=item.details[0].quantity.allowedQuantities[index].qty;
+    // newCart.items.forEach((e) {
+    //   if (e.id == item.id) {
+    //     qty = e.details[0].quantity.allowedQuantities[index].qty;
+    //   }
+    // });
     return Text("$qty");
   }
 
@@ -109,7 +110,11 @@ class _ProductDetailsState extends State<ProductDetails> {
 
     if (addToCart)
       // newCart.addToNewCart(widget.p, p, q, index);
-      newCart.addToCart(item: widget.p, price: p, quantity: q, index: index);
+      newCart.addToCart(
+          item: widget.p,
+          price: p,
+          quantity: q,
+          allowdQid: widget.p.details[0].quantity.allowedQuantities[index].id);
     else
       newCart.removeFromNewCart(widget.p, p, q, index);
   }
@@ -149,7 +154,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  Widget getQuantities(String quantity, double height, newCart, index) {
+  Widget getQuantities(String quantity, double height, NewCartModel newCart, int index) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: Column(

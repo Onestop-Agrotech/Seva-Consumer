@@ -16,14 +16,14 @@ class CartUtilityModel {
   StoreProduct product;
   double price;
   double quantity;
-  int index;
   bool addNew;
+  String allowdQid;
   CartUtilityModel(
       {@required this.product,
       @required this.price,
       @required this.quantity,
-      @required this.index,
-      @required this.addNew});
+      @required this.addNew,
+      @required this.allowdQid});
 }
 
 class NewCartModel extends ChangeNotifier {
@@ -129,13 +129,13 @@ class NewCartModel extends ChangeNotifier {
       {@required StoreProduct item,
       @required double price,
       @required double quantity,
-      @required int index}) {
+      @required String allowdQid}) {
     CartUtilityModel cm = CartUtilityModel(
         product: item,
         price: price,
         quantity: quantity,
-        index: index,
-        addNew: true);
+        addNew: true,
+        allowdQid: allowdQid);
     // check the length of cart items
     switch (_cartItems.length) {
       // no items in cart
@@ -153,10 +153,32 @@ class NewCartModel extends ChangeNotifier {
 
         // case 2 when passed item exist in cart
         else {
-          cm.product = p;
           cm.addNew = false;
           add(cm);
         }
+    }
+    notifyListeners();
+  }
+
+  void removeFromCart(
+      {@required StoreProduct item,
+      @required double price,
+      @required double quantity,
+      @required int index,
+      @required String allowdQid}) {
+    CartUtilityModel cm = CartUtilityModel(
+        product: item,
+        price: price,
+        quantity: quantity,
+        addNew: true,
+        allowdQid: allowdQid);
+    if (_cartItems.length > 0) {
+      StoreProduct p =
+          _cartItems.singleWhere((i) => i.id == item.id, orElse: () => null);
+      if (p != null) {
+        // remove here
+        remove(cm);
+      }
     }
     notifyListeners();
   }
@@ -169,7 +191,11 @@ class NewCartModel extends ChangeNotifier {
         ? i.product.totalQuantity = i.quantity
         : i.product.totalQuantity += i.quantity;
     i.addNew ? i.product.totalPrice = i.price : i.product.totalPrice += i.price;
-    i.product.details[0].quantity.allowedQuantities[i.index].qty++;
+    i.product.details[0].quantity.allowedQuantities.forEach((a) {
+      if (a.id == i.allowdQid) a.qty++;
+    });
     if (i.addNew) _cartItems.add(i.product);
   }
+
+  void remove(CartUtilityModel i) {}
 }
