@@ -40,7 +40,8 @@ class _OrderLoaderState extends State<OrderLoader> {
     StorageSharedPrefs p = new StorageSharedPrefs();
     String userId = await p.getId();
     String token = await p.getToken();
-    String url = APIService.ordersAPI + "/new/$userId";
+    String hubid = await p.gethub();
+    String url = APIService.ordersAPI + "new/$userId/$hubid";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     // make the body
     OrderModel newOrder = new OrderModel(
@@ -63,7 +64,8 @@ class _OrderLoaderState extends State<OrderLoader> {
         itemId: newCart.items[i].id,
         name: newCart.items[i].name,
         totalPrice: "${newCart.items[i].totalPrice}",
-        totalQuantity: "$q ${newCart.items[i].quantity.quantityMetric}",
+        totalQuantity:
+            "$q ${newCart.items[i].details[0].quantity.quantityMetric}",
       );
       itemList.add(it);
     }
@@ -81,14 +83,16 @@ class _OrderLoaderState extends State<OrderLoader> {
       Navigator.pushReplacementNamed(context, "/ordersNew");
     } else if (response.statusCode == 404) {
       Fluttertoast.showToast(
-          msg: "404 error",
+          msg: "Failed to place order. Please contact Support..",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM);
+      Navigator.pushReplacementNamed(context, "/main");
     } else if (response.statusCode == 500) {
       Fluttertoast.showToast(
-          msg: "500 error",
+          msg: "Failed to place order. Please contact Support.",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM);
+      Navigator.pushReplacementNamed(context, "/main");
     } else
       throw Exception("Server error!");
   }
