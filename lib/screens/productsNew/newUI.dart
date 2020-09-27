@@ -282,6 +282,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                     );
                   } else if (state is ProductsapiLoaded) {
                     List<StoreProduct> arr = state.products;
+                    arr.sort((a, b) => a.name.compareTo(b.name));
                     return GridView.count(
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
