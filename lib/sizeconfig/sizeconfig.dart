@@ -47,5 +47,6 @@ class SizeConfig {
     heightMultiplier = _blockHeight;
     widthMultiplier = _blockWidth;
     print(textMultiplier);
+    print(widthMultiplier);
   }
 }

@@ -1,8 +1,8 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{02-09-2020}
+// Version-0.5.0
+// Date-{27-09-2020}
 
 ///
 /// @fileoverview ShowCards Widget : .
@@ -12,8 +12,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/common/AnimatedCard/modalContainer.dart';
-import 'package:mvp/screens/products/products.dart';
+import 'package:mvp/screens/productsNew/details.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
@@ -28,20 +28,27 @@ class ShowCards extends StatefulWidget {
 
 class _ShowCardsState extends State<ShowCards> {
   void onClickProduct() {
-    showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        barrierColor: Colors.black45,
-        transitionDuration: const Duration(milliseconds: 200),
-        pageBuilder: (BuildContext buildContext, Animation animation,
-            Animation secondaryAnimation) {
-          return Center(
-              child: AddItemModal(
-            product: widget.sp,
-          ));
-        });
+    if (!widget.sp.details[0].outOfStock) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return ProductDetails(
+          p: widget.sp,
+        );
+      }));
+    }
+    // showGeneralDialog(
+    //     context: context,
+    //     barrierDismissible: true,
+    //     barrierLabel:
+    //         MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    //     barrierColor: Colors.black45,
+    //     transitionDuration: const Duration(milliseconds: 200),
+    //     pageBuilder: (BuildContext buildContext, Animation animation,
+    //         Animation secondaryAnimation) {
+    //       return Center(
+    //           child: AddItemModal(
+    //         product: widget.sp,
+    //       ));
+    //     });
   }
 
   @override
@@ -54,7 +61,8 @@ class _ShowCardsState extends State<ShowCards> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Products(type: this.widget.index)),
+                builder: (context) =>
+                    ProductsUINew(tagFromMain: this.widget.index)),
           );
         else {
           // open the modal container
@@ -96,13 +104,16 @@ class _ShowCardsState extends State<ShowCards> {
                         fontWeight: FontWeight.w700),
                   )
                 : SizedBox.shrink(),
-            Container(
-              height: height * 0.1,
-              child: CachedNetworkImage(
-                imageUrl: widget.sp.pictureURL,
-                placeholder: (context, url) =>
-                    Container(height: 50.0, child: Text("Loading...")),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+            Hero(
+              tag: widget.sp.name,
+              child: Container(
+                height: height * 0.1,
+                child: CachedNetworkImage(
+                  imageUrl: widget.sp.pictureURL,
+                  placeholder: (context, url) =>
+                      Container(height: 50.0, child: Text("Loading...")),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
             ),
             widget.store

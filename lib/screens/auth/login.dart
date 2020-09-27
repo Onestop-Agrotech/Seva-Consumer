@@ -1,8 +1,8 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{02-09-2020}
+// Version-0.5.0
+// Date-{20-09-2020}
 
 ///
 /// @fileoverview Login Widget : MobileVerification,OTP are declared here.
@@ -227,13 +227,17 @@ class _LoginScreenState extends State<LoginScreen> {
     };
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
+      if (Platform.isAndroid) {
+        /// unregister the receiver after a [sms] case is invoked
+        /// it will not listen again
+        platform.invokeMethod("unregisterReceiver");
+      }
       StorageSharedPrefs p = new StorageSharedPrefs();
       var jsonBdy = json.decode(response.body);
       await p.setUsername(jsonBdy["username"]);
       await p.setToken(jsonBdy["token"]);
       await p.setId(jsonBdy["id"]);
       await p.sethub(jsonBdy["hub"]);
-      print('hub,$jsonBdy["hub"]');
       await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
       await p.setFarStatus(far);

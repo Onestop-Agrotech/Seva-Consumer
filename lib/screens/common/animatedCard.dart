@@ -16,7 +16,6 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
-import 'modalContainer.dart';
 
 class AnimatedCard extends StatefulWidget {
   final bool shopping;
@@ -43,7 +42,7 @@ class _AnimatedCardState extends State<AnimatedCard>
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
   }
 
-  void helper(int index, newCart, bool addToCart) {
+  void helper(int index, NewCartModel newCart, bool addToCart) {
     double p, q;
 
     // Kg, Kgs, Gms, Pc - Types of Quantities
@@ -82,28 +81,9 @@ class _AnimatedCardState extends State<AnimatedCard>
       p = widget.product.details[0].price * q;
     }
 
-    if (addToCart)
-      newCart.addToNewCart(widget.product, p, q, index);
-    else
-      newCart.removeFromNewCart(widget.product, p, q, index);
-  }
-
-  // open the modal for product addition
-  void onClickProduct(context) {
-    showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        barrierColor: Colors.black45,
-        transitionDuration: const Duration(milliseconds: 200),
-        pageBuilder: (BuildContext buildContext, Animation animation,
-            Animation secondaryAnimation) {
-          return Center(
-              child: AddItemModal(
-            product: widget.product,
-          ));
-        });
+    addToCart
+        ? newCart.addToCart(widget.product, index, p, q)
+        : newCart.removeFromCart(widget.product, index, p, q);
   }
 
   // animation toggler
@@ -112,7 +92,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       : animationController.reverse();
 
   // alert box while deleting
-  void _showDeleteAlert(newCart, context) {
+  void _showDeleteAlert(NewCartModel newCart, context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -135,7 +115,7 @@ class _AnimatedCardState extends State<AnimatedCard>
               RaisedButton(
                 onPressed: () {
                   // delete the item
-                  newCart.removeItemFromNewCart(widget.product);
+                  newCart.remove(widget.product);
                   Navigator.pop(context);
                 },
                 child: Text(
@@ -161,118 +141,108 @@ class _AnimatedCardState extends State<AnimatedCard>
                 ..setEntry(3, 2, 0.001)
                 ..rotateY(pi * animationController.value),
               child: animationController.value <= 0.5
-                  ? GestureDetector(
-                      onTap: () {
-                        if (!this.widget.shopping &&
-                            !this.widget.product.details[0].outOfStock)
-                          onClickProduct(context);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            color: !this.widget.product.details[0].outOfStock
-                                ? ThemeColoursSeva().pallete3
-                                : ThemeColoursSeva().grey,
-                            width: !this.widget.product.details[0].outOfStock
-                                ? 1.5
-                                : 0.2,
+                  ? Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: !this.widget.product.details[0].outOfStock
+                              ? ThemeColoursSeva().pallete3
+                              : ThemeColoursSeva().grey,
+                          width: !this.widget.product.details[0].outOfStock
+                              ? 1.5
+                              : 0.2,
+                        ),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 15,
                           ),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 15,
+                          Center(
+                            child: Text(
+                              this.widget.product.name,
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color:
+                                      !this.widget.product.details[0].outOfStock
+                                          ? ThemeColoursSeva().pallete1
+                                          : ThemeColoursSeva().grey,
+                                  fontSize: 3.4 * SizeConfig.widthMultiplier,
+                                  fontWeight: FontWeight.w700),
                             ),
-                            Center(
-                              child: Text(
-                                this.widget.product.name,
-                                overflow: TextOverflow.clip,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: !this
-                                            .widget
-                                            .product
-                                            .details[0]
-                                            .outOfStock
-                                        ? ThemeColoursSeva().pallete1
-                                        : ThemeColoursSeva().grey,
-                                    fontSize: 3.4 * SizeConfig.widthMultiplier,
-                                    fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              this.widget.shopping
+                                  ? Expanded(
+                                      child: IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () {
+                                            toggle();
+                                            setState(() {
+                                              heightofContainer =
+                                                  '${context.size.height}';
+                                              widthofContainer =
+                                                  '${context.size.width}';
+                                            });
+                                            newscreenheight =
+                                                double.parse(heightofContainer);
+                                            newscreenwidth =
+                                                double.parse(widthofContainer);
+                                          }),
+                                    )
+                                  : Container(),
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                    maxWidth: 90, maxHeight: 130),
+                                child: CachedNetworkImage(
+                                    imageUrl: this.widget.product.pictureURL),
                               ),
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                this.widget.shopping
-                                    ? Expanded(
-                                        child: IconButton(
-                                            icon: Icon(Icons.edit),
-                                            onPressed: () {
-                                              toggle();
-                                              setState(() {
-                                                heightofContainer =
-                                                    '${context.size.height}';
-                                                widthofContainer =
-                                                    '${context.size.width}';
-                                              });
-                                              newscreenheight = double.parse(
-                                                  heightofContainer);
-                                              newscreenwidth = double.parse(
-                                                  widthofContainer);
-                                            }),
-                                      )
-                                    : Container(),
-                                ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      maxWidth: 90, maxHeight: 130),
-                                  child: CachedNetworkImage(
-                                      imageUrl: this.widget.product.pictureURL),
-                                ),
-                                this.widget.shopping
-                                    ? Consumer<NewCartModel>(
-                                        builder: (context, newCart, child) {
-                                          return Expanded(
-                                            child: IconButton(
-                                                icon: Icon(Icons.delete),
-                                                color:
-                                                    ThemeColoursSeva().binColor,
-                                                onPressed: () {
-                                                  // alert
-                                                  _showDeleteAlert(
-                                                      newCart, context);
-                                                }),
-                                          );
-                                        },
-                                      )
-                                    : Container(),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            !this.widget.product.details[0].outOfStock
-                                ? Text(
-                                    !this.widget.shopping
-                                        ? "Rs ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
-                                        : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        color: ThemeColoursSeva().pallete1,
-                                        fontSize:
-                                            3.4 * SizeConfig.widthMultiplier,
-                                        fontWeight: FontWeight.w700))
-                                : Text("Out of stock",
-                                    overflow: TextOverflow.clip,
-                                    style: TextStyle(
-                                        color: ThemeColoursSeva().grey,
-                                        fontSize: 17.0,
-                                        fontWeight: FontWeight.bold)),
-                            SizedBox(
-                              height: 30,
-                            )
-                          ],
-                        ),
+                              this.widget.shopping
+                                  ? Consumer<NewCartModel>(
+                                      builder: (context, newCart, child) {
+                                        return Expanded(
+                                          child: IconButton(
+                                              icon: Icon(Icons.delete),
+                                              color:
+                                                  ThemeColoursSeva().binColor,
+                                              onPressed: () {
+                                                // alert
+                                                _showDeleteAlert(
+                                                    newCart, context);
+                                              }),
+                                        );
+                                      },
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          !this.widget.product.details[0].outOfStock
+                              ? Text(
+                                  !this.widget.shopping
+                                      ? "Rs ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
+                                      : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
+                                  overflow: TextOverflow.clip,
+                                  style: TextStyle(
+                                      color: ThemeColoursSeva().pallete1,
+                                      fontSize:
+                                          3.4 * SizeConfig.widthMultiplier,
+                                      fontWeight: FontWeight.w700))
+                              : Text("Out of stock",
+                                  overflow: TextOverflow.clip,
+                                  style: TextStyle(
+                                      color: ThemeColoursSeva().grey,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: 30,
+                          )
+                        ],
                       ),
                     )
                   : this.widget.shopping

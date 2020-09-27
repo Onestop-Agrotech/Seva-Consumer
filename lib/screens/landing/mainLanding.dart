@@ -1,14 +1,13 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{02-09-2020}
+// Version-0.5.0
+// Date-{27-09-2020}
 
 ///
 ///@fileoverview MainLanding Widget : This is the main landing screen after the user
 ///is logged in.
 ///
-
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -45,7 +44,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   var texts = [
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
     "Get exclusive cashbacks worth more than Rs 100 when you order.",
-    "Super fast delivery within 30 minutes!",
+    "Super fast delivery within 45 minutes!",
+    "Order Now and support your local stores."
   ];
   List<StoreProduct> categories = [];
   // static categories
@@ -116,9 +116,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       String url = APIService.setDeviceTokenInFirestore;
       var response = await http.post(url, headers: requestHeaders, body: body);
       if (response.statusCode == 200) {
-        print("SUCCESS");
-      } else
-        print("FAILURE TO SET");
+        /// ("SUCCESS");
+      } else {
+        /// ("FAILURE TO SET");
+      }
     }
   }
 
@@ -425,7 +426,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text('App version - Beta'),
-                      subtitle: Text("0.4.9"),
+                      subtitle: Text("0.5.0"),
                       onTap: null,
                     ),
                   ),
