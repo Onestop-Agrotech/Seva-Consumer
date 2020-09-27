@@ -43,7 +43,7 @@ class _AnimatedCardState extends State<AnimatedCard>
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
   }
 
-  void helper(int index, newCart, bool addToCart) {
+  void helper(int index, NewCartModel newCart, bool addToCart) {
     double p, q;
 
     // Kg, Kgs, Gms, Pc - Types of Quantities
@@ -82,10 +82,9 @@ class _AnimatedCardState extends State<AnimatedCard>
       p = widget.product.details[0].price * q;
     }
 
-    if (addToCart)
-      newCart.addToNewCart(widget.product, p, q, index);
-    else
-      newCart.removeFromNewCart(widget.product, p, q, index);
+    addToCart
+        ? newCart.addToCart(widget.product, index, p, q)
+        : newCart.removeFromCart(widget.product, index, p, q);
   }
 
   // open the modal for product addition
@@ -112,7 +111,7 @@ class _AnimatedCardState extends State<AnimatedCard>
       : animationController.reverse();
 
   // alert box while deleting
-  void _showDeleteAlert(newCart, context) {
+  void _showDeleteAlert(NewCartModel newCart, context) {
     showDialog(
         context: context,
         builder: (context) {
@@ -135,7 +134,7 @@ class _AnimatedCardState extends State<AnimatedCard>
               RaisedButton(
                 onPressed: () {
                   // delete the item
-                  newCart.removeItemFromNewCart(widget.product);
+                  newCart.remove(widget.product);
                   Navigator.pop(context);
                 },
                 child: Text(

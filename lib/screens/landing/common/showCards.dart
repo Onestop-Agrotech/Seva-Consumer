@@ -28,13 +28,13 @@ class ShowCards extends StatefulWidget {
 
 class _ShowCardsState extends State<ShowCards> {
   void onClickProduct() {
-      if (!widget.sp.details[0].outOfStock) {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ProductDetails(
-              p: widget.sp,
-            );
-          }));
-        } 
+    if (!widget.sp.details[0].outOfStock) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return ProductDetails(
+          p: widget.sp,
+        );
+      }));
+    }
     // showGeneralDialog(
     //     context: context,
     //     barrierDismissible: true,
@@ -61,7 +61,8 @@ class _ShowCardsState extends State<ShowCards> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ProductsUINew(tagFromMain: this.widget.index)),
+                builder: (context) =>
+                    ProductsUINew(tagFromMain: this.widget.index)),
           );
         else {
           // open the modal container
@@ -104,8 +105,8 @@ class _ShowCardsState extends State<ShowCards> {
                   )
                 : SizedBox.shrink(),
             Hero(
-              tag:widget.sp.name ,
-                          child: Container(
+              tag: widget.sp.name,
+              child: Container(
                 height: height * 0.1,
                 child: CachedNetworkImage(
                   imageUrl: widget.sp.pictureURL,
