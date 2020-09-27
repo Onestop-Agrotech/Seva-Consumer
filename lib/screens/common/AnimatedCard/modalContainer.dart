@@ -261,17 +261,6 @@ class _AddItemModalState extends State<AddItemModal> {
                     ],
                   ),
                 ),
-                // Text(
-                //   (widget.product.funFact == "" ||
-                //           widget.product.funFact == null)
-                //       ? ""
-                //       : widget.product.funFact,
-                //   style: TextStyle(
-                //     color: ThemeColoursSeva().dkGreen,
-                //     fontSize: 20.0,
-                //     fontWeight: FontWeight.w300,
-                //   ),
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,

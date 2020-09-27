@@ -12,20 +12,6 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:mvp/models/storeProducts.dart';
 
-// class CartUtilityModel {
-//   StoreProduct product;
-//   double price;
-//   double quantity;
-//   bool addNew;
-//   String allowdQid;
-//   CartUtilityModel(
-//       {@required this.product,
-//       @required this.price,
-//       @required this.quantity,
-//       @required this.addNew,
-//       @required this.allowdQid});
-// }
-
 class NewCartModel extends ChangeNotifier {
   // private to the model only - non-readable var
   List<StoreProduct> _cartItems = [];
