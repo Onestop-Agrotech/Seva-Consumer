@@ -1,8 +1,8 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{03-09-2020}
+// Version-0.5.0
+// Date-{27-09-2020}
 
 ///
 /// @fileoverview Main Dart File : All routes and landing screen are defined here.
@@ -18,7 +18,6 @@ import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/loading.dart';
-import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
@@ -52,7 +51,13 @@ class _SevaAppState extends State<SevaApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => NewCartModel())],
+      providers: [
+        ChangeNotifierProvider(create: (context) => NewCartModel()),
+        BlocProvider(
+          create: (BuildContext context) =>
+              ProductsapiBloc(ProductRepositoryImpl()),
+        ),
+      ],
       child: LayoutBuilder(
         builder: (context, constraints) {
           return OrientationBuilder(
@@ -60,10 +65,7 @@ class _SevaAppState extends State<SevaApp> {
               SizeConfig().init(constraints, orientation);
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: BlocProvider(
-                    create: (BuildContext context) =>
-                        ProductsapiBloc(ProductRepositoryImpl()),
-                    child: ProductsUINew()),
+                home: LoadingScreen(),
                 routes: {
                   "/register": (context) => RegisterScreen(),
                   "/login": (context) => LoginScreen(),
