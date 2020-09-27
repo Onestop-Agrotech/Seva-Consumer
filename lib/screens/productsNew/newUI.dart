@@ -166,8 +166,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          "Categories",
-          style: TextStyle(color: Colors.black54, fontWeight: FontWeight.w400),
+          "Products",
+          style: TextStyle(color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -204,18 +204,18 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                 : Colors.white,
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1.0, color: Colors.greenAccent),
+                                  width: 0.2, color: Colors.greenAccent),
                             ),
                           ),
                           child: ListTile(
                             title: Text(
                               catArray[index],
                               style: TextStyle(
-                                  fontSize: 1.5 * SizeConfig.textMultiplier,
+                                  fontSize: 1.65 * SizeConfig.textMultiplier,
                                   color: tag == index
                                       ? Colors.white
-                                      : Colors.black,
-                                  fontWeight: FontWeight.w300),
+                                      : ThemeColoursSeva().pallete1,
+                                  fontWeight: FontWeight.w700),
                             ),
                             onTap: () {
                               /// This [if] condition exists because we have only 3 types
