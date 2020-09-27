@@ -36,10 +36,9 @@ class _ProductsUINewState extends State<ProductsUINew> {
     "Vegetables",
     "Fruits",
     "Milk, Eggs & Bread",
-    "Coming Soon!",
-    "Coming Soon!"
+    "More Coming Soon!",
   ];
-  String _category;
+  String category;
 
   /// This tag will be used for 2 things mainly -
   /// 1. To make sure the API calls are dynamic
@@ -88,7 +87,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       default:
     }
     this.setState(() {
-      _category = catArray[tag];
+      // _category = catArray[tag];
     });
     List<StoreProduct> prods = [];
     StorageSharedPrefs p = new StorageSharedPrefs();
