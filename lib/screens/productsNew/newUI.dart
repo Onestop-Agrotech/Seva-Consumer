@@ -12,20 +12,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
-import 'package:mvp/constants/apiCalls.dart';
+import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/productsNew/details.dart';
-import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductsUINew extends StatefulWidget {
+  final int tagFromMain;
+  ProductsUINew({this.tagFromMain});
   @override
   _ProductsUINewState createState() => _ProductsUINewState();
 }
 
 class _ProductsUINewState extends State<ProductsUINew> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsapiBloc apiBloc;
   // Todo: Need to convert this static array to dynamic
   // will receive from server
@@ -33,17 +36,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// the left side of the screen (1st row)
   final List<String> catArray = [
     "Vegetables",
-    // "Fruits",
-    // "Milk, Eggs & Bread",
-    // "Fresh Greens & Herbs",
-    // "Nuts & Dry Fruits",
-    // "Dairy Items",
-    // "Daily needs",
-    // "Non Veg",
-    // "Snacks",
-    // "Ready to Eat",
+    "Fruits",
+    "Milk, Eggs & Bread",
+    "More Coming Soon!",
   ];
-  String _category;
+  String category;
 
   /// This tag will be used for 2 things mainly -
   /// 1. To make sure the API calls are dynamic
@@ -57,10 +54,21 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// safer way to intialise the bloc
   /// and also dispose it properly
   @override
-  void didChangeDependencies(){
+  void didChangeDependencies() {
     super.didChangeDependencies();
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
-    if(tag==0) apiBloc.add(GetVegetables());
+    switch (tag) {
+      case 0:
+        apiBloc.add(GetVegetables());
+        break;
+      case 1:
+        apiBloc.add(GetFruits());
+        break;
+      case 2:
+        apiBloc.add(GetDailyEssentials());
+        break;
+      default:
+    }
   }
 
   @override
@@ -69,44 +77,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
     /// Intialize it to 0 - by default to get Vegetables
     /// as it is on the first List Tile
-    tag = 0;
-  }
-
-  /// A common [Future] to GET products as per the category
-  /// It depends on the [tag] variable and also this can
-  /// be optimised instead of [Switch] statement
-  /// This is should be replaced by the Generic API system
-  /// which also has BLOC pattern
-  Future<List<StoreProduct>> getProducts() async {
-    String type = '';
-    switch (tag) {
-      case 0:
-        type = "vegetable";
-        break;
-      case 1:
-        type = "fruit";
-        break;
-      case 2:
-        type = "dailyEssential";
-        break;
-      default:
-    }
-    this.setState(() {
-      _category = catArray[tag];
-    });
-    List<StoreProduct> prods = [];
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
-    String hub = await p.gethub();
-    Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = APIService.getCategorywiseProducts(hub, type);
-    var response = await http.get(url, headers: requestHeaders);
-    if (response.statusCode == 200) {
-      List<StoreProduct> x = jsonToCateogrywiseProductModel(response.body);
-      return x;
-    } else {
-      return prods;
-    }
+    /// Or get it from the Main Landing UI
+    if (widget.tagFromMain != null)
+      tag = widget.tagFromMain;
+    else
+      tag = 0;
   }
 
   // shimmer layout before page loads
@@ -130,6 +105,63 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
+  Widget _returnFilteredImage(StoreProduct p) {
+    if (p.details[0].outOfStock) {
+      return ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Colors.grey,
+            BlendMode.saturation,
+          ),
+          child: CachedNetworkImage(imageUrl: p.pictureURL));
+    } else
+      return CachedNetworkImage(imageUrl: p.pictureURL);
+  }
+
+  _renderCartIcon() {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
+          child: IconButton(
+              color: ThemeColoursSeva().black,
+              iconSize: 30.0,
+              icon: Icon(Icons.shopping_basket),
+              onPressed: () {
+                // Handle shopping cart
+                Navigator.pushNamed(context, '/shoppingCartNew');
+              }),
+        ),
+        Positioned(
+          left: 28.0,
+          top: 10.0,
+          child: _checkCartItems(),
+        ),
+      ],
+    );
+  }
+
+  // check for cart items
+  Widget _checkCartItems() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.1,
+      height: 22.0,
+      decoration: BoxDecoration(
+        color: ThemeColoursSeva().pallete1,
+        shape: BoxShape.circle,
+      ),
+      child: Consumer<NewCartModel>(
+        builder: (context, cart, child) {
+          return Center(
+            child: Text(
+              cart.totalItems == null ? '0' : cart.totalItems.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   /// this func returns the cards widget
   /// Currently it only shows 2 things
   /// 1. Picture
@@ -143,9 +175,24 @@ class _ProductsUINewState extends State<ProductsUINew> {
     /// instance of the [StoreProduct] to be sent
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return ProductDetails(p: p,);
-        }));
+        if (!p.details[0].outOfStock) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ProductDetails(
+              p: p,
+            );
+          }));
+        } else {
+          final snackBar = SnackBar(
+            content: Text("Item is Out of stock!"),
+            action: SnackBarAction(
+                textColor: ThemeColoursSeva().pallete1,
+                label: "OK",
+                onPressed: () {
+                  _scaffoldKey.currentState.hideCurrentSnackBar();
+                }),
+          );
+          _scaffoldKey.currentState.showSnackBar(snackBar);
+        }
       },
       child: Container(
         child: Column(
@@ -155,19 +202,24 @@ class _ProductsUINewState extends State<ProductsUINew> {
             /// resolution is maintained and it is not distorted
             /// Can be edited if the need arises to optimise
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 60, maxHeight: 60),
+              constraints: BoxConstraints(maxWidth: 70, maxHeight: 70),
 
               /// The hero animation when tapped, makes sure there is a smooth
               /// transition to the details page. [tag] & [imageUrl] should be same here
               /// and in the product details page for the animation to work
               child: Hero(
                 tag: p.name,
-                child: CachedNetworkImage(imageUrl: p.pictureURL),
+                child: _returnFilteredImage(p),
               ),
             ),
             Text(
               p.name,
-              style: TextStyle(fontSize: 1.5 * SizeConfig.textMultiplier),
+              style: TextStyle(
+                  fontSize: 1.65 * SizeConfig.textMultiplier,
+                  fontWeight: FontWeight.w500,
+                  color: p.details[0].outOfStock
+                      ? Colors.grey
+                      : ThemeColoursSeva().pallete1),
               overflow: TextOverflow.clip,
               textAlign: TextAlign.center,
             ),
@@ -182,9 +234,25 @@ class _ProductsUINewState extends State<ProductsUINew> {
     // width of screen
     double width = MediaQuery.of(context).size.height;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Exp UI"),
+        title: Text(
+          "Products",
+          style: TextStyle(
+              color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
+        ),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black54,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        actions: [_renderCartIcon()],
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -198,7 +266,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
               child: SizedBox(
                 width: width * 0.17,
                 child: Container(
-                  decoration: BoxDecoration(color: Colors.grey.shade200),
+                  decoration: BoxDecoration(color: Colors.grey.shade100),
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
                       itemCount: catArray.length,
@@ -206,31 +274,43 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         return Container(
                           decoration: BoxDecoration(
                             color: tag == index
-                                ? Colors.white
-                                : Colors.grey.shade200,
+                                ? ThemeColoursSeva().vlgGreen
+                                : Colors.white,
                             border: Border(
-                              bottom:
-                                  BorderSide(width: 1.0, color: Colors.grey),
+                              bottom: BorderSide(
+                                  width: 0.2, color: Colors.greenAccent),
                             ),
                           ),
                           child: ListTile(
                             title: Text(
                               catArray[index],
                               style: TextStyle(
-                                fontSize: 1.5 * SizeConfig.textMultiplier,
-                              ),
+                                  fontSize: 1.65 * SizeConfig.textMultiplier,
+                                  color: tag == index
+                                      ? Colors.white
+                                      : ThemeColoursSeva().pallete1,
+                                  fontWeight: FontWeight.w700),
                             ),
                             onTap: () {
                               /// This [if] condition exists because we have only 3 types
                               /// of categories in the DB, as we add them up, this should be
                               /// dynamic, for now it is static
                               if (index < 3) {
-                                /// triggers the [build] method again when the [tag] is set to
-                                /// the [index] from the [catArray], this way the future method
-                                /// [getProducts] is called again as the widget tree rebuilds
-                                this.setState(() {
+                                setState(() {
                                   tag = index;
                                 });
+                                switch (index) {
+                                  case 0:
+                                    apiBloc.add(GetVegetables());
+                                    break;
+                                  case 1:
+                                    apiBloc.add(GetFruits());
+                                    break;
+                                  case 2:
+                                    apiBloc.add(GetDailyEssentials());
+                                    break;
+                                  default:
+                                }
                               }
                             },
                           ),
@@ -244,35 +324,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
             padding: const EdgeInsets.only(top: 5.0),
             child: SizedBox(
               width: 69 * SizeConfig.widthMultiplier,
-              // child: FutureBuilder(
-              //     future: getProducts(),
-              //     builder: (context, snapshot) {
-              //       // shimmer when snapshot has no data
-              //       if (snapshot.connectionState != ConnectionState.done) {
-              // return Shimmer.fromColors(
-              //   highlightColor: Colors.white,
-              //   baseColor: Colors.grey[300],
-              //   child: Container(
-              //     child: _shimmerLayout(),
-              //   ),
-              // );
-              //       }
-              //       if (snapshot.hasError) {
-              //         return Text("SERVER ERROR - Relaunch app");
-              //       }
-              // if (snapshot.hasData) {
-              //   List<StoreProduct> arr = snapshot.data;
-              //   return GridView.count(
-              //     // Create a grid with 2 columns. If you change the scrollDirection to
-              //     // horizontal, this produces 2 rows.
-              //     crossAxisCount: 2,
-              //     children: arr.map((e) {
-              //       return getCard(e);
-              //     }).toList(),
-              //   );
-              // }
-              //       return Text("no data");
-              //     }),
               child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
                 builder: (context, state) {
                   if (state is ProductsapiInitial ||
@@ -286,6 +337,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                     );
                   } else if (state is ProductsapiLoaded) {
                     List<StoreProduct> arr = state.products;
+                    arr.sort((a, b) => a.name.compareTo(b.name));
                     return GridView.count(
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
@@ -294,11 +346,10 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         return getCard(e);
                       }).toList(),
                     );
-                  }
-                  else if(state is ProductsapiError){
+                  } else if (state is ProductsapiError) {
                     return Text(state.msg);
-                  }
-                   else return CircularProgressIndicator();
+                  } else
+                    return CircularProgressIndicator();
                 },
               ),
             ),

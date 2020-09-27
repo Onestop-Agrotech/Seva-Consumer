@@ -1,8 +1,8 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{02-09-2020}
+// Version-0.5.0
+// Date-{27-09-2020}
 
 ///
 /// @fileoverview ShowCards Widget : .
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/AnimatedCard/modalContainer.dart';
-import 'package:mvp/screens/products/products.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
@@ -54,7 +54,7 @@ class _ShowCardsState extends State<ShowCards> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => Products(type: this.widget.index)),
+                builder: (context) => ProductsUINew(tagFromMain: this.widget.index)),
           );
         else {
           // open the modal container

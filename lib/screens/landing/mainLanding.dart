@@ -1,8 +1,8 @@
 // Copyright 2020 SEVA AUTHORS. All Rights Reserved.
 //
 // (change the version and the date whenver anyone worked upon this file)
-// Version-0.4.8
-// Date-{02-09-2020}
+// Version-0.5.0
+// Date-{27-09-2020}
 
 ///
 ///@fileoverview MainLanding Widget : This is the main landing screen after the user
@@ -424,7 +424,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text('App version - Beta'),
-                      subtitle: Text("0.4.9"),
+                      subtitle: Text("0.5.0"),
                       onTap: null,
                     ),
                   ),

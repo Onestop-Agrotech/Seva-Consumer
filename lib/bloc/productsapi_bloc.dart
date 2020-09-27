@@ -9,7 +9,6 @@ part 'productsapi_event.dart';
 part 'productsapi_state.dart';
 
 class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
-
   final ProductRepositoryImpl _productRepository;
 
   ProductsapiBloc(this._productRepository) : super(ProductsapiInitial());
@@ -18,13 +17,30 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
   Stream<ProductsapiState> mapEventToState(
     ProductsapiEvent event,
   ) async* {
-    if(event is GetVegetables){
-      try{
+    if (event is GetVegetables) {
+      try {
         yield ProductsapiLoading();
         final products = await _productRepository.fetchVegetables();
         yield ProductsapiLoaded(products);
-      } 
-      catch (err){
+      } catch (err) {
+        print(err);
+        yield ProductsapiError(err.toString());
+      }
+    } else if (event is GetFruits) {
+      try {
+        yield ProductsapiLoading();
+        final products = await _productRepository.fetchFruits();
+        yield ProductsapiLoaded(products);
+      } catch (err) {
+        print(err);
+        yield ProductsapiError(err.toString());
+      }
+    } else if (event is GetDailyEssentials) {
+      try {
+        yield ProductsapiLoading();
+        final products = await _productRepository.fetchDailyEssentials();
+        yield ProductsapiLoaded(products);
+      } catch (err) {
         print(err);
         yield ProductsapiError(err.toString());
       }
