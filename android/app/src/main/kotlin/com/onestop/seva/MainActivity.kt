@@ -1,4 +1,4 @@
-package com.theonestop.seva
+package com.onestop.seva
 
 import android.app.Activity
 import android.content.*
