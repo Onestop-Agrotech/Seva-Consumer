@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:mvp/classes/storage_sharedPrefs.dart';
@@ -59,6 +60,26 @@ class ProductRepositoryImpl implements ProductRepository {
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet connection');
+    }
+  }
+
+  refreshToken() async {
+    try {
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      String token = await p.getToken();
+      String url = APIService.getRefreshToken;
+      var body = jsonEncode(<String, String>{
+        'user': token,
+      });
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      final response =
+          await http.post(url, body: body, headers: requestHeaders);
+      var jsonBdy = json.decode(response.body);
+      await p.setToken(jsonBdy["token"]);
+
+      // user=
+    } on SocketException {
+      throw FetchDataException("No Internet");
     }
   }
 

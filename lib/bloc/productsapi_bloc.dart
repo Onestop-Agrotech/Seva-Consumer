@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mvp/domain/exceptions.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/storeProducts.dart';
 
@@ -10,7 +11,6 @@ part 'productsapi_state.dart';
 
 class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
   final ProductRepositoryImpl _productRepository;
-
   ProductsapiBloc(this._productRepository) : super(ProductsapiInitial());
 
   @override
@@ -22,8 +22,14 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
         yield ProductsapiLoading();
         final products = await _productRepository.fetchVegetables();
         yield ProductsapiLoaded(products);
+      } 
+      // when we recieve a unauthorised token
+      on UnauthorisedException {
+        await _productRepository.refreshToken();
+        yield ProductsapiLoading();
+        final products = await _productRepository.fetchVegetables();
+        yield ProductsapiLoaded(products);
       } catch (err) {
-        print(err);
         yield ProductsapiError(err.toString());
       }
     } else if (event is GetFruits) {

@@ -34,6 +34,11 @@ class APIService {
   // Payments
   static final String getRzpKeyAPI = "$_api/payments/rzp";
 
+
+// Refreshtoken
+static final String getRefreshToken="$_api/token/refreshToken/fetch";
+
+
   // OTHERS
   // loading.dart - _sendReqToServer function
   static final String mainTokenAPI = "https://api.theonestop.co.in/token";
