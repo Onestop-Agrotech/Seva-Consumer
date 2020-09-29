@@ -283,6 +283,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         _loader = false;
       });
       await p.setToken(json.decode(response.body)["token"]);
+      await p.setRefreshToken(json.decode(response.body)["refreshToken"]);
       await p.setUsername(json.decode(response.body)["username"]);
       await p.setId(json.decode(response.body)["id"]);
       await p.sethub(json.decode(response.body)["hub"]);

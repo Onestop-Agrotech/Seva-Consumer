@@ -233,9 +233,11 @@ class _LoginScreenState extends State<LoginScreen> {
         platform.invokeMethod("unregisterReceiver");
       }
       StorageSharedPrefs p = new StorageSharedPrefs();
+      print(response.body);
       var jsonBdy = json.decode(response.body);
       await p.setUsername(jsonBdy["username"]);
       await p.setToken(jsonBdy["token"]);
+      await p.setRefreshToken(jsonBdy["refreshToken"]);
       await p.setId(jsonBdy["id"]);
       await p.sethub(jsonBdy["hub"]);
       await p.setEmail(jsonBdy["email"]);

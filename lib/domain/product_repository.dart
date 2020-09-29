@@ -67,15 +67,17 @@ class ProductRepositoryImpl implements ProductRepository {
     try {
       StorageSharedPrefs p = new StorageSharedPrefs();
       String token = await p.getToken();
+      String refreshToken = await p.getRefreshToken();
       String url = APIService.getRefreshToken;
       var body = jsonEncode(<String, String>{
-        'user': token,
+        'refreshToken': refreshToken,
       });
       Map<String, String> requestHeaders = {'x-auth-token': token};
       final response =
           await http.post(url, body: body, headers: requestHeaders);
       var jsonBdy = json.decode(response.body);
       await p.setToken(jsonBdy["token"]);
+      await p.setRefreshToken(jsonBdy["refreshToken"]);
 
       // user=
     } on SocketException {

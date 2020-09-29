@@ -17,6 +17,12 @@ class StorageSharedPrefs {
     await prefs.setString('token', token);
   }
 
+  // set refreshtoken to storage
+  Future<void> setRefreshToken(String refreshToken) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('refreshToken', refreshToken);
+  }
+
   // set username to storage
   Future<void> setUsername(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -66,6 +72,13 @@ class StorageSharedPrefs {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String token = await prefs.get('token');
     return token;
+  }
+
+  // get refreshToken from storage
+  Future<String> getRefreshToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String refreshToken = await prefs.get('refreshToken');
+    return refreshToken;
   }
 
   // get username from storage
