@@ -25,8 +25,8 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
       }
       // when recieve a unauthorised token
       on UnauthorisedException {
-        await _productRepository.refreshToken();
         yield ProductsapiLoading();
+        await _productRepository.refreshToken();
         final products = await _productRepository.fetchVegetables();
         yield ProductsapiLoaded(products);
       } catch (err) {
@@ -40,8 +40,8 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
       }
       // when recieve a unauthorised token
       on UnauthorisedException {
-        await _productRepository.refreshToken();
         yield ProductsapiLoading();
+        await _productRepository.refreshToken();
         final products = await _productRepository.fetchFruits();
         yield ProductsapiLoaded(products);
       } catch (err) {
@@ -56,8 +56,8 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
       }
       // when recieve a unauthorised token
       on UnauthorisedException {
-        await _productRepository.refreshToken();
         yield ProductsapiLoading();
+        await _productRepository.refreshToken();
         final products = await _productRepository.fetchDailyEssentials();
         yield ProductsapiLoaded(products);
       } catch (err) {
