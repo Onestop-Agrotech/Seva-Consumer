@@ -12,59 +12,20 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
-class FeaturedCards extends StatefulWidget {
+typedef ShowDialog = void Function();
+
+class FeaturedCards extends StatelessWidget {
   final String textToDisplay;
-  FeaturedCards({this.textToDisplay});
-
-  @override
-  _FeaturedCardsState createState() => _FeaturedCardsState();
-}
-
-class _FeaturedCardsState extends State<FeaturedCards> {
-  showReferralInstructions() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Referrals"),
-            content: Text(
-                "Share your code with your friends. Ask them to share your code and their order number on our Whatsapp with their registered mobile number to receive Rs 25 cashback each. Valid only once per unique friend."),
-            actions: [
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: ThemeColoursSeva().pallete1,
-              ),
-              SizedBox(width: 20.0),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "Share",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: ThemeColoursSeva().dkGreen,
-              ),
-            ],
-          );
-        });
-  }
-
+  final int index;
+  final ShowDialog showInstructions;
+  FeaturedCards({this.textToDisplay, this.index, this.showInstructions});
   @override
   Widget build(BuildContext context) {
     // double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (widget.textToDisplay ==
-            "Share your referral code with friends to get Rs 25 cashback")
-          showReferralInstructions();
+        if (index == 1) showInstructions();
       },
       child: Container(
         // fallback height
@@ -77,7 +38,7 @@ class _FeaturedCardsState extends State<FeaturedCards> {
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
           child: Text(
-            widget.textToDisplay,
+            textToDisplay,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 2.4 * SizeConfig.textMultiplier,

@@ -419,6 +419,19 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         });
   }
 
+  /// This function gives out index and value
+  /// instead of just value (like map), so this is
+  /// an extension of map iterable func
+  Iterable<E> mapIndexed<E, T>(
+      Iterable<T> items, E Function(int index, T item) f) sync* {
+    var index = 0;
+
+    for (final item in items) {
+      yield f(index, item);
+      index = index + 1;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // height and width if the device
@@ -476,7 +489,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ListTile(
                 title: Text('Your referral code'),
                 subtitle: Text("xqE32Pz09"),
-                onTap: () {showReferralInstructions();},
+                onTap: () {
+                  showReferralInstructions();
+                },
               ),
               ListTile(
                 title: Text('Share app'),
@@ -576,15 +591,18 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           children: <Widget>[
                             Expanded(
                               child: CarouselSlider(
-                                items: texts.map((i) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return FeaturedCards(
-                                        textToDisplay: i,
-                                      );
-                                    },
-                                  );
-                                }).toList(),
+                                items: mapIndexed(
+                                    texts,
+                                    (index, item) => Builder(
+                                          builder: (BuildContext context) {
+                                            return FeaturedCards(
+                                              textToDisplay: item,
+                                              index: index,
+                                              showInstructions:
+                                                  showReferralInstructions,
+                                            );
+                                          },
+                                        )).toList(),
                                 options: CarouselOptions(
                                   onPageChanged: (index, reason) {
                                     setState(() {
