@@ -11,13 +11,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
@@ -107,10 +107,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   /// Get the token, save it to the database for current user
   _saveDeviceToken() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
+    final p = await Preferences.getInstance();
     // Get the current user
-    String uid = await p.getId();
-    String token = await p.getToken();
+    String uid = await p.getData("id");
+    String token = await p.getData("token");
 
     // Get the token for this device
     String fcmToken = await _fcm.getToken();
@@ -134,19 +134,19 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   // To get the username of the person logged in
   // from local storage
   getUsername() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    var x = await p.getUsername();
+    final preferences = await Preferences.getInstance();
+    final username = preferences.getData("username");
     setState(() {
-      _username = x;
+      _username = username;
     });
-  }
+     }
 
   //To get the address of the user address on clicking the
   // location icon
   Future<String> _fetchUserAddress() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
-    String id = await p.getId();
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
+    String id = await p.getData("id");
     Map<String, String> requestHeaders = {'x-auth-token': token};
     String url = APIService.getAddressAPI + "$id";
     var response = await http.get(url, headers: requestHeaders);
@@ -161,9 +161,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   // fetches the best selling products for a particular hub
   Future<List<StoreProduct>> _fetchBestSellers() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
-    String hub = await p.gethub();
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
+    String hub = await p.getData("hub");
 
     Map<String, String> requestHeaders = {'x-auth-token': token};
     String url = APIService.getBestSellers(hub);
@@ -555,6 +555,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 ),
                               ),
                             ),
+
                             /// text visible in the carousel card
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,

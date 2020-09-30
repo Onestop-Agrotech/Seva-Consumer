@@ -11,7 +11,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
@@ -59,8 +59,8 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   //
   getAllowedStatus() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
     String url = APIService.deliveriesAllowedAPI;
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);
@@ -101,9 +101,9 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
 
   // get user details
   _getUserDetails() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String userId = await p.getId();
-    String token = await p.getToken();
+    final p = await Preferences.getInstance();
+    String userId = await p.getData("id");
+    String token = await p.getData("token");
     String url = APIService.getUserAPI + "$userId";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);

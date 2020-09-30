@@ -8,16 +8,11 @@
 /// @fileoverview Userprofile Screen : Edit Users address by selecting the location on Google Maps.
 ///
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
-import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
-import 'package:http/http.dart' as http;
-import 'package:mvp/screens/errors/notServing.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final LatLng coords;
@@ -88,38 +83,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     } else if (_address.text != '') {
       // add to db
       user.address = _address.text;
-      _submitToDb(user, context);
+      // _submitToDb(user, context);
     }
   }
 
-  _submitToDb(UserModel user, context) async {
-    String url = APIService.registerAddressAPI;
-    String getJson = userModelAddress(user);
-    Map<String, String> headers = {"Content-Type": "application/json"};
-    var response = await http.post(url, body: getJson, headers: headers);
-    if (response.statusCode == 200) {
-      StorageSharedPrefs p = new StorageSharedPrefs();
-      await p.setToken(json.decode(response.body)["token"]);
-      await p.setUsername(json.decode(response.body)["username"]);
-      await p.setId(json.decode(response.body)["id"]);
-      bool far = json.decode(response.body)["far"];
-      await p.setFarStatus(far.toString());
-      await p.setEmail(json.decode(response.body)["email"]);
-      if (!far) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/main', ModalRoute.withName('/main'));
-      } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return NotServing(
-            userEmail: widget.userEmail,
-          );
-        }));
-      }
-    } else {
-      throw Exception('Server error');
-    }
-  }
+  // _submitToDb(UserModel user, context) async {
+  //   String url = APIService.registerAddressAPI;
+  //   String getJson = userModelAddress(user);
+  //   Map<String, String> headers = {"Content-Type": "application/json"};
+  //   var response = await http.post(url, body: getJson, headers: headers);
+  //   if (response.statusCode == 200) {
+  //     StorageSharedPrefs p = new StorageSharedPrefs();
+  //     await p.setToken(json.decode(response.body)["token"]);
+  //     await p.setUsername(json.decode(response.body)["username"]);
+  //     await p.setId(json.decode(response.body)["id"]);
+  //     bool far = json.decode(response.body)["far"];
+  //     await p.setFarStatus(far.toString());
+  //     await p.setEmail(json.decode(response.body)["email"]);
+  //     if (!far) {
+  //       Navigator.pushNamedAndRemoveUntil(
+  //           context, '/main', ModalRoute.withName('/main'));
+  //     } else {
+  //       Navigator.pushReplacement(context,
+  //           MaterialPageRoute(builder: (context) {
+  //         return NotServing(
+  //           userEmail: widget.userEmail,
+  //         );
+  //       }));
+  //     }
+  //   } else {
+  //     throw Exception('Server error');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

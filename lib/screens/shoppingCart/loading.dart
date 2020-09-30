@@ -9,12 +9,12 @@
 ///
 
 import 'package:flutter/material.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 
 class OrderLoader extends StatefulWidget {
@@ -37,10 +37,10 @@ class _OrderLoaderState extends State<OrderLoader> {
   // post the order
   _postDataToServer(responseId, newCart) async {
     _postOnce = false;
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String userId = await p.getId();
-    String token = await p.getToken();
-    String hubid = await p.gethub();
+    final p = await Preferences.getInstance();
+    String userId = await p.getData("id");
+    String token = await p.getData("token");
+    String hubid = await p.getData("hub");
     String url = APIService.ordersAPI + "new/$userId/$hubid";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     // make the body

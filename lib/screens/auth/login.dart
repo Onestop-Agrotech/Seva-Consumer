@@ -12,7 +12,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
@@ -194,8 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // successfully verified phone number
       var bdy = json.decode(response.body);
       String token = bdy["token"];
-      StorageSharedPrefs p = new StorageSharedPrefs();
-      await p.setToken(token);
+      final preferences = await Preferences.getInstance();
+      await preferences.setToken(token);
       setState(() {
         _loading = false;
         showOTPField = true;
@@ -217,8 +217,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //verifies the otp
   _verifyOTP(otp) async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
+      final preferences = await Preferences.getInstance();
+    String token = await preferences.getData("token");
     var getJson = json.encode({"phone": _mobileController.text, "otp": otp});
     String url = APIService.verifyOTP;
     Map<String, String> headers = {
@@ -232,15 +232,23 @@ class _LoginScreenState extends State<LoginScreen> {
         /// it will not listen again
         platform.invokeMethod("unregisterReceiver");
       }
-      StorageSharedPrefs p = new StorageSharedPrefs();
+      final preferences = await Preferences.getInstance();
       var jsonBdy = json.decode(response.body);
-      await p.setUsername(jsonBdy["username"]);
-      await p.setToken(jsonBdy["token"]);
-      await p.setId(jsonBdy["id"]);
-      await p.sethub(jsonBdy["hub"]);
-      await p.setEmail(jsonBdy["email"]);
+      // await p.setUsername(jsonBdy["username"]);
+      // await p.setToken(jsonBdy["token"]);
+      // await p.setId(jsonBdy["id"]);
+      // await p.sethub(jsonBdy["hub"]);
+      // await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
-      await p.setFarStatus(far);
+      // await p.setFarStatus(far);
+
+      await preferences.setUsername(jsonBdy["username"]);
+      await preferences.setToken(jsonBdy["token"]);
+      await preferences.sethub(jsonBdy["hub"]);
+      await preferences.setId(jsonBdy["id"]);
+      await preferences.setEmail(jsonBdy["email"]);
+      await preferences.setFarStatus(far);
+
       // grant access to the app
       if (far == "false" || far == null)
         Navigator.pushReplacementNamed(context, '/main');
