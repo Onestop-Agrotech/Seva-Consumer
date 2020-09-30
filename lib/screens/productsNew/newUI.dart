@@ -38,8 +38,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
     "Vegetables",
     "Fruits",
     "Milk, Eggs & Bread",
-    "Fresh Greens & Herbs",
-    "Nuts & Dry Fruits",
+    // "Fresh Greens & Herbs",
+    // "Nuts & Dry Fruits",
     "More Coming Soon!",
   ];
   String category;
