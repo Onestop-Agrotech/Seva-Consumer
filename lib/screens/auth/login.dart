@@ -247,6 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await preferences.sethub(jsonBdy["hub"]);
       await preferences.setId(jsonBdy["id"]);
       await preferences.setEmail(jsonBdy["email"]);
+      await preferences.setMobile(jsonBdy["mobile"]);
       await preferences.setFarStatus(far);
 
       // grant access to the app

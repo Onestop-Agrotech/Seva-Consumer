@@ -21,6 +21,7 @@ class Preferences {
   Future<void> setEmail(String email) => _setValue("email", email);
   Future<void> setId(String id) => _setValue("id", id);
   Future<void> sethub(String hub) => _setValue("hub", hub);
+  Future<void> setMobile(String mobile) => _setValue("mobile", mobile);
 
 // common function to set the value 
 // as per key

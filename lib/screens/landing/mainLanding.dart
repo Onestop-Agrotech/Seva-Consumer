@@ -65,6 +65,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Timer x;
   FirebaseMessaging _fcm;
   int _current = 0;
+  String _mobileNumber;
 
   @override
   void setState(fn) {
@@ -137,8 +138,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   getUsername() async {
     final preferences = await Preferences.getInstance();
     final username = preferences.getData("username");
+    final mobile = preferences.getData("mobile");
     setState(() {
       _username = username;
+      _mobileNumber = mobile;
     });
   }
 
@@ -406,7 +409,11 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               SizedBox(width: 20.0),
               RaisedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  String msg = ''' 
+                  Hi share my code  on Seva whatsapp business number along with your Order number to get Rs 25 cashback on your order!
+                  If you haven't installed the app, get it now on https://bit.ly/Seva_Android_App and order now!
+                  ''';
+                  Share.share(msg);
                 },
                 child: Text(
                   "Share",
@@ -488,7 +495,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ),
               ListTile(
                 title: Text('Your referral code'),
-                subtitle: Text("xqE32Pz09"),
+                subtitle: Text("$_mobileNumber"),
                 onTap: () {
                   showReferralInstructions();
                 },
