@@ -69,7 +69,8 @@ class _IntroScreenState extends State<IntroScreen> {
       );
   }
 
-  // content displayed on the intro screen
+  /* content displayed on the intro screen
+    contains the navifation dots and the data to be displayed */
   IndexedStack _buildStack() {
     if (_index == 3)
       return IndexedStack(

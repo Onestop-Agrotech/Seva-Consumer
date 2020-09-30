@@ -27,6 +27,8 @@ class ShowCards extends StatefulWidget {
 }
 
 class _ShowCardsState extends State<ShowCards> {
+  /* click function for the best seller card on main
+  landing screen will redirect to [details.dart] screen */
   void onClickProduct() {
     if (!widget.sp.details[0].outOfStock) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -35,20 +37,6 @@ class _ShowCardsState extends State<ShowCards> {
         );
       }));
     }
-    // showGeneralDialog(
-    //     context: context,
-    //     barrierDismissible: true,
-    //     barrierLabel:
-    //         MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    //     barrierColor: Colors.black45,
-    //     transitionDuration: const Duration(milliseconds: 200),
-    //     pageBuilder: (BuildContext buildContext, Animation animation,
-    //         Animation secondaryAnimation) {
-    //       return Center(
-    //           child: AddItemModal(
-    //         product: widget.sp,
-    //       ));
-    //     });
   }
 
   @override
@@ -104,6 +92,7 @@ class _ShowCardsState extends State<ShowCards> {
                         fontWeight: FontWeight.w700),
                   )
                 : SizedBox.shrink(),
+            // Hero animation on clicking any bestseller card
             Hero(
               tag: widget.sp.name,
               child: Container(
