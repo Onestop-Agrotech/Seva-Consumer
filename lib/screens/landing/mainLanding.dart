@@ -384,7 +384,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   /// show referral instructions with an
   /// Alert dialog
-  _showReferralInstructions() {
+  showReferralInstructions() {
     showDialog(
         context: context,
         builder: (context) {
@@ -476,7 +476,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ListTile(
                 title: Text('Your referral code'),
                 subtitle: Text("xqE32Pz09"),
-                onTap: () {_showReferralInstructions();},
+                onTap: () {showReferralInstructions();},
               ),
               ListTile(
                 title: Text('Share app'),
