@@ -437,6 +437,44 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 },
               ),
               ListTile(
+                title: Text('Your referral code'),
+                subtitle: Text("xqE32Pz09"),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Referrals"),
+                          content: Text(
+                              "Share your code with your friends. Ask them to share your code and their order number on our Whatsapp with their registered mobile number to receive Rs 25 cashback each. Valid only once per unique friend."),
+                          actions: [
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "OK",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: ThemeColoursSeva().pallete1,
+                            ),
+                            SizedBox(width: 20.0),
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Share",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: ThemeColoursSeva().dkGreen,
+                            ),
+                          ],
+                        );
+                      });
+                },
+              ),
+              ListTile(
                 title: Text('Share app'),
                 onTap: () {
                   String msg = ''' 
@@ -452,7 +490,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text('App version - Beta'),
-                      subtitle: Text("0.5.0"),
+                      subtitle: Text("0.5.1"),
                       onTap: null,
                     ),
                   ),
