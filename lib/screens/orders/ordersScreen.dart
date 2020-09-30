@@ -10,8 +10,8 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'dart:convert';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
@@ -60,9 +60,9 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
   }
 
   _getOrderOfUser() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String id = await p.getId();
-    String token = await p.getToken();
+    final p = await Preferences.getInstance();
+    String id = await p.getData("id");
+    String token = await p.getData("token");
     String url = APIService.ordersAPI + "$id";
     Map<String, String> requestHeaders = {'x-auth-token': token};
     var response = await http.get(url, headers: requestHeaders);

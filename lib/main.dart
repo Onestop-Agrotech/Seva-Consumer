@@ -12,6 +12,8 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/screens/auth/login.dart';
@@ -29,6 +31,8 @@ import 'bloc/productsapi_bloc.dart';
 
 Future main() async {
   await DotEnv().load('.env');
+  await Hive.initFlutter();
+
   runApp(SevaApp());
 }
 

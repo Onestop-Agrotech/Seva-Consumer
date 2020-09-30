@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/domain/exceptions.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -17,9 +17,9 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<List<StoreProduct>> fetchVegetables() async {
     var responseJson;
     try {
-      StorageSharedPrefs p = new StorageSharedPrefs();
-      String token = await p.getToken();
-      String hub = await p.gethub();
+      final p = await Preferences.getInstance();
+      String token = await p.getData("token");
+      String hub = await p.getData("hub");
       Map<String, String> requestHeaders = {'x-auth-token': token};
       String url = APIService.getCategorywiseProducts(hub, "vegetable");
       final response = await http.get(url, headers: requestHeaders);
@@ -33,9 +33,9 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<List<StoreProduct>> fetchFruits() async {
     var responseJson;
     try {
-      StorageSharedPrefs p = new StorageSharedPrefs();
-      String token = await p.getToken();
-      String hub = await p.gethub();
+      final p = await Preferences.getInstance();
+      String token = await p.getData("token");
+      String hub = await p.getData("hub");
       Map<String, String> requestHeaders = {'x-auth-token': token};
       String url = APIService.getCategorywiseProducts(hub, "fruit");
       final response = await http.get(url, headers: requestHeaders);
@@ -49,9 +49,9 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<List<StoreProduct>> fetchDailyEssentials() async {
     var responseJson;
     try {
-      StorageSharedPrefs p = new StorageSharedPrefs();
-      String token = await p.getToken();
-      String hub = await p.gethub();
+      final p = await Preferences.getInstance();
+      String token = await p.getData("token");
+      String hub = await p.getData("hub");
       Map<String, String> requestHeaders = {'x-auth-token': token};
       String url = APIService.getCategorywiseProducts(hub, "dailyEssential");
       final response = await http.get(url, headers: requestHeaders);

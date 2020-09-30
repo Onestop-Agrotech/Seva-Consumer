@@ -11,13 +11,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive/hive.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:mvp/classes/storage_sharedPrefs.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
@@ -29,7 +30,6 @@ import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'graphics/lightBG.dart';
@@ -41,13 +41,20 @@ class MainLandingScreen extends StatefulWidget {
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  //Todo: Screen Visible after login
+
+  // This Array is populated by the data that is visible on
+  // each caraousel
   var texts = [
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
     "Get exclusive cashbacks worth more than Rs 100 when you order.",
     "Super fast delivery within 45 minutes!",
     "Order Now and support your local stores."
   ];
+
+  // This Array is populated by the categories card data
   List<StoreProduct> categories = [];
+
   // static categories
   StoreProduct d;
   StoreProduct e;
@@ -68,6 +75,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   initState() {
     super.initState();
+    // Populating the categories array
     d = new StoreProduct(
       name: "Vegetables",
       pictureURL:
@@ -99,10 +107,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   /// Get the token, save it to the database for current user
   _saveDeviceToken() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
+    final p = await Preferences.getInstance();
     // Get the current user
-    String uid = await p.getId();
-    String token = await p.getToken();
+    String uid = await p.getData("id");
+    String token = await p.getData("token");
 
     // Get the token for this device
     String fcmToken = await _fcm.getToken();
@@ -123,20 +131,22 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
-  // get user name from the local storage
+  // To get the username of the person logged in
+  // from local storage
   getUsername() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    var x = await p.getUsername();
+    final preferences = await Preferences.getInstance();
+    final username = preferences.getData("username");
     setState(() {
-      _username = x;
+      _username = username;
     });
   }
 
-  //fetch the user address (maps)
+  //To get the address of the user address on clicking the
+  // location icon
   Future<String> _fetchUserAddress() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
-    String id = await p.getId();
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
+    String id = await p.getData("id");
     Map<String, String> requestHeaders = {'x-auth-token': token};
     String url = APIService.getAddressAPI + "$id";
     var response = await http.get(url, headers: requestHeaders);
@@ -151,9 +161,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   // fetches the best selling products for a particular hub
   Future<List<StoreProduct>> _fetchBestSellers() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
-    String hub = await p.gethub();
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
+    String hub = await p.getData("hub");
 
     Map<String, String> requestHeaders = {'x-auth-token': token};
     String url = APIService.getBestSellers(hub);
@@ -165,7 +175,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
-  //shows the delivery address
+  //This function shows the user's address in a dialog box
+  // and the user can edit the address from their also
   _showLocation() {
     showDialog(
       context: context,
@@ -234,7 +245,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-  //common widget
+  //Common Card widget for both the best sellers and Categories
   Widget commonWidget(height, itemsList, store) {
     return Container(
       height: height * 0.22,
@@ -266,6 +277,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+// Common text widget for both bestsellers and categories
   Widget commonText(height, leftText, rightText) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
@@ -291,6 +303,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+// Cart icon visible at the top left corner
   _renderCartIcon() {
     return Stack(
       children: [
@@ -314,7 +327,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-// check for cart items
+// This function checks whether there is any item
+// in the cart or not
   Widget _checkCartItems() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.1,
@@ -359,6 +373,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // height and width if the device
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -366,9 +381,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       backgroundColor: Colors.white,
       drawer: SizedBox(
         width: width * 0.5,
+
+        /// Side Drawer visible after login
         child: Drawer(
           child: Column(
-            // padding: EdgeInsets.zero,
             children: <Widget>[
               SizedBox(
                 height: height * 0.15,
@@ -391,9 +407,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ListTile(
                 title: Text('Logout'),
                 onTap: () async {
-                  SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
-                  preferences.clear();
+                  // clearing the data from hive
+                  await Hive.deleteFromDisk();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/login', (Route<dynamic> route) => false);
                 },
@@ -535,11 +550,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                       Duration(milliseconds: 600),
                                   autoPlayCurve: Curves.fastOutSlowIn,
                                   enlargeCenterPage: false,
-                                  // onPageChanged: callbackFunction,
                                   scrollDirection: Axis.horizontal,
                                 ),
                               ),
                             ),
+
+                            /// text visible in the carousel card
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: texts.map((url) {
@@ -563,6 +579,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       ),
                       commonText(height, "Best Sellers", ""),
                       SizedBox(height: 9.0),
+
+                      /// Getting the best sellers of the
+                      /// particular hub
                       FutureBuilder(
                           future: _fetchBestSellers(),
                           builder: (builder, snapshot) {
