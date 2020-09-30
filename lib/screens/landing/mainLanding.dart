@@ -10,10 +10,13 @@
 ///
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
+import 'package:mvp/screens/orders/ordersScreen.dart';
+import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -230,13 +233,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 if (data.hasData) {
                   return RaisedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GoogleLocationScreen(
-                                  userEmail: _email,
-                                )),
-                      );
+                      Navigator.of(context).push(CupertinoPageRoute<Null>(
+                          builder: (BuildContext context) {
+                        return GoogleLocationScreen(
+                          userEmail: _email,
+                        );
+                      }));
                     },
                     child: Text("Change"),
                     color: ThemeColoursSeva().pallete1,
@@ -320,6 +322,32 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+// animated Route to Shoppingcart screen
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          ShoppingCartNew(),
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) =>
+          ScaleTransition(
+        scale: Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+        child: child,
+      ),
+    );
+  }
+
 // Cart icon visible at the top left corner
   _renderCartIcon() {
     return Stack(
@@ -332,7 +360,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               icon: Icon(Icons.shopping_basket),
               onPressed: () {
                 // Handle shopping cart
-                Navigator.pushNamed(context, '/shoppingCartNew');
+                Navigator.of(context).push(_createRoute());
+
+                // Navigator.pushNamed(context, '/shoppingCartNew');
               }),
         ),
         Positioned(
@@ -471,7 +501,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 title: Text('My orders'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/ordersNew');
+                  Navigator.of(context).push(
+                      CupertinoPageRoute<Null>(builder: (BuildContext context) {
+                    return NewOrdersScreen();
+                  }));
                 },
               ),
               ListTile(

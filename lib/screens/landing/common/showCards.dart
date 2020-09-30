@@ -9,6 +9,7 @@
 ///
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -46,12 +47,10 @@ class _ShowCardsState extends State<ShowCards> {
     return GestureDetector(
       onTap: () {
         if (!this.widget.store)
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ProductsUINew(tagFromMain: this.widget.index)),
-          );
+          Navigator.of(context)
+              .push(CupertinoPageRoute<Null>(builder: (BuildContext context) {
+            return ProductsUINew(tagFromMain: this.widget.index);
+          }));
         else {
           // open the modal container
           // this.widget.sp.details.forEach((element) {
