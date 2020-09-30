@@ -66,6 +66,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   FirebaseMessaging _fcm;
   int _current = 0;
   String _mobileNumber;
+  String _referralCode;
 
   @override
   void setState(fn) {
@@ -142,6 +143,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     setState(() {
       _username = username;
       _mobileNumber = mobile;
+      _referralCode =
+          "${_username[0].toUpperCase()}${_mobileNumber.substring(5, 10)}${_username[_username.length - 1].toUpperCase()}";
     });
   }
 
@@ -392,9 +395,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Referrals"),
+            title: Text("Referral Code $_referralCode"),
             content: Text(
-                "Share your code with your friends. Ask them to share your code and their order number on our Whatsapp with their registered mobile number to receive Rs 25 cashback each. Valid only once per unique friend."),
+                "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend"),
             actions: [
               RaisedButton(
                 onPressed: () {
@@ -410,8 +413,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               RaisedButton(
                 onPressed: () {
                   String msg = ''' 
-                  Hi share my code  on Seva whatsapp business number along with your Order number to get Rs 25 cashback on your order!
-                  If you haven't installed the app, get it now on https://bit.ly/Seva_Android_App and order now!
+                  Hi, here's my referral code - $_referralCode\n1️⃣ Order on the Seva App.\n2️⃣ Share your order number and my referral code on +918595179521(Seva Business Whatsapp)\n3️⃣ We both receive Rs 25 cashback each on orders above Rs 50!\nIf you don't have the app, get it now on https://bit.ly/Seva_Android_App
                   ''';
                   Share.share(msg);
                 },
@@ -495,7 +497,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ),
               ListTile(
                 title: Text('Your referral code'),
-                subtitle: Text("$_mobileNumber"),
+                subtitle: Text(_referralCode),
                 onTap: () {
                   showReferralInstructions();
                 },
