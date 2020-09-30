@@ -13,6 +13,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -291,12 +292,22 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 fontWeight: FontWeight.w900,
                 fontSize: 2.5 * SizeConfig.textMultiplier),
           ),
-          Text(
-            rightText,
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400),
+          GestureDetector(
+            onTap: () {
+              if (leftText == "Categories")
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductsUINew(tagFromMain: 0)),
+                );
+            },
+            child: Text(
+              rightText,
+              style: TextStyle(
+                  color: ThemeColoursSeva().dkGreen,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
         ],
       ),
@@ -603,7 +614,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               ),
                             );
                           }),
-                      commonText(height, "Categories", ""),
+                      commonText(height, "Categories", "SEE ALL"),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
                       SizedBox(height: 9.0)
