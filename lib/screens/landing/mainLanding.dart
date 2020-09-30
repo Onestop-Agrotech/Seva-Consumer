@@ -11,6 +11,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
@@ -139,7 +140,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     setState(() {
       _username = username;
     });
-     }
+  }
 
   //To get the address of the user address on clicking the
   // location icon
@@ -407,9 +408,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ListTile(
                 title: Text('Logout'),
                 onTap: () async {
-                  SharedPreferences preferences =
-                      await SharedPreferences.getInstance();
-                  preferences.clear();
+                  // clearing the data from hive
+                  await Hive.deleteFromDisk();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       '/login', (Route<dynamic> route) => false);
                 },

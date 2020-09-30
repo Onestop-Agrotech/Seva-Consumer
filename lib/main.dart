@@ -31,7 +31,7 @@ import 'bloc/productsapi_bloc.dart';
 
 Future main() async {
   await DotEnv().load('.env');
-    await Hive.initFlutter();
+  await Hive.initFlutter();
 
   runApp(SevaApp());
 }
