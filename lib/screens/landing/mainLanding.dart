@@ -85,7 +85,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     d = new StoreProduct(
       name: "Vegetables",
       pictureURL:
-          "https://storepictures.theonestop.co.in/new2/AllVegetables.jpg",
+          "https://storepictures.theonestop.co.in/products/all-vegetables.jpg",
     );
     e = new StoreProduct(
       name: "Fruits",
@@ -323,10 +323,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   }
 
 // animated Route to Shoppingcart screen
-  Route _createRoute() {
+  Route _createRoute(Widget page) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          ShoppingCartNew(),
+          page,
       transitionsBuilder: (
         BuildContext context,
         Animation<double> animation,
@@ -360,7 +360,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               icon: Icon(Icons.shopping_basket),
               onPressed: () {
                 // Handle shopping cart
-                Navigator.of(context).push(_createRoute());
+                Navigator.of(context).push(_createRoute(ShoppingCartNew()));
 
                 // Navigator.pushNamed(context, '/shoppingCartNew');
               }),
