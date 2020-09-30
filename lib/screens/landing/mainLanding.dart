@@ -530,7 +530,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ),
               ListTile(
                 title: Text('Your referral code'),
-                subtitle: Text(_referralCode),
+                subtitle: Text(_referralCode == null ? "" : _referralCode),
                 onTap: () {
                   showReferralInstructions();
                 },
