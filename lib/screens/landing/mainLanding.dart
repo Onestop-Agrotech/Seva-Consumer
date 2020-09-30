@@ -48,7 +48,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   // each caraousel
   var texts = [
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
-    "Get exclusive cashbacks worth more than Rs 100 when you order.",
+    "Share your referral code with friends to get Rs 25 cashback",
     "Super fast delivery within 45 minutes!",
     "Order Now and support your local stores."
   ];
@@ -382,6 +382,43 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  /// show referral instructions with an
+  /// Alert dialog
+  _showReferralInstructions() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Referrals"),
+            content: Text(
+                "Share your code with your friends. Ask them to share your code and their order number on our Whatsapp with their registered mobile number to receive Rs 25 cashback each. Valid only once per unique friend."),
+            actions: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().pallete1,
+              ),
+              SizedBox(width: 20.0),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Share",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().dkGreen,
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     // height and width if the device
@@ -439,40 +476,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               ListTile(
                 title: Text('Your referral code'),
                 subtitle: Text("xqE32Pz09"),
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("Referrals"),
-                          content: Text(
-                              "Share your code with your friends. Ask them to share your code and their order number on our Whatsapp with their registered mobile number to receive Rs 25 cashback each. Valid only once per unique friend."),
-                          actions: [
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "OK",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: ThemeColoursSeva().pallete1,
-                            ),
-                            SizedBox(width: 20.0),
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "Share",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              color: ThemeColoursSeva().dkGreen,
-                            ),
-                          ],
-                        );
-                      });
-                },
+                onTap: () {_showReferralInstructions();},
               ),
               ListTile(
                 title: Text('Share app'),
