@@ -10,11 +10,36 @@
 
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+part 'users.g.dart';
+
 UserModel jsonToUserModel(String str) => UserModel.fromJson(json.decode(str));
 String userModelRegister(UserModel data) => json.encode(data.toRegisterJson());
 String userModelAddress(UserModel data) => json.encode(data.toAddressJson());
 
-class UserModel {
+@HiveType(typeId: 1)
+class UserModel extends HiveObject {
+  @HiveField(0)
+  String id;
+  @HiveField(1)
+  String username;
+  @HiveField(2)
+  String email;
+  @HiveField(3)
+  String mobile;
+  @HiveField(4)
+  String pincode;
+  @HiveField(5)
+  String address;
+  @HiveField(6)
+  String longitude;
+  @HiveField(7)
+  String latitude;
+  @HiveField(8)
+  String token;
+  @HiveField(9)
+  String refreshToken;
+
   UserModel({
     this.id,
     this.username,
@@ -27,17 +52,6 @@ class UserModel {
     this.token,
     this.refreshToken
   });
-
-  String id;
-  String username;
-  String email;
-  String mobile;
-  String pincode;
-  String address;
-  String longitude;
-  String latitude;
-  String token;
-  String refreshToken;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
