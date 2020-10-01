@@ -26,7 +26,7 @@ class SPBox {
 
   /// Get all products from the box with a type
   List<StoreProduct> getFromSPBox(String type) {
-    final List<StoreProduct> l = _box.values.where((p) => p.type == type);
+    final List<StoreProduct> l = _box.values.where((p) => p.type == type).toList();
     return l;
   }
 }

@@ -34,8 +34,13 @@ import 'bloc/productsapi_bloc.dart';
 Future main() async {
   await DotEnv().load('.env');
   await Hive.initFlutter();
-  Hive.registerAdapter(StoreProductAdapter());
+  
   Hive.registerAdapter(UserModelAdapter());
+
+  Hive.registerAdapter(StoreProductAdapter());
+  Hive.registerAdapter(DetailsAdapter());
+  Hive.registerAdapter(QuantityAdapter());
+  Hive.registerAdapter(AllowedQuantityAdapter());
 
   runApp(SevaApp());
 }

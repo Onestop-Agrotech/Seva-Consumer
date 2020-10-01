@@ -17,7 +17,7 @@ UserModel jsonToUserModel(String str) => UserModel.fromJson(json.decode(str));
 String userModelRegister(UserModel data) => json.encode(data.toRegisterJson());
 String userModelAddress(UserModel data) => json.encode(data.toAddressJson());
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 0)
 class UserModel extends HiveObject {
   @HiveField(0)
   String id;
