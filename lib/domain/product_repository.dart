@@ -77,7 +77,8 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<List<StoreProduct>> _returnResponse(http.Response response) async {
     switch (response.statusCode) {
       case 200:
-        final List<StoreProduct> sp =  jsonToCateogrywiseProductModel(response.body);
+        final List<StoreProduct> sp =
+            jsonToCateogrywiseProductModel(response.body);
         final SPBox spBox = await SPBox.getSPBoxInstance();
         spBox.addSPList(sp);
         return sp;

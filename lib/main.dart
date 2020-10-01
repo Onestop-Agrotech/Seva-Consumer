@@ -68,7 +68,7 @@ class _SevaAppState extends State<SevaApp> {
   }
 
   @override
-  void dispose() async{
+  void dispose() async {
     final SPBox s = await SPBox.getSPBoxInstance();
     await s.close();
     super.dispose();

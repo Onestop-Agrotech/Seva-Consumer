@@ -105,7 +105,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   /// UTIL func
   /// Makes the array
-  /// 
+  ///
   /// This array needs to be populated by the server
   void makeArray() {
     final a = Category(

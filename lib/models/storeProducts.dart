@@ -84,7 +84,7 @@ class StoreProduct extends HiveObject {
 
 // details of a particular item [array]
 @HiveType(typeId: 2)
-class Details extends HiveObject{
+class Details extends HiveObject {
   @HiveField(0)
   Quantity quantity;
   @HiveField(1)
@@ -127,7 +127,7 @@ class Details extends HiveObject{
 
 // quantity of the item
 @HiveType(typeId: 3)
-class Quantity extends HiveObject{
+class Quantity extends HiveObject {
   Quantity({this.quantityValue, this.quantityMetric, this.allowedQuantities});
 
   @HiveField(0)
@@ -151,7 +151,7 @@ class Quantity extends HiveObject{
 }
 
 @HiveType(typeId: 4)
-class AllowedQuantity extends HiveObject{
+class AllowedQuantity extends HiveObject {
   @HiveField(0)
   String id;
   @HiveField(1)

@@ -106,7 +106,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => IntroScreen()));
     } else if (_showLoginScreen == false) {
-    final p = await Preferences.getInstance();
+      final p = await Preferences.getInstance();
       String far = await p.getData("far");
       String email = await p.getData("email");
       if (far == "false") {

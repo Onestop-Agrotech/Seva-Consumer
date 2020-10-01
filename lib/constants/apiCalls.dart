@@ -34,10 +34,8 @@ class APIService {
   // Payments
   static final String getRzpKeyAPI = "$_api/payments/rzp";
 
-
 // Refreshtoken
-static final String getRefreshToken="$_api/token/refreshToken/fetch";
-
+  static final String getRefreshToken = "$_api/token/refreshToken/fetch";
 
   // OTHERS
   // loading.dart - _sendReqToServer function

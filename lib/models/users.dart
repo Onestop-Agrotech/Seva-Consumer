@@ -40,31 +40,29 @@ class UserModel extends HiveObject {
   @HiveField(9)
   String latitude;
 
-  UserModel({
-    this.id,
-    this.username,
-    this.email,
-    this.mobile,
-    this.pincode,
-    this.address,
-    this.longitude,
-    this.latitude,
-    this.token,
-    this.refreshToken
-  });
+  UserModel(
+      {this.id,
+      this.username,
+      this.email,
+      this.mobile,
+      this.pincode,
+      this.address,
+      this.longitude,
+      this.latitude,
+      this.token,
+      this.refreshToken});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["_id"],
-        username: json["username"],
-        email: json["email"],
-        mobile: json["mobile"],
-        pincode: json["pincode"],
-        address: json["address"],
-        longitude: json["longitude"],
-        latitude: json["latitude"],
-        token: json["token"],
-        refreshToken: json["refreshToken"]
-      );
+      id: json["_id"],
+      username: json["username"],
+      email: json["email"],
+      mobile: json["mobile"],
+      pincode: json["pincode"],
+      address: json["address"],
+      longitude: json["longitude"],
+      latitude: json["latitude"],
+      token: json["token"],
+      refreshToken: json["refreshToken"]);
 
   Map<String, dynamic> toRegisterJson() => {
         "username": username,

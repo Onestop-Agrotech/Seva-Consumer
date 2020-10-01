@@ -326,8 +326,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 // animated Route to Shoppingcart screen
   Route _createRoute(Widget page) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          page,
+      pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (
         BuildContext context,
         Animation<double> animation,
