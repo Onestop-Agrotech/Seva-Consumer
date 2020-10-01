@@ -108,10 +108,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   @override
   void dispose() async {
-    x.cancel();
-    final SPBox s = await SPBox.getSPBoxInstance();
-    await s.clear();
     super.dispose();
+    x.cancel();
   }
 
   /// Get the token, save it to the database for current user
