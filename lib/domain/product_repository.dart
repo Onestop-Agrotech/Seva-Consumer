@@ -13,53 +13,35 @@ abstract class ProductRepository {
 }
 
 class ProductRepositoryImpl implements ProductRepository {
+  Future _fetch(String type) async {
+    var responseJson;
+    try {
+      final p = await Preferences.getInstance();
+      String token = await p.getData("token");
+      String hub = await p.getData("hub");
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      String url = APIService.getCategorywiseProducts(hub, type);
+      final response = await http.get(url, headers: requestHeaders);
+      responseJson = _returnResponse(response);
+      return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet connection');
+    }
+  }
+
   @override
   Future<List<StoreProduct>> fetchVegetables() async {
-    var responseJson;
-    try {
-      final p = await Preferences.getInstance();
-      String token = await p.getData("token");
-      String hub = await p.getData("hub");
-      Map<String, String> requestHeaders = {'x-auth-token': token};
-      String url = APIService.getCategorywiseProducts(hub, "vegetable");
-      final response = await http.get(url, headers: requestHeaders);
-      responseJson = _returnResponse(response);
-      return responseJson;
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
+    return await _fetch("vegetable");
   }
 
+  @override
   Future<List<StoreProduct>> fetchFruits() async {
-    var responseJson;
-    try {
-      final p = await Preferences.getInstance();
-      String token = await p.getData("token");
-      String hub = await p.getData("hub");
-      Map<String, String> requestHeaders = {'x-auth-token': token};
-      String url = APIService.getCategorywiseProducts(hub, "fruit");
-      final response = await http.get(url, headers: requestHeaders);
-      responseJson = _returnResponse(response);
-      return responseJson;
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
+    return await _fetch("fruit");
   }
 
+  @override
   Future<List<StoreProduct>> fetchDailyEssentials() async {
-    var responseJson;
-    try {
-      final p = await Preferences.getInstance();
-      String token = await p.getData("token");
-      String hub = await p.getData("hub");
-      Map<String, String> requestHeaders = {'x-auth-token': token};
-      String url = APIService.getCategorywiseProducts(hub, "dailyEssential");
-      final response = await http.get(url, headers: requestHeaders);
-      responseJson = _returnResponse(response);
-      return responseJson;
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
-    }
+    return await _fetch("dailyEssential");
   }
 
   List<StoreProduct> _returnResponse(http.Response response) {
