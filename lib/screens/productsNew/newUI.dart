@@ -11,6 +11,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
@@ -84,6 +85,14 @@ class _ProductsUINewState extends State<ProductsUINew> {
       tag = widget.tagFromMain;
     else
       tag = 0;
+    hiveTest();
+  }
+
+  hiveTest() async {
+    var box = await Hive.openBox<StoreProduct>('StoreProducts');
+    box.put('p1', StoreProduct(id: "123456", name: "Some veggies"));
+    final x = box.values.toList();
+    print(x[0].name);
   }
 
   // shimmer layout before page loads
