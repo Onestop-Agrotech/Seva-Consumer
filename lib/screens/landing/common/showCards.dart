@@ -9,6 +9,7 @@
 ///
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -27,6 +28,8 @@ class ShowCards extends StatefulWidget {
 }
 
 class _ShowCardsState extends State<ShowCards> {
+  /* click function for the best seller card on main
+  landing screen will redirect to [details.dart] screen */
   void onClickProduct() {
     if (!widget.sp.details[0].outOfStock) {
       Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -35,20 +38,6 @@ class _ShowCardsState extends State<ShowCards> {
         );
       }));
     }
-    // showGeneralDialog(
-    //     context: context,
-    //     barrierDismissible: true,
-    //     barrierLabel:
-    //         MaterialLocalizations.of(context).modalBarrierDismissLabel,
-    //     barrierColor: Colors.black45,
-    //     transitionDuration: const Duration(milliseconds: 200),
-    //     pageBuilder: (BuildContext buildContext, Animation animation,
-    //         Animation secondaryAnimation) {
-    //       return Center(
-    //           child: AddItemModal(
-    //         product: widget.sp,
-    //       ));
-    //     });
   }
 
   @override
@@ -58,12 +47,10 @@ class _ShowCardsState extends State<ShowCards> {
     return GestureDetector(
       onTap: () {
         if (!this.widget.store)
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ProductsUINew(tagFromMain: this.widget.index)),
-          );
+          Navigator.of(context)
+              .push(CupertinoPageRoute<Null>(builder: (BuildContext context) {
+            return ProductsUINew(tagFromMain: this.widget.index);
+          }));
         else {
           // open the modal container
           // this.widget.sp.details.forEach((element) {
@@ -104,6 +91,7 @@ class _ShowCardsState extends State<ShowCards> {
                         fontWeight: FontWeight.w700),
                   )
                 : SizedBox.shrink(),
+            // Hero animation on clicking any bestseller card
             Hero(
               tag: widget.sp.name,
               child: Container(

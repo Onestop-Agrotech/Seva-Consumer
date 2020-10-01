@@ -12,8 +12,13 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/newCart.dart';
+import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
@@ -29,6 +34,14 @@ import 'bloc/productsapi_bloc.dart';
 
 Future main() async {
   await DotEnv().load('.env');
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(UserModelAdapter());
+  Hive.registerAdapter(DetailsAdapter());
+  Hive.registerAdapter(QuantityAdapter());
+  Hive.registerAdapter(AllowedQuantityAdapter());
+  Hive.registerAdapter(StoreProductAdapter());
+
   runApp(SevaApp());
 }
 
@@ -55,7 +68,9 @@ class _SevaAppState extends State<SevaApp> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
+    final SPBox s = await SPBox.getSPBoxInstance();
+    await s.close();
     super.dispose();
   }
 

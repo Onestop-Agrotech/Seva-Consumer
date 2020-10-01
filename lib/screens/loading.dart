@@ -11,7 +11,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:mvp/classes/storage_sharedPrefs.dart';
+import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/auth/login.dart';
@@ -86,8 +86,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   // looks for the token of the user.
   _checkForUserToken() async {
-    StorageSharedPrefs p = new StorageSharedPrefs();
-    String token = await p.getToken();
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
     if (token != '' && token != null) {
       // there is a token, now verify
       _sendReqToServer(token);
@@ -106,11 +106,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => IntroScreen()));
     } else if (_showLoginScreen == false) {
-      StorageSharedPrefs p = new StorageSharedPrefs();
-      String far = await p.getFarStatus();
-      String email = await p.getEmail();
+      final p = await Preferences.getInstance();
+      String far = await p.getData("far");
+      String email = await p.getData("email");
       if (far == "false") {
-        Navigator.pushNamed(context, '/main');
+        Navigator.pushReplacementNamed(context, '/main');
       } else if (far == "true") {
         Navigator.pushReplacement(
           context,

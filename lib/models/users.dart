@@ -10,51 +10,64 @@
 
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+part 'users.g.dart';
+
 UserModel jsonToUserModel(String str) => UserModel.fromJson(json.decode(str));
 String userModelRegister(UserModel data) => json.encode(data.toRegisterJson());
 String userModelAddress(UserModel data) => json.encode(data.toAddressJson());
-String userModelLogin(UserModel data) => json.encode(data.toLoginJson());
 
-class UserModel {
-  UserModel({
-    this.id,
-    this.username,
-    this.email,
-    this.password,
-    this.mobile,
-    this.pincode,
-    this.address,
-    this.longitude,
-    this.latitude,
-  });
-
+@HiveType(typeId: 0)
+class UserModel extends HiveObject {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String username;
+  @HiveField(2)
   String email;
-  String password;
+  @HiveField(3)
   String mobile;
+  @HiveField(4)
   String pincode;
+  @HiveField(5)
   String address;
+  @HiveField(6)
+  String token;
+  @HiveField(7)
+  String refreshToken;
+  @HiveField(8)
   String longitude;
+  @HiveField(9)
   String latitude;
 
+  UserModel(
+      {this.id,
+      this.username,
+      this.email,
+      this.mobile,
+      this.pincode,
+      this.address,
+      this.longitude,
+      this.latitude,
+      this.token,
+      this.refreshToken});
+
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["_id"],
-        username: json["username"],
-        email: json["email"],
-        mobile: json["mobile"],
-        pincode: json["pincode"],
-        address: json["address"],
-        longitude: json["longitude"],
-        latitude: json["latitude"],
-      );
+      id: json["_id"],
+      username: json["username"],
+      email: json["email"],
+      mobile: json["mobile"],
+      pincode: json["pincode"],
+      address: json["address"],
+      longitude: json["longitude"],
+      latitude: json["latitude"],
+      token: json["token"],
+      refreshToken: json["refreshToken"]);
 
   Map<String, dynamic> toRegisterJson() => {
         "username": username,
         "email": email,
         "mobile": mobile,
-        "password": password,
-        "pincode": pincode,
       };
 
   Map<String, dynamic> toAddressJson() => {
@@ -63,6 +76,4 @@ class UserModel {
         "longitude": longitude,
         "latitude": latitude,
       };
-
-  Map<String, dynamic> toLoginJson() => {"email": email, "password": password};
 }
