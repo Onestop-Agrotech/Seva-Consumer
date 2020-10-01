@@ -29,4 +29,10 @@ class SPBox {
     final List<StoreProduct> l = _box.values.where((p) => p.type == type).toList();
     return l;
   }
+
+  /// compact & close
+  Future<void> close() async{
+    await _box.compact();
+    await _box.close();
+  }
 }

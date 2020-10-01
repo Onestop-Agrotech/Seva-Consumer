@@ -32,13 +32,13 @@ class UserModel extends HiveObject {
   @HiveField(5)
   String address;
   @HiveField(6)
-  String longitude;
-  @HiveField(7)
-  String latitude;
-  @HiveField(8)
   String token;
-  @HiveField(9)
+  @HiveField(7)
   String refreshToken;
+  @HiveField(8)
+  String longitude;
+  @HiveField(9)
+  String latitude;
 
   UserModel({
     this.id,

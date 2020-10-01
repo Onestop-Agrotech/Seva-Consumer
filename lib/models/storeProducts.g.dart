@@ -23,16 +23,14 @@ class StoreProductAdapter extends TypeAdapter<StoreProduct> {
       uniqueId: fields[3] as String,
       description: fields[4] as String,
       pictureURL: fields[5] as String,
-      details: (fields[8] as List)?.cast<Details>(),
-      totalPrice: fields[6] as double,
-      totalQuantity: fields[7] as double,
+      details: (fields[6] as List)?.cast<Details>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, StoreProduct obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -46,10 +44,6 @@ class StoreProductAdapter extends TypeAdapter<StoreProduct> {
       ..writeByte(5)
       ..write(obj.pictureURL)
       ..writeByte(6)
-      ..write(obj.totalPrice)
-      ..writeByte(7)
-      ..write(obj.totalQuantity)
-      ..writeByte(8)
       ..write(obj.details);
   }
 

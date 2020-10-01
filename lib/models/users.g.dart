@@ -23,10 +23,10 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       mobile: fields[3] as String,
       pincode: fields[4] as String,
       address: fields[5] as String,
-      longitude: fields[6] as String,
-      latitude: fields[7] as String,
-      token: fields[8] as String,
-      refreshToken: fields[9] as String,
+      longitude: fields[8] as String,
+      latitude: fields[9] as String,
+      token: fields[6] as String,
+      refreshToken: fields[7] as String,
     );
   }
 
@@ -47,13 +47,13 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(5)
       ..write(obj.address)
       ..writeByte(6)
-      ..write(obj.longitude)
-      ..writeByte(7)
-      ..write(obj.latitude)
-      ..writeByte(8)
       ..write(obj.token)
+      ..writeByte(7)
+      ..write(obj.refreshToken)
+      ..writeByte(8)
+      ..write(obj.longitude)
       ..writeByte(9)
-      ..write(obj.refreshToken);
+      ..write(obj.latitude);
   }
 
   @override

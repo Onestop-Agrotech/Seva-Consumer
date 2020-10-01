@@ -42,12 +42,10 @@ class StoreProduct extends HiveObject {
   @HiveField(5)
   String pictureURL;
   @HiveField(6)
-  double totalPrice;
-  @HiveField(7)
-  double totalQuantity;
-  @HiveField(8)
   List<Details> details;
   int iV;
+  double totalPrice;
+  double totalQuantity;
 
   StoreProduct(
       {this.id,
