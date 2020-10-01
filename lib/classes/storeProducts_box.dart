@@ -32,6 +32,7 @@ class SPBox {
 
   /// compact & close
   Future<void> close() async{
+    await _box.clear();
     await _box.compact();
     await _box.close();
   }
