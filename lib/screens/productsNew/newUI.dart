@@ -12,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
+import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -19,6 +20,19 @@ import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+
+class Category {
+  final String name;
+  Color backgroundColor;
+  Color textColor;
+  final bool hasData;
+
+  Category(
+      {@required this.name,
+      @required this.backgroundColor,
+      @required this.textColor,
+      @required this.hasData});
+}
 
 class ProductsUINew extends StatefulWidget {
   final int tagFromMain;
@@ -34,12 +48,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
   // will receive from server
   /// This Array is populated by the ListView Builder to show on
   /// the left side of the screen (1st row)
-  final List<String> catArray = [
-    "Vegetables",
-    "Fruits",
-    "Milk, Eggs & Bread",
-    "More Coming Soon!",
-  ];
+  final List<Category> catArray = [];
   String category;
 
   /// This tag will be used for 2 things mainly -
@@ -57,6 +66,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
+    catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
+    catArray[tag].textColor = Colors.white;
     switch (tag) {
       case 0:
         apiBloc.add(GetVegetables());
@@ -74,6 +85,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
   @override
   initState() {
     super.initState();
+    makeArray();
 
     /// Intialize it to 0 - by default to get Vegetables
     /// as it is on the first List Tile
@@ -82,6 +94,44 @@ class _ProductsUINewState extends State<ProductsUINew> {
       tag = widget.tagFromMain;
     else
       tag = 0;
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    final SPBox box = await SPBox.getSPBoxInstance();
+    await box.clear();
+  }
+
+  /// UTIL func
+  /// Makes the array
+  ///
+  /// This array needs to be populated by the server
+  void makeArray() {
+    final a = Category(
+        name: "Vegetables",
+        backgroundColor: Colors.white,
+        textColor: ThemeColoursSeva().pallete1,
+        hasData: true);
+    final b = Category(
+        name: "Fruits",
+        backgroundColor: Colors.white,
+        textColor: ThemeColoursSeva().pallete1,
+        hasData: true);
+    final c = Category(
+        name: "Milk, Eggs & Bread",
+        backgroundColor: Colors.white,
+        textColor: ThemeColoursSeva().pallete1,
+        hasData: true);
+    final d = Category(
+        name: "More Coming soon!",
+        backgroundColor: Colors.white,
+        textColor: ThemeColoursSeva().pallete1,
+        hasData: false);
+    catArray.add(a);
+    catArray.add(b);
+    catArray.add(c);
+    catArray.add(d);
   }
 
   // shimmer layout before page loads
@@ -273,11 +323,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                       scrollDirection: Axis.vertical,
                       itemCount: catArray.length,
                       itemBuilder: (context, index) {
-                        return Container(
+                        return AnimatedContainer(
+                          duration: Duration(milliseconds: 600),
+                          curve: Curves.fastOutSlowIn,
                           decoration: BoxDecoration(
-                            color: tag == index
-                                ? ThemeColoursSeva().vlgGreen
-                                : Colors.white,
+                            color: catArray[index].backgroundColor,
                             border: Border(
                               bottom: BorderSide(
                                   width: 0.2, color: Colors.greenAccent),
@@ -285,12 +335,10 @@ class _ProductsUINewState extends State<ProductsUINew> {
                           ),
                           child: ListTile(
                             title: Text(
-                              catArray[index],
+                              catArray[index].name,
                               style: TextStyle(
                                   fontSize: 1.65 * SizeConfig.textMultiplier,
-                                  color: tag == index
-                                      ? Colors.white
-                                      : ThemeColoursSeva().pallete1,
+                                  color: catArray[index].textColor,
                                   fontWeight: FontWeight.w700),
                             ),
                             onTap: () {
@@ -300,6 +348,18 @@ class _ProductsUINewState extends State<ProductsUINew> {
                               if (index < 3) {
                                 setState(() {
                                   tag = index;
+                                  for (int i = 0; i < catArray.length; i++) {
+                                    if (i == index) {
+                                      catArray[i].backgroundColor =
+                                          ThemeColoursSeva().vlgGreen;
+                                      catArray[i].textColor = Colors.white;
+                                    } else {
+                                      catArray[i].backgroundColor =
+                                          Colors.white;
+                                      catArray[i].textColor =
+                                          ThemeColoursSeva().pallete1;
+                                    }
+                                  }
                                 });
                                 switch (index) {
                                   case 0:

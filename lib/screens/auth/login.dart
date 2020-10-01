@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //verifies the otp
   _verifyOTP(otp) async {
-      final preferences = await Preferences.getInstance();
+    final preferences = await Preferences.getInstance();
     String token = await preferences.getData("token");
     var getJson = json.encode({"phone": _mobileController.text, "otp": otp});
     String url = APIService.verifyOTP;
@@ -247,6 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await preferences.sethub(jsonBdy["hub"]);
       await preferences.setId(jsonBdy["id"]);
       await preferences.setEmail(jsonBdy["email"]);
+      await preferences.setMobile(jsonBdy["mobile"]);
       await preferences.setFarStatus(far);
 
       // grant access to the app

@@ -10,9 +10,13 @@
 ///
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
+import 'package:mvp/screens/orders/ordersScreen.dart';
+import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -47,7 +51,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   // each caraousel
   var texts = [
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
-    "Get exclusive cashbacks worth more than Rs 100 when you order.",
+    "Share your referral code with friends to get Rs 25 cashback",
     "Super fast delivery within 45 minutes!",
     "Order Now and support your local stores."
   ];
@@ -64,6 +68,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Timer x;
   FirebaseMessaging _fcm;
   int _current = 0;
+  String _mobileNumber;
+  String _referralCode;
 
   @override
   void setState(fn) {
@@ -79,7 +85,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     d = new StoreProduct(
       name: "Vegetables",
       pictureURL:
-          "https://storepictures.theonestop.co.in/new2/AllVegetables.jpg",
+          "https://storepictures.theonestop.co.in/products/all-vegetables.jpg",
     );
     e = new StoreProduct(
       name: "Fruits",
@@ -100,9 +106,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   }
 
   @override
-  void dispose() {
-    x.cancel();
+  void dispose() async {
     super.dispose();
+    x.cancel();
   }
 
   /// Get the token, save it to the database for current user
@@ -136,8 +142,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   getUsername() async {
     final preferences = await Preferences.getInstance();
     final username = preferences.getData("username");
+    final mobile = preferences.getData("mobile");
     setState(() {
       _username = username;
+      _mobileNumber = mobile;
+      _referralCode =
+          "${_username[0].toUpperCase()}${_mobileNumber.substring(5, 10)}${_username[_username.length - 1].toUpperCase()}";
     });
   }
 
@@ -223,13 +233,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 if (data.hasData) {
                   return RaisedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GoogleLocationScreen(
-                                  userEmail: _email,
-                                )),
-                      );
+                      Navigator.of(context).push(CupertinoPageRoute<Null>(
+                          builder: (BuildContext context) {
+                        return GoogleLocationScreen(
+                          userEmail: _email,
+                        );
+                      }));
                     },
                     child: Text("Change"),
                     color: ThemeColoursSeva().pallete1,
@@ -291,14 +300,49 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 fontWeight: FontWeight.w900,
                 fontSize: 2.5 * SizeConfig.textMultiplier),
           ),
-          Text(
-            rightText,
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontSize: 15.0,
-                fontWeight: FontWeight.w400),
+          GestureDetector(
+            onTap: () {
+              if (leftText == "Categories")
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProductsUINew(tagFromMain: 0)),
+                );
+            },
+            child: Text(
+              rightText,
+              style: TextStyle(
+                  color: ThemeColoursSeva().dkGreen,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+// animated Route to Shoppingcart screen
+  Route _createRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) =>
+          ScaleTransition(
+        scale: Tween<double>(
+          begin: 0.0,
+          end: 1.0,
+        ).animate(
+          CurvedAnimation(
+            parent: animation,
+            curve: Curves.fastOutSlowIn,
+          ),
+        ),
+        child: child,
       ),
     );
   }
@@ -315,7 +359,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               icon: Icon(Icons.shopping_basket),
               onPressed: () {
                 // Handle shopping cart
-                Navigator.pushNamed(context, '/shoppingCartNew');
+                Navigator.of(context).push(_createRoute(ShoppingCartNew()));
+
+                // Navigator.pushNamed(context, '/shoppingCartNew');
               }),
         ),
         Positioned(
@@ -371,6 +417,59 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
+  /// show referral instructions with an
+  /// Alert dialog
+  showReferralInstructions() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Referral Code $_referralCode"),
+            content: Text(
+                "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend"),
+            actions: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "OK",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().pallete1,
+              ),
+              SizedBox(width: 20.0),
+              RaisedButton(
+                onPressed: () {
+                  String msg = ''' 
+                  Hi, here's my referral code - $_referralCode\n1️⃣ Order on the Seva App.\n2️⃣ Share your order number and my referral code on +918595179521(Seva Business Whatsapp)\n3️⃣ We both receive Rs 25 cashback each on orders above Rs 50!\nIf you don't have the app, get it now on https://bit.ly/Seva_Android_App
+                  ''';
+                  Share.share(msg);
+                },
+                child: Text(
+                  "Share",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().dkGreen,
+              ),
+            ],
+          );
+        });
+  }
+
+  /// This function gives out index and value
+  /// instead of just value (like map), so this is
+  /// an extension of map iterable func
+  Iterable<E> mapIndexed<E, T>(
+      Iterable<T> items, E Function(int index, T item) f) sync* {
+    var index = 0;
+
+    for (final item in items) {
+      yield f(index, item);
+      index = index + 1;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // height and width if the device
@@ -401,7 +500,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 title: Text('My orders'),
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, '/ordersNew');
+                  Navigator.of(context).push(
+                      CupertinoPageRoute<Null>(builder: (BuildContext context) {
+                    return NewOrdersScreen();
+                  }));
                 },
               ),
               ListTile(
@@ -426,6 +528,13 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 },
               ),
               ListTile(
+                title: Text('Your referral code'),
+                subtitle: Text(_referralCode == null ? "" : _referralCode),
+                onTap: () {
+                  showReferralInstructions();
+                },
+              ),
+              ListTile(
                 title: Text('Share app'),
                 onTap: () {
                   String msg = ''' 
@@ -441,7 +550,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text('App version - Beta'),
-                      subtitle: Text("0.5.0"),
+                      subtitle: Text("0.5.1"),
                       onTap: null,
                     ),
                   ),
@@ -523,15 +632,18 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           children: <Widget>[
                             Expanded(
                               child: CarouselSlider(
-                                items: texts.map((i) {
-                                  return Builder(
-                                    builder: (BuildContext context) {
-                                      return FeaturedCards(
-                                        textToDisplay: i,
-                                      );
-                                    },
-                                  );
-                                }).toList(),
+                                items: mapIndexed(
+                                    texts,
+                                    (index, item) => Builder(
+                                          builder: (BuildContext context) {
+                                            return FeaturedCards(
+                                              textToDisplay: item,
+                                              index: index,
+                                              showInstructions:
+                                                  showReferralInstructions,
+                                            );
+                                          },
+                                        )).toList(),
                                 options: CarouselOptions(
                                   onPageChanged: (index, reason) {
                                     setState(() {
@@ -603,7 +715,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               ),
                             );
                           }),
-                      commonText(height, "Categories", ""),
+                      commonText(height, "Categories", "SEE ALL"),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
                       SizedBox(height: 9.0)
