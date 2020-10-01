@@ -234,20 +234,11 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       final preferences = await Preferences.getInstance();
       var jsonBdy = json.decode(response.body);
-<<<<<<< HEAD
       // await p.setUsername(jsonBdy["username"]);
       // await p.setToken(jsonBdy["token"]);
       // await p.setId(jsonBdy["id"]);
       // await p.sethub(jsonBdy["hub"]);
       // await p.setEmail(jsonBdy["email"]);
-=======
-      await p.setUsername(jsonBdy["username"]);
-      await p.setToken(jsonBdy["token"]);
-      await p.setRefreshToken(jsonBdy["refreshToken"]);
-      await p.setId(jsonBdy["id"]);
-      await p.sethub(jsonBdy["hub"]);
-      await p.setEmail(jsonBdy["email"]);
->>>>>>> b166b3dedcbdfce5c1858ad8b9d1c00cadc47f7b
       String far = jsonBdy["far"].toString();
       // await p.setFarStatus(far);
 

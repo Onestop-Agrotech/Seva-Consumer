@@ -16,6 +16,7 @@ class Preferences {
 // storing the user creds after login
 // and registration
   Future<void> setToken(String token) => _setValue("token", token);
+  Future<void> setRefreshToken(String refreshToken) => _setValue("refreshToken", refreshToken);
   Future<void> setUsername(String username) => _setValue("username", username);
   Future<void> setFarStatus(String far) => _setValue("far", far);
   Future<void> setEmail(String email) => _setValue("email", email);

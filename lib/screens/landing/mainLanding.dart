@@ -50,13 +50,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   // This Array is populated by the data that is visible on
   // each caraousel
   var texts = [
-<<<<<<< HEAD
     "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
     "Share your referral code with friends to get Rs 25 cashback",
-=======
-    "Free Deliveries and no minimum order!\n" + "Order Now.",
-    "Get exclusive cashbacks worth more than Rs 100 when you order.",
->>>>>>> b166b3dedcbdfce5c1858ad8b9d1c00cadc47f7b
     "Super fast delivery within 45 minutes!",
     "Order Now and support your local stores."
   ];
