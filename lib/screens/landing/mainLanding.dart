@@ -517,7 +517,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
                       // carousel with indicator
                       Container(
-                        height: height * 0.2,
+                        height: 23.0 * SizeConfig.heightMultiplier,
                         width: double.infinity,
                         child: Column(
                           children: <Widget>[
