@@ -85,15 +85,15 @@ class _ProductsUINewState extends State<ProductsUINew> {
       tag = widget.tagFromMain;
     else
       tag = 0;
-    hiveTest();
+    // hiveTest();
   }
 
-  hiveTest() async {
-    var box = await Hive.openBox<StoreProduct>('StoreProducts');
-    box.put('p1', StoreProduct(id: "123456", name: "Some veggies"));
-    final x = box.values.toList();
-    print(x[0].name);
-  }
+  // hiveTest() async {
+  //   var box = await Hive.openBox<StoreProduct>('StoreProducts');
+  //   box.put('p1', StoreProduct(id: "123456", name: "Some veggies"));
+  //   final x = box.values.toList();
+  //   print(x[0].name);
+  // }
 
   // shimmer layout before page loads
   _shimmerLayout() {
