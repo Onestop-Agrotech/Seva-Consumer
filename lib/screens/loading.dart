@@ -110,7 +110,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       String far = await p.getData("far");
       String email = await p.getData("email");
       if (far == "false") {
-        Navigator.pushNamed(context, '/main');
+        Navigator.pushReplacementNamed(context, '/main');
       } else if (far == "true") {
         Navigator.pushReplacement(
           context,
