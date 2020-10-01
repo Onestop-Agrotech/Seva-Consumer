@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:mvp/classes/prefrenses.dart';
@@ -42,6 +43,28 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<List<StoreProduct>> fetchDailyEssentials() async {
     return await _fetch("dailyEssential");
+  }
+
+  refreshToken() async {
+    try {
+      StorageSharedPrefs p = new StorageSharedPrefs();
+      String token = await p.getToken();
+      String refreshToken = await p.getRefreshToken();
+      String url = APIService.getRefreshToken;
+      var body = jsonEncode(<String, String>{
+        'refreshToken': refreshToken,
+      });
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      final response =
+          await http.post(url, body: body, headers: requestHeaders);
+      var jsonBdy = json.decode(response.body);
+      await p.setToken(jsonBdy["token"]);
+      await p.setRefreshToken(jsonBdy["refreshToken"]);
+
+      // user=
+    } on SocketException {
+      throw FetchDataException("No Internet");
+    }
   }
 
   List<StoreProduct> _returnResponse(http.Response response) {
