@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mvp/domain/exceptions.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/storeProducts.dart';
 
@@ -30,9 +31,18 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
       yield ProductsapiLoading();
       final products = await func();
       yield ProductsapiLoaded(products);
+    } on UnauthorisedException {
+      yield* _exceptionHandler(func);
     } catch (err) {
       print(err);
       yield ProductsapiError(err.toString());
     }
+  }
+
+  Stream<ProductsapiState> _exceptionHandler(func) async* {
+    yield ProductsapiLoading();
+    await _productRepository.refreshToken();
+    final products = await func();
+    yield ProductsapiLoaded(products);
   }
 }
