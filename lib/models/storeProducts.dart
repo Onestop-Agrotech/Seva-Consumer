@@ -11,6 +11,10 @@
 
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
+part 'storeProducts.g.dart';
+
 List<StoreProduct> jsonToStoreProductModel(String str) =>
     List<StoreProduct>.from(
         json.decode(str).map((x) => StoreProduct.fromJson(x)));
@@ -23,15 +27,25 @@ String storeProductTojsonModel(List<StoreProduct> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 // main store product model
-class StoreProduct {
+@HiveType(typeId: 0)
+class StoreProduct extends HiveObject {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String type;
+  @HiveField(3)
   String uniqueId;
+  @HiveField(4)
   String description;
+  @HiveField(5)
   String pictureURL;
+  @HiveField(6)
   double totalPrice;
+  @HiveField(7)
   double totalQuantity;
+  @HiveField(8)
   List<Details> details;
   int iV;
 
