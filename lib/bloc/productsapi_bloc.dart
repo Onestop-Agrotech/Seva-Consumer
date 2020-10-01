@@ -18,32 +18,22 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
     ProductsapiEvent event,
   ) async* {
     if (event is GetVegetables) {
-      try {
-        yield ProductsapiLoading();
-        final products = await _productRepository.fetchVegetables();
-        yield ProductsapiLoaded(products);
-      } catch (err) {
-        print(err);
-        yield ProductsapiError(err.toString());
-      }
+      yield* _loadProducts(_productRepository.fetchVegetables);
     } else if (event is GetFruits) {
-      try {
-        yield ProductsapiLoading();
-        final products = await _productRepository.fetchFruits();
-        yield ProductsapiLoaded(products);
-      } catch (err) {
-        print(err);
-        yield ProductsapiError(err.toString());
-      }
+      yield* _loadProducts(_productRepository.fetchFruits);
     } else if (event is GetDailyEssentials) {
-      try {
-        yield ProductsapiLoading();
-        final products = await _productRepository.fetchDailyEssentials();
-        yield ProductsapiLoaded(products);
-      } catch (err) {
-        print(err);
-        yield ProductsapiError(err.toString());
-      }
+      yield* _loadProducts(_productRepository.fetchDailyEssentials);
+    }
+  }
+
+  Stream<ProductsapiState> _loadProducts(func) async* {
+    try {
+      yield ProductsapiLoading();
+      final products = await func();
+      yield ProductsapiLoaded(products);
+    } catch (err) {
+      print(err);
+      yield ProductsapiError(err.toString());
     }
   }
 }
