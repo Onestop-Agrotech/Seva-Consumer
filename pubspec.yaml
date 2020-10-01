@@ -75,6 +75,12 @@ dev_dependencies:
     sdk: flutter
   # splash screen
   flutter_native_splash: ^0.1.9
+  # hive generator
+  hive_generator: ^0.7.2+1
+  build_runner:
+
+dependency_overrides:
+  analyzer: 0.39.14
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -11,6 +11,10 @@
 
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
+part 'storeProducts.g.dart';
+
 List<StoreProduct> jsonToStoreProductModel(String str) =>
     List<StoreProduct>.from(
         json.decode(str).map((x) => StoreProduct.fromJson(x)));
@@ -23,17 +27,25 @@ String storeProductTojsonModel(List<StoreProduct> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 // main store product model
-class StoreProduct {
+@HiveType(typeId: 1)
+class StoreProduct extends HiveObject {
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String type;
+  @HiveField(3)
   String uniqueId;
+  @HiveField(4)
   String description;
+  @HiveField(5)
   String pictureURL;
-  double totalPrice;
-  double totalQuantity;
+  @HiveField(6)
   List<Details> details;
   int iV;
+  double totalPrice;
+  double totalQuantity;
 
   StoreProduct(
       {this.id,
@@ -71,12 +83,19 @@ class StoreProduct {
 }
 
 // details of a particular item [array]
-class Details {
+@HiveType(typeId: 2)
+class Details extends HiveObject{
+  @HiveField(0)
   Quantity quantity;
+  @HiveField(1)
   String id;
+  @HiveField(2)
   String hubid;
+  @HiveField(3)
   int price;
+  @HiveField(4)
   bool outOfStock;
+  @HiveField(5)
   bool bestseller;
 
   Details(
@@ -107,11 +126,15 @@ class Details {
 }
 
 // quantity of the item
-class Quantity {
+@HiveType(typeId: 3)
+class Quantity extends HiveObject{
   Quantity({this.quantityValue, this.quantityMetric, this.allowedQuantities});
 
+  @HiveField(0)
   int quantityValue;
+  @HiveField(1)
   String quantityMetric;
+  @HiveField(2)
   List<AllowedQuantity> allowedQuantities;
 
   factory Quantity.fromJson(Map<String, dynamic> json) => Quantity(
@@ -127,10 +150,15 @@ class Quantity {
       };
 }
 
-class AllowedQuantity {
+@HiveType(typeId: 4)
+class AllowedQuantity extends HiveObject{
+  @HiveField(0)
   String id;
+  @HiveField(1)
   int value;
+  @HiveField(2)
   String metric;
+  @HiveField(3)
   int qty;
 
   AllowedQuantity({this.id, this.value, this.metric, this.qty = 0});

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/domain/exceptions.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -15,18 +16,24 @@ abstract class ProductRepository {
 
 class ProductRepositoryImpl implements ProductRepository {
   Future _fetch(String type) async {
-    var responseJson;
-    try {
-      final p = await Preferences.getInstance();
-      String token = await p.getData("token");
-      String hub = await p.getData("hub");
-      Map<String, String> requestHeaders = {'x-auth-token': token};
-      String url = APIService.getCategorywiseProducts(hub, type);
-      final response = await http.get(url, headers: requestHeaders);
-      responseJson = _returnResponse(response);
-      return responseJson;
-    } on SocketException {
-      throw FetchDataException('No Internet connection');
+    final SPBox spBox = await SPBox.getSPBoxInstance();
+    final List<StoreProduct> sp = spBox.getFromSPBox(type);
+    if (sp.length == 0) {
+      var responseJson;
+      try {
+        final p = await Preferences.getInstance();
+        String token = await p.getData("token");
+        String hub = await p.getData("hub");
+        Map<String, String> requestHeaders = {'x-auth-token': token};
+        String url = APIService.getCategorywiseProducts(hub, type);
+        final response = await http.get(url, headers: requestHeaders);
+        responseJson = await _returnResponse(response);
+        return responseJson;
+      } on SocketException {
+        throw FetchDataException('No Internet connection');
+      }
+    } else if (sp.length > 0) {
+      return sp;
     }
   }
 
@@ -67,10 +74,13 @@ class ProductRepositoryImpl implements ProductRepository {
     }
   }
 
-  List<StoreProduct> _returnResponse(http.Response response) {
+  Future<List<StoreProduct>> _returnResponse(http.Response response) async {
     switch (response.statusCode) {
       case 200:
-        return jsonToCateogrywiseProductModel(response.body);
+        final List<StoreProduct> sp =  jsonToCateogrywiseProductModel(response.body);
+        final SPBox spBox = await SPBox.getSPBoxInstance();
+        spBox.addSPList(sp);
+        return sp;
       case 401:
         throw UnauthorisedException(response.statusCode.toString());
       case 500:
