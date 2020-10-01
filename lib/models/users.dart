@@ -13,30 +13,31 @@ import 'dart:convert';
 UserModel jsonToUserModel(String str) => UserModel.fromJson(json.decode(str));
 String userModelRegister(UserModel data) => json.encode(data.toRegisterJson());
 String userModelAddress(UserModel data) => json.encode(data.toAddressJson());
-String userModelLogin(UserModel data) => json.encode(data.toLoginJson());
 
 class UserModel {
   UserModel({
     this.id,
     this.username,
     this.email,
-    this.password,
     this.mobile,
     this.pincode,
     this.address,
     this.longitude,
     this.latitude,
+    this.token,
+    this.refreshToken
   });
 
   String id;
   String username;
   String email;
-  String password;
   String mobile;
   String pincode;
   String address;
   String longitude;
   String latitude;
+  String token;
+  String refreshToken;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
@@ -47,14 +48,14 @@ class UserModel {
         address: json["address"],
         longitude: json["longitude"],
         latitude: json["latitude"],
+        token: json["token"],
+        refreshToken: json["refreshToken"]
       );
 
   Map<String, dynamic> toRegisterJson() => {
         "username": username,
         "email": email,
         "mobile": mobile,
-        "password": password,
-        "pincode": pincode,
       };
 
   Map<String, dynamic> toAddressJson() => {
@@ -63,6 +64,4 @@ class UserModel {
         "longitude": longitude,
         "latitude": latitude,
       };
-
-  Map<String, dynamic> toLoginJson() => {"email": email, "password": password};
 }
