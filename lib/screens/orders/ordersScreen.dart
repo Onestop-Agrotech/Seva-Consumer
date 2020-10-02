@@ -45,7 +45,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
         SizedBox(height: 10),
         for (int i = 0; i < 6; i++)
           Padding(
-            padding: const EdgeInsets.only(bottom: 20),
+            padding: const EdgeInsets.all(20),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
