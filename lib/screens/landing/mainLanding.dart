@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
@@ -322,80 +323,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-// animated Route to Shoppingcart screen
-  Route _createRoute(Widget page) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-      ) =>
-          ScaleTransition(
-        scale: Tween<double>(
-          begin: 0.0,
-          end: 1.0,
-        ).animate(
-          CurvedAnimation(
-            parent: animation,
-            curve: Curves.fastOutSlowIn,
-          ),
-        ),
-        child: child,
-      ),
-    );
-  }
-
-// Cart icon visible at the top left corner
-  _renderCartIcon() {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
-          child: IconButton(
-              color: ThemeColoursSeva().black,
-              iconSize: 30.0,
-              icon: Icon(Icons.shopping_basket),
-              onPressed: () {
-                // Handle shopping cart
-                Navigator.of(context).push(_createRoute(ShoppingCartNew()));
-
-                // Navigator.pushNamed(context, '/shoppingCartNew');
-              }),
-        ),
-        Positioned(
-          left: 28.0,
-          top: 10.0,
-          child: _checkCartItems(),
-        ),
-      ],
-    );
-  }
-
-// This function checks whether there is any item
-// in the cart or not
-  Widget _checkCartItems() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.1,
-      height: 22.0,
-      decoration: BoxDecoration(
-        color: ThemeColoursSeva().pallete1,
-        shape: BoxShape.circle,
-      ),
-      child: Consumer<NewCartModel>(
-        builder: (context, cart, child) {
-          return Center(
-            child: Text(
-              cart.totalItems == null ? '0' : cart.totalItems.toString(),
-              style: TextStyle(color: Colors.white),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
 // shimmer layout before page loads
   _shimmerLayout(height, width) {
     return Padding(
@@ -603,7 +530,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 },
                                 iconSize: 28.0,
                               ),
-                              _renderCartIcon(),
+                              CartIcon()
                             ],
                           ),
                         ],
