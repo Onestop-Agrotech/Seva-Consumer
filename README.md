@@ -30,6 +30,8 @@ The Seva is built by the community for the community. We welcome contributions f
 * Developers: chekout the [wiki](https://www.wiki.com) page for instructions on how to set things up and commit changes.
 * All other contributors: please see our general [contributor] guidelines.
 ```
+For contributers it is recommended to go throught the [Wiki](https://github.com/Onestop-Agrotech/Seva-Consumer/wiki) page once.
+
 
 ## Support.
 For any type of security issues please report directly to info@theonestop.co.in.
