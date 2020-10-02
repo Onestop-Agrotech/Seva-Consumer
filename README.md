@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ```
 
-### Installing and Running the project
+### Installing and Running the project locally
 ```
 * git clone https://github.com/Onestop-Agrotech/Seva-Consumer.git
 * cd Seva-Consumer
