@@ -10,7 +10,6 @@ class CartIcon extends StatefulWidget {
 }
 
 class _CartIconState extends State<CartIcon> {
-
   // animated Route to Shoppingcart screen
   Route _createRoute(Widget page) {
     return PageRouteBuilder(
@@ -35,7 +34,7 @@ class _CartIconState extends State<CartIcon> {
       ),
     );
   }
-  
+
   // This function checks whether there is any item
 // in the cart or not
   Widget _checkCartItems() {
@@ -58,6 +57,7 @@ class _CartIconState extends State<CartIcon> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -82,7 +82,3 @@ class _CartIconState extends State<CartIcon> {
     );
   }
 }
-
-
-
-

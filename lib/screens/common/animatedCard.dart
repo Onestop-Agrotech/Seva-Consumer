@@ -316,7 +316,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                           child: Icon(
                                                               Icons.remove),
                                                           onTap: () {
-                                                            helperFunctions
+                                                            HelperFunctions
                                                                 .helper(
                                                                     i,
                                                                     newCart,
@@ -333,7 +333,7 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                             child:
                                                                 Icon(Icons.add),
                                                             onTap: () {
-                                                              helperFunctions
+                                                              HelperFunctions
                                                                   .helper(
                                                                       i,
                                                                       newCart,

@@ -175,13 +175,8 @@ class _ProductDetailsState extends State<ProductDetails> {
             children: [
               GestureDetector(
                 onTap: () {
-  helperFunctions
-                                                                .helper(
-                                                                    index,
-                                                                    newCart,
-                                                                    false,
-                                                                    widget
-                                                                        .p);                },
+                  HelperFunctions.helper(index, newCart, false, widget.p);
+                },
                 child: Container(
                     width: SizeConfig.widthMultiplier * 8,
                     height: SizeConfig.widthMultiplier * 8,
@@ -194,13 +189,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               _showQ(newCart, widget.p, index),
               GestureDetector(
                 onTap: () {
-   helperFunctions
-                                                                  .helper(
-                                                                      index,
-                                                                      newCart,
-                                                                      true,
-                                                                      widget
-                                                                          .p);                },
+                  HelperFunctions.helper(index, newCart, true, widget.p);
+                },
                 child: Container(
                     width: SizeConfig.widthMultiplier * 8,
                     height: SizeConfig.widthMultiplier * 8,

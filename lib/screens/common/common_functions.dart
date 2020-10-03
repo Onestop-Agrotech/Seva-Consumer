@@ -11,7 +11,7 @@
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 
-class helperFunctions {
+class HelperFunctions {
   static void helper(
       int index, NewCartModel newCart, bool addToCart, StoreProduct prod) {
     double p, q;
