@@ -5,6 +5,7 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
+import 'package:mvp/screens/common/common_functions.dart';
 
 class ProductDetails extends StatefulWidget {
   final StoreProduct p;
@@ -75,44 +76,44 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text("$qty");
   }
 
-  void helper(int index, NewCartModel newCart, bool addToCart) {
-    double p, q;
+  // void helper(int index, NewCartModel newCart, bool addToCart) {
+  //   double p, q;
 
-    // Kg, Kgs, Gms, Pc - Types of Quantities
+  //   // Kg, Kgs, Gms, Pc - Types of Quantities
 
-    // For Kg & Pc
+  //   // For Kg & Pc
 
-    if (widget.p.details[0].quantity.allowedQuantities[index].metric == "Kg") {
-      q = 1;
-      p = double.parse("${widget.p.details[0].price}");
-    }
-    // For Gms && ML
-    else if (widget.p.details[0].quantity.allowedQuantities[index].metric ==
-            "Gms" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric == "ML") {
-      q = (widget.p.details[0].quantity.allowedQuantities[index].value /
-          1000.0);
-      p = (widget.p.details[0].quantity.allowedQuantities[index].value /
-              1000.0) *
-          widget.p.details[0].price;
-    }
-    // For Pc, Pack, Kgs & Ltr
-    else if (widget.p.details[0].quantity.allowedQuantities[index].metric ==
-            "Pc" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric == "Kgs" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric == "Ltr" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric ==
-            "Pack") {
-      q = double.parse(
-          "${widget.p.details[0].quantity.allowedQuantities[index].value}");
-      p = widget.p.details[0].price * q;
-    }
+  //   if (widget.p.details[0].quantity.allowedQuantities[index].metric == "Kg") {
+  //     q = 1;
+  //     p = double.parse("${widget.p.details[0].price}");
+  //   }
+  //   // For Gms && ML
+  //   else if (widget.p.details[0].quantity.allowedQuantities[index].metric ==
+  //           "Gms" ||
+  //       widget.p.details[0].quantity.allowedQuantities[index].metric == "ML") {
+  //     q = (widget.p.details[0].quantity.allowedQuantities[index].value /
+  //         1000.0);
+  //     p = (widget.p.details[0].quantity.allowedQuantities[index].value /
+  //             1000.0) *
+  //         widget.p.details[0].price;
+  //   }
+  //   // For Pc, Pack, Kgs & Ltr
+  //   else if (widget.p.details[0].quantity.allowedQuantities[index].metric ==
+  //           "Pc" ||
+  //       widget.p.details[0].quantity.allowedQuantities[index].metric == "Kgs" ||
+  //       widget.p.details[0].quantity.allowedQuantities[index].metric == "Ltr" ||
+  //       widget.p.details[0].quantity.allowedQuantities[index].metric ==
+  //           "Pack") {
+  //     q = double.parse(
+  //         "${widget.p.details[0].quantity.allowedQuantities[index].value}");
+  //     p = widget.p.details[0].price * q;
+  //   }
 
-    //
-    addToCart
-        ? newCart.addToCart(widget.p, index, p, q)
-        : newCart.removeFromCart(widget.p, index, p, q);
-  }
+  //   //
+  //   addToCart
+  //       ? newCart.addToCart(widget.p, index, p, q)
+  //       : newCart.removeFromCart(widget.p, index, p, q);
+  // }
 
   //it will get the name and the price of that product.
   Widget getNameAndPrice(height, width) {
@@ -174,8 +175,13 @@ class _ProductDetailsState extends State<ProductDetails> {
             children: [
               GestureDetector(
                 onTap: () {
-                  helper(index, newCart, false);
-                },
+  helperFunctions
+                                                                .helper(
+                                                                    index,
+                                                                    newCart,
+                                                                    false,
+                                                                    widget
+                                                                        .p);                },
                 child: Container(
                     width: SizeConfig.widthMultiplier * 8,
                     height: SizeConfig.widthMultiplier * 8,
@@ -188,8 +194,13 @@ class _ProductDetailsState extends State<ProductDetails> {
               _showQ(newCart, widget.p, index),
               GestureDetector(
                 onTap: () {
-                  helper(index, newCart, true);
-                },
+   helperFunctions
+                                                                  .helper(
+                                                                      index,
+                                                                      newCart,
+                                                                      true,
+                                                                      widget
+                                                                          .p);                },
                 child: Container(
                     width: SizeConfig.widthMultiplier * 8,
                     height: SizeConfig.widthMultiplier * 8,
