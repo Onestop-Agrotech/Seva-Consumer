@@ -37,9 +37,9 @@ For contributers it is recommended to go throught the [Wiki](https://github.com/
 For any type of security issues please report directly to info@theonestop.co.in.
 
 ## Connect with us
-```
-* Instagram
-* Facebook
+
+* [Instagram](https://www.instagram.com/seva_india)
+* [Slack](https://app.slack.com/client/T0177HS48UC/C017R7M6AU8)
 
 ```
 
