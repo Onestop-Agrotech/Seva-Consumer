@@ -4,6 +4,8 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
+import 'package:flutter/cupertino.dart';
+
 ///
 /// @fileoverview Shopping Cart Screen : Summary of the shopping cart .
 ///
@@ -15,6 +17,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
+import 'package:mvp/screens/promocodescreen.dart';
 import 'package:mvp/screens/shoppingCart/loading.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
@@ -211,24 +214,41 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
                     return this._userEmail != null
-                        ? Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: SliderButton(
-                                vibrationFlag: true,
-                                dismissible: false,
-                                action: () {
-                                  openCheckout(
-                                      newCart.getCartTotalPrice(), _rzpAPIKey);
-                                  Navigator.pop(context);
+                        ? Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                      CupertinoPageRoute<Null>(
+                                          builder: (BuildContext context) {
+                                    return PromoCodeScreen();
+                                  }));
                                 },
-                                label: Text(
-                                  "Slide to Pay",
-                                  style: TextStyle(
-                                      color: Color(0xff4a4a4a),
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 17),
+                                child: Container(
+                                  child: Text("Have a promocode?",
+                                      style: TextStyle(fontSize: 22)),
                                 ),
-                                icon: Icon(Icons.payment)),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              SliderButton(
+                                  vibrationFlag: true,
+                                  dismissible: false,
+                                  action: () {
+                                    openCheckout(newCart.getCartTotalPrice(),
+                                        _rzpAPIKey);
+                                    Navigator.pop(context);
+                                  },
+                                  label: Text(
+                                    "Slide to Pay",
+                                    style: TextStyle(
+                                        color: Color(0xff4a4a4a),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 17),
+                                  ),
+                                  icon: Icon(Icons.payment)),
+                            ],
                           )
                         : Text("Loading...");
                   },
