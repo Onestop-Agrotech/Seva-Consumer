@@ -303,11 +303,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
           GestureDetector(
             onTap: () {
               if (leftText == "Categories")
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductsUINew(tagFromMain: 0)),
-                );
+                Navigator.of(context).push(
+                    CupertinoPageRoute<Null>(builder: (BuildContext context) {
+                  return ProductsUINew(tagFromMain: 0);
+                }));
             },
             child: Text(
               rightText,
