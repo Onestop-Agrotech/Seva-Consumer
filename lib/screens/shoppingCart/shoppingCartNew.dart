@@ -211,21 +211,24 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
                     return this._userEmail != null
-                        ? ButtonTheme(
-                            minWidth: 80.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                              color: ThemeColoursSeva().dkGreen,
-                              onPressed: () {
-                                openCheckout(
-                                    newCart.getCartTotalPrice(), _rzpAPIKey);
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "PAY",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
+                        ? Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: SliderButton(
+                                vibrationFlag: true,
+                                dismissible: false,
+                                action: () {
+                                  openCheckout(
+                                      newCart.getCartTotalPrice(), _rzpAPIKey);
+                                  Navigator.pop(context);
+                                },
+                                label: Text(
+                                  "Slide to Pay",
+                                  style: TextStyle(
+                                      color: Color(0xff4a4a4a),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 17),
+                                ),
+                                icon: Icon(Icons.payment)),
                           )
                         : Text("Loading...");
                   },
@@ -339,22 +342,16 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         ),
       ),
       floatingActionButton: cart.totalItems > 0 && _allowedDeliveries
-          ? Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: SliderButton(
-                  vibrationFlag: true,
-                  dismissible: false,
-                  action: () {
-                    _showModal();
-                  },
-                  label: Text(
-                    "Slide to Pay",
-                    style: TextStyle(
-                        color: Color(0xff4a4a4a),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 17),
-                  ),
-                  icon: Icon(Icons.payment)),
+          ? RaisedButton(
+              onPressed: () {
+                // open the bottomsheet
+                _showModal();
+              },
+              child: Text(
+                "Proceed",
+                style: TextStyle(color: Colors.white, fontSize: 20.0),
+              ),
+              color: ThemeColoursSeva().dkGreen,
             )
           : Padding(
               padding:
