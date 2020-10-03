@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:slider_button/slider_button.dart';
 import '../common/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
@@ -248,13 +249,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     }
     // deliveries are closed
     else if (!_allowedDeliveries && !_loadingDeliveries) {
-      return Text(
-        "Deliveries Closed",
-        overflow: TextOverflow.clip,
-        style: TextStyle(
-            color: ThemeColoursSeva().pallete1,
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600),
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: FloatingActionButton.extended(
+          backgroundColor: ThemeColoursSeva().dkGreen,
+          onPressed: () {},
+          label: Text("Deliveries Closed"),
+        ),
       );
     }
   }
@@ -338,23 +339,27 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         ),
       ),
       floatingActionButton: cart.totalItems > 0 && _allowedDeliveries
-          ? RaisedButton(
-              onPressed: () {
-                // open the bottomsheet
-                _showModal();
-              },
-              child: Text(
-                "Proceed",
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
-              ),
-              color: ThemeColoursSeva().dkGreen,
+          ? Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: SliderButton(
+                  vibrationFlag: true,
+                  dismissible: false,
+                  action: () {
+                    _showModal();
+                  },
+                  label: Text(
+                    "Slide to Pay",
+                    style: TextStyle(
+                        color: Color(0xff4a4a4a),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 17),
+                  ),
+                  icon: Icon(Icons.payment)),
             )
           : Padding(
               padding:
                   const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
-              child: Container(
-                child: properText(),
-              ),
+              child: properText(),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
