@@ -65,6 +65,8 @@ dependencies:
   # on device db
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
+  # slide bar
+  slider_button: ^0.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
