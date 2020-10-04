@@ -152,12 +152,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
               children: <Widget>[
                 Text(
                   "Summary",
-                  style: TextStyle(fontSize: SizeConfig.textMultiplier*3),
+                  style: TextStyle(fontSize: SizeConfig.textMultiplier * 3),
                 ),
                 Text(
                   "Self pick up coming soon!",
-                  style:
-                      TextStyle(color: ThemeColoursSeva().grey, fontSize: SizeConfig.textMultiplier*2),
+                  style: TextStyle(
+                      color: ThemeColoursSeva().grey,
+                      fontSize: SizeConfig.textMultiplier * 2),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -167,13 +168,15 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       children: <Widget>[
                         Text(
                           "Cart Price: ",
-                          style: TextStyle(fontSize: SizeConfig.textMultiplier*2.5),
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2.5),
                         ),
                         Consumer<NewCartModel>(
                           builder: (context, newCart, child) {
                             return Text(
                               "Rs ${newCart.getCartTotalPrice()}",
-                              style: TextStyle(fontSize: SizeConfig.textMultiplier*2.5),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2.5),
                             );
                           },
                         ),
@@ -184,10 +187,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text("Delivery Fee: ",
-                                  style: TextStyle(fontSize: SizeConfig.textMultiplier*2.5)),
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.textMultiplier * 2.5)),
                               Text("Rs 0",
                                   style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier*2.5,
+                                    fontSize: SizeConfig.textMultiplier * 2.5,
                                   ))
                             ],
                           )
@@ -197,19 +202,22 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text("Total Price: ",
-                                  style: TextStyle(fontSize: SizeConfig.textMultiplier*2.5)),
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.textMultiplier * 2.5)),
                               Consumer<NewCartModel>(
                                 builder: (context, newCart, child) {
                                   return Text(
                                     "Rs ${newCart.getCartTotalPrice()}",
-                                    style: TextStyle(fontSize: SizeConfig.textMultiplier*2.5),
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 2.5),
                                   );
                                 },
                               ),
                             ],
                           )
                         : Text(""),
-                    SizedBox(height: 20.0),
                   ],
                 ),
                 Consumer<NewCartModel>(
@@ -218,20 +226,30 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         ? Column(
                             children: [
                               Container(
-                                  child: RaisedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
+                                child: RaisedButton(
+                                  color: ThemeColoursSeva().pallete1,
+                                  textColor: Colors.white,
+                                  onPressed: () {
+                                    Navigator.of(context).push(
                                       CupertinoPageRoute<Null>(
-                                          builder: (BuildContext context) {
-                                    return PromoCodeScreen();
-                                  }));
-                                },
-                                child: Text("Have a Promo?"),
-                              )),
+                                        builder: (BuildContext context) {
+                                          return PromoCodeScreen();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Text("Have a Promo?"),
+                                ),
+                              ),
                               SizedBox(
-                                height: 20,
+                                height: 60.0,
                               ),
                               SliderButton(
+                                shimmer: false,
+                                height: 50.0,
+                                buttonSize: 40.0,
+                                width: 200.0,
+                                  radius: 50.0,
                                   vibrationFlag: true,
                                   dismissible: false,
                                   action: () {
@@ -242,11 +260,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                                   label: Text(
                                     "Slide to Pay",
                                     style: TextStyle(
-                                        color: ThemeColoursSeva().pallete1,
+                                      color: ThemeColoursSeva().dkGreen,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: SizeConfig.textMultiplier*2.5),
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 1.9),
                                   ),
-                                  icon: Icon(Icons.payment)),
+                                  icon: Icon(Icons.payment, color: ThemeColoursSeva().pallete1,)),
                             ],
                           )
                         : Text("Loading...");
