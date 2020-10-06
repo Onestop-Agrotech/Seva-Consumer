@@ -19,6 +19,8 @@ import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'dart:io';
 
+import 'package:mvp/screens/location.dart';
+
 class LoadingScreen extends StatefulWidget {
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
@@ -109,7 +111,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       final p = await Preferences.getInstance();
       String far = await p.getData("far");
       String email = await p.getData("email");
-      if (far == "false") {
+      String hub = await p.getData("hub");
+      if (far == "false" && hub != "0") {
         Navigator.pushReplacementNamed(context, '/main');
       } else if (far == "true") {
         Navigator.pushReplacement(
@@ -124,6 +127,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      } else if (far == "false" && hub == "0") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoogleLocationScreen(
+              userEmail: email,
+            ),
+          ),
         );
       }
     }
