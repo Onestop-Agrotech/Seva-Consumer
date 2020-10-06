@@ -225,30 +225,30 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                     return this._userEmail != null
                         ? Column(
                             children: [
-                              Container(
-                                child: RaisedButton(
-                                  color: ThemeColoursSeva().pallete1,
-                                  textColor: Colors.white,
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      CupertinoPageRoute<Null>(
-                                        builder: (BuildContext context) {
-                                          return PromoCodeScreen();
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: Text("Have a Promo?"),
-                                ),
-                              ),
+                              // Container(
+                              //   child: RaisedButton(
+                              //     color: ThemeColoursSeva().pallete1,
+                              //     textColor: Colors.white,
+                              //     onPressed: () {
+                              //       Navigator.of(context).push(
+                              //         CupertinoPageRoute<Null>(
+                              //           builder: (BuildContext context) {
+                              //             return PromoCodeScreen();
+                              //           },
+                              //         ),
+                              //       );
+                              //     },
+                              //     child: Text("Have a Promo?"),
+                              //   ),
+                              // ),
                               SizedBox(
                                 height: 60.0,
                               ),
                               SliderButton(
-                                shimmer: false,
-                                height: 50.0,
-                                buttonSize: 40.0,
-                                width: 200.0,
+                                  shimmer: false,
+                                  height: 50.0,
+                                  buttonSize: 40.0,
+                                  width: 200.0,
                                   radius: 50.0,
                                   vibrationFlag: true,
                                   dismissible: false,
@@ -260,12 +260,15 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                                   label: Text(
                                     "Slide to Pay",
                                     style: TextStyle(
-                                      color: ThemeColoursSeva().dkGreen,
+                                        color: ThemeColoursSeva().dkGreen,
                                         fontWeight: FontWeight.w500,
                                         fontSize:
                                             SizeConfig.textMultiplier * 1.9),
                                   ),
-                                  icon: Icon(Icons.payment, color: ThemeColoursSeva().pallete1,)),
+                                  icon: Icon(
+                                    Icons.payment,
+                                    color: ThemeColoursSeva().pallete1,
+                                  )),
                             ],
                           )
                         : Text("Loading...");

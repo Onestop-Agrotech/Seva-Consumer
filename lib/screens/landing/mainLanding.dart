@@ -549,7 +549,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text('App version - Beta'),
-                      subtitle: Text("0.5.1"),
+                      subtitle: Text("0.5.2"),
                       onTap: null,
                     ),
                   ),
