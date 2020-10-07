@@ -333,9 +333,15 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                Container(
-                  height: 10.0,
-                  width: 100.0,
+                IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    size: 30.0,
+                    color: ThemeColoursSeva().pallete1,
+                  ),
+                  onPressed: () {
+                    print("REMOVE ALL CART ITEMS");
+                  },
                 ),
               ],
             ),
