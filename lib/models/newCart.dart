@@ -53,6 +53,7 @@ class NewCartModel extends ChangeNotifier {
     if (_cartItems.length > 0) {
       _cartItems.removeWhere((n) => n.id == item.id);
       _ciBox = await CIBox.getCIBoxInstance();
+      _ciBox.removeFromCIBox(item);
       notifyListeners();
     }
   }
@@ -71,14 +72,27 @@ class NewCartModel extends ChangeNotifier {
       cartItemsRefill(_ciBox);
     } else {
       // items exist in cart
-      _cartItems.clear();
-      _ciBox.addStuffToItem(
-        sp: item,
-        totalQuantity: quantity,
-        totalPrice: price,
-        index: index,
-      );
-      cartItemsRefill(_ciBox);
+
+      // check if the item exists in cart
+      StoreProduct sp =
+          _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
+      if (sp != null) {
+        _cartItems.clear();
+        _ciBox.addStuffToItem(
+          sp: item,
+          totalQuantity: quantity,
+          totalPrice: price,
+          index: index,
+        );
+        cartItemsRefill(_ciBox);
+      } else {
+        _cartItems.clear();
+        item.totalPrice = price;
+        item.totalQuantity = quantity;
+        item.details[0].quantity.allowedQuantities[index].qty += 1;
+        _ciBox.addToCIBox(item);
+        cartItemsRefill(_ciBox);
+      }
     }
     notifyListeners();
   }

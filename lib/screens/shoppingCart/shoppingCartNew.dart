@@ -304,6 +304,65 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     }
   }
 
+  showAllDelete(NewCartModel newCart) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Remove all items ?"),
+            content: Text("All items will be removed from the cart"),
+            actions: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().pallete1,
+              ),
+              SizedBox(width: 20.0),
+              RaisedButton(
+                onPressed: () {
+                  // delete the item
+                  newCart.clearCart();
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.red,
+              ),
+            ],
+          );
+        });
+  }
+
+  /// Only if there are items in cart, show the 
+  /// delete icon
+  /// 
+  Widget returnIconOrContainer(NewCartModel cart) {
+    if (cart.totalItems > 0) {
+      return IconButton(
+        icon: Icon(
+          Icons.delete,
+          size: 30.0,
+          color: ThemeColoursSeva().pallete1,
+        ),
+        onPressed: () {
+          showAllDelete(cart);
+        },
+      );
+    } else {
+      return Container(
+        height: 10.0,
+        width: 100.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var cart = Provider.of<NewCartModel>(context);
@@ -333,16 +392,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    size: 30.0,
-                    color: ThemeColoursSeva().pallete1,
-                  ),
-                  onPressed: () {
-                    print("REMOVE ALL CART ITEMS");
-                  },
-                ),
+                returnIconOrContainer(cart),
               ],
             ),
             SizedBox(

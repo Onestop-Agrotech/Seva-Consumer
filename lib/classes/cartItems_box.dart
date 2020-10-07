@@ -55,9 +55,11 @@ class CIBox {
   void addStuffToItem(
       {StoreProduct sp, double totalPrice, double totalQuantity, int index}) {
     StoreProduct product = _box.get(sp.id);
-    product.totalPrice += totalPrice;
-    product.totalQuantity += totalQuantity;
-    product.details[0].quantity.allowedQuantities[index].qty += 1;
+    if (product != null) {
+      product.totalPrice += totalPrice;
+      product.totalQuantity += totalQuantity;
+      product.details[0].quantity.allowedQuantities[index].qty += 1;
+    }
   }
 
   /// Edit the Cart Item
