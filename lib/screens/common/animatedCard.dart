@@ -82,8 +82,10 @@ class _AnimatedCardState extends State<AnimatedCard>
     }
 
     addToCart
-        ? newCart.addToCart(item: widget.product, index: index, price: p, quantity: q)
-        : newCart.removeFromCart(item: widget.product, index: index, price: p, quantity: q);
+        ? newCart.addToCart(
+            item: widget.product, index: index, price: p, quantity: q)
+        : newCart.removeFromCart(
+            item: widget.product, index: index, price: p, quantity: q);
   }
 
   // animation toggler

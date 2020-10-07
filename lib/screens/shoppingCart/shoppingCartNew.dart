@@ -340,9 +340,9 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         });
   }
 
-  /// Only if there are items in cart, show the 
+  /// Only if there are items in cart, show the
   /// delete icon
-  /// 
+  ///
   Widget returnIconOrContainer(NewCartModel cart) {
     if (cart.totalItems > 0) {
       return IconButton(

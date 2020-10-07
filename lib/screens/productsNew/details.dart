@@ -112,7 +112,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     //
     addToCart
         ? newCart.addToCart(item: widget.p, index: index, price: p, quantity: q)
-        : newCart.removeFromCart(item: widget.p, index: index, price: p, quantity: q);
+        : newCart.removeFromCart(
+            item: widget.p, index: index, price: p, quantity: q);
   }
 
   //it will get the name and the price of that product.
