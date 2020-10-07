@@ -49,53 +49,6 @@ class NewCartModel extends ChangeNotifier {
 
   ///****************** NEW CODE ************* */
 
-  // void addToCart(StoreProduct item, int i, double p, double q) {
-  //   if (_cartItems.length == 0) {
-  //     addNew(item, p, q, i, true);
-  //   } else if (_cartItems.length > 0) {
-  //     StoreProduct product =
-  //         _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
-  //     if (product != null) {
-  //       // item exists
-  //       addNew(item, p, q, i, false);
-  //     } else if (product == null) {
-  //       // item does not exist
-  //       addNew(item, p, q, i, true);
-  //     }
-  //   }
-  // }
-
-  void addNew(StoreProduct item, double p, double q, int i, bool n) async {
-    // item.totalPrice += p;
-    // item.totalQuantity += q;
-    // item.details[0].quantity.allowedQuantities[i].qty++;
-    // if (n) _cartItems.add(item);
-    // notifyListeners();
-    // _ciBox = await CIBox.getCIBoxInstance();
-    // if (n) await _ciBox.addToCIBox(item);
-    // _ciBox.editItemInCIBox(
-    //     sp: item,
-    //     totalPrice: item.totalPrice + p,
-    //     totalQuantity: item.totalQuantity + q,
-    //     index: i,
-    //     qty: item.details[0].quantity.allowedQuantities[i].qty++);
-    // List<StoreProduct> sp = await _ciBox.getAllItems();
-    // sp.forEach((i) {
-    //   _cartItems.add(i);
-    // });
-    // notifyListeners();
-  }
-
-  // void removeFromCart(StoreProduct item, int i, double p, double q) {
-  //   if (_cartItems.length > 0) {
-  //     StoreProduct product =
-  //         _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
-  //     if (product != null) {
-  //       subtract(item, p, q, i);
-  //     }
-  //   }
-  // }
-
   void subtract(StoreProduct item, double p, double q, int i) {
     if (item.totalQuantity - q >= 0 &&
         item.totalPrice - p >= 0 &&
@@ -160,7 +113,9 @@ class NewCartModel extends ChangeNotifier {
           _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
       if (sp != null) {
         // item exists in cart
-        if (sp.totalPrice - price == 0) {
+        if (sp.totalPrice - price == 0 &&
+            sp.details[0].quantity.allowedQuantities[index].qty - 1 == 0 &&
+            sp.totalQuantity - quantity == 0) {
           // remove from Hive & cart completely
           await _ciBox.removeFromCIBox(item);
           _cartItems.removeWhere((i) => i.id == item.id);
@@ -168,15 +123,14 @@ class NewCartModel extends ChangeNotifier {
           // just remove the quantity
           _cartItems.clear();
           _ciBox.removeStuffFromItem(
-              sp: item,
-              totalPrice: price,
-              totalQuantity: quantity,
-              index: index,
-              qty: item.details[0].quantity.allowedQuantities[index].qty);
+            sp: item,
+            totalPrice: price,
+            totalQuantity: quantity,
+            index: index,
+          );
           cartItemsRefill(_ciBox);
         }
       }
-      printCartItems();
     }
     notifyListeners();
   }
@@ -185,25 +139,6 @@ class NewCartModel extends ChangeNotifier {
     List<StoreProduct> l = cb.getAllItems();
     l.forEach((i) {
       _cartItems.add(i);
-    });
-  }
-
-  void printCartItems() {
-    _cartItems.forEach((StoreProduct a) {
-      print("${a.name}");
-      a.details[0].quantity.allowedQuantities.forEach((z) {
-        print("${z.qty} - ${z.value} - ${z.metric}");
-      });
-    });
-  }
-
-  void printCBItems(CIBox cb) {
-    var l = cb.getAllItems();
-    l.forEach((StoreProduct a) {
-      print("${a.name}");
-      a.details[0].quantity.allowedQuantities.forEach((z) {
-        print("${z.qty} - ${z.value} - ${z.metric}");
-      });
     });
   }
 }
