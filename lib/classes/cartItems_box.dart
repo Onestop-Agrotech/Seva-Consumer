@@ -48,8 +48,7 @@ class CIBox{
       {StoreProduct sp,
       double totalPrice,
       double totalQuantity,
-      int index,
-      int qty}) {
+      int index}) {
     StoreProduct product = _box.get(sp.id);
     product.totalPrice += totalPrice;
     product.totalQuantity += totalQuantity;

@@ -138,11 +138,11 @@ class NewCartModel extends ChangeNotifier {
       // items exist in cart
       _cartItems.clear();
       _ciBox.addStuffToItem(
-          sp: item,
-          totalQuantity: quantity,
-          totalPrice: price,
-          index: index,
-          qty: item.details[0].quantity.allowedQuantities[index].qty);
+        sp: item,
+        totalQuantity: quantity,
+        totalPrice: price,
+        index: index,
+      );
       cartItemsRefill(_ciBox);
     }
     notifyListeners();
