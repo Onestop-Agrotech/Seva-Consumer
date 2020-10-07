@@ -14,12 +14,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/models/newCart.dart';
+// import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Category {

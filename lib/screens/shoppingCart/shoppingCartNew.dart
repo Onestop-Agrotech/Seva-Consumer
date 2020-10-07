@@ -17,7 +17,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
-import 'package:mvp/screens/promocodescreen.dart';
+// import 'package:mvp/screens/promocodescreen.dart';
 import 'package:mvp/screens/shoppingCart/loading.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
