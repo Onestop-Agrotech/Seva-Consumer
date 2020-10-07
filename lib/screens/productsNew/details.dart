@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mvp/classes/cartItems_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -110,8 +111,8 @@ class _ProductDetailsState extends State<ProductDetails> {
 
     //
     addToCart
-        ? newCart.addToCart(widget.p, index, p, q)
-        : newCart.removeFromCart(widget.p, index, p, q);
+        ? newCart.addToCart(item: widget.p, index: index, price: p, quantity: q)
+        : newCart.removeFromCart(item: widget.p, index: index, price: p, quantity: q);
   }
 
   //it will get the name and the price of that product.

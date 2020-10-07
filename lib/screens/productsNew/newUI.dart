@@ -16,6 +16,7 @@ import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
@@ -168,52 +169,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
       return CachedNetworkImage(imageUrl: p.pictureURL);
   }
 
-// Cart icon visible at the top left of the screen
-  _renderCartIcon() {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
-          child: IconButton(
-              color: ThemeColoursSeva().black,
-              iconSize: 30.0,
-              icon: Icon(Icons.shopping_basket),
-              onPressed: () {
-                // Handle shopping cart
-                Navigator.pushNamed(context, '/shoppingCartNew');
-              }),
-        ),
-        Positioned(
-          left: 28.0,
-          top: 10.0,
-          child: _checkCartItems(),
-        ),
-      ],
-    );
-  }
-
-  // check for cart items
-  Widget _checkCartItems() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.1,
-      height: 22.0,
-      decoration: BoxDecoration(
-        color: ThemeColoursSeva().pallete1,
-        shape: BoxShape.circle,
-      ),
-      child: Consumer<NewCartModel>(
-        builder: (context, cart, child) {
-          return Center(
-            child: Text(
-              cart.totalItems == null ? '0' : cart.totalItems.toString(),
-              style: TextStyle(color: Colors.white),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   /// this func returns the cards widget
   /// Currently it only shows 2 things
   /// 1. Picture
@@ -304,7 +259,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: [_renderCartIcon()],
+        actions: [CartIcon()],
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
