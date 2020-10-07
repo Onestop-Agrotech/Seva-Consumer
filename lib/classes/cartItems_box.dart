@@ -3,7 +3,7 @@ import 'package:mvp/models/storeProducts.dart';
 
 /// Cart Items Box
 ///
-class CIBox {
+class CIBox{
   static const _cartItemsBox = 'CartItems';
   final Box<StoreProduct> _box;
 
@@ -14,6 +14,19 @@ class CIBox {
   static Future<CIBox> getCIBoxInstance() async {
     final box = await Hive.openBox<StoreProduct>(_cartItemsBox);
     return CIBox._(box);
+  }
+
+  /// Get a Cart item
+  /// 
+  getItem(StoreProduct a) {
+    if(_box.containsKey(a.id))return _box.get(a.id);
+    else return null;
+  }
+
+  /// Get all cart Items
+  /// 
+  getAllItems(){
+    return _box.values.toList();
   }
 
   /// Add the product to the Cart Items Box
@@ -29,17 +42,33 @@ class CIBox {
   }
 
   /// Edit the Cart Item
-  ///
-  void editItemInCIBox(
+  /// and add stuff like price
+  /// 
+  void addStuffToItem(
       {StoreProduct sp,
       double totalPrice,
       double totalQuantity,
       int index,
       int qty}) {
     StoreProduct product = _box.get(sp.id);
-    product.totalPrice = totalPrice;
-    product.totalQuantity = totalQuantity;
-    product.details[0].quantity.allowedQuantities[index].qty = qty;
+    product.totalPrice += totalPrice;
+    product.totalQuantity += totalQuantity;
+    product.details[0].quantity.allowedQuantities[index].qty += 1;
+  }
+
+  /// Edit the Cart Item
+  /// and remove stuff like price
+  /// 
+  void removeStuffFromItem(
+      {StoreProduct sp,
+      double totalPrice,
+      double totalQuantity,
+      int index,
+      int qty}) {
+    StoreProduct product = _box.get(sp.id);
+    product.totalPrice -= totalPrice;
+    product.totalQuantity -= totalQuantity;
+    product.details[0].quantity.allowedQuantities[index].qty -= 1;
   }
 
   /// Clear the Cart Items box
