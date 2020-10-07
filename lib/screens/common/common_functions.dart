@@ -13,37 +13,41 @@ import 'package:mvp/models/storeProducts.dart';
 
 class HelperFunctions {
   static void helper(
-      int index, NewCartModel newCart, bool addToCart, StoreProduct prod) {
+      int index, NewCartModel newCart, bool addToCart, StoreProduct product) {
     double p, q;
 
     // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
 
-    if (prod.details[0].quantity.allowedQuantities[index].metric == "Kg") {
+    if (product.details[0].quantity.allowedQuantities[index].metric == "Kg") {
       q = 1;
-      p = double.parse("${prod.details[0].price}");
+      p = double.parse("${product.details[0].price}");
     }
     // For Gms && ML
-    else if (prod.details[0].quantity.allowedQuantities[index].metric ==
+    else if (product.details[0].quantity.allowedQuantities[index].metric ==
             "Gms" ||
-        prod.details[0].quantity.allowedQuantities[index].metric == "ML") {
-      q = (prod.details[0].quantity.allowedQuantities[index].value / 1000.0);
-      p = (prod.details[0].quantity.allowedQuantities[index].value / 1000.0) *
-          prod.details[0].price;
+        product.details[0].quantity.allowedQuantities[index].metric == "ML") {
+      q = (product.details[0].quantity.allowedQuantities[index].value / 1000.0);
+      p = (product.details[0].quantity.allowedQuantities[index].value /
+              1000.0) *
+          product.details[0].price;
     }
     // For Pc, Pack, Kgs & Ltr
-    else if (prod.details[0].quantity.allowedQuantities[index].metric == "Pc" ||
-        prod.details[0].quantity.allowedQuantities[index].metric == "Kgs" ||
-        prod.details[0].quantity.allowedQuantities[index].metric == "Ltr" ||
-        prod.details[0].quantity.allowedQuantities[index].metric == "Pack") {
+    else if (product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pc" ||
+        product.details[0].quantity.allowedQuantities[index].metric == "Kgs" ||
+        product.details[0].quantity.allowedQuantities[index].metric == "Ltr" ||
+        product.details[0].quantity.allowedQuantities[index].metric == "Pack") {
       q = double.parse(
-          "${prod.details[0].quantity.allowedQuantities[index].value}");
-      p = prod.details[0].price * q;
+          "${product.details[0].quantity.allowedQuantities[index].value}");
+      p = product.details[0].price * q;
     }
 
+    //
     addToCart
-        ? newCart.addToCart(prod, index, p, q)
-        : newCart.removeFromCart(prod, index, p, q);
+        ? newCart.addToCart(item: product, index: index, price: p, quantity: q)
+        : newCart.removeFromCart(
+            item: product, index: index, price: p, quantity: q);
   }
 }
