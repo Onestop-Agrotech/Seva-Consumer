@@ -49,28 +49,10 @@ class NewCartModel extends ChangeNotifier {
 
   ///****************** NEW CODE ************* */
 
-  void subtract(StoreProduct item, double p, double q, int i) {
-    if (item.totalQuantity - q >= 0 &&
-        item.totalPrice - p >= 0 &&
-        item.details[0].quantity.allowedQuantities[i].qty - 1 >= 0) {
-      item.totalPrice -= p;
-      item.totalQuantity -= q;
-      item.details[0].quantity.allowedQuantities[i].qty--;
-      if (item.totalPrice == 0 &&
-          item.totalQuantity == 0 &&
-          item.details[0].quantity.allowedQuantities[i].qty == 0) {
-        _cartItems.removeWhere((z) => z.id == item.id);
-      }
-      notifyListeners();
-    }
-  }
-
   void remove(StoreProduct item) async {
     if (_cartItems.length > 0) {
       _cartItems.removeWhere((n) => n.id == item.id);
       _ciBox = await CIBox.getCIBoxInstance();
-      await _ciBox.clearBox();
-      _cartItems.clear();
       notifyListeners();
     }
   }
