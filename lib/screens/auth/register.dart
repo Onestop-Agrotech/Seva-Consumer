@@ -269,6 +269,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           _index = 0;
           _error = true;
+          _loading = false;
         });
       } else if (response.statusCode == 401) {
         // user email already exists
