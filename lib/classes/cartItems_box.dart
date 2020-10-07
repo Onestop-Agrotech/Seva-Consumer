@@ -31,10 +31,49 @@ class CIBox {
     return _box.values.toList();
   }
 
+
+/// model a new object
+/// 
+StoreProduct makeObject(StoreProduct a){
+  StoreProduct n = new StoreProduct();
+  n.id=a.id;
+  n.name=a.name;
+  n.uniqueId=n.uniqueId;
+  n.description=a.description;
+  n.pictureURL=a.pictureURL;
+  n.totalPrice=a.totalPrice;
+  n.totalQuantity=a.totalQuantity;
+  List<Details> dList = [];
+  Details d = new Details();
+  d.hubid = a.details[0].hubid;
+  d.id=a.details[0].id;
+  d.price=a.details[0].price;
+  d.outOfStock=a.details[0].outOfStock;
+  d.bestseller=a.details[0].bestseller;
+  Quantity q = new Quantity();
+  q.quantityValue = a.details[0].quantity.quantityValue;
+  q.quantityMetric = a.details[0].quantity.quantityMetric;
+  List<AllowedQuantity> aList = [];
+  a.details[0].quantity.allowedQuantities.forEach((aq) {
+    AllowedQuantity aquantity = new AllowedQuantity();
+    aquantity.id=aq.id;
+    aquantity.value=aq.value;
+    aquantity.metric=aq.metric;
+    aquantity.qty=aq.qty;
+    aList.add(aquantity);
+  });
+  q.allowedQuantities=aList;
+  d.quantity=q;
+  dList.add(d);
+  n.details=dList;
+  return n;
+}
+
   /// Add the product to the Cart Items Box
   ///
   Future<void> addToCIBox(StoreProduct a) {
-    return _box.put(a.id, a);
+    StoreProduct n = makeObject(a);
+    return _box.put(n.id, n);
   }
 
   /// Remove the product from the Cart Items Box
