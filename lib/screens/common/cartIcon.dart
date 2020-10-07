@@ -10,7 +10,7 @@ class CartIcon extends StatefulWidget {
 }
 
 class _CartIconState extends State<CartIcon> {
-  // animated Route to Shoppingcart screen
+// animated Route to Shoppingcart screen
   Route _createRoute(Widget page) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => page,
@@ -35,7 +35,7 @@ class _CartIconState extends State<CartIcon> {
     );
   }
 
-  // This function checks whether there is any item
+// This function checks whether there is any item
 // in the cart or not
   Widget _checkCartItems() {
     return Container(
@@ -71,6 +71,8 @@ class _CartIconState extends State<CartIcon> {
               onPressed: () {
                 // Handle shopping cart
                 Navigator.of(context).push(_createRoute(ShoppingCartNew()));
+
+                // Navigator.pushNamed(context, '/shoppingCartNew');
               }),
         ),
         Positioned(

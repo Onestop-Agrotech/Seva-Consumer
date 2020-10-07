@@ -19,6 +19,7 @@ import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
+import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
@@ -241,7 +242,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
       // await p.setFarStatus(far);
-
+      String hub = jsonBdy["hub"].toString();
+      String email = jsonBdy["email"].toString();
       await preferences.setUsername(jsonBdy["username"]);
       await preferences.setToken(jsonBdy["token"]);
       await preferences.sethub(jsonBdy["hub"]);
@@ -251,9 +253,18 @@ class _LoginScreenState extends State<LoginScreen> {
       await preferences.setFarStatus(far);
 
       // grant access to the app
-      if (far == "false" || far == null)
+      if ((far == "false" || far == null) && hub != "0")
         Navigator.pushReplacementNamed(context, '/main');
-      else
+      else if (hub == "0" && (far == "false" || far == null)) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoogleLocationScreen(
+              userEmail: email,
+            ),
+          ),
+        );
+      } else
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

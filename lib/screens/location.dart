@@ -277,7 +277,6 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     };
     String getJson = userModelAddress(user);
     var response = await http.post(url, body: getJson, headers: headers);
-    print(response.statusCode);
     if (response.statusCode == 200) {
       setState(() {
         _loader = false;

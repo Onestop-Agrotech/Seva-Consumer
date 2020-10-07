@@ -4,6 +4,8 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
+import 'package:flutter/cupertino.dart';
+
 ///
 /// @fileoverview Shopping Cart Screen : Summary of the shopping cart .
 ///
@@ -15,12 +17,15 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
+// import 'package:mvp/screens/promocodescreen.dart';
 import 'package:mvp/screens/shoppingCart/loading.dart';
 import 'package:mvp/screens/shoppingCart/razorpay.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:slider_button/slider_button.dart';
 import '../common/animatedCard.dart';
 
 class ShoppingCartNew extends StatefulWidget {
@@ -147,12 +152,13 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
               children: <Widget>[
                 Text(
                   "Summary",
-                  style: TextStyle(fontSize: 25),
+                  style: TextStyle(fontSize: SizeConfig.textMultiplier * 3),
                 ),
                 Text(
                   "Self pick up coming soon!",
-                  style:
-                      TextStyle(color: ThemeColoursSeva().grey, fontSize: 17.0),
+                  style: TextStyle(
+                      color: ThemeColoursSeva().grey,
+                      fontSize: SizeConfig.textMultiplier * 2),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -162,13 +168,15 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       children: <Widget>[
                         Text(
                           "Cart Price: ",
-                          style: TextStyle(fontSize: 21),
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2.5),
                         ),
                         Consumer<NewCartModel>(
                           builder: (context, newCart, child) {
                             return Text(
                               "Rs ${newCart.getCartTotalPrice()}",
-                              style: TextStyle(fontSize: 21),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2.5),
                             );
                           },
                         ),
@@ -179,10 +187,12 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text("Delivery Fee: ",
-                                  style: TextStyle(fontSize: 21)),
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.textMultiplier * 2.5)),
                               Text("Rs 0",
                                   style: TextStyle(
-                                    fontSize: 21,
+                                    fontSize: SizeConfig.textMultiplier * 2.5,
                                   ))
                             ],
                           )
@@ -192,39 +202,74 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Text("Total Price: ",
-                                  style: TextStyle(fontSize: 21)),
+                                  style: TextStyle(
+                                      fontSize:
+                                          SizeConfig.textMultiplier * 2.5)),
                               Consumer<NewCartModel>(
                                 builder: (context, newCart, child) {
                                   return Text(
                                     "Rs ${newCart.getCartTotalPrice()}",
-                                    style: TextStyle(fontSize: 21),
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 2.5),
                                   );
                                 },
                               ),
                             ],
                           )
                         : Text(""),
-                    SizedBox(height: 20.0),
                   ],
                 ),
                 Consumer<NewCartModel>(
                   builder: (context, newCart, child) {
                     return this._userEmail != null
-                        ? ButtonTheme(
-                            minWidth: 80.0,
-                            height: 50.0,
-                            child: RaisedButton(
-                              color: ThemeColoursSeva().dkGreen,
-                              onPressed: () {
-                                openCheckout(
-                                    newCart.getCartTotalPrice(), _rzpAPIKey);
-                                Navigator.pop(context);
-                              },
-                              child: Text(
-                                "PAY",
-                                style: TextStyle(color: Colors.white),
+                        ? Column(
+                            children: [
+                              // Container(
+                              //   child: RaisedButton(
+                              //     color: ThemeColoursSeva().pallete1,
+                              //     textColor: Colors.white,
+                              //     onPressed: () {
+                              //       Navigator.of(context).push(
+                              //         CupertinoPageRoute<Null>(
+                              //           builder: (BuildContext context) {
+                              //             return PromoCodeScreen();
+                              //           },
+                              //         ),
+                              //       );
+                              //     },
+                              //     child: Text("Have a Promo?"),
+                              //   ),
+                              // ),
+                              SizedBox(
+                                height: 60.0,
                               ),
-                            ),
+                              SliderButton(
+                                  shimmer: false,
+                                  height: 50.0,
+                                  buttonSize: 40.0,
+                                  width: 200.0,
+                                  radius: 50.0,
+                                  vibrationFlag: true,
+                                  dismissible: false,
+                                  action: () {
+                                    openCheckout(newCart.getCartTotalPrice(),
+                                        _rzpAPIKey);
+                                    Navigator.pop(context);
+                                  },
+                                  label: Text(
+                                    "Slide to Pay",
+                                    style: TextStyle(
+                                        color: ThemeColoursSeva().dkGreen,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 1.9),
+                                  ),
+                                  icon: Icon(
+                                    Icons.payment,
+                                    color: ThemeColoursSeva().pallete1,
+                                  )),
+                            ],
                           )
                         : Text("Loading...");
                   },
@@ -248,13 +293,72 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     }
     // deliveries are closed
     else if (!_allowedDeliveries && !_loadingDeliveries) {
-      return Text(
-        "Deliveries Closed",
-        overflow: TextOverflow.clip,
-        style: TextStyle(
-            color: ThemeColoursSeva().pallete1,
-            fontSize: 20.0,
-            fontWeight: FontWeight.w600),
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: FloatingActionButton.extended(
+          backgroundColor: ThemeColoursSeva().dkGreen,
+          onPressed: () {},
+          label: Text("Deliveries Closed"),
+        ),
+      );
+    }
+  }
+
+  showAllDelete(NewCartModel newCart) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Remove all items ?"),
+            content: Text("All items will be removed from the cart"),
+            actions: [
+              RaisedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: ThemeColoursSeva().pallete1,
+              ),
+              SizedBox(width: 20.0),
+              RaisedButton(
+                onPressed: () {
+                  // delete the item
+                  newCart.clearCart();
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  "Delete",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.red,
+              ),
+            ],
+          );
+        });
+  }
+
+  /// Only if there are items in cart, show the
+  /// delete icon
+  ///
+  Widget returnIconOrContainer(NewCartModel cart) {
+    if (cart.totalItems > 0) {
+      return IconButton(
+        icon: Icon(
+          Icons.delete,
+          size: 30.0,
+          color: ThemeColoursSeva().pallete1,
+        ),
+        onPressed: () {
+          showAllDelete(cart);
+        },
+      );
+    } else {
+      return Container(
+        height: 10.0,
+        width: 100.0,
       );
     }
   }
@@ -288,10 +392,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 ),
-                Container(
-                  height: 10.0,
-                  width: 100.0,
-                ),
+                returnIconOrContainer(cart),
               ],
             ),
             SizedBox(
@@ -352,9 +453,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
           : Padding(
               padding:
                   const EdgeInsets.only(left: 10.0, bottom: 20.0, right: 10.0),
-              child: Container(
-                child: properText(),
-              ),
+              child: properText(),
             ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );

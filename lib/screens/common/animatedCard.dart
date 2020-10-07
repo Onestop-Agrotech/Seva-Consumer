@@ -7,7 +7,6 @@
 ///
 /// @fileoverview AnimateCard Modal : common product card.
 ///
-
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
-import 'package:mvp/screens/common/common_functions.dart';
 
 class AnimatedCard extends StatefulWidget {
   final bool shopping;
@@ -43,49 +41,51 @@ class _AnimatedCardState extends State<AnimatedCard>
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
   }
 
-  // void helper(int index, NewCartModel newCart, bool addToCart) {
-  //   double p, q;
+  void helper(int index, NewCartModel newCart, bool addToCart) {
+    double p, q;
 
-  //   // Kg, Kgs, Gms, Pc - Types of Quantities
+    // Kg, Kgs, Gms, Pc - Types of Quantities
 
-  //   // For Kg & Pc
+    // For Kg & Pc
 
-  //   if (widget.product.details[0].quantity.allowedQuantities[index].metric ==
-  //       "Kg") {
-  //     q = 1;
-  //     p = double.parse("${widget.product.details[0].price}");
-  //   }
-  //   // For Gms && ML
-  //   else if (widget
-  //               .product.details[0].quantity.allowedQuantities[index].metric ==
-  //           "Gms" ||
-  //       widget.product.details[0].quantity.allowedQuantities[index].metric ==
-  //           "ML") {
-  //     q = (widget.product.details[0].quantity.allowedQuantities[index].value /
-  //         1000.0);
-  //     p = (widget.product.details[0].quantity.allowedQuantities[index].value /
-  //             1000.0) *
-  //         widget.product.details[0].price;
-  //   }
-  //   // For Pc, Pack, Kgs & Ltr
-  //   else if (widget
-  //               .product.details[0].quantity.allowedQuantities[index].metric ==
-  //           "Pc" ||
-  //       widget.product.details[0].quantity.allowedQuantities[index].metric ==
-  //           "Kgs" ||
-  //       widget.product.details[0].quantity.allowedQuantities[index].metric ==
-  //           "Ltr" ||
-  //       widget.product.details[0].quantity.allowedQuantities[index].metric ==
-  //           "Pack") {
-  //     q = double.parse(
-  //         "${widget.product.details[0].quantity.allowedQuantities[index].value}");
-  //     p = widget.product.details[0].price * q;
-  //   }
+    if (widget.product.details[0].quantity.allowedQuantities[index].metric ==
+        "Kg") {
+      q = 1;
+      p = double.parse("${widget.product.details[0].price}");
+    }
+    // For Gms && ML
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Gms" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "ML") {
+      q = (widget.product.details[0].quantity.allowedQuantities[index].value /
+          1000.0);
+      p = (widget.product.details[0].quantity.allowedQuantities[index].value /
+              1000.0) *
+          widget.product.details[0].price;
+    }
+    // For Pc, Pack, Kgs & Ltr
+    else if (widget
+                .product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pc" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Kgs" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Ltr" ||
+        widget.product.details[0].quantity.allowedQuantities[index].metric ==
+            "Pack") {
+      q = double.parse(
+          "${widget.product.details[0].quantity.allowedQuantities[index].value}");
+      p = widget.product.details[0].price * q;
+    }
 
-  //   addToCart
-  //       ? newCart.addToCart(widget.product, index, p, q)
-  //       : newCart.removeFromCart(widget.product, index, p, q);
-  // }
+    addToCart
+        ? newCart.addToCart(
+            item: widget.product, index: index, price: p, quantity: q)
+        : newCart.removeFromCart(
+            item: widget.product, index: index, price: p, quantity: q);
+  }
 
   // animation toggler
   void toggle() => animationController.isDismissed
@@ -316,13 +316,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                           child: Icon(
                                                               Icons.remove),
                                                           onTap: () {
-                                                            HelperFunctions
-                                                                .helper(
-                                                                    i,
-                                                                    newCart,
-                                                                    false,
-                                                                    widget
-                                                                        .product);
+                                                            helper(i, newCart,
+                                                                false);
                                                           },
                                                         ),
                                                         SizedBox(width: 5.0),
@@ -333,13 +328,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                             child:
                                                                 Icon(Icons.add),
                                                             onTap: () {
-                                                              HelperFunctions
-                                                                  .helper(
-                                                                      i,
-                                                                      newCart,
-                                                                      true,
-                                                                      widget
-                                                                          .product);
+                                                              helper(i, newCart,
+                                                                  true);
                                                             }),
                                                       ],
                                                     ),
