@@ -24,6 +24,10 @@ class SizeConfig {
   static bool isPortrait = true;
   static bool isMobilePortrait = false;
 
+  // Gives the multiplying factors for differnet screens
+  // Just divide your width the screen size or [factors below]
+  // and use that. for ex- 200 unit width with widthmultiplier=10
+  // will be 10 * widthmultiplier
   void init(BoxConstraints constraints, Orientation orientation) {
     if (orientation == Orientation.portrait) {
       _screenWidth = constraints.maxWidth;
