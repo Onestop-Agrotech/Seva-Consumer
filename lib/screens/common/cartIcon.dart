@@ -71,8 +71,6 @@ class _CartIconState extends State<CartIcon> {
               onPressed: () {
                 // Handle shopping cart
                 Navigator.of(context).push(_createRoute(ShoppingCartNew()));
-
-                // Navigator.pushNamed(context, '/shoppingCartNew');
               }),
         ),
         Positioned(

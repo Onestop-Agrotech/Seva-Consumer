@@ -9,6 +9,7 @@
 ///
 
 import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -439,10 +440,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         Material(
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => RegisterScreen()));
+                              Navigator.of(context).push(
+                                  CupertinoPageRoute<Null>(
+                                      builder: (BuildContext context) {
+                                return RegisterScreen();
+                              }));
                             },
                             child: Text(
                               "Sign up",

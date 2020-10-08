@@ -361,6 +361,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  // animated Route to Shoppingcart screen
+  Route _createRoute(Widget page) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+      ) =>
+          SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(-1, 0),
+          end: Offset.zero,
+        ).animate(animation),
+        child: child,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -424,10 +444,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Material(
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginScreen()));
+                                Navigator.of(context)
+                                    .push(_createRoute(LoginScreen()));
                               },
                               child: Text(
                                 "Sign in",
