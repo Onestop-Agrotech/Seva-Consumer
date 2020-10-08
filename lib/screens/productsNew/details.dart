@@ -45,7 +45,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       }
     });
     return Text(
-      "Rs $price",
+      "₹ $price",
       style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
@@ -58,7 +58,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     double price;
     price = newCart.getCartTotalPrice();
     return Text(
-      "Rs $price",
+      "₹ $price",
       style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
@@ -93,7 +93,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 color: ThemeColoursSeva().pallete1),
           ),
           Text(
-              "Rs ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
+              "₹ ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: SizeConfig.textMultiplier * 2,

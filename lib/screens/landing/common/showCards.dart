@@ -107,7 +107,7 @@ class _ShowCardsState extends State<ShowCards> {
             widget.store
                 ? Text(
                     !this.widget.sp.details[0].outOfStock
-                        ? "Rs ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
+                        ? "₹ ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
                         : "Out of Stock",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
