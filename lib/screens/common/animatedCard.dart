@@ -181,8 +181,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                           !this.widget.product.details[0].outOfStock
                               ? Text(
                                   !this.widget.shopping
-                                      ? "Rs ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
-                                      : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
+                                      ? "₹ ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
+                                      : "₹ ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
                                       color: ThemeColoursSeva().pallete1,
