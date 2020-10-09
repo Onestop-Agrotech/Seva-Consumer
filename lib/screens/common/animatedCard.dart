@@ -271,13 +271,18 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                           child: Icon(
                                                               Icons.remove),
                                                           onTap: () {
-                                                            HelperFunctions
-                                                                .helper(
-                                                                    i,
-                                                                    newCart,
-                                                                    false,
-                                                                    widget
-                                                                        .product);
+                                                            HelperFunctions.helper(
+                                                                i,
+                                                                newCart,
+                                                                false,
+                                                                widget.product,
+                                                                widget
+                                                                    .product
+                                                                    .details[0]
+                                                                    .quantity
+                                                                    .allowedQuantities[
+                                                                        i]
+                                                                    .metric);
                                                           },
                                                         ),
                                                         SizedBox(width: 5.0),
@@ -288,13 +293,20 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                             child:
                                                                 Icon(Icons.add),
                                                             onTap: () {
-                                                              HelperFunctions
-                                                                  .helper(
-                                                                      i,
-                                                                      newCart,
-                                                                      true,
-                                                                      widget
-                                                                          .product);
+                                                              HelperFunctions.helper(
+                                                                  i,
+                                                                  newCart,
+                                                                  true,
+                                                                  widget
+                                                                      .product,
+                                                                  widget
+                                                                      .product
+                                                                      .details[
+                                                                          0]
+                                                                      .quantity
+                                                                      .allowedQuantities[
+                                                                          i]
+                                                                      .metric);
                                                             }),
                                                       ],
                                                     ),
