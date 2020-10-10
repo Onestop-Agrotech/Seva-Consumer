@@ -13,9 +13,19 @@ class ErrorClass {
   // when input fields are empty
   static Widget emptyFields(String text) {
     // checking if text field is empty or not
-    if (text.isEmpty) {
+    if (text=="") {
       return Text("Field is required");
     }
+    
+    return null;
+  }
+
+  static Widget checkForMobile(String text) {
+    // checking if text field is empty or not
+    if (text.length<10) {
+      return Text("Min 10 digit number should be there");
+    }
+    
     return null;
   }
 }
