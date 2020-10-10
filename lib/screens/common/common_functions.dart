@@ -21,14 +21,9 @@ class HelperFunctions {
     // Kg, Kgs, Gms, Pc - Types of Quantities
 
     // For Kg & Pc
-    print(product.details[0].quantity.allowedQuantities[index].runtimeType);
-    print(product.details[0].quantity.allowedQuantities.runtimeType);
 
     for (var i in product.details[0].quantity.allowedQuantities) {
       if (i.metric.contains(value)) {
-        print(value);
-        print(i.metric);
-        print(i.value);
         q = double.parse("${i.value}" * 1);
         p = q * double.parse("${product.details[0].price}");
         break;
