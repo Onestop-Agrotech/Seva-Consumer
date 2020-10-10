@@ -103,10 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // user field is empty
   _showUserEmpty() {
     if (_usernameEmpty == true) {
-      return Text(
-        'Please fill your name',
-        style: TextStyle(color: Colors.red),
-      );
+      return ErrorClass.emptyFields(_username.text);
     } else
       return Container();
   }
@@ -179,10 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // sign up validity and api call for registerung the user
   _handleSignUp() async {
-    ErrorClass.emptyFields(_username.text);
-
     UserModel user = new UserModel();
-    if (_username.text == '') {
+    if (ErrorClass.emptyFields(_username.text) != null) {
       setState(() {
         _usernameEmpty = true;
         _index = 0;
@@ -327,7 +322,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               lt: "Username",
               key: Key('usernamekey'),
             ),
-            // _showUserEmpty(),
+            // ErrorClass.emptyFields(_username.text),
+            _showUserEmpty(),
             SizedBox(
               height: 1.5 * SizeConfig.textMultiplier,
             ),
