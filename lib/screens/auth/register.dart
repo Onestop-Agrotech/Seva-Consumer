@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/apiCalls.dart';
+import 'package:mvp/constants/errors.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
@@ -178,6 +179,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // sign up validity and api call for registerung the user
   _handleSignUp() async {
+    ErrorClass.emptyFields(_username.text);
+
     UserModel user = new UserModel();
     if (_username.text == '') {
       setState(() {
@@ -324,7 +327,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               lt: "Username",
               key: Key('usernamekey'),
             ),
-            _showUserEmpty(),
+            // _showUserEmpty(),
             SizedBox(
               height: 1.5 * SizeConfig.textMultiplier,
             ),
