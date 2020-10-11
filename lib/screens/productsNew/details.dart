@@ -142,6 +142,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       newCart,
                       false,
                       widget.p,
+                      widget.p.details[0].quantity.quantityMetric,
                       widget.p.details[0].quantity.allowedQuantities[index]
                           .metric);
                 },
@@ -162,6 +163,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       newCart,
                       true,
                       widget.p,
+                      widget.p.details[0].quantity.quantityMetric,
                       widget.p.details[0].quantity.allowedQuantities[index]
                           .metric);
                 },

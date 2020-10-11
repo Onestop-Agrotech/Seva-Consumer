@@ -280,6 +280,11 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                                     .product
                                                                     .details[0]
                                                                     .quantity
+                                                                    .quantityMetric,
+                                                                widget
+                                                                    .product
+                                                                    .details[0]
+                                                                    .quantity
                                                                     .allowedQuantities[
                                                                         i]
                                                                     .metric);
@@ -299,6 +304,12 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                                   true,
                                                                   widget
                                                                       .product,
+                                                                  widget
+                                                                      .product
+                                                                      .details[
+                                                                          0]
+                                                                      .quantity
+                                                                      .quantityMetric,
                                                                   widget
                                                                       .product
                                                                       .details[
