@@ -14,7 +14,6 @@ import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/customformField.dart';
-import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:http/http.dart' as http;
@@ -27,13 +26,10 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   int _index = 0;
-
   bool _loading = false;
-
   bool _error = false;
-  bool _mobileSyntaxError = false;
-
   bool _notValidMobile = false;
+
   final _formKey = GlobalKey<FormState>();
 
   Map<String, int> _errorMap = {
@@ -195,8 +191,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: "Email",
                   controller: _emailAddress,
                   textInputType: TextInputType.emailAddress),
-              // _showEmailError(),
-
               SizedBox(
                 height: 2.2 * SizeConfig.textMultiplier,
               ),

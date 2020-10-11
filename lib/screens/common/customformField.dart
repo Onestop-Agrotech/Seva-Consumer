@@ -5,11 +5,10 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 customTextField({
-  TextEditingController controller,
+  @required TextEditingController controller,
   @required String labelText,
-  TextInputType textInputType,
+  @required TextInputType textInputType,
   Function validator,
-  GlobalKey<FormState> formKey,
 }) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
