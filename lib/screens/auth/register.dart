@@ -181,93 +181,91 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _handleSignUp() async {
     UserModel user = new UserModel();
 
+    if (_username.text != '') {
+      user.username = _username.text;
+      setState(() {
+        // if (_errors != 0) _errors--;
+        if (_errorMap["username"] == 1) _errorMap["username"] = 0;
+      });
+    }
 
-      if (_username.text != '') {
-        user.username = _username.text;
+    if (_emailAddress.text != '') {
+      bool emailValid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(_emailAddress.text);
+      if (emailValid == true) {
+        user.email = _emailAddress.text;
         setState(() {
+          _emailSyntaxError = false;
+          _error = false;
           // if (_errors != 0) _errors--;
-          if (_errorMap["username"] == 1) _errorMap["username"] = 0;
+          if (_errorMap["email"] == 1) _errorMap["email"] = 0;
+        });
+      } else {
+        setState(() {
+          _emailSyntaxError = true;
+          _index = 0;
+          _errorMap["email"] = 1;
         });
       }
+    }
 
-      if (_emailAddress.text != '') {
-        bool emailValid = RegExp(
-                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-            .hasMatch(_emailAddress.text);
-        if (emailValid == true) {
-          user.email = _emailAddress.text;
-          setState(() {
-            _emailSyntaxError = false;
-            _error = false;
-            // if (_errors != 0) _errors--;
-            if (_errorMap["email"] == 1) _errorMap["email"] = 0;
-          });
-        } else {
-          setState(() {
-            _emailSyntaxError = true;
-            _index = 0;
-            _errorMap["email"] = 1;
-          });
-        }
+    if (_mobile.text != '') {
+      bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
+      if (mobileValid == true) {
+        user.mobile = _mobile.text;
+        setState(() {
+          _mobileSyntaxError = false;
+          if (_errorMap["mobile"] == 1) _errorMap["mobile"] = 0;
+        });
+      } else {
+        setState(() {
+          _mobileSyntaxError = true;
+          _errorMap["mobile"] = 1;
+        });
       }
-
-      if (_mobile.text != '') {
-        bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
-        if (mobileValid == true) {
-          user.mobile = _mobile.text;
-          setState(() {
-            _mobileSyntaxError = false;
-            if (_errorMap["mobile"] == 1) _errorMap["mobile"] = 0;
-          });
-        } else {
-          setState(() {
-            _mobileSyntaxError = true;
-            _errorMap["mobile"] = 1;
-          });
-        }
-      }
-    
+    }
 
     List<int> _valueList = _errorMap.values.toList();
     int sum = _valueList.reduce((a, b) => a + b);
     if (sum == 0 && _error == false) {
-          if (_formKey.currentState.validate()) {
-      String url = APIService.registerAPI;
-      String getJson = userModelRegister(user);
-      Map<String, String> headers = {"Content-Type": "application/json"};
-      var response = await http.post(url, body: getJson, headers: headers);
-      if (response.statusCode == 200) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => GoogleLocationScreen(
-                      userEmail: user.email,
-                    )));
-        return;
-      } else if (response.statusCode == 400) {
-        // user email already exists
-        setState(() {
-          _index = 0;
-          _error = true;
-          _loading = false;
-        });
-      } else if (response.statusCode == 401) {
-        // user email already exists
-        setState(() {
-          _index = 1;
-          _error = true;
-          _notValidMobile = true;
-          _loading = false;
-        });
+      if (_formKey.currentState.validate()) {
+        String url = APIService.registerAPI;
+        String getJson = userModelRegister(user);
+        Map<String, String> headers = {"Content-Type": "application/json"};
+        var response = await http.post(url, body: getJson, headers: headers);
+        if (response.statusCode == 200) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GoogleLocationScreen(
+                        userEmail: user.email,
+                      )));
+          return;
+        } else if (response.statusCode == 400) {
+          // user email already exists
+          setState(() {
+            _index = 0;
+            _error = true;
+            _loading = false;
+          });
+        } else if (response.statusCode == 401) {
+          // user email already exists
+          setState(() {
+            _index = 1;
+            _error = true;
+            _notValidMobile = true;
+            _loading = false;
+          });
+        } else {
+          // some other error here
+          throw Exception('Server error');
+        }
       } else {
-        // some other error here
-        throw Exception('Server error');
+        setState(() {
+          _loading = false;
+        });
       }
-    } else {
-      setState(() {
-        _loading = false;
-      });
-    }
     }
   }
 
@@ -305,7 +303,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               customTextField(
                   labelText: "Username",
                   controller: _username,
-                  formKey: _formKey,
                   textInputType: TextInputType.text),
               SizedBox(
                 height: 1.5 * SizeConfig.textMultiplier,
@@ -313,10 +310,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               customTextField(
                   labelText: "Email",
                   controller: _emailAddress,
-                  formKey: _formKey,
                   textInputType: TextInputType.emailAddress),
               // _showEmailError(),
-              _showError(),
+
               SizedBox(
                 height: 2.2 * SizeConfig.textMultiplier,
               ),
@@ -327,7 +323,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               customTextField(
                   labelText: "Mobile",
                   controller: _mobile,
-                  formKey: _formKey,
                   textInputType: TextInputType.number),
               _showMobileError(),
               _handleMobileNumberValidity(),
