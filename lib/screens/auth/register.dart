@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _handleSignUp() async {
     UserModel user = new UserModel();
 
-    if (!_formKey.currentState.validate()) {
+
       if (_username.text != '') {
         user.username = _username.text;
         setState(() {
@@ -226,12 +226,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           });
         }
       }
-    }
+    
 
     List<int> _valueList = _errorMap.values.toList();
     int sum = _valueList.reduce((a, b) => a + b);
-
     if (sum == 0 && _error == false) {
+          if (_formKey.currentState.validate()) {
       String url = APIService.registerAPI;
       String getJson = userModelRegister(user);
       Map<String, String> headers = {"Content-Type": "application/json"};
@@ -267,6 +267,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _loading = false;
       });
+    }
     }
   }
 
