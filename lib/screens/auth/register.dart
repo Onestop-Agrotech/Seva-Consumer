@@ -7,14 +7,13 @@
 ///
 /// @fileoverview Register Widget : to register a new user.
 ///
-
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/apiCalls.dart';
-import 'package:mvp/constants/errors.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
+import 'package:mvp/screens/common/customformField.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/location.dart';
@@ -40,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _mobileEmpty = false;
 
   bool _notValidMobile = false;
+  final _formKey = GlobalKey<FormState>();
 
   Map<String, int> _errorMap = {
     "username": 0,
@@ -103,7 +103,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // user field is empty
   _showUserEmpty() {
     if (_usernameEmpty == true) {
-      return ErrorClass.emptyFields(_username.text);
+      return Text(
+        'Please fill your name',
+        style: TextStyle(color: Colors.red),
+      );
     } else
       return Container();
   }
@@ -177,72 +180,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // sign up validity and api call for registerung the user
   _handleSignUp() async {
     UserModel user = new UserModel();
-    if (ErrorClass.emptyFields(_username.text) != null) {
-      setState(() {
-        _usernameEmpty = true;
-        _index = 0;
-        // _errors++;
-        _errorMap["username"] = 1;
-      });
-    } else if (_username.text != '') {
-      user.username = _username.text;
-      setState(() {
-        _usernameEmpty = false;
-        // if (_errors != 0) _errors--;
-        if (_errorMap["username"] == 1) _errorMap["username"] = 0;
-      });
-    }
 
-    if (_emailAddress.text == '') {
-      setState(() {
-        _emailEmpty = true;
-        _index = 0;
-        // _errors++;
-        _errorMap["email"] = 1;
-      });
-    } else if (_emailAddress.text != '') {
-      bool emailValid = RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-          .hasMatch(_emailAddress.text);
-      if (emailValid == true) {
-        user.email = _emailAddress.text;
+    if (!_formKey.currentState.validate()) {
+      if (_username.text != '') {
+        user.username = _username.text;
         setState(() {
-          _emailEmpty = false;
-          _emailSyntaxError = false;
-          _error = false;
           // if (_errors != 0) _errors--;
-          if (_errorMap["email"] == 1) _errorMap["email"] = 0;
-        });
-      } else {
-        setState(() {
-          _emailEmpty = false;
-          _emailSyntaxError = true;
-          _index = 0;
-          _errorMap["email"] = 1;
+          if (_errorMap["username"] == 1) _errorMap["username"] = 0;
         });
       }
-    }
 
-    if (_mobile.text == '') {
-      setState(() {
-        _mobileEmpty = true;
-        _errorMap["mobile"] = 1;
-      });
-    } else if (_mobile.text != '') {
-      bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
-      if (mobileValid == true) {
-        user.mobile = _mobile.text;
-        setState(() {
-          _mobileEmpty = false;
-          _mobileSyntaxError = false;
-          if (_errorMap["mobile"] == 1) _errorMap["mobile"] = 0;
-        });
-      } else {
-        setState(() {
-          _mobileEmpty = false;
-          _mobileSyntaxError = true;
-          _errorMap["mobile"] = 1;
-        });
+      if (_emailAddress.text != '') {
+        bool emailValid = RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            .hasMatch(_emailAddress.text);
+        if (emailValid == true) {
+          user.email = _emailAddress.text;
+          setState(() {
+            _emailSyntaxError = false;
+            _error = false;
+            // if (_errors != 0) _errors--;
+            if (_errorMap["email"] == 1) _errorMap["email"] = 0;
+          });
+        } else {
+          setState(() {
+            _emailSyntaxError = true;
+            _index = 0;
+            _errorMap["email"] = 1;
+          });
+        }
+      }
+
+      if (_mobile.text != '') {
+        bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
+        if (mobileValid == true) {
+          user.mobile = _mobile.text;
+          setState(() {
+            _mobileSyntaxError = false;
+            if (_errorMap["mobile"] == 1) _errorMap["mobile"] = 0;
+          });
+        } else {
+          setState(() {
+            _mobileSyntaxError = true;
+            _errorMap["mobile"] = 1;
+          });
+        }
       }
     }
 
@@ -311,52 +293,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // registration screen
-  IndexedStack _buildStack() {
-    return IndexedStack(
-      index: _index,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            InputTextField(
-              eC: _username,
-              lt: "Username",
-              key: Key('usernamekey'),
-            ),
-            // ErrorClass.emptyFields(_username.text),
-            _showUserEmpty(),
-            SizedBox(
-              height: 1.5 * SizeConfig.textMultiplier,
-            ),
-            InputTextField(
-                eC: _emailAddress,
-                lt: "Email Address:",
-                keyBoardType: TextInputType.emailAddress,
-                key: Key('emailkey')),
-            _showEmailEmpty(),
-            _showEmailError(),
-            _showError(),
-            SizedBox(
-              height: 2.2 * SizeConfig.textMultiplier,
-            ),
-          ],
-        ),
-        Column(
-          children: <Widget>[
-            InputTextField(
-              key: Key('mobilekey'),
-              eC: _mobile,
-              lt: "Mobile:",
-              keyBoardType: TextInputType.phone,
-            ),
-            _showMobileEmpty(),
-            _showMobileError(),
-            _handleMobileNumberValidity(),
-            SizedBox(
-              height: 4.1 * SizeConfig.textMultiplier,
-            ),
-          ],
-        ),
-      ],
+  _buildStack() {
+    return Form(
+      key: _formKey,
+      child: IndexedStack(
+        index: _index,
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              customTextField(
+                  labelText: "Username",
+                  controller: _username,
+                  formKey: _formKey,
+                  textInputType: TextInputType.text),
+              SizedBox(
+                height: 1.5 * SizeConfig.textMultiplier,
+              ),
+              customTextField(
+                  labelText: "Email",
+                  controller: _emailAddress,
+                  formKey: _formKey,
+                  textInputType: TextInputType.emailAddress),
+              // _showEmailError(),
+              _showError(),
+              SizedBox(
+                height: 2.2 * SizeConfig.textMultiplier,
+              ),
+            ],
+          ),
+          Column(
+            children: <Widget>[
+              customTextField(
+                  labelText: "Mobile",
+                  controller: _mobile,
+                  formKey: _formKey,
+                  textInputType: TextInputType.number),
+              _showMobileError(),
+              _handleMobileNumberValidity(),
+              SizedBox(
+                height: 4.1 * SizeConfig.textMultiplier,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
