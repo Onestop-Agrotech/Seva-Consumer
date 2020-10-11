@@ -49,21 +49,22 @@ customTextField({
                     disabledBorder: InputBorder.none,
                   ),
                   validator: (String str) {
-                    // if(textInputType==TextInputType.emailAddress)
-                    //                         {
-                    //                           return "Not"
-                    //                         }
                     if (str.isEmpty) {
-                      return "Above Field cannot pe empty";
+                      return "This Field cannot be empty!";
                     } else if (str.isNotEmpty) {
-                      return null;
+                      if (textInputType == TextInputType.emailAddress) {
+                        if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(str) ==
+                            false) return "Not a valid email!";
+                      } else if (textInputType == TextInputType.number) {
+                        if (RegExp(r"^[0-9]{10}$").hasMatch(str) == false) {
+                          return "Not a valid mobile!";
+                        }
+                      }
                     }
-
                     return null;
                   },
-
                   maxLength: labelText == "Mobile" ? 10 : null,
-                  // obscureText: pwdType,
                 ),
               )),
         ),

@@ -31,12 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _loading = false;
 
   bool _error = false;
-  bool _emailSyntaxError = false;
   bool _mobileSyntaxError = false;
-
-  bool _usernameEmpty = false;
-  bool _emailEmpty = false;
-  bool _mobileEmpty = false;
 
   bool _notValidMobile = false;
   final _formKey = GlobalKey<FormState>();
@@ -100,72 +95,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  // user field is empty
-  _showUserEmpty() {
-    if (_usernameEmpty == true) {
-      return Text(
-        'Please fill your name',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // email field is empty
-  _showEmailEmpty() {
-    if (_emailEmpty) {
-      return Text(
-        'Please fill your email address',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // mobile field is empty
-  _showMobileEmpty() {
-    if (_mobileEmpty) {
-      return Text(
-        'Please fill your phone number',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // handle already existing email error
-  _showError() {
-    if (_error) {
-      return Text(
-        'Email already exists! please change email!',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // handle valid email type
-  _showEmailError() {
-    if (_emailSyntaxError == true) {
-      return Text(
-        'Please input correct email type',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // handle valid mobile number type
-  _showMobileError() {
-    if (_mobileSyntaxError == true) {
-      return Text(
-        'Please input 10 digit mobile number',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
   // mobile number validity
   _handleMobileNumberValidity() {
     if (_notValidMobile) {
@@ -180,56 +109,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // sign up validity and api call for registerung the user
   _handleSignUp() async {
     UserModel user = new UserModel();
-
-    if (_username.text != '') {
-      user.username = _username.text;
-      setState(() {
-        // if (_errors != 0) _errors--;
-        if (_errorMap["username"] == 1) _errorMap["username"] = 0;
-      });
-    }
-
-    if (_emailAddress.text != '') {
-      bool emailValid = RegExp(
-              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-          .hasMatch(_emailAddress.text);
-      if (emailValid == true) {
-        user.email = _emailAddress.text;
-        setState(() {
-          _emailSyntaxError = false;
-          _error = false;
-          // if (_errors != 0) _errors--;
-          if (_errorMap["email"] == 1) _errorMap["email"] = 0;
-        });
-      } else {
-        setState(() {
-          _emailSyntaxError = true;
-          _index = 0;
-          _errorMap["email"] = 1;
-        });
-      }
-    }
-
-    if (_mobile.text != '') {
-      bool mobileValid = RegExp(r"^[0-9]{10}$").hasMatch(_mobile.text);
-      if (mobileValid == true) {
-        user.mobile = _mobile.text;
-        setState(() {
-          _mobileSyntaxError = false;
-          if (_errorMap["mobile"] == 1) _errorMap["mobile"] = 0;
-        });
-      } else {
-        setState(() {
-          _mobileSyntaxError = true;
-          _errorMap["mobile"] = 1;
-        });
-      }
-    }
-
     List<int> _valueList = _errorMap.values.toList();
     int sum = _valueList.reduce((a, b) => a + b);
     if (sum == 0 && _error == false) {
       if (_formKey.currentState.validate()) {
+        print("validated");
         String url = APIService.registerAPI;
         String getJson = userModelRegister(user);
         Map<String, String> headers = {"Content-Type": "application/json"};
@@ -324,7 +208,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: "Mobile",
                   controller: _mobile,
                   textInputType: TextInputType.number),
-              _showMobileError(),
               _handleMobileNumberValidity(),
               SizedBox(
                 height: 4.1 * SizeConfig.textMultiplier,
