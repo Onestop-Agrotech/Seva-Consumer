@@ -18,7 +18,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
-import 'package:mvp/screens/common/inputTextField.dart';
+import 'package:mvp/screens/common/customformField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/errors/notServing.dart';
@@ -48,10 +48,10 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
   String _subLocality = "";
   TextEditingController _houseno = new TextEditingController();
   TextEditingController _landmark = new TextEditingController();
-  bool _housenoEmpty = false;
-  bool _landmarkEmpty = false;
   double _lat;
   double _lng;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void setState(fn) {
     if (mounted) {
@@ -149,7 +149,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
             if (!currentFocus.hasPrimaryFocus) {
               currentFocus.unfocus();
             }
-            _handleAddressAddition();
+            _submitToDbhelper(context);
           },
           label: Text("Set as Delivery Address"),
           icon: Icon(Icons.home),
@@ -212,100 +212,59 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     });
   }
 
-  // field validation
-  _showHouseEmptyError() {
-    if (_housenoEmpty == true) {
-      return Text(
-        'Please enter the House No',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
+  _submitToDbhelper(context) async {
+    UserModel user = new UserModel();
+    String houseno = _houseno.text.trim();
+    String landmark = _landmark.text.trim();
+    String geocodedaddress = _markerAddress;
+    user.email = widget.userEmail;
+    user.address = '$houseno,$landmark,$geocodedaddress';
+    user.latitude = _lat.toString();
+    user.longitude = _lng.toString();
 
-  // field validation
-  _showLandmarkEmptyError() {
-    if (_landmarkEmpty == true) {
-      return Text(
-        'Please enter the Landmark',
-        style: TextStyle(color: Colors.red),
-      );
-    } else
-      return Container();
-  }
-
-  // hits the api and stores the address in the database.
-  _handleAddressAddition() async {
-    if (_houseno.text == '') {
-      // handle empty error
-      this.setState(() {
-        _housenoEmpty = true;
-      });
-    }
-    if (_landmark.text == '') {
-      // handle empty error
+    if (_formKey.currentState.validate()) {
       setState(() {
-        _landmarkEmpty = true;
+        _loader = true;
       });
-    } else {
-      setState(() {
-        _landmarkEmpty = false;
-        _housenoEmpty = false;
-      });
-      UserModel user = new UserModel();
-      String houseno = _houseno.text.trim();
-      String landmark = _landmark.text.trim();
-      String geocodedaddress = _markerAddress;
-      user.email = widget.userEmail;
-      user.address = '$houseno,$landmark,$geocodedaddress';
-      user.latitude = _lat.toString();
-      user.longitude = _lng.toString();
-      _submitToDbhelper(user, context);
-    }
-  }
-
-  _submitToDbhelper(UserModel user, context) async {
-    setState(() {
-      _loader = true;
-    });
-    String url = APIService.registerAddressAPI;
-    final p = await Preferences.getInstance();
-    String token = await p.getData("token");
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "x-auth-token": token
-    };
-    String getJson = userModelAddress(user);
-    var response = await http.post(url, body: getJson, headers: headers);
-    if (response.statusCode == 200) {
-      setState(() {
-        _loader = false;
-      });
-      await p.setToken(json.decode(response.body)["token"]);
-      await p.setRefreshToken(json.decode(response.body)["refreshToken"]);
-      await p.setUsername(json.decode(response.body)["username"]);
-      await p.setId(json.decode(response.body)["id"]);
-      await p.sethub(json.decode(response.body)["hub"]);
-      bool far = json.decode(response.body)["far"];
-      await p.setFarStatus(far.toString());
-      await p.setEmail(json.decode(response.body)["email"]);
-      await p.setMobile(json.decode(response.body)["mobile"]);
-      if (!far) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/main', ModalRoute.withName('/main'));
+      String url = APIService.registerAddressAPI;
+      final p = await Preferences.getInstance();
+      String token = await p.getData("token");
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "x-auth-token": token
+      };
+      String getJson = userModelAddress(user);
+      var response = await http.post(url, body: getJson, headers: headers);
+      if (response.statusCode == 200) {
+        setState(() {
+          _loader = false;
+        });
+        await p.setToken(json.decode(response.body)["token"]);
+        await p.setRefreshToken(json.decode(response.body)["refreshToken"]);
+        await p.setUsername(json.decode(response.body)["username"]);
+        await p.setId(json.decode(response.body)["id"]);
+        await p.sethub(json.decode(response.body)["hub"]);
+        bool far = json.decode(response.body)["far"];
+        await p.setFarStatus(far.toString());
+        await p.setEmail(json.decode(response.body)["email"]);
+        await p.setMobile(json.decode(response.body)["mobile"]);
+        if (!far) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/main', ModalRoute.withName('/main'));
+        } else {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return NotServing(
+              userEmail: widget.userEmail,
+            );
+          }));
+        }
       } else {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) {
-          return NotServing(
-            userEmail: widget.userEmail,
-          );
-        }));
+        setState(() {
+          _loader = false;
+        });
+        throw Exception('Server error');
       }
-    } else {
-      setState(() {
-        _loader = false;
-      });
-      throw Exception('Server error');
     }
   }
 
@@ -314,84 +273,96 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Stack(
-                children: [
-                  GoogleMap(
-                    myLocationEnabled: true,
-                    zoomGesturesEnabled: true,
-                    scrollGesturesEnabled: true,
-                    rotateGesturesEnabled: true,
-                    zoomControlsEnabled: false,
-                    myLocationButtonEnabled: true,
-                    onMapCreated: _onMapCreated,
-                    markers: Set<Marker>.of(_markers.values),
-                    initialCameraPosition:
-                        CameraPosition(target: _center, zoom: 15.0),
-                    onTap: (pos) {},
-                    onCameraMove: (CameraPosition position) {
-                      onMapsMove(position);
-                    },
-                    onCameraIdle: () {
-                      onMapsStop(coordinates);
-                    },
-                  ),
-                  if (_loader)
-                    Container(
-                      color: Colors.white,
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height),
-                      child: Center(
-                        child: CircularProgressIndicator(),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      myLocationEnabled: true,
+                      zoomGesturesEnabled: true,
+                      scrollGesturesEnabled: true,
+                      rotateGesturesEnabled: true,
+                      zoomControlsEnabled: false,
+                      myLocationButtonEnabled: true,
+                      onMapCreated: _onMapCreated,
+                      markers: Set<Marker>.of(_markers.values),
+                      initialCameraPosition:
+                          CameraPosition(target: _center, zoom: 15.0),
+                      onTap: (pos) {},
+                      onCameraMove: (CameraPosition position) {
+                        onMapsMove(position);
+                      },
+                      onCameraIdle: () {
+                        onMapsStop(coordinates);
+                      },
+                    ),
+                    if (_loader)
+                      Container(
+                        color: Colors.white,
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_subLocality != "")
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                      ),
+                    Text(
+                      _subLocality,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18.0),
                     ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (_subLocality != "")
-                    Icon(
-                      Icons.location_on,
-                      color: Colors.red,
-                    ),
-                  Text(
-                    _subLocality,
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Text(
+                  _markerAddress,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                _markerAddress,
-                style: TextStyle(fontWeight: FontWeight.bold),
+
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: customTextField(
+                  labelText: "House No/Flat No:",
+                  controller: _houseno,
+                  textInputType: TextInputType.text,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InputTextField(lt: "House No/Flat No:", eC: _houseno),
-            ),
-            _showHouseEmptyError(),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: InputTextField(lt: "Landmark:", eC: _landmark),
-            ),
-            _showLandmarkEmptyError(),
-            Container(
-              child: _showFloatingActionButton(),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).viewInsets.bottom,
-            ),
-          ],
+              // _showHouseEmptyError(),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: customTextField(
+                  labelText: "Landmark:",
+                  controller: _landmark,
+                  textInputType: TextInputType.text,
+                ),
+              ),
+              // _showLandmarkEmptyError(),
+              Container(
+                child: _showFloatingActionButton(),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).viewInsets.bottom,
+              ),
+            ],
+          ),
         ),
       ),
     );
