@@ -6,7 +6,7 @@ class Routes {
   static void routeto(Widget screen, context, index) {
     Navigator.of(context)
         .push(CupertinoPageRoute<Null>(builder: (BuildContext context) {
-      return ProductsUINew(tagFromMain: screen.index);
+      // return ProductsUINew(tagFromMain: screen.index);
     }));
   }
 }
