@@ -68,9 +68,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: RaisedButton(
               onPressed: () {
                 setState(() {
-                  _notValidMobile = false;
-                });
-                setState(() {
                   if (_index == 0)
                     _index++;
                   else {
@@ -91,12 +88,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  // handle already existing email error
+  _showError() {
+    if (_error) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Email already exists! please change email!',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ],
+        ),
+      );
+    } else
+      return Container();
+  }
+
   // mobile number validity
   _handleMobileNumberValidity() {
     if (_notValidMobile) {
-      return Text(
-        'Mobile number already exists',
-        style: TextStyle(color: Colors.red),
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40.0),
+        child: Row(
+          children: [
+            Text(
+              'Mobile number already exists!',
+              style: TextStyle(color: Colors.red, fontSize: 12),
+            ),
+          ],
+        ),
       );
     } else
       return Container();
@@ -104,6 +127,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // sign up validity and api call for registerung the user
   _handleSignUp() async {
+    setState(() {
+      _error = false;
+      _notValidMobile = false;
+    });
     List<int> _valueList = _errorMap.values.toList();
     int sum = _valueList.reduce((a, b) => a + b);
     if (_formKey.currentState.validate()) {
@@ -111,14 +138,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       user.email = _emailAddress.text;
       user.mobile = _mobile.text;
       user.username = _username.text;
-      if (sum == 0 && _error == false) {
+      if (sum == 0) {
         setState(() {
           _loading = true;
         });
         String getJson = userModelRegister(user);
+        print(getJson);
         String url = APIService.registerAPI;
         Map<String, String> headers = {"Content-Type": "application/json"};
         var response = await http.post(url, body: getJson, headers: headers);
+        print(response.statusCode);
         if (response.statusCode == 200) {
           Navigator.push(
               context,
@@ -138,7 +167,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           // user email already exists
           setState(() {
             _index = 1;
-            _error = true;
             _notValidMobile = true;
             _loading = false;
           });
@@ -203,14 +231,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
               SizedBox(
                 height: 2.2 * SizeConfig.textMultiplier,
               ),
+              _showError()
             ],
           ),
           Column(
             children: <Widget>[
               InputTextField(
-                  labelText: "Mobile",
-                  controller: _mobile,
-                  textInputType: TextInputType.number),
+                labelText: "Mobile",
+                controller: _mobile,
+                textInputType: TextInputType.number,
+              ),
               _handleMobileNumberValidity(),
               SizedBox(
                 height: 4.1 * SizeConfig.textMultiplier,

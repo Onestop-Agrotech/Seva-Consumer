@@ -83,6 +83,9 @@ class InputTextField extends StatelessWidget {
               return null;
             },
             maxLength: labelText == "Mobile" ? 10 : null,
+            onChanged: (str) {
+              return false;
+            },
           ),
         ),
       ],
