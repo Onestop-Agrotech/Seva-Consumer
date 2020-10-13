@@ -71,7 +71,9 @@ class InputTextField extends StatelessWidget {
                 if (textInputType == TextInputType.emailAddress) {
                   if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(str) ==
-                      false) return "Not a valid email!";
+                      false) {
+                    return "Not a valid email!";
+                  }
                 } else if (textInputType == TextInputType.number) {
                   if (RegExp(r"^[0-9]{10}$").hasMatch(str) == false) {
                     return "Not a valid mobile!";

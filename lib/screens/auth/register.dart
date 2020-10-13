@@ -116,41 +116,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _loading = true;
         });
         String getJson = userModelRegister(user);
-          String url = APIService.registerAPI;
-          Map<String, String> headers = {"Content-Type": "application/json"};
-          var response = await http.post(url, body: getJson, headers: headers);
-          if (response.statusCode == 200) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => GoogleLocationScreen(
-                          userEmail: user.email,
-                        )));
-            return;
-          } else if (response.statusCode == 400) {
-            // user email already exists
-            setState(() {
-              _index = 0;
-              _error = true;
-              _loading = false;
-            });
-          } else if (response.statusCode == 401) {
-            // user email already exists
-            setState(() {
-              _index = 1;
-              _error = true;
-              _notValidMobile = true;
-              _loading = false;
-            });
-          } else {
-            // some other error here
-            throw Exception('Server error');
-          }
-        } else {
+        String url = APIService.registerAPI;
+        Map<String, String> headers = {"Content-Type": "application/json"};
+        var response = await http.post(url, body: getJson, headers: headers);
+        if (response.statusCode == 200) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GoogleLocationScreen(
+                        userEmail: user.email,
+                      )));
+          return;
+        } else if (response.statusCode == 400) {
+          // user email already exists
           setState(() {
+            _index = 0;
+            _error = true;
             _loading = false;
           });
+        } else if (response.statusCode == 401) {
+          // user email already exists
+          setState(() {
+            _index = 1;
+            _error = true;
+            _notValidMobile = true;
+            _loading = false;
+          });
+        } else {
+          // some other error here
+          throw Exception('Server error');
+        }
+      } else {
+        setState(() {
+          _loading = false;
+        });
       }
+    } else {
+      setState(() {
+        _index = 0;
+      });
     }
   }
 
