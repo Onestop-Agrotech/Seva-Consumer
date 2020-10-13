@@ -15,6 +15,7 @@ import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
+import 'package:mvp/screens/errors/errorfile.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
@@ -91,18 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // handle already existing email error
   _showError() {
     if (_error) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Email already exists! please change email!',
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ],
-        ),
-      );
+      return Errors.emailExists();
     } else
       return Container();
   }
@@ -110,17 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // mobile number validity
   _handleMobileNumberValidity() {
     if (_notValidMobile) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-        child: Row(
-          children: [
-            Text(
-              'Mobile number already exists!',
-              style: TextStyle(color: Colors.red, fontSize: 12),
-            ),
-          ],
-        ),
-      );
+      return Errors.mobileNumberExists();
     } else
       return Container();
   }
