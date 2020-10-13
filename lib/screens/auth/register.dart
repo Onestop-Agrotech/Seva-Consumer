@@ -74,9 +74,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   if (_index == 0)
                     _index++;
                   else {
-                    setState(() {
-                      _loading = true;
-                    });
+                    // setState(() {
+                    //   _loading = true;
+                    // });
                     _handleSignUp();
                   }
                 });
@@ -104,47 +104,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   // sign up validity and api call for registerung the user
   _handleSignUp() async {
-    UserModel user = new UserModel();
     List<int> _valueList = _errorMap.values.toList();
     int sum = _valueList.reduce((a, b) => a + b);
-    if (sum == 0 && _error == false) {
-      if (_formKey.currentState.validate()) {
-        print("validated");
-        String url = APIService.registerAPI;
-        String getJson = userModelRegister(user);
-        Map<String, String> headers = {"Content-Type": "application/json"};
-        var response = await http.post(url, body: getJson, headers: headers);
-        if (response.statusCode == 200) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GoogleLocationScreen(
-                        userEmail: user.email,
-                      )));
-          return;
-        } else if (response.statusCode == 400) {
-          // user email already exists
-          setState(() {
-            _index = 0;
-            _error = true;
-            _loading = false;
-          });
-        } else if (response.statusCode == 401) {
-          // user email already exists
-          setState(() {
-            _index = 1;
-            _error = true;
-            _notValidMobile = true;
-            _loading = false;
-          });
-        } else {
-          // some other error here
-          throw Exception('Server error');
-        }
-      } else {
+    if (_formKey.currentState.validate()) {
+      UserModel user = new UserModel();
+      user.email = _emailAddress.text;
+      user.mobile = _mobile.text;
+      user.username = _username.text;
+      if (sum == 0 && _error == false) {
         setState(() {
-          _loading = false;
+          _loading = true;
         });
+        String getJson = userModelRegister(user);
+          String url = APIService.registerAPI;
+          Map<String, String> headers = {"Content-Type": "application/json"};
+          var response = await http.post(url, body: getJson, headers: headers);
+          if (response.statusCode == 200) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => GoogleLocationScreen(
+                          userEmail: user.email,
+                        )));
+            return;
+          } else if (response.statusCode == 400) {
+            // user email already exists
+            setState(() {
+              _index = 0;
+              _error = true;
+              _loading = false;
+            });
+          } else if (response.statusCode == 401) {
+            // user email already exists
+            setState(() {
+              _index = 1;
+              _error = true;
+              _notValidMobile = true;
+              _loading = false;
+            });
+          } else {
+            // some other error here
+            throw Exception('Server error');
+          }
+        } else {
+          setState(() {
+            _loading = false;
+          });
       }
     }
   }
@@ -184,14 +189,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: "Username",
                   controller: _username,
                   textInputType: TextInputType.text),
-              // customTextField(
-              //     labelText: "Username",
-              //     controller: _username,
-              //     textInputType: TextInputType.text),
               SizedBox(
                 height: 1.5 * SizeConfig.textMultiplier,
               ),
-
               InputTextField(
                   labelText: "Email",
                   controller: _emailAddress,
