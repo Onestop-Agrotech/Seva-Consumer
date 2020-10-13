@@ -18,7 +18,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/users.dart';
-import 'package:mvp/screens/common/customformField.dart';
+import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/errors/notServing.dart';
@@ -336,25 +336,20 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: customTextField(
-                  labelText: "House No/Flat No:",
-                  controller: _houseno,
-                  textInputType: TextInputType.text,
-                ),
+                child: InputTextField(
+                    labelText: "House No/Flat No:",
+                    controller: _houseno,
+                    textInputType: TextInputType.text),
               ),
-              // _showHouseEmptyError(),
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: customTextField(
-                  labelText: "Landmark:",
-                  controller: _landmark,
-                  textInputType: TextInputType.text,
-                ),
+                child: InputTextField(
+                    labelText: "Landmark:",
+                    controller: _landmark,
+                    textInputType: TextInputType.text),
               ),
-              // _showLandmarkEmptyError(),
               Container(
                 child: _showFloatingActionButton(),
               ),

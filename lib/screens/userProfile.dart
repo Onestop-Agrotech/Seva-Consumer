@@ -122,10 +122,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          InputTextField(
-            eC: _address,
-            lt: "Home address:",
-          ),
+          // InputTextField(
+          //   eC: _address,
+          //   lt: "Home address:",
+          // ),
           _showEmptyError(),
         ],
       ),

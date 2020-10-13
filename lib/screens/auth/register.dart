@@ -13,7 +13,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
-import 'package:mvp/screens/common/customformField.dart';
+import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:http/http.dart' as http;
@@ -180,14 +180,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              customTextField(
+              InputTextField(
                   labelText: "Username",
                   controller: _username,
                   textInputType: TextInputType.text),
+              // customTextField(
+              //     labelText: "Username",
+              //     controller: _username,
+              //     textInputType: TextInputType.text),
               SizedBox(
                 height: 1.5 * SizeConfig.textMultiplier,
               ),
-              customTextField(
+
+              InputTextField(
                   labelText: "Email",
                   controller: _emailAddress,
                   textInputType: TextInputType.emailAddress),
@@ -198,7 +203,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           Column(
             children: <Widget>[
-              customTextField(
+              InputTextField(
                   labelText: "Mobile",
                   controller: _mobile,
                   textInputType: TextInputType.number),
