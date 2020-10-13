@@ -16,6 +16,7 @@ class Errors {
     );
   }
 
+// email already exists error
   static Widget emailExists() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -31,6 +32,7 @@ class Errors {
     );
   }
 
+// mobile does not exists error
   static Widget mobileNotExists() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
@@ -46,6 +48,7 @@ class Errors {
     );
   }
 
+// Invalid otp error
   static Widget invalidOtp() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40.0),
