@@ -122,7 +122,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // shows the otp loader till the sms mssg arrives
   _showOTPLoader() {
     if (_otpLoader)
-      return CircularProgressIndicator();
+      return Padding(
+        padding: const EdgeInsets.only(top:8.0),
+        child: CircularProgressIndicator(),
+      );
     else
       return Container();
   }
