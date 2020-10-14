@@ -94,6 +94,7 @@ class _ShowCardsState extends State<ShowCards> {
             // Hero animation on clicking any bestseller card
             Hero(
               tag: widget.sp.name,
+              transitionOnUserGestures: true,
               child: Container(
                 height: height * 0.1,
                 child: CachedNetworkImage(
