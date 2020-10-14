@@ -346,6 +346,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   /// show referral instructions with an
   /// Alert dialog
   showReferralInstructions() {
+    Navigator.pop(context);
+
     showDialog(
         context: context,
         builder: (context) {
