@@ -22,6 +22,7 @@ import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/errors/locationService.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/errors/notServing.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
@@ -270,96 +271,102 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: Stack(
-                  children: [
-                    GoogleMap(
-                      myLocationEnabled: true,
-                      zoomGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      rotateGesturesEnabled: true,
-                      zoomControlsEnabled: false,
-                      myLocationButtonEnabled: true,
-                      onMapCreated: _onMapCreated,
-                      markers: Set<Marker>.of(_markers.values),
-                      initialCameraPosition:
-                          CameraPosition(target: _center, zoom: 15.0),
-                      onTap: (pos) {},
-                      onCameraMove: (CameraPosition position) {
-                        onMapsMove(position);
-                      },
-                      onCameraIdle: () {
-                        onMapsStop(coordinates);
-                      },
-                    ),
-                    if (_loader)
-                      Container(
-                        color: Colors.white,
-                        constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height),
-                        child: Center(
-                          child: CircularProgressIndicator(),
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        return Scaffold(
+          resizeToAvoidBottomPadding: false,
+          body: SafeArea(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                          key: Key("maps"),
+                          myLocationEnabled: true,
+                          zoomGesturesEnabled: true,
+                          scrollGesturesEnabled: true,
+                          rotateGesturesEnabled: true,
+                          zoomControlsEnabled: false,
+                          myLocationButtonEnabled: true,
+                          onMapCreated: _onMapCreated,
+                          markers: Set<Marker>.of(_markers.values),
+                          initialCameraPosition:
+                              CameraPosition(target: _center, zoom: 15.0),
+                          onTap: (pos) {},
+                          onCameraMove: (CameraPosition position) {
+                            onMapsMove(position);
+                          },
+                          onCameraIdle: () {
+                            onMapsStop(coordinates);
+                          },
                         ),
-                      ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (_subLocality != "")
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.red,
-                      ),
-                    Text(
-                      _subLocality,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18.0),
+                        if (_loader)
+                          Container(
+                            color: Colors.white,
+                            constraints: BoxConstraints(
+                                maxHeight: MediaQuery.of(context).size.height),
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (_subLocality != "")
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.red,
+                          ),
+                        Text(
+                          _subLocality,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      _markerAddress,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InputTextField(
+                        labelText: "House No/Flat No:",
+                        controller: _houseno,
+                        textInputType: TextInputType.text),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: InputTextField(
+                        labelText: "Landmark:",
+                        controller: _landmark,
+                        textInputType: TextInputType.text),
+                  ),
+                  Container(
+                    child: _showFloatingActionButton(),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  _markerAddress,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InputTextField(
-                    labelText: "House No/Flat No:",
-                    controller: _houseno,
-                    textInputType: TextInputType.text),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: InputTextField(
-                    labelText: "Landmark:",
-                    controller: _landmark,
-                    textInputType: TextInputType.text),
-              ),
-              Container(
-                child: _showFloatingActionButton(),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).viewInsets.bottom,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        );
+      });
+    });
   }
 }
