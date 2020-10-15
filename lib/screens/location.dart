@@ -324,6 +324,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                   child: Stack(
                     children: [
                       GoogleMap(
+                        key: Key("maps"),
                         myLocationEnabled: true,
                         zoomGesturesEnabled: true,
                         scrollGesturesEnabled: true,

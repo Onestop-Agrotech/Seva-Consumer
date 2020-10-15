@@ -12,11 +12,7 @@ void main() {
     final landmarkText = find.text('Landmark:');
     expect(landmarkText, findsOneWidget);
 
-    // expect(
-    //     find.byIcon(
-    //         Icons.home,
-    //     ),
-    //     findsOneWidget);
+    expect(find.byKey(Key("maps")), findsOneWidget);
   });
 }
 
