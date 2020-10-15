@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.4.8
+// Date-{02-09-2020}
+
+///
+///@fileoverview Siden nav : side drawer of the app.
+///
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -57,6 +67,7 @@ class Sidenav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // main drawer
     return Drawer(
       child: Column(
         children: <Widget>[
