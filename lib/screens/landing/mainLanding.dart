@@ -15,6 +15,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
+import 'package:mvp/screens/common/sidenavbar.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 // import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
@@ -405,87 +406,15 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: SizedBox(
-        width: width * 0.5,
+          width: width * 0.5,
 
-        /// Side Drawer visible after login
-        child: Drawer(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: height * 0.15,
-                width: width * 0.5,
-                child: DrawerHeader(
-                  child:
-                      TopText(txt: _username != null ? _username : "Username"),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text('My orders'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(
-                      CupertinoPageRoute<Null>(builder: (BuildContext context) {
-                    return NewOrdersScreen();
-                  }));
-                },
-              ),
-              ListTile(
-                title: Text('Logout'),
-                onTap: () async {
-                  // clearing the data from hive
-                  await Hive.deleteFromDisk();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
-                },
-              ),
-              ListTile(
-                title: Text('Help'),
-                subtitle: Text("Reach us on whatsapp"),
-                onTap: () async {
-                  var url = DotEnv().env['MSG_URL'];
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-              ),
-              ListTile(
-                title: Text('Your referral code'),
-                subtitle: Text(_referralCode == null ? "" : _referralCode),
-                onTap: () {
-                  showReferralInstructions();
-                },
-              ),
-              ListTile(
-                title: Text('Share app'),
-                onTap: () {
-                  String msg = ''' 
-                  Order Fresh Fruits 🍎 🍐 🍊, Vegetables 🥦 🥕 🧅 and Daily Essentials 🥚 🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
-                  ''';
-                  Share.share(msg);
-                },
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: ListTile(
-                      title: Text('App version - Beta'),
-                      subtitle: Text("0.5.2+1"),
-                      onTap: null,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+          /// Side Drawer visible after login
+          child: Sidenav(
+            height: height,
+            width: width,
+            username: _username,
+            referralCode: _referralCode,
+          )),
       body: Stack(
         children: <Widget>[
           CustomPaint(

@@ -169,122 +169,126 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: Consumer<NewCartModel>(builder: (context, newCart, child) {
-          return Container(
-            width: width,
-            child: ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        final width = MediaQuery.of(context).size.width;
+        final height = MediaQuery.of(context).size.height;
+
+        return Scaffold(
+            backgroundColor: Colors.white,
+            body: Consumer<NewCartModel>(builder: (context, newCart, child) {
+              return Container(
+                width: width,
+                child: ListView(
                   children: [
-                    IconButton(
-                      iconSize: 40.0,
-                      icon: Icon(
-                        Icons.close,
-                        color: ThemeColoursSeva().pallete1,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          iconSize: 40.0,
+                          icon: Icon(
+                            Icons.close,
+                            color: ThemeColoursSeva().pallete1,
+                          ),
+                          onPressed: () => Navigator.of(context).pop(null),
+                        ),
+                      ],
+                    ),
+                    getImage(height, width),
+                    getNameAndPrice(height, width),
+                    Container(
+                      height: height * 0.4,
+                      width: width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: width * 0.33,
+                            height: height * 0.4,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: widget.p.details[0].quantity
+                                        .allowedQuantities.length,
+                                    itemBuilder: (context, index) {
+                                      return getQuantities(
+                                          "${widget.p.details[0].quantity.allowedQuantities[index].value} ${widget.p.details[0].quantity.allowedQuantities[index].metric}",
+                                          height,
+                                          newCart,
+                                          index);
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(text: "Item Total Quantity"),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _showTotalItemQty(newCart)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(
+                                    text: "Item Total Price",
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _showItemTotalPrice(newCart)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(
+                                    text: "Cart Total Price",
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _showTotalCartPrice(newCart)
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      onPressed: () => Navigator.of(context).pop(null),
+                    ),
+                    SizedBox(height: height * 0.035),
+                    Container(
+                      height: height * 0.1,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2.2,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                getImage(height, width),
-                getNameAndPrice(height, width),
-                Container(
-                  height: height * 0.4,
-                  width: width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: width * 0.33,
-                        height: height * 0.4,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: widget.p.details[0].quantity
-                                    .allowedQuantities.length,
-                                itemBuilder: (context, index) {
-                                  return getQuantities(
-                                      "${widget.p.details[0].quantity.allowedQuantities[index].value} ${widget.p.details[0].quantity.allowedQuantities[index].metric}",
-                                      height,
-                                      newCart,
-                                      index);
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(text: "Item Total Quantity"),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _showTotalItemQty(newCart)
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(
-                                text: "Item Total Price",
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _showItemTotalPrice(newCart)
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(
-                                text: "Cart Total Price",
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _showTotalCartPrice(newCart)
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: height * 0.035),
-                Container(
-                  height: height * 0.1,
-                  width: width,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: Text(
-                      "",
-                      style: TextStyle(
-                          fontSize: SizeConfig.textMultiplier * 2.2,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }));
+              );
+            }));
+      });
+    });
   }
 }
 
