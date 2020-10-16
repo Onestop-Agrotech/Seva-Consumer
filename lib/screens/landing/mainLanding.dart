@@ -185,6 +185,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           title: Text(
             "Delivery Address:",
             style: TextStyle(
@@ -342,6 +344,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text("Referral Code $_referralCode"),
             content: Text(
                 "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend"),
