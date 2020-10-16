@@ -3,8 +3,6 @@
 // (change the version and the date whenver anyone worked upon this file)
 // Version-0.5.2
 // Date-{02-10-2020}
-import 'dart:ffi';
-
 ///
 /// @fileoverview common functions file : common functions used at multiple
 ///  files.
@@ -12,6 +10,11 @@ import 'dart:ffi';
 
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:mvp/constants/themeColours.dart';
 
 class HelperFunctions {
   static void helper(int index, NewCartModel newCart, bool addToCart,
@@ -37,5 +40,40 @@ class HelperFunctions {
         ? newCart.addToCart(item: product, index: index, price: p, quantity: q)
         : newCart.removeFromCart(
             item: product, index: index, price: p, quantity: q);
+  }
+
+  // Common text widget for both bestsellers and categories
+  static Widget commonText(height, leftText, rightText, context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            leftText,
+            style: TextStyle(
+                color: ThemeColoursSeva().dkGreen,
+                fontWeight: FontWeight.w900,
+                fontSize: 2.5 * SizeConfig.textMultiplier),
+          ),
+          GestureDetector(
+            onTap: () {
+              if (leftText == "Categories")
+                Navigator.of(context).push(
+                    CupertinoPageRoute<Null>(builder: (BuildContext context) {
+                  return ProductsUINew(tagFromMain: 0);
+                }));
+            },
+            child: Text(
+              rightText,
+              style: TextStyle(
+                  color: ThemeColoursSeva().dkGreen,
+                  fontSize: 15.0,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
