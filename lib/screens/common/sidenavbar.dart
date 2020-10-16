@@ -33,6 +33,8 @@ class Sidenav extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text(
               "Referral Code $referralCode",
               style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
