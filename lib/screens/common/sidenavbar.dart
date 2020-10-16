@@ -15,6 +15,7 @@ import 'package:hive/hive.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -32,9 +33,13 @@ class Sidenav extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Referral Code $referralCode"),
+            title: Text(
+              "Referral Code $referralCode",
+              style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+            ),
             content: Text(
-                "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend"),
+                "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend",
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3)),
             actions: [
               RaisedButton(
                 onPressed: () {
@@ -56,7 +61,9 @@ class Sidenav extends StatelessWidget {
                 },
                 child: Text(
                   "Share",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: SizeConfig.widthMultiplier * 3),
                 ),
                 color: ThemeColoursSeva().dkGreen,
               ),
@@ -77,7 +84,7 @@ class Sidenav extends StatelessWidget {
               height: 50,
               decoration: BoxDecoration(color: ThemeColoursSeva().borderColor),
               child: Padding(
-                padding: const EdgeInsets.only(left: 14.0, right: 14.0),
+                padding: const EdgeInsets.only(left: 15.0, right: 14.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -86,9 +93,14 @@ class Sidenav extends StatelessWidget {
                         Icon(
                           Icons.home,
                           color: Colors.green,
-                          size: 20.0,
+                          size: SizeConfig.widthMultiplier * 4.3,
                         ),
-                        Text("Home")
+                        SizedBox(width: 8.0),
+                        Text(
+                          "Home",
+                          style: TextStyle(
+                              fontSize: SizeConfig.widthMultiplier * 3),
+                        )
                       ],
                     ),
                     Text("Seva")
@@ -100,14 +112,17 @@ class Sidenav extends StatelessWidget {
                 title: Row(
               children: [
                 Icon(
-                  Icons.supervised_user_circle,
+                  Icons.account_circle,
+                  size: SizeConfig.widthMultiplier * 4.3,
                 ),
                 SizedBox(
-                  width: 5,
+                  width: 8.0,
                 ),
                 Text(
                   username != null ? username : "Username",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.widthMultiplier * 3),
                 ),
               ],
             )),
@@ -115,9 +130,14 @@ class Sidenav extends StatelessWidget {
               title: Row(
                 children: [
                   Icon(
-                    Icons.free_breakfast,
+                    Icons.article,
+                    size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  Text('My orders'),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'My orders',
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                  ),
                 ],
               ),
               onTap: () {
@@ -133,8 +153,13 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.logout,
+                    size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  Text('Logout'),
+                  SizedBox(width: 8),
+                  Text(
+                    'Logout',
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                  ),
                 ],
               ),
               onTap: () async {
@@ -149,11 +174,19 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.help,
+                    size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  Text('Help'),
+                  SizedBox(width: 8),
+                  Text(
+                    'Help',
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                  ),
                 ],
               ),
-              subtitle: Text("Reach us on whatsapp"),
+              subtitle: Text(
+                "Reach us on whatsapp",
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 2.3),
+              ),
               onTap: () async {
                 var url = DotEnv().env['MSG_URL'];
                 if (await canLaunch(url)) {
@@ -168,11 +201,19 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.supervised_user_circle,
+                    size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  Text('Your referral code'),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'Referral code',
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                  ),
                 ],
               ),
-              subtitle: Text(referralCode == null ? "" : referralCode),
+              subtitle: Text(
+                referralCode == null ? "" : referralCode,
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+              ),
               onTap: () {
                 showReferralInstructions(context);
               },
@@ -182,8 +223,13 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.share,
+                    size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  Text('Share app'),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'Share app',
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                  ),
                 ],
               ),
               onTap: () {
