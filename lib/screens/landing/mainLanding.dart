@@ -562,7 +562,13 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         builder: (context, state) {
                           if (state is BestSellersInitial ||
                               state is BestSellersLoading) {
-                            return _shimmerLayout(height, width);
+                            return Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey[300],
+                              child: Container(
+                                child: _shimmerLayout(height, width),
+                              ),
+                            );
                           } else if (state is BestSellersLoaded) {
                             List<StoreProduct> arr = state.bestsellers;
                             arr.sort((a, b) => a.name.compareTo(b.name));
