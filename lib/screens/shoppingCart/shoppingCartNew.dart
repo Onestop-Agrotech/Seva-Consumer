@@ -309,6 +309,8 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text("Remove all items ?"),
             content: Text("All items will be removed from the cart"),
             actions: [
