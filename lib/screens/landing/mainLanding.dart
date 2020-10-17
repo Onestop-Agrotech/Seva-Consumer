@@ -11,7 +11,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
@@ -38,6 +41,7 @@ class MainLandingScreen extends StatefulWidget {
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  BestsellersBloc apiBloc;
   //Todo: Screen Visible after login
 
   // This Array is populated by the data that is visible on
@@ -63,6 +67,15 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   int _current = 0;
   String _mobileNumber;
   String _referralCode;
+
+  /// safer way to intialise the bloc
+  /// and also dispose it properly
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    apiBloc = BlocProvider.of<BestsellersBloc>(context);
+    apiBloc.add(GetBestSellers());
+  }
 
   @override
   void setState(fn) {
@@ -394,6 +407,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider(
+      create: (BuildContext context) =>
+          BestsellersBloc(BestSellerRepositoryImpl()),
+    );
     // height and width if the device
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -541,30 +558,24 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       ),
                       commonText(height, "Best Sellers", ""),
                       SizedBox(height: 9.0),
-
-                      /// Getting the best sellers of the
-                      /// particular hub
-                      FutureBuilder(
-                          future: _fetchBestSellers(),
-                          builder: (builder, snapshot) {
-                            if (snapshot.hasData) {
-                              List<StoreProduct> bestSellers = snapshot.data;
-                              if (bestSellers.length > 0) {
-                                return commonWidget(height, bestSellers, true);
-                              } else
-                                return Container(
-                                  child:
-                                      Center(child: Text("No products found!")),
-                                );
-                            }
-                            return Shimmer.fromColors(
-                              highlightColor: Colors.white,
-                              baseColor: Colors.grey[300],
-                              child: Container(
-                                child: _shimmerLayout(height, width),
-                              ),
+                      BlocBuilder<BestsellersBloc, BestsellersState>(
+                        builder: (context, state) {
+                          if (state is BestSellersInitial ||
+                              state is BestSellersLoading) {
+                            return _shimmerLayout(height, width);
+                          } else if (state is BestSellersLoaded) {
+                            List<StoreProduct> arr = state.bestsellers;
+                            arr.sort((a, b) => a.name.compareTo(b.name));
+                            return commonWidget(height, arr, true);
+                          } else if (state is BestSellersError) {
+                            return Text(state.msg);
+                          } else
+                            return Container(
+                              child: Center(child: Text("No products found!")),
                             );
-                          }),
+                          ;
+                        },
+                      ),
                       commonText(height, "Categories", "SEE ALL"),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
