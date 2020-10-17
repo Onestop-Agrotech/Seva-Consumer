@@ -293,7 +293,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontWeight: FontWeight.w900,
-                fontSize: 2.5 * SizeConfig.textMultiplier),
+                fontSize: 2.3 * SizeConfig.textMultiplier),
           ),
           GestureDetector(
             onTap: () {
@@ -441,7 +441,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             "Welcome",
                             style: TextStyle(
                                 color: ThemeColoursSeva().dkGreen,
-                                fontSize: 3.70 * SizeConfig.textMultiplier,
+                                fontSize: 3.30 * SizeConfig.textMultiplier,
                                 fontWeight: FontWeight.bold),
                           ),
                           Row(
@@ -468,7 +468,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               style: TextStyle(
                                   color: ThemeColoursSeva().dkGreen,
                                   fontWeight: FontWeight.w900,
-                                  fontSize: 2.9 * SizeConfig.textMultiplier),
+                                  fontSize: 2.7 * SizeConfig.textMultiplier),
                             ),
                           ),
                         ],
