@@ -105,7 +105,12 @@ class Sidenav extends StatelessWidget {
                         )
                       ],
                     ),
-                    Text("Seva")
+                    Text(
+                      "Seva",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -115,6 +120,7 @@ class Sidenav extends StatelessWidget {
               children: [
                 Icon(
                   Icons.account_circle,
+                  color: Colors.green,
                   size: SizeConfig.widthMultiplier * 4.3,
                 ),
                 SizedBox(
@@ -122,9 +128,7 @@ class Sidenav extends StatelessWidget {
                 ),
                 Text(
                   username != null ? username : "Username",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: SizeConfig.widthMultiplier * 3),
+                  style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
                 ),
               ],
             )),
@@ -133,6 +137,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.article,
+                    color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
@@ -155,6 +160,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.logout,
+                    color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8),
@@ -177,6 +183,7 @@ class Sidenav extends StatelessWidget {
                   Icon(
                     Icons.help,
                     size: SizeConfig.widthMultiplier * 4.3,
+                    color: Colors.green,
                   ),
                   SizedBox(width: 8),
                   Text(
@@ -203,6 +210,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.supervised_user_circle,
+                    color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
@@ -225,6 +233,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.share,
+                    color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
