@@ -36,11 +36,11 @@ class Sidenav extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text(
               "Referral Code $referralCode",
-              style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+              style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
             ),
             content: Text(
                 "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend",
-                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3)),
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65)),
             actions: [
               RaisedButton(
                 onPressed: () {
@@ -64,7 +64,7 @@ class Sidenav extends StatelessWidget {
                   "Share",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: SizeConfig.widthMultiplier * 3),
+                      fontSize: SizeConfig.widthMultiplier * 3.65),
                 ),
                 color: ThemeColoursSeva().dkGreen,
               ),
@@ -100,7 +100,7 @@ class Sidenav extends StatelessWidget {
                         Text(
                           "Home",
                           style: TextStyle(
-                              fontSize: SizeConfig.widthMultiplier * 3),
+                              fontSize: SizeConfig.widthMultiplier * 3.65),
                         )
                       ],
                     ),
@@ -127,7 +127,7 @@ class Sidenav extends StatelessWidget {
                 ),
                 Text(
                   username != null ? username : "Username",
-                  style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                  style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                 ),
               ],
             )),
@@ -142,7 +142,7 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text(
                     'My orders',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -165,7 +165,7 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     'Logout',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -187,7 +187,7 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     'Help',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -215,13 +215,13 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text(
                     'Referral code',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
               subtitle: Text(
                 referralCode == null ? "" : referralCode,
-                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
               ),
               onTap: () {
                 showReferralInstructions(context);
@@ -238,7 +238,7 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text(
                     'Share app',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3),
+                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
