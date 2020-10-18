@@ -144,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             _loading = false;
           });
         } else if (response.statusCode == 401) {
-          // user email already exists
+          // user mobile already exists
           setState(() {
             _index = 1;
             _notValidMobile = true;
@@ -160,6 +160,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
       }
     } else {
+      if (_mobile.text.isEmpty) {
+        return _index = 1;
+      }
       setState(() {
         _index = 0;
       });
