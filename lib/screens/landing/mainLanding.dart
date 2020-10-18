@@ -16,6 +16,7 @@ import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
+import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:share/share.dart';
@@ -278,41 +279,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-// Common text widget for both bestsellers and categories
-  Widget commonText(height, leftText, rightText) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            leftText,
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontWeight: FontWeight.w900,
-                fontSize: 2.3 * SizeConfig.textMultiplier),
-          ),
-          GestureDetector(
-            onTap: () {
-              if (leftText == "Categories")
-                Navigator.of(context).push(
-                    CupertinoPageRoute<Null>(builder: (BuildContext context) {
-                  return ProductsUINew(tagFromMain: 0);
-                }));
-            },
-            child: Text(
-              rightText,
-              style: TextStyle(
-                  color: ThemeColoursSeva().dkGreen,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
 // shimmer layout before page loads
   _shimmerLayout(height, width) {
     return Padding(
@@ -540,7 +506,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           ],
                         ),
                       ),
-                      commonText(height, "Best Sellers", ""),
+                      HelperFunctions.commonText(
+                          height, "Best Sellers", "", context),
                       SizedBox(height: 9.0),
                       BlocBuilder<BestsellersBloc, BestsellersState>(
                         builder: (context, state) {
@@ -565,7 +532,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             );
                         },
                       ),
-                      commonText(height, "Categories", "SEE ALL"),
+                      HelperFunctions.commonText(
+                          height, "Categories", "", "SEE ALL"),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
                       SizedBox(height: 9.0)
