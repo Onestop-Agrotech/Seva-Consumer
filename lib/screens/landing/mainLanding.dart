@@ -176,22 +176,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
-  // fetches the best selling products for a particular hub
-  Future<List<StoreProduct>> _fetchBestSellers() async {
-    final p = await Preferences.getInstance();
-    String token = await p.getData("token");
-    String hub = await p.getData("hub");
-
-    Map<String, String> requestHeaders = {'x-auth-token': token};
-    String url = APIService.getBestSellers(hub);
-    var response = await http.get(url, headers: requestHeaders);
-    if (response.statusCode == 200) {
-      return jsonToStoreProductModel(response.body);
-    } else {
-      throw Exception('something is wrong');
-    }
-  }
-
   //This function shows the user's address in a dialog box
   // and the user can edit the address from their also
   _showLocation() {
@@ -546,7 +530,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             return Container(
                               child: Center(child: Text("No products found!")),
                             );
-                          
                         },
                       ),
                       HelperFunctions.commonText(

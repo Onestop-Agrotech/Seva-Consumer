@@ -58,6 +58,7 @@ class CIBox {
       aquantity.id = aq.id;
       aquantity.value = aq.value;
       aquantity.metric = aq.metric;
+      if (aq.qty > 1) aq.qty = 1;
       aquantity.qty = aq.qty;
       aList.add(aquantity);
     });
@@ -78,6 +79,9 @@ class CIBox {
   /// Remove the product from the Cart Items Box
   ///
   Future<void> removeFromCIBox(StoreProduct a) {
+    a.details[0].quantity.allowedQuantities.forEach((z) {
+      z.qty = 0;
+    });
     StoreProduct product = _box.get(a.id);
     product.totalPrice = 0;
     product.totalQuantity = 0;
@@ -113,7 +117,7 @@ class CIBox {
     if (product.details[0].quantity.allowedQuantities[index].qty - 1 >= 0) {
       product.totalPrice -= totalPrice;
       product.totalQuantity -= totalQuantity;
-      product.details[0].quantity.allowedQuantities[index].qty -= 1;
+      product.details[0].quantity.allowedQuantities[index].qty--;
     }
   }
 
