@@ -114,17 +114,17 @@ class NewCartModel extends ChangeNotifier {
   /// Version 0.5.2+1
   ///
   Future<void> removeFromCart(
-
       {StoreProduct item, int index, double price, double quantity}) async {
     _ciBox = await CIBox.getCIBoxInstance();
     if (_cartItems.length > 0) {
       print("in first if");
+
       /// find the item
       ///
       StoreProduct sp =
           _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
       if (sp != null) {
-              print("in 2 if");
+        print("in 2 if");
 
         // item exists in cart
         if (sp.totalPrice - price == 0 && sp.totalQuantity - quantity == 0) {

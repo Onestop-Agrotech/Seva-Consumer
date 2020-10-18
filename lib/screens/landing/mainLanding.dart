@@ -18,7 +18,6 @@ import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
-import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

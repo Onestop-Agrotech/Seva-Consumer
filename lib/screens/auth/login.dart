@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _showOTPLoader() {
     if (_otpLoader)
       return Padding(
-        padding: const EdgeInsets.only(top:8.0),
+        padding: const EdgeInsets.only(top: 8.0),
         child: CircularProgressIndicator(),
       );
     else
