@@ -19,6 +19,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
+import 'package:mvp/screens/errors/errorfile.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
@@ -121,7 +122,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // shows the otp loader till the sms mssg arrives
   _showOTPLoader() {
     if (_otpLoader)
-      return CircularProgressIndicator();
+      return Padding(
+        padding: const EdgeInsets.only(top:8.0),
+        child: CircularProgressIndicator(),
+      );
     else
       return Container();
   }
@@ -164,10 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // error check for invalid mobile
   _showInvalidMobile() {
     if (_inavlidMobile)
-      return Text(
-        'Mobile number not registered!',
-        style: TextStyle(color: Colors.red),
-      );
+      return Errors.mobileNotExists();
     else
       return Container();
   }
@@ -175,10 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // error check for invalid otp
   _showInvalidOTP() {
     if (_invalidOTP)
-      return Text(
-        'Incorrect OTP!',
-        style: TextStyle(color: Colors.red),
-      );
+      return Errors.invalidOtp();
     else
       return Container();
   }
