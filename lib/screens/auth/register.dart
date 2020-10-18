@@ -123,11 +123,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           _loading = true;
         });
         String getJson = userModelRegister(user);
-        print(getJson);
         String url = APIService.registerAPI;
         Map<String, String> headers = {"Content-Type": "application/json"};
         var response = await http.post(url, body: getJson, headers: headers);
-        print(response.statusCode);
         if (response.statusCode == 200) {
           Navigator.push(
               context,

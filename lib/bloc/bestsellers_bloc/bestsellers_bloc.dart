@@ -28,7 +28,6 @@ class BestsellersBloc extends Bloc<BestsellersEvent, BestsellersState> {
     } on UnauthorisedException {
       yield* _exceptionHandler(func);
     } catch (err) {
-      print(err);
       yield BestSellersError(err.toString());
     }
   }

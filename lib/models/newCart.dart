@@ -76,7 +76,6 @@ class NewCartModel extends ChangeNotifier {
       {StoreProduct item, int index, double price, double quantity}) async {
     _ciBox = await CIBox.getCIBoxInstance();
     if (_cartItems.length == 0) {
-      print(item.details[0].quantity.allowedQuantities[index].qty);
       // add to cart as newx
       item.totalPrice = price;
       item.totalQuantity = quantity;
@@ -84,7 +83,6 @@ class NewCartModel extends ChangeNotifier {
       _ciBox.addToCIBox(item);
       cartItemsRefill(_ciBox);
     } else {
-      print("in else");
       // items exist in cart
 
       // check if the item exists in cart
@@ -117,15 +115,11 @@ class NewCartModel extends ChangeNotifier {
       {StoreProduct item, int index, double price, double quantity}) async {
     _ciBox = await CIBox.getCIBoxInstance();
     if (_cartItems.length > 0) {
-      print("in first if");
-
       /// find the item
       ///
       StoreProduct sp =
           _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
       if (sp != null) {
-        print("in 2 if");
-
         // item exists in cart
         if (sp.totalPrice - price == 0 && sp.totalQuantity - quantity == 0) {
           // remove from Hive & cart completely

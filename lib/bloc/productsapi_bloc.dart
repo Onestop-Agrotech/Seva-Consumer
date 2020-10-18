@@ -34,7 +34,6 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
     } on UnauthorisedException {
       yield* _exceptionHandler(func);
     } catch (err) {
-      print(err);
       yield ProductsapiError(err.toString());
     }
   }
