@@ -142,7 +142,8 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text(
                     'My orders',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -165,7 +166,8 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     'Logout',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -187,7 +189,8 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8),
                   Text(
                     'Help',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -215,7 +218,8 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text(
                     'Referral code',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -238,7 +242,8 @@ class Sidenav extends StatelessWidget {
                   SizedBox(width: 8.0),
                   Text(
                     'Share app',
-                    style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
@@ -256,7 +261,7 @@ class Sidenav extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text('App version - Beta'),
-                    subtitle: Text("0.5.2+1"),
+                    subtitle: Text("0.5.2+2"),
                     onTap: null,
                   ),
                 ),

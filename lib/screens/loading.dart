@@ -153,12 +153,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
-  _checkForCartItemsInHive(NewCartModel cart) async{
+  _checkForCartItemsInHive(NewCartModel cart) async {
     _ciBox = await CIBox.getCIBoxInstance();
     List<StoreProduct> li = _ciBox.getAllItems();
-    if(li.length>0 && cart.totalItems == 0){
+    if (li.length > 0 && cart.totalItems == 0) {
       cart.cartItemsRefill(_ciBox);
-    } 
+    }
   }
 
   @override
