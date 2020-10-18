@@ -53,6 +53,8 @@ class _AnimatedCardState extends State<AnimatedCard>
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text("Remove item ?"),
             content:
                 Text("${widget.product.name} will be removed from your cart."),

@@ -11,13 +11,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/common_functions.dart';
-import 'package:mvp/screens/orders/ordersScreen.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,15 +27,12 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
-import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
-// import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-
 import 'graphics/lightBG.dart';
 
 class MainLandingScreen extends StatefulWidget {
@@ -44,6 +42,7 @@ class MainLandingScreen extends StatefulWidget {
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  BestsellersBloc apiBloc;
   //Todo: Screen Visible after login
 
   // This Array is populated by the data that is visible on
@@ -69,6 +68,15 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   int _current = 0;
   String _mobileNumber;
   String _referralCode;
+
+  /// safer way to intialise the bloc
+  /// and also dispose it properly
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    apiBloc = BlocProvider.of<BestsellersBloc>(context);
+    apiBloc.add(GetBestSellers());
+  }
 
   @override
   void setState(fn) {
@@ -191,6 +199,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           title: Text(
             "Delivery Address:",
             style: TextStyle(
@@ -285,41 +295,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-// // Common text widget for both bestsellers and categories
-//   Widget commonText(height, leftText, rightText) {
-//     return Padding(
-//       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: <Widget>[
-//           Text(
-//             leftText,
-//             style: TextStyle(
-//                 color: ThemeColoursSeva().dkGreen,
-//                 fontWeight: FontWeight.w900,
-//                 fontSize: 2.5 * SizeConfig.textMultiplier),
-//           ),
-//           GestureDetector(
-//             onTap: () {
-//               if (leftText == "Categories")
-//                 Navigator.of(context).push(
-//                     CupertinoPageRoute<Null>(builder: (BuildContext context) {
-//                   return ProductsUINew(tagFromMain: 0);
-//                 }));
-//             },
-//             child: Text(
-//               rightText,
-//               style: TextStyle(
-//                   color: ThemeColoursSeva().dkGreen,
-//                   fontSize: 15.0,
-//                   fontWeight: FontWeight.w600),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
 // shimmer layout before page loads
   _shimmerLayout(height, width) {
     return Padding(
@@ -348,6 +323,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text("Referral Code $_referralCode"),
             content: Text(
                 "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend"),
@@ -396,6 +373,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider(
+      create: (BuildContext context) =>
+          BestsellersBloc(BestSellerRepositoryImpl()),
+    );
     // height and width if the device
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -403,87 +384,15 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       drawer: SizedBox(
-        width: width * 0.5,
+          width: width * 0.5,
 
-        /// Side Drawer visible after login
-        child: Drawer(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: height * 0.15,
-                width: width * 0.5,
-                child: DrawerHeader(
-                  child:
-                      TopText(txt: _username != null ? _username : "Username"),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text('My orders'),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(
-                      CupertinoPageRoute<Null>(builder: (BuildContext context) {
-                    return NewOrdersScreen();
-                  }));
-                },
-              ),
-              ListTile(
-                title: Text('Logout'),
-                onTap: () async {
-                  // clearing the data from hive
-                  await Hive.deleteFromDisk();
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/login', (Route<dynamic> route) => false);
-                },
-              ),
-              ListTile(
-                title: Text('Help'),
-                subtitle: Text("Reach us on whatsapp"),
-                onTap: () async {
-                  var url = DotEnv().env['MSG_URL'];
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-              ),
-              ListTile(
-                title: Text('Your referral code'),
-                subtitle: Text(_referralCode == null ? "" : _referralCode),
-                onTap: () {
-                  showReferralInstructions();
-                },
-              ),
-              ListTile(
-                title: Text('Share app'),
-                onTap: () {
-                  String msg = ''' 
-                  Order Fresh Fruits 🍎 🍐 🍊, Vegetables 🥦 🥕 🧅 and Daily Essentials 🥚 🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
-                  ''';
-                  Share.share(msg);
-                },
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: ListTile(
-                      title: Text('App version - Beta'),
-                      subtitle: Text("0.5.2+1"),
-                      onTap: null,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+          /// Side Drawer visible after login
+          child: Sidenav(
+            height: height,
+            width: width,
+            username: _username,
+            referralCode: _referralCode,
+          )),
       body: Stack(
         children: <Widget>[
           CustomPaint(
@@ -515,7 +424,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             "Welcome",
                             style: TextStyle(
                                 color: ThemeColoursSeva().dkGreen,
-                                fontSize: 3.70 * SizeConfig.textMultiplier,
+                                fontSize: 3.30 * SizeConfig.textMultiplier,
                                 fontWeight: FontWeight.bold),
                           ),
                           Row(
@@ -542,7 +451,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               style: TextStyle(
                                   color: ThemeColoursSeva().dkGreen,
                                   fontWeight: FontWeight.w900,
-                                  fontSize: 2.9 * SizeConfig.textMultiplier),
+                                  fontSize: 2.7 * SizeConfig.textMultiplier),
                             ),
                           ),
                         ],
@@ -616,22 +525,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                       HelperFunctions.commonText(
                           height, "Best Sellers", "", context),
                       SizedBox(height: 9.0),
-
-                      /// Getting the best sellers of the
-                      /// particular hub
-                      FutureBuilder(
-                          future: _fetchBestSellers(),
-                          builder: (builder, snapshot) {
-                            if (snapshot.hasData) {
-                              List<StoreProduct> bestSellers = snapshot.data;
-                              if (bestSellers.length > 0) {
-                                return commonWidget(height, bestSellers, true);
-                              } else
-                                return Container(
-                                  child:
-                                      Center(child: Text("No products found!")),
-                                );
-                            }
+                      BlocBuilder<BestsellersBloc, BestsellersState>(
+                        builder: (context, state) {
+                          if (state is BestSellersInitial ||
+                              state is BestSellersLoading) {
                             return Shimmer.fromColors(
                               highlightColor: Colors.white,
                               baseColor: Colors.grey[300],
@@ -639,9 +536,21 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 child: _shimmerLayout(height, width),
                               ),
                             );
-                          }),
+                          } else if (state is BestSellersLoaded) {
+                            List<StoreProduct> arr = state.bestsellers;
+                            arr.sort((a, b) => a.name.compareTo(b.name));
+                            return commonWidget(height, arr, true);
+                          } else if (state is BestSellersError) {
+                            return Text(state.msg);
+                          } else
+                            return Container(
+                              child: Center(child: Text("No products found!")),
+                            );
+                          
+                        },
+                      ),
                       HelperFunctions.commonText(
-                          height, "Categories", "SEE ALL", context),
+                          height, "Categories", "", "SEE ALL"),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
                       SizedBox(height: 9.0)
