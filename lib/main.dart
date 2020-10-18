@@ -14,7 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
+import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -82,6 +84,10 @@ class _SevaAppState extends State<SevaApp> {
         BlocProvider(
           create: (BuildContext context) =>
               ProductsapiBloc(ProductRepositoryImpl()),
+        ),
+        BlocProvider(
+          create: (BuildContext context) =>
+              BestsellersBloc(BestSellerRepositoryImpl()),
         ),
       ],
       child: LayoutBuilder(

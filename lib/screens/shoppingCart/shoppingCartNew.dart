@@ -174,7 +174,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                         Consumer<NewCartModel>(
                           builder: (context, newCart, child) {
                             return Text(
-                              "Rs ${newCart.getCartTotalPrice()}",
+                              "₹ ${newCart.getCartTotalPrice()}",
                               style: TextStyle(
                                   fontSize: SizeConfig.textMultiplier * 2.5),
                             );
@@ -190,7 +190,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                                   style: TextStyle(
                                       fontSize:
                                           SizeConfig.textMultiplier * 2.5)),
-                              Text("Rs 0",
+                              Text("₹ 0",
                                   style: TextStyle(
                                     fontSize: SizeConfig.textMultiplier * 2.5,
                                   ))
@@ -208,7 +208,7 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
                               Consumer<NewCartModel>(
                                 builder: (context, newCart, child) {
                                   return Text(
-                                    "Rs ${newCart.getCartTotalPrice()}",
+                                    "₹ ${newCart.getCartTotalPrice()}",
                                     style: TextStyle(
                                         fontSize:
                                             SizeConfig.textMultiplier * 2.5),
@@ -309,6 +309,8 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text("Remove all items ?"),
             content: Text("All items will be removed from the cart"),
             actions: [

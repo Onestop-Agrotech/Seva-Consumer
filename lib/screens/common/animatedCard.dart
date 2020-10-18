@@ -7,13 +7,13 @@
 ///
 /// @fileoverview AnimateCard Modal : common product card.
 ///
-
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
@@ -42,52 +42,6 @@ class _AnimatedCardState extends State<AnimatedCard>
         AnimationController(vsync: this, duration: Duration(milliseconds: 350));
   }
 
-  void helper(int index, NewCartModel newCart, bool addToCart) {
-    double p, q;
-
-    // Kg, Kgs, Gms, Pc - Types of Quantities
-
-    // For Kg & Pc
-
-    if (widget.product.details[0].quantity.allowedQuantities[index].metric ==
-        "Kg") {
-      q = 1;
-      p = double.parse("${widget.product.details[0].price}");
-    }
-    // For Gms && ML
-    else if (widget
-                .product.details[0].quantity.allowedQuantities[index].metric ==
-            "Gms" ||
-        widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "ML") {
-      q = (widget.product.details[0].quantity.allowedQuantities[index].value /
-          1000.0);
-      p = (widget.product.details[0].quantity.allowedQuantities[index].value /
-              1000.0) *
-          widget.product.details[0].price;
-    }
-    // For Pc, Pack, Kgs & Ltr
-    else if (widget
-                .product.details[0].quantity.allowedQuantities[index].metric ==
-            "Pc" ||
-        widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "Kgs" ||
-        widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "Ltr" ||
-        widget.product.details[0].quantity.allowedQuantities[index].metric ==
-            "Pack") {
-      q = double.parse(
-          "${widget.product.details[0].quantity.allowedQuantities[index].value}");
-      p = widget.product.details[0].price * q;
-    }
-
-    addToCart
-        ? newCart.addToCart(
-            item: widget.product, index: index, price: p, quantity: q)
-        : newCart.removeFromCart(
-            item: widget.product, index: index, price: p, quantity: q);
-  }
-
   // animation toggler
   void toggle() => animationController.isDismissed
       ? animationController.forward()
@@ -99,6 +53,8 @@ class _AnimatedCardState extends State<AnimatedCard>
         context: context,
         builder: (context) {
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text("Remove item ?"),
             content:
                 Text("${widget.product.name} will be removed from your cart."),
@@ -227,8 +183,8 @@ class _AnimatedCardState extends State<AnimatedCard>
                           !this.widget.product.details[0].outOfStock
                               ? Text(
                                   !this.widget.shopping
-                                      ? "Rs ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
-                                      : "Rs ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
+                                      ? "₹ ${this.widget.product.details[0].price} - ${this.widget.product.details[0].quantity.quantityValue} ${this.widget.product.details[0].quantity.quantityMetric}"
+                                      : "₹ ${this.widget.product.totalPrice} - ${this.widget.product.totalQuantity.toStringAsFixed(2)} ${this.widget.product.details[0].quantity.quantityMetric}",
                                   overflow: TextOverflow.clip,
                                   style: TextStyle(
                                       color: ThemeColoursSeva().pallete1,
@@ -317,8 +273,23 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                           child: Icon(
                                                               Icons.remove),
                                                           onTap: () {
-                                                            helper(i, newCart,
-                                                                false);
+                                                            HelperFunctions.helper(
+                                                                i,
+                                                                newCart,
+                                                                false,
+                                                                widget.product,
+                                                                widget
+                                                                    .product
+                                                                    .details[0]
+                                                                    .quantity
+                                                                    .quantityMetric,
+                                                                widget
+                                                                    .product
+                                                                    .details[0]
+                                                                    .quantity
+                                                                    .allowedQuantities[
+                                                                        i]
+                                                                    .metric);
                                                           },
                                                         ),
                                                         SizedBox(width: 5.0),
@@ -329,8 +300,26 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                             child:
                                                                 Icon(Icons.add),
                                                             onTap: () {
-                                                              helper(i, newCart,
-                                                                  true);
+                                                              HelperFunctions.helper(
+                                                                  i,
+                                                                  newCart,
+                                                                  true,
+                                                                  widget
+                                                                      .product,
+                                                                  widget
+                                                                      .product
+                                                                      .details[
+                                                                          0]
+                                                                      .quantity
+                                                                      .quantityMetric,
+                                                                  widget
+                                                                      .product
+                                                                      .details[
+                                                                          0]
+                                                                      .quantity
+                                                                      .allowedQuantities[
+                                                                          i]
+                                                                      .metric);
                                                             }),
                                                       ],
                                                     ),

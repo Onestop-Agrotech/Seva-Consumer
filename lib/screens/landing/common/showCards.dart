@@ -94,6 +94,7 @@ class _ShowCardsState extends State<ShowCards> {
             // Hero animation on clicking any bestseller card
             Hero(
               tag: widget.sp.name,
+              transitionOnUserGestures: true,
               child: Container(
                 height: height * 0.1,
                 child: CachedNetworkImage(
@@ -107,7 +108,7 @@ class _ShowCardsState extends State<ShowCards> {
             widget.store
                 ? Text(
                     !this.widget.sp.details[0].outOfStock
-                        ? "Rs ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
+                        ? "₹ ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
                         : "Out of Stock",
                     overflow: TextOverflow.clip,
                     style: TextStyle(

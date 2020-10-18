@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
+import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class _ProductDetailsState extends State<ProductDetails> {
       }
     });
     return Text(
-      "Rs $price",
+      "₹ $price",
       style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
@@ -57,7 +58,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     double price;
     price = newCart.getCartTotalPrice();
     return Text(
-      "Rs $price",
+      "₹ $price",
       style: TextStyle(
           fontWeight: FontWeight.w700,
           fontSize: SizeConfig.textMultiplier * 2.1,
@@ -76,46 +77,6 @@ class _ProductDetailsState extends State<ProductDetails> {
     return Text("$qty");
   }
 
-  void helper(int index, NewCartModel newCart, bool addToCart) {
-    double p, q;
-
-    // Kg, Kgs, Gms, Pc - Types of Quantities
-
-    // For Kg & Pc
-
-    if (widget.p.details[0].quantity.allowedQuantities[index].metric == "Kg") {
-      q = 1;
-      p = double.parse("${widget.p.details[0].price}");
-    }
-    // For Gms && ML
-    else if (widget.p.details[0].quantity.allowedQuantities[index].metric ==
-            "Gms" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric == "ML") {
-      q = (widget.p.details[0].quantity.allowedQuantities[index].value /
-          1000.0);
-      p = (widget.p.details[0].quantity.allowedQuantities[index].value /
-              1000.0) *
-          widget.p.details[0].price;
-    }
-    // For Pc, Pack, Kgs & Ltr
-    else if (widget.p.details[0].quantity.allowedQuantities[index].metric ==
-            "Pc" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric == "Kgs" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric == "Ltr" ||
-        widget.p.details[0].quantity.allowedQuantities[index].metric ==
-            "Pack") {
-      q = double.parse(
-          "${widget.p.details[0].quantity.allowedQuantities[index].value}");
-      p = widget.p.details[0].price * q;
-    }
-
-    //
-    addToCart
-        ? newCart.addToCart(item: widget.p, index: index, price: p, quantity: q)
-        : newCart.removeFromCart(
-            item: widget.p, index: index, price: p, quantity: q);
-  }
-
   //it will get the name and the price of that product.
   Widget getNameAndPrice(height, width) {
     return Container(
@@ -132,7 +93,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 color: ThemeColoursSeva().pallete1),
           ),
           Text(
-              "Rs ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
+              "₹ ${widget.p.details[0].price} per ${widget.p.details[0].quantity.quantityMetric}",
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: SizeConfig.textMultiplier * 2,
@@ -176,7 +137,14 @@ class _ProductDetailsState extends State<ProductDetails> {
             children: [
               GestureDetector(
                 onTap: () {
-                  helper(index, newCart, false);
+                  HelperFunctions.helper(
+                      index,
+                      newCart,
+                      false,
+                      widget.p,
+                      widget.p.details[0].quantity.quantityMetric,
+                      widget.p.details[0].quantity.allowedQuantities[index]
+                          .metric);
                 },
                 child: Container(
                     width: SizeConfig.widthMultiplier * 8,
@@ -190,7 +158,14 @@ class _ProductDetailsState extends State<ProductDetails> {
               _showQ(newCart, widget.p, index),
               GestureDetector(
                 onTap: () {
-                  helper(index, newCart, true);
+                  HelperFunctions.helper(
+                      index,
+                      newCart,
+                      true,
+                      widget.p,
+                      widget.p.details[0].quantity.quantityMetric,
+                      widget.p.details[0].quantity.allowedQuantities[index]
+                          .metric);
                 },
                 child: Container(
                     width: SizeConfig.widthMultiplier * 8,
@@ -208,122 +183,126 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: Consumer<NewCartModel>(builder: (context, newCart, child) {
-          return Container(
-            width: width,
-            child: ListView(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        final width = MediaQuery.of(context).size.width;
+        final height = MediaQuery.of(context).size.height;
+
+        return Scaffold(
+            backgroundColor: Colors.white,
+            body: Consumer<NewCartModel>(builder: (context, newCart, child) {
+              return Container(
+                width: width,
+                child: ListView(
                   children: [
-                    IconButton(
-                      iconSize: 40.0,
-                      icon: Icon(
-                        Icons.close,
-                        color: ThemeColoursSeva().pallete1,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          iconSize: 40.0,
+                          icon: Icon(
+                            Icons.close,
+                            color: ThemeColoursSeva().pallete1,
+                          ),
+                          onPressed: () => Navigator.of(context).pop(null),
+                        ),
+                      ],
+                    ),
+                    getImage(height, width),
+                    getNameAndPrice(height, width),
+                    Container(
+                      height: height * 0.4,
+                      width: width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            width: width * 0.33,
+                            height: height * 0.4,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: widget.p.details[0].quantity
+                                        .allowedQuantities.length,
+                                    itemBuilder: (context, index) {
+                                      return getQuantities(
+                                          "${widget.p.details[0].quantity.allowedQuantities[index].value} ${widget.p.details[0].quantity.allowedQuantities[index].metric}",
+                                          height,
+                                          newCart,
+                                          index);
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(text: "Item Total Quantity"),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _showTotalItemQty(newCart)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(
+                                    text: "Item Total Price",
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _showItemTotalPrice(newCart)
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  HeaderText(
+                                    text: "Cart Total Price",
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  _showTotalCartPrice(newCart)
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      onPressed: () => Navigator.of(context).pop(null),
+                    ),
+                    SizedBox(height: height * 0.035),
+                    Container(
+                      height: height * 0.1,
+                      width: width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                        child: Text(
+                          "",
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2.2,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                getImage(height, width),
-                getNameAndPrice(height, width),
-                Container(
-                  height: height * 0.4,
-                  width: width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        width: width * 0.33,
-                        height: height * 0.4,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: widget.p.details[0].quantity
-                                    .allowedQuantities.length,
-                                itemBuilder: (context, index) {
-                                  return getQuantities(
-                                      "${widget.p.details[0].quantity.allowedQuantities[index].value} ${widget.p.details[0].quantity.allowedQuantities[index].metric}",
-                                      height,
-                                      newCart,
-                                      index);
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(text: "Item Total Quantity"),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _showTotalItemQty(newCart)
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(
-                                text: "Item Total Price",
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _showItemTotalPrice(newCart)
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              HeaderText(
-                                text: "Cart Total Price",
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              _showTotalCartPrice(newCart)
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(height: height * 0.035),
-                Container(
-                  height: height * 0.1,
-                  width: width,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: Text(
-                      "",
-                      style: TextStyle(
-                          fontSize: SizeConfig.textMultiplier * 2.2,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }));
+              );
+            }));
+      });
+    });
   }
 }
 

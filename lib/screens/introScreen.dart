@@ -124,162 +124,168 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double sWidth = MediaQuery.of(context).size.width;
-    double sHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: <Widget>[
-          CustomPaint(
-            painter: GreenPaintBgIntro(),
-            child: Center(
-              child: null,
-            ),
-          ),
-          Positioned.fill(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "Seva",
-                      style: TextStyle(
-                          fontSize: 6.2 * SizeConfig.textMultiplier,
-                          color: ThemeColoursSeva().lgGreen,
-                          fontWeight: FontWeight.w700),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 60.0),
-                      child: Text(
-                        "By ONESTOP",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            color: ThemeColoursSeva().lgGreen,
-                            fontSize: 2.1 * SizeConfig.textMultiplier),
-                      ),
-                    ),
-                  ],
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        double sWidth = MediaQuery.of(context).size.width;
+        double sHeight = MediaQuery.of(context).size.height;
+
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: <Widget>[
+              CustomPaint(
+                painter: GreenPaintBgIntro(),
+                child: Center(
+                  child: null,
                 ),
               ),
-              top: 10.0 * SizeConfig.textMultiplier),
-          Positioned(
-            left: sWidth * 0.075,
-            top: 26.8 * SizeConfig.textMultiplier,
-            child: Container(
-              height: sHeight * 0.80,
-              width: sWidth * 0.85,
-              child: Column(
-                children: <Widget>[
-                  _buildStack(),
-                  _lastContent(context),
-                  SizedBox(height: 4 * SizeConfig.textMultiplier),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              _index = 0;
-                            });
-                          },
-                          child: SmallDotsIntro(
-                              key: Key("zero"),
-                              bg: _index == 0
-                                  ? ThemeColoursSeva().black
-                                  : ThemeColoursSeva().grey),
+              Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "Seva",
+                          style: TextStyle(
+                              fontSize: 6.2 * SizeConfig.textMultiplier,
+                              color: ThemeColoursSeva().lgGreen,
+                              fontWeight: FontWeight.w700),
                         ),
-                      ),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              _index = 1;
-                            });
-                          },
-                          child: SmallDotsIntro(
-                              key: Key("one"),
-                              bg: _index == 1
-                                  ? ThemeColoursSeva().black
-                                  : ThemeColoursSeva().grey),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 60.0),
+                          child: Text(
+                            "By ONESTOP",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                color: ThemeColoursSeva().lgGreen,
+                                fontSize: 2.1 * SizeConfig.textMultiplier),
+                          ),
                         ),
-                      ),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              _index = 2;
-                            });
-                          },
-                          child: SmallDotsIntro(
-                              key: Key("two"),
-                              bg: _index == 2
-                                  ? ThemeColoursSeva().black
-                                  : ThemeColoursSeva().grey),
-                        ),
-                      ),
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              _index = 3;
-                            });
-                          },
-                          child: SmallDotsIntro(
-                              key: Key("three"),
-                              bg: _index == 3
-                                  ? ThemeColoursSeva().black
-                                  : ThemeColoursSeva().grey),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 3.5 * SizeConfig.textMultiplier,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  top: 10.0 * SizeConfig.textMultiplier),
+              Positioned(
+                left: sWidth * 0.075,
+                top: 26.8 * SizeConfig.textMultiplier,
+                child: Container(
+                  height: sHeight * 0.80,
+                  width: sWidth * 0.85,
+                  child: Column(
                     children: <Widget>[
-                      _buildButton(),
+                      _buildStack(),
+                      _lastContent(context),
+                      SizedBox(height: 4 * SizeConfig.textMultiplier),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Material(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _index = 0;
+                                });
+                              },
+                              child: SmallDotsIntro(
+                                  key: Key("zero"),
+                                  bg: _index == 0
+                                      ? ThemeColoursSeva().black
+                                      : ThemeColoursSeva().grey),
+                            ),
+                          ),
+                          Material(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _index = 1;
+                                });
+                              },
+                              child: SmallDotsIntro(
+                                  key: Key("one"),
+                                  bg: _index == 1
+                                      ? ThemeColoursSeva().black
+                                      : ThemeColoursSeva().grey),
+                            ),
+                          ),
+                          Material(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _index = 2;
+                                });
+                              },
+                              child: SmallDotsIntro(
+                                  key: Key("two"),
+                                  bg: _index == 2
+                                      ? ThemeColoursSeva().black
+                                      : ThemeColoursSeva().grey),
+                            ),
+                          ),
+                          Material(
+                            child: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  _index = 3;
+                                });
+                              },
+                              child: SmallDotsIntro(
+                                  key: Key("three"),
+                                  bg: _index == 3
+                                      ? ThemeColoursSeva().black
+                                      : ThemeColoursSeva().grey),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 3.5 * SizeConfig.textMultiplier,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _buildButton(),
+                          _index == 3
+                              ? FlatButton(
+                                  onPressed: () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, '/login', (route) => false);
+                                  },
+                                  child: Text(
+                                    "Login",
+                                    style: TextStyle(
+                                        color: ThemeColoursSeva().dkGreen,
+                                        fontSize: 15.0),
+                                  ),
+                                  color: Colors.white,
+                                )
+                              : Container(),
+                        ],
+                      ),
+                      SizedBox(height: 20.0),
                       _index == 3
-                          ? FlatButton(
+                          ? Container()
+                          : FlatButton(
                               onPressed: () {
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/login', (route) => false);
+                                setState(() {
+                                  _index = 3;
+                                });
                               },
                               child: Text(
-                                "Login",
+                                "Skip",
                                 style: TextStyle(
-                                    color: ThemeColoursSeva().dkGreen,
-                                    fontSize: 15.0),
+                                    color: Colors.grey, fontSize: 13.0),
                               ),
                               color: Colors.white,
                             )
-                          : Container(),
                     ],
                   ),
-                  SizedBox(height: 20.0),
-                  _index == 3
-                      ? Container()
-                      : FlatButton(
-                          onPressed: () {
-                            setState(() {
-                              _index = 3;
-                            });
-                          },
-                          child: Text(
-                            "Skip",
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 13.0),
-                          ),
-                          color: Colors.white,
-                        )
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      });
+    });
   }
 }

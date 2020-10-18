@@ -40,9 +40,14 @@ class NewCartModel extends ChangeNotifier {
   // Clear the cart
   void clearCart() async {
     if (_cartItems.length > 0) {
-      _cartItems.clear();
       _ciBox = await CIBox.getCIBoxInstance();
       await _ciBox.clearBox();
+      _cartItems.forEach((p) {
+        p.details[0].quantity.allowedQuantities.forEach((q) {
+          q.qty = 0;
+        });
+      });
+      _cartItems.clear();
     }
     notifyListeners();
   }
@@ -51,9 +56,16 @@ class NewCartModel extends ChangeNotifier {
 
   void remove(StoreProduct item) async {
     if (_cartItems.length > 0) {
-      _cartItems.removeWhere((n) => n.id == item.id);
       _ciBox = await CIBox.getCIBoxInstance();
       _ciBox.removeFromCIBox(item);
+      _cartItems.forEach((p) {
+        if (p.id == item.id) {
+          p.details[0].quantity.allowedQuantities.forEach((i) {
+            i.qty = 0;
+          });
+        }
+      });
+      _cartItems.removeWhere((n) => n.id == item.id);
       notifyListeners();
     }
   }
@@ -64,7 +76,7 @@ class NewCartModel extends ChangeNotifier {
       {StoreProduct item, int index, double price, double quantity}) async {
     _ciBox = await CIBox.getCIBoxInstance();
     if (_cartItems.length == 0) {
-      // add to cart as new
+      // add to cart as newx
       item.totalPrice = price;
       item.totalQuantity = quantity;
       item.details[0].quantity.allowedQuantities[index].qty += 1;
@@ -109,11 +121,12 @@ class NewCartModel extends ChangeNotifier {
           _cartItems.singleWhere((z) => z.id == item.id, orElse: () => null);
       if (sp != null) {
         // item exists in cart
-        if (sp.totalPrice - price == 0 &&
-            sp.details[0].quantity.allowedQuantities[index].qty - 1 == 0 &&
-            sp.totalQuantity - quantity == 0) {
+        if (sp.totalPrice - price == 0 && sp.totalQuantity - quantity == 0) {
           // remove from Hive & cart completely
           await _ciBox.removeFromCIBox(item);
+          item.details[0].quantity.allowedQuantities.forEach((z) {
+            z.qty = 0;
+          });
           _cartItems.removeWhere((i) => i.id == item.id);
         } else {
           // just remove the quantity

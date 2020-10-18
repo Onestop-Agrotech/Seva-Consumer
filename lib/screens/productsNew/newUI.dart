@@ -7,13 +7,13 @@
 ///
 /// @fileoverview New Products Widget : Shows all the products available.
 ///
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/domain/product_repository.dart';
 // import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
@@ -238,142 +238,155 @@ class _ProductsUINewState extends State<ProductsUINew> {
 
   @override
   Widget build(BuildContext context) {
-    // width of screen
-    double width = MediaQuery.of(context).size.height;
-    return Scaffold(
-      key: _scaffoldKey,
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(
-          "Products",
-          style: TextStyle(
-              color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
-        ),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black54,
+    BlocProvider(
+      create: (BuildContext context) =>
+          ProductsapiBloc(ProductRepositoryImpl()),
+    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        // width of screen
+        double width = MediaQuery.of(context).size.height;
+        return Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: Text(
+              "Products",
+              style: TextStyle(
+                  color: ThemeColoursSeva().pallete1,
+                  fontWeight: FontWeight.w500),
+            ),
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            elevation: 0.0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black54,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            actions: [CartIcon()],
           ),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        actions: [CartIcon()],
-      ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          body: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-        /// This is the main row that seperates 2 cols
-        children: [
-          /// The first column to the left side
-          Expanded(
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: SizedBox(
-                width: width * 0.17,
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.grey.shade100),
-                  child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: catArray.length,
-                      itemBuilder: (context, index) {
-                        return AnimatedContainer(
-                          duration: Duration(milliseconds: 600),
-                          curve: Curves.fastOutSlowIn,
-                          decoration: BoxDecoration(
-                            color: catArray[index].backgroundColor,
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 0.2, color: Colors.greenAccent),
-                            ),
-                          ),
-                          child: ListTile(
-                            title: Text(
-                              catArray[index].name,
-                              style: TextStyle(
-                                  fontSize: 1.65 * SizeConfig.textMultiplier,
-                                  color: catArray[index].textColor,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            onTap: () {
-                              /// This [if] condition exists because we have only 3 types
-                              /// of categories in the DB, as we add them up, this should be
-                              /// dynamic, for now it is static
-                              if (index < 3) {
-                                setState(() {
-                                  tag = index;
-                                  for (int i = 0; i < catArray.length; i++) {
-                                    if (i == index) {
-                                      catArray[i].backgroundColor =
-                                          ThemeColoursSeva().vlgGreen;
-                                      catArray[i].textColor = Colors.white;
-                                    } else {
-                                      catArray[i].backgroundColor =
-                                          Colors.white;
-                                      catArray[i].textColor =
-                                          ThemeColoursSeva().pallete1;
+            /// This is the main row that seperates 2 cols
+            children: [
+              /// The first column to the left side
+              Expanded(
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: SizedBox(
+                    width: width * 0.17,
+                    child: Container(
+                      decoration: BoxDecoration(color: Colors.grey.shade100),
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: catArray.length,
+                          itemBuilder: (context, index) {
+                            return AnimatedContainer(
+                              duration: Duration(milliseconds: 600),
+                              curve: Curves.fastOutSlowIn,
+                              decoration: BoxDecoration(
+                                color: catArray[index].backgroundColor,
+                                border: Border(
+                                  bottom: BorderSide(
+                                      width: 0.2, color: Colors.greenAccent),
+                                ),
+                              ),
+                              child: ListTile(
+                                title: Text(
+                                  catArray[index].name,
+                                  style: TextStyle(
+                                      fontSize:
+                                          1.65 * SizeConfig.textMultiplier,
+                                      color: catArray[index].textColor,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                onTap: () {
+                                  /// This [if] condition exists because we have only 3 types
+                                  /// of categories in the DB, as we add them up, this should be
+                                  /// dynamic, for now it is static
+                                  if (index < 3) {
+                                    setState(() {
+                                      tag = index;
+                                      for (int i = 0;
+                                          i < catArray.length;
+                                          i++) {
+                                        if (i == index) {
+                                          catArray[i].backgroundColor =
+                                              ThemeColoursSeva().vlgGreen;
+                                          catArray[i].textColor = Colors.white;
+                                        } else {
+                                          catArray[i].backgroundColor =
+                                              Colors.white;
+                                          catArray[i].textColor =
+                                              ThemeColoursSeva().pallete1;
+                                        }
+                                      }
+                                    });
+                                    switch (index) {
+                                      case 0:
+                                        apiBloc.add(GetVegetables());
+                                        break;
+                                      case 1:
+                                        apiBloc.add(GetFruits());
+                                        break;
+                                      case 2:
+                                        apiBloc.add(GetDailyEssentials());
+                                        break;
+                                      default:
                                     }
                                   }
-                                });
-                                switch (index) {
-                                  case 0:
-                                    apiBloc.add(GetVegetables());
-                                    break;
-                                  case 1:
-                                    apiBloc.add(GetFruits());
-                                    break;
-                                  case 2:
-                                    apiBloc.add(GetDailyEssentials());
-                                    break;
-                                  default:
-                                }
-                              }
-                            },
-                          ),
-                        );
-                      }),
+                                },
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          // Using Bloc to change the state as per the State Set
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: SizedBox(
-              width: 69 * SizeConfig.widthMultiplier,
-              child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
-                builder: (context, state) {
-                  if (state is ProductsapiInitial ||
-                      state is ProductsapiLoading) {
-                    return Shimmer.fromColors(
-                      highlightColor: Colors.white,
-                      baseColor: Colors.grey[300],
-                      child: Container(
-                        child: _shimmerLayout(),
-                      ),
-                    );
-                  } else if (state is ProductsapiLoaded) {
-                    List<StoreProduct> arr = state.products;
-                    arr.sort((a, b) => a.name.compareTo(b.name));
-                    return GridView.count(
-                      // Create a grid with 2 columns. If you change the scrollDirection to
-                      // horizontal, this produces 2 rows.
-                      crossAxisCount: 2,
-                      children: arr.map((e) {
-                        return getCard(e);
-                      }).toList(),
-                    );
-                  } else if (state is ProductsapiError) {
-                    return Text(state.msg);
-                  } else
-                    return CircularProgressIndicator();
-                },
+              // Using Bloc to change the state as per the State Set
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: SizedBox(
+                  width: 69 * SizeConfig.widthMultiplier,
+                  child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
+                    builder: (context, state) {
+                      if (state is ProductsapiInitial ||
+                          state is ProductsapiLoading) {
+                        return Shimmer.fromColors(
+                          highlightColor: Colors.white,
+                          baseColor: Colors.grey[300],
+                          child: Container(
+                            child: _shimmerLayout(),
+                          ),
+                        );
+                      } else if (state is ProductsapiLoaded) {
+                        List<StoreProduct> arr = state.products;
+                        arr.sort((a, b) => a.name.compareTo(b.name));
+                        return GridView.count(
+                          // Create a grid with 2 columns. If you change the scrollDirection to
+                          // horizontal, this produces 2 rows.
+                          crossAxisCount: 2,
+                          children: arr.map((e) {
+                            return getCard(e);
+                          }).toList(),
+                        );
+                      } else if (state is ProductsapiError) {
+                        return Text(state.msg);
+                      } else
+                        return CircularProgressIndicator();
+                    },
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-    );
+        );
+      });
+    });
   }
 }

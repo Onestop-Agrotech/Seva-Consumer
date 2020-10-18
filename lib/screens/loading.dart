@@ -11,15 +11,19 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mvp/classes/cartItems_box.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/newCart.dart';
+import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'dart:io';
 
 import 'package:mvp/screens/location.dart';
+import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -30,6 +34,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   bool _showLoginScreen;
   String _showText;
   bool _connected = false;
+  CIBox _ciBox;
 
   @override
   void setState(fn) {
@@ -44,6 +49,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
     _showText = "Setting Up ...";
     // check for internet connection here
     _checkConnection();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    NewCartModel cart = Provider.of<NewCartModel>(context, listen: false);
+    _checkForCartItemsInHive(cart);
   }
 
   // check the connectivity of the user.
@@ -138,6 +150,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
           ),
         );
       }
+    }
+  }
+
+  _checkForCartItemsInHive(NewCartModel cart) async {
+    _ciBox = await CIBox.getCIBoxInstance();
+    List<StoreProduct> li = _ciBox.getAllItems();
+    if (li.length > 0 && cart.totalItems == 0) {
+      cart.cartItemsRefill(_ciBox);
     }
   }
 
