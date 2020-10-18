@@ -44,7 +44,9 @@ class StoreProduct extends HiveObject {
   @HiveField(6)
   List<Details> details;
   int iV;
+  @HiveField(7)
   double totalPrice;
+  @HiveField(8)
   double totalQuantity;
 
   StoreProduct(

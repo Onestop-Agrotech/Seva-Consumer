@@ -749,6 +749,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slider_button:
+    dependency: "direct main"
+    description:
+      name: slider_button
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.0"
   source_gen:
     dependency: transitive
     description:
@@ -903,6 +910,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.3"
+  vibration:
+    dependency: transitive
+    description:
+      name: vibration
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.1"
+  vibration_web:
+    dependency: transitive
+    description:
+      name: vibration_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.1"
   watcher:
     dependency: transitive
     description:
@@ -947,4 +968,4 @@ packages:
     version: "2.2.1"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
-  flutter: ">=1.16.3 <2.0.0"
+  flutter: ">=1.20.0 <2.0.0"

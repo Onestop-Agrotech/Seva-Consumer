@@ -15,8 +15,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
+import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
+// import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -25,6 +27,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+// import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
@@ -32,6 +35,7 @@ import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
+// import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'graphics/lightBG.dart';
@@ -284,41 +288,40 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-// Common text widget for both bestsellers and categories
-  Widget commonText(height, leftText, rightText) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            leftText,
-            style: TextStyle(
-                color: ThemeColoursSeva().dkGreen,
-                fontWeight: FontWeight.w900,
-                fontSize: 2.5 * SizeConfig.textMultiplier),
-          ),
-          GestureDetector(
-            onTap: () {
-              if (leftText == "Categories")
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ProductsUINew(tagFromMain: 0)),
-                );
-            },
-            child: Text(
-              rightText,
-              style: TextStyle(
-                  color: ThemeColoursSeva().dkGreen,
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+// // Common text widget for both bestsellers and categories
+//   Widget commonText(height, leftText, rightText) {
+//     return Padding(
+//       padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: <Widget>[
+//           Text(
+//             leftText,
+//             style: TextStyle(
+//                 color: ThemeColoursSeva().dkGreen,
+//                 fontWeight: FontWeight.w900,
+//                 fontSize: 2.5 * SizeConfig.textMultiplier),
+//           ),
+//           GestureDetector(
+//             onTap: () {
+//               if (leftText == "Categories")
+//                 Navigator.of(context).push(
+//                     CupertinoPageRoute<Null>(builder: (BuildContext context) {
+//                   return ProductsUINew(tagFromMain: 0);
+//                 }));
+//             },
+//             child: Text(
+//               rightText,
+//               style: TextStyle(
+//                   color: ThemeColoursSeva().dkGreen,
+//                   fontSize: 15.0,
+//                   fontWeight: FontWeight.w600),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
 // shimmer layout before page loads
   _shimmerLayout(height, width) {
@@ -474,7 +477,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: ListTile(
                       title: Text('App version - Beta'),
-                      subtitle: Text("0.5.1"),
+                      subtitle: Text("0.5.2+1"),
                       onTap: null,
                     ),
                   ),
@@ -527,7 +530,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 },
                                 iconSize: 28.0,
                               ),
-                              CartIcon()
+                              CartIcon(),
                             ],
                           ),
                         ],
@@ -613,7 +616,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           ],
                         ),
                       ),
-                      commonText(height, "Best Sellers", ""),
+                      HelperFunctions.commonText(
+                          height, "Best Sellers", "", context),
                       SizedBox(height: 9.0),
 
                       /// Getting the best sellers of the
@@ -639,7 +643,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               ),
                             );
                           }),
-                      commonText(height, "Categories", "SEE ALL"),
+                      HelperFunctions.commonText(
+                          height, "Categories", "SEE ALL", context),
                       SizedBox(height: 9.0),
                       commonWidget(height, categories, false),
                       SizedBox(height: 9.0)
