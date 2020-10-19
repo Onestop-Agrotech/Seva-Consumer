@@ -1,0 +1,79 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  desc "Submit a new Beta Build to Crashlytics Beta"
+  lane :beta do
+    gradle(task: "clean assembleRelease")
+    crashlytics
+  
+    # sh "your_script.sh"
+    # You can also use other beta testing services here
+  end
+
+  desc "Deploy a new version to the Google Play"
+  lane :deploy do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  desc "Fetch all metadata of apps"
+  lane :fetchMetadata do
+    flavors.each { |flavor|
+        sh("fastlane supply init --json_key C:/Users/vikas/OneDrive/Desktop/Seva-Consumer/pc-api-5368827690017921469-752-4b9f4a122241.json --metadata_path ./metadata/" + flavor + " --package_name org.ea.multideploy." + flavor)
+    }
+  end
+
+  desc "Upload to playstore"
+    lane :playstore do
+        flavors.each { |flavor|
+#            sh("cp ./metadata/changelogs/* ./metadata/" + flavor + "/en-US/changelogs/")
+            gradle(task: "clean")
+#            gradle(
+#                task: 'assemble' + flavor,
+#                build_type: 'Debug'
+#            )
+#            gradle(
+#                task: 'assemble' + flavor,
+#                build_type: 'DebugAndroidTest'
+#            )
+            gradle(
+                task: 'assemble' + flavor,
+                build_type: 'Release'
+            )
+#            capture_android_screenshots(
+#                app_package_name: 'com.onestop.seva' + flavor,
+#                clear_previous_screenshots: true,
+#                output_directory: 'fastlane/metadata/' + flavor,
+#                app_apk_path: "app/build/outputs/apk/" + flavor + "/debug/app-" + flavor + "-debug.apk",
+#                tests_apk_path: "app/build/outputs/apk/androidTest/" + flavor + "/debug/app-" + flavor + "-debug-androidTest.apk"
+#            )
+            supply(
+                track: 'internal',
+                json_key: 'C:/Users/vikas/OneDrive/Desktop/Seva-Consumer/pc-api-5368827690017921469-752-4b9f4a122241.json',
+                package_name: 'com.onestop.seva' + flavor,
+                metadata_path: 'fastlane/metadata/' + flavor,
+                apk: "./app/build/outputs/apk/" + flavor + "/release/app-" + flavor + "-release.apk"
+            )
+        }
+    end
+end
