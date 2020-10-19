@@ -413,6 +413,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                             return FeaturedCards(
                                               textToDisplay: item,
                                               index: index,
+                                              referralCode:_referralCode
                                             );
                                           },
                                         )).toList(),
