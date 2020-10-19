@@ -9,17 +9,17 @@ void main() {
     final username = find.text('Username');
     expect(username, findsOneWidget);
 
-    final usernametextfield = find.byKey(Key('mobilekey'));
+    final usernametextfield = find.byKey(Key('username'));
     expect(usernametextfield, findsOneWidget);
 
-    await tester.enterText(usernametextfield, 'Mobile');
-    expect(find.text('Mobile'), findsOneWidget);
+    await tester.enterText(usernametextfield, 'name');
+    expect(find.text('name'), findsOneWidget);
   });
 
   testWidgets('it should contain email field', (WidgetTester tester) async {
     await tester.pumpWidget(buildTestableWidget(RegisterScreen()));
 
-    final email = find.text('Email Address:');
+    final email = find.text('Email');
     expect(email, findsOneWidget);
 
     final emailtextfield = find.byKey(Key('emailkey'));
