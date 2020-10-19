@@ -299,50 +299,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-  /// show referral instructions with an
-  /// Alert dialog
-  showReferralInstructions() {
-    Navigator.pop(context);
-
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            title: Text("Referral Code $_referralCode"),
-            content: Text(
-                "1️⃣ Share your code with friends.\n\n2️⃣ Ask them to order on the app\n\n3️⃣ Tell them to share your code and their order number on our WhatsApp number +918595179521 (with their registered number) \n\n4️⃣ You and your buddy receive Rs 25 each cashback on your orders! Yay 🥳  🎉 \n\nThis Whatsapp sharing is temporary. We're building a cool referral system!\n\nOrder amount must be above Rs 50\n\nOnly valid once per friend"),
-            actions: [
-              RaisedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(
-                  "OK",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: ThemeColoursSeva().pallete1,
-              ),
-              SizedBox(width: 20.0),
-              RaisedButton(
-                onPressed: () {
-                  String msg = ''' 
-                  Hi, here's my referral code - $_referralCode\n1️⃣ Order on the Seva App.\n2️⃣ Share your order number and my referral code on +918595179521(Seva Business Whatsapp)\n3️⃣ We both receive Rs 25 cashback each on orders above Rs 50!\nIf you don't have the app, get it now on https://bit.ly/Seva_Android_App
-                  ''';
-                  Share.share(msg);
-                },
-                child: Text(
-                  "Share",
-                  style: TextStyle(color: Colors.white),
-                ),
-                color: ThemeColoursSeva().dkGreen,
-              ),
-            ],
-          );
-        });
-  }
-
   /// This function gives out index and value
   /// instead of just value (like map), so this is
   /// an extension of map iterable func
@@ -457,8 +413,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                             return FeaturedCards(
                                               textToDisplay: item,
                                               index: index,
-                                              showInstructions:
-                                                  showReferralInstructions,
                                             );
                                           },
                                         )).toList(),
