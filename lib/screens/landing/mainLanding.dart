@@ -18,6 +18,7 @@ import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share/share.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -115,6 +116,27 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   void dispose() async {
     super.dispose();
     x.cancel();
+  }
+
+// for pull refresh
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    apiBloc.add(GetBestSellers());
+
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
   }
 
   /// Get the token, save it to the database for current user
@@ -392,8 +414,31 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             child: Align(
               alignment: Alignment.topCenter,
               child: SafeArea(
-                child: SingleChildScrollView(
-                  child: Column(
+                child: SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  // header: WaterDropHeader(),
+                  footer: CustomFooter(
+                    builder: (BuildContext context, LoadStatus mode) {
+                      Widget body;
+
+                      if (mode == LoadStatus.loading) {
+                        body = CupertinoActivityIndicator();
+                      } else if (mode == LoadStatus.failed) {
+                        body = Text("Load Failed!Click retry!");
+                      } else if (mode == LoadStatus.canLoading) {
+                        body = Text("release to load more");
+                      }
+
+                      return Container(
+                          // height: 55.0,
+                          );
+                    },
+                  ),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  onLoading: _onLoading,
+                  child: ListView(
                     children: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
