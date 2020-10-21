@@ -485,7 +485,13 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               arr.sort((a, b) => a.name.compareTo(b.name));
                               return commonWidget(height, arr, true);
                             } else if (state is BestSellersError) {
-                              return Text(state.msg);
+                              return Center(
+                                  child: Text(
+                                state.msg,
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 3 * SizeConfig.textMultiplier),
+                              ));
                             } else
                               return Container(
                                 child:
