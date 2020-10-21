@@ -94,6 +94,7 @@ class CustomAppBar extends PreferredSize {
   //To get the address of the user address on clicking the
   // location icon
   Future<String> _fetchUserAddress() async {
+    // ignore: unused_local_variable
     var mail = email;
     final p = await Preferences.getInstance();
     String token = await p.getData("token");

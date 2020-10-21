@@ -116,7 +116,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     x.cancel();
   }
 
-// for pull refresh
+//  pull to refresh
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -335,18 +335,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     // header: WaterDropHeader(),
                     footer: CustomFooter(
                       builder: (BuildContext context, LoadStatus mode) {
-                        Widget body;
                         if (mode == LoadStatus.loading) {
-                          body = CupertinoActivityIndicator();
+                          CupertinoActivityIndicator();
                         } else if (mode == LoadStatus.failed) {
-                          body = Text("Load Failed!Click retry!");
-                        } else if (mode == LoadStatus.canLoading) {
-                          body = Text("release to load more");
+                          Text("Load Failed!Please retry!");
                         }
-
-                        return Container(
-                            // height: 55.0,
-                            );
+                        return Container();
                       },
                     ),
                     controller: _refreshController,
@@ -354,37 +348,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     onLoading: _onLoading,
                     child: ListView(
                       children: <Widget>[
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: <Widget>[
-                        //     IconButton(
-                        //       icon: Icon(Icons.menu),
-                        //       onPressed: () {
-                        //         _scaffoldKey.currentState.openDrawer();
-                        //       },
-                        //       iconSize: 28.0,
-                        //     ),
-                        //     Text(
-                        //       "Welcome",
-                        //       style: TextStyle(
-                        //           color: ThemeColoursSeva().dkGreen,
-                        //           fontSize: 3.30 * SizeConfig.textMultiplier,
-                        //           fontWeight: FontWeight.bold),
-                        //     ),
-                        //     Row(
-                        //       children: [
-                        //         IconButton(
-                        //           icon: Icon(Icons.location_on),
-                        //           onPressed: () {
-                        //             _showLocation();
-                        //           },
-                        //           iconSize: 28.0,
-                        //         ),
-                        //         CartIcon(),
-                        //       ],
-                        //     ),
-                        //   ],
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
