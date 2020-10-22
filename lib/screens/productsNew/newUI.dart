@@ -14,22 +14,22 @@ import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
-// import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
-// import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Category {
   final String name;
+  final String resname;
   Color backgroundColor;
   Color textColor;
   final bool hasData;
 
   Category(
       {@required this.name,
+      this.resname,
       @required this.backgroundColor,
       @required this.textColor,
       @required this.hasData});
@@ -71,13 +71,13 @@ class _ProductsUINewState extends State<ProductsUINew> {
     catArray[tag].textColor = Colors.white;
     switch (tag) {
       case 0:
-        apiBloc.add(GetVegetables());
+        apiBloc.add(GetProducts(type: catArray[tag].resname));
         break;
       case 1:
-        apiBloc.add(GetFruits());
+        apiBloc.add(GetProducts(type: catArray[tag].resname));
         break;
       case 2:
-        apiBloc.add(GetDailyEssentials());
+        apiBloc.add(GetProducts(type: catArray[tag].resname));
         break;
       default:
     }
@@ -111,16 +111,19 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void makeArray() {
     final a = Category(
         name: "Vegetables",
+        resname: "vegetable",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final b = Category(
         name: "Fruits",
+        resname: "fruit",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final c = Category(
         name: "Milk, Eggs & Bread",
+        resname: "dailyEssential",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
@@ -329,13 +332,16 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                     });
                                     switch (index) {
                                       case 0:
-                                        apiBloc.add(GetVegetables());
+                                        apiBloc.add(GetProducts(
+                                            type: catArray[index].resname));
                                         break;
                                       case 1:
-                                        apiBloc.add(GetFruits());
+                                        apiBloc.add(GetProducts(
+                                            type: catArray[index].resname));
                                         break;
                                       case 2:
-                                        apiBloc.add(GetDailyEssentials());
+                                        apiBloc.add(GetProducts(
+                                            type: catArray[index].resname));
                                         break;
                                       default:
                                     }
