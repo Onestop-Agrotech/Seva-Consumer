@@ -489,8 +489,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                   child: Text(
                                 state.msg,
                                 style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 3 * SizeConfig.textMultiplier),
+                                    color: ThemeColoursSeva().dkGreen,
+                                    fontSize: 2.2 * SizeConfig.textMultiplier),
                               ));
                             } else
                               return Container(
