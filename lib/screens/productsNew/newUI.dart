@@ -22,14 +22,14 @@ import 'package:shimmer/shimmer.dart';
 
 class Category {
   final String name;
-  final String resname;
+  final String categoryname;
   Color backgroundColor;
   Color textColor;
   final bool hasData;
 
   Category(
       {@required this.name,
-      this.resname,
+      @required this.categoryname,
       @required this.backgroundColor,
       @required this.textColor,
       @required this.hasData});
@@ -69,18 +69,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
     catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
     catArray[tag].textColor = Colors.white;
-    switch (tag) {
-      case 0:
-        apiBloc.add(GetProducts(type: catArray[tag].resname));
-        break;
-      case 1:
-        apiBloc.add(GetProducts(type: catArray[tag].resname));
-        break;
-      case 2:
-        apiBloc.add(GetProducts(type: catArray[tag].resname));
-        break;
-      default:
-    }
+    apiBloc.add(GetProducts(type: catArray[tag].categoryname));
   }
 
   @override
@@ -111,24 +100,25 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void makeArray() {
     final a = Category(
         name: "Vegetables",
-        resname: "vegetable",
+        categoryname: "vegetable",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final b = Category(
         name: "Fruits",
-        resname: "fruit",
+        categoryname: "fruit",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final c = Category(
         name: "Milk, Eggs & Bread",
-        resname: "dailyEssential",
+        categoryname: "dailyEssential",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final d = Category(
         name: "More Coming soon!",
+        categoryname: "",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: false);
@@ -330,21 +320,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                         }
                                       }
                                     });
-                                    switch (index) {
-                                      case 0:
-                                        apiBloc.add(GetProducts(
-                                            type: catArray[index].resname));
-                                        break;
-                                      case 1:
-                                        apiBloc.add(GetProducts(
-                                            type: catArray[index].resname));
-                                        break;
-                                      case 2:
-                                        apiBloc.add(GetProducts(
-                                            type: catArray[index].resname));
-                                        break;
-                                      default:
-                                    }
+                                    apiBloc.add(GetProducts(
+                                        type: catArray[index].categoryname));
                                   }
                                 },
                               ),
