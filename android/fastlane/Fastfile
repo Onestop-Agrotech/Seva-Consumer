@@ -16,15 +16,12 @@
 default_platform(:android)
 
 platform :android do
-  desc "Runs all the tests"
-  lane :test do
-    gradle(task: "test")
-  end
+  
 
   desc "Deploy a beta version to the Google Play"
   lane :beta do
     gradle(task: 'assemble', build_type: 'Release')
-    upload_to_play_store(track: 'beta')
+
   end
 
   desc "Fetch all metadata of apps"
