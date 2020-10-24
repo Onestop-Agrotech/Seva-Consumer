@@ -50,24 +50,75 @@ class _ProfileState extends State<Profile> {
                     ),
                     Text(
                       "Name",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                          fontSize: 20, color: ThemeColoursSeva().pallete1),
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      "MPbile",
-                      style: TextStyle(fontSize: 14),
+                      "Mobile",
+                      style: TextStyle(
+                          fontSize: 14, color: ThemeColoursSeva().pallete1),
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
-                      "Pjone",
-                      style: TextStyle(fontSize: 14),
+                      "Phone",
+                      style: TextStyle(
+                          fontSize: 14, color: ThemeColoursSeva().pallete1),
                     )
                   ],
                 )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const ListTile(
+                      title: Text('My Orders'),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        const SizedBox(width: 8),
+                        TextButton(
+                          child: const Text('VIEW ALL ORDERS'),
+                          onPressed: () {/* ... */},
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const ListTile(
+                      title: Text('Location'),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        const SizedBox(width: 8),
+                        TextButton(
+                          child: const Text('VIEW MY LOCATION'),
+                          onPressed: () {/* ... */},
+                        ),
+                        const SizedBox(width: 8),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
