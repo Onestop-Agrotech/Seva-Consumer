@@ -141,6 +141,12 @@ class _ProductsUINewState extends State<ProductsUINew> {
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final d = Category(
+        name: "Groceries",
+        categoryName: "groceries",
+        backgroundColor: Colors.white,
+        textColor: ThemeColoursSeva().pallete1,
+        hasData: true);
+    final e = Category(
         name: "More Coming soon!",
         categoryName: "",
         backgroundColor: Colors.white,
@@ -150,6 +156,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     catArray.add(b);
     catArray.add(c);
     catArray.add(d);
+    catArray.add(e);
   }
 
   // shimmer layout before page loads
@@ -326,7 +333,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                   /// This [if] condition exists because we have only 3 types
                                   /// of categories in the DB, as we add them up, this should be
                                   /// dynamic, for now it is static
-                                  if (index < 3) {
+                                  if (index < catArray.length-1) {
                                     setState(() {
                                       tag = index;
                                       for (int i = 0;
