@@ -15,7 +15,6 @@ import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
-// import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/productsNew/details.dart';
@@ -26,12 +25,14 @@ import 'package:shimmer/shimmer.dart';
 
 class Category {
   final String name;
+  final String categoryName;
   Color backgroundColor;
   Color textColor;
   final bool hasData;
 
   Category(
       {@required this.name,
+      @required this.categoryName,
       @required this.backgroundColor,
       @required this.textColor,
       @required this.hasData});
@@ -71,18 +72,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
     catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
     catArray[tag].textColor = Colors.white;
-    switch (tag) {
-      case 0:
-        apiBloc.add(GetVegetables());
-        break;
-      case 1:
-        apiBloc.add(GetFruits());
-        break;
-      case 2:
-        apiBloc.add(GetDailyEssentials());
-        break;
-      default:
-    }
+    apiBloc.add(GetProducts(type: catArray[tag].categoryName));
   }
 
   @override
@@ -114,18 +104,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // calling the function as per category
-    switch (tag) {
-      case 0:
-        apiBloc.add(GetVegetables());
-        break;
-      case 1:
-        apiBloc.add(GetFruits());
-        break;
-      case 2:
-        apiBloc.add(GetDailyEssentials());
-        break;
-      default:
-    }
+    apiBloc.add(GetProducts(type: catArray[tag].categoryName));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
@@ -145,21 +124,25 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void makeArray() {
     final a = Category(
         name: "Vegetables",
+        categoryName: "vegetable",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final b = Category(
         name: "Fruits",
+        categoryName: "fruit",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final c = Category(
         name: "Milk, Eggs & Bread",
+        categoryName: "dailyEssential",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final d = Category(
         name: "More Coming soon!",
+        categoryName: "",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: false);
@@ -361,18 +344,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                         }
                                       }
                                     });
-                                    switch (index) {
-                                      case 0:
-                                        apiBloc.add(GetVegetables());
-                                        break;
-                                      case 1:
-                                        apiBloc.add(GetFruits());
-                                        break;
-                                      case 2:
-                                        apiBloc.add(GetDailyEssentials());
-                                        break;
-                                      default:
-                                    }
+                                    apiBloc.add(GetProducts(
+                                        type: catArray[index].categoryName));
                                   }
                                 },
                               ),
@@ -426,7 +399,13 @@ class _ProductsUINewState extends State<ProductsUINew> {
                               }).toList(),
                             ));
                       } else if (state is ProductsapiError) {
-                        return Text(state.msg);
+                        return Center(
+                            child: Text(
+                          state.msg,
+                          style: TextStyle(
+                              color: ThemeColoursSeva().dkGreen,
+                              fontSize: 2 * SizeConfig.textMultiplier),
+                        ));
                       } else
                         return CircularProgressIndicator();
                     },

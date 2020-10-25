@@ -22,7 +22,7 @@ class BestSellerRepositoryImpl implements BestSellerRepository {
       var responseJson = await _returnResponse(response);
       return responseJson;
     } on SocketException {
-      throw FetchDataException('No Internet connection');
+      throw FetchDataException('No Internet Connection!');
     }
   }
 
