@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.5.2
+// Date-{02-10-2020}
+///
+/// @fileoverview Custom Appbar : Customized Appbar used in Main Landing
+///  files.
+///
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

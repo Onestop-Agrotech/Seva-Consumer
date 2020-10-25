@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview OrderScreen Widget : .
+/// @fileoverview OrderScreen Widget :
 ///
 
 import 'dart:async';
@@ -17,7 +17,6 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/screens/orders/orderCards.dart';
 import 'package:http/http.dart' as http;
-import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NewOrdersScreen extends StatefulWidget {
@@ -95,7 +94,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-           Text(
+            Text(
               "My Orders",
               style: TextStyle(
                   color: ThemeColoursSeva().pallete1,
