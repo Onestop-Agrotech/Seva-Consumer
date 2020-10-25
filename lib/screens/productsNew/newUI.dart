@@ -8,6 +8,7 @@
 /// @fileoverview New Products Widget : Shows all the products available.
 ///
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
@@ -18,18 +19,20 @@ import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+// import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Category {
   final String name;
-  final String categoryname;
+  final String categoryName;
   Color backgroundColor;
   Color textColor;
   final bool hasData;
 
   Category(
       {@required this.name,
-      @required this.categoryname,
+      @required this.categoryName,
       @required this.backgroundColor,
       @required this.textColor,
       @required this.hasData});
@@ -69,7 +72,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
     catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
     catArray[tag].textColor = Colors.white;
-    apiBloc.add(GetProducts(type: catArray[tag].categoryname));
+    apiBloc.add(GetProducts(type: catArray[tag].categoryName));
   }
 
   @override
@@ -93,6 +96,27 @@ class _ProductsUINewState extends State<ProductsUINew> {
     await box.clear();
   }
 
+// for pull refresh
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // calling the function as per category
+    apiBloc.add(GetProducts(type: catArray[tag].categoryName));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
+
   /// UTIL func
   /// Makes the array
   ///
@@ -100,31 +124,31 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void makeArray() {
     final a = Category(
         name: "Vegetables",
-        categoryname: "vegetable",
+        categoryName: "vegetable",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final b = Category(
         name: "Fruits",
-        categoryname: "fruit",
+        categoryName: "fruit",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final c = Category(
         name: "Milk, Eggs & Bread",
-        categoryname: "dailyEssential",
+        categoryName: "dailyEssential",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final d = Category(
         name: "Groceries",
-        categoryname: "groceries",
+        categoryName: "groceries",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final e = Category(
         name: "More Coming soon!",
-        categoryname: "",
+        categoryName: "",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: false);
@@ -328,7 +352,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                       }
                                     });
                                     apiBloc.add(GetProducts(
-                                        type: catArray[index].categoryname));
+                                        type: catArray[index].categoryName));
                                   }
                                 },
                               ),
@@ -357,16 +381,38 @@ class _ProductsUINewState extends State<ProductsUINew> {
                       } else if (state is ProductsapiLoaded) {
                         List<StoreProduct> arr = state.products;
                         arr.sort((a, b) => a.name.compareTo(b.name));
-                        return GridView.count(
-                          // Create a grid with 2 columns. If you change the scrollDirection to
-                          // horizontal, this produces 2 rows.
-                          crossAxisCount: 2,
-                          children: arr.map((e) {
-                            return getCard(e);
-                          }).toList(),
-                        );
+                        // enclosed gridview in refresher
+                        return SmartRefresher(
+                            enablePullDown: true,
+                            footer: CustomFooter(
+                              builder: (BuildContext context, LoadStatus mode) {
+                                if (mode == LoadStatus.loading) {
+                                  CupertinoActivityIndicator();
+                                } else if (mode == LoadStatus.failed) {
+                                  Text("Load Failed!Please retry!");
+                                }
+                                return Container();
+                              },
+                            ),
+                            controller: _refreshController,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            child: GridView.count(
+                              // Create a grid with 2 columns. If you change the scrollDirection to
+                              // horizontal, this produces 2 rows.
+                              crossAxisCount: 2,
+                              children: arr.map((e) {
+                                return getCard(e);
+                              }).toList(),
+                            ));
                       } else if (state is ProductsapiError) {
-                        return Text(state.msg);
+                        return Center(
+                            child: Text(
+                          state.msg,
+                          style: TextStyle(
+                              color: ThemeColoursSeva().dkGreen,
+                              fontSize: 2 * SizeConfig.textMultiplier),
+                        ));
                       } else
                         return CircularProgressIndicator();
                     },

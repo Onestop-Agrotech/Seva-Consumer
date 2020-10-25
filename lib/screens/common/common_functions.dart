@@ -26,10 +26,6 @@ class HelperFunctions {
     // For Kg & Pc
 
     for (var i in product.details[0].quantity.allowedQuantities) {
-      print(i);
-      print(i.metric);
-      print(clickedUnit);
-      print(mainUnit);
       if (i.metric == clickedUnit &&
           !clickedUnit.contains(mainUnit) &&
           i.value == value) {
