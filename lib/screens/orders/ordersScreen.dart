@@ -17,6 +17,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/screens/orders/orderCards.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
 
 class NewOrdersScreen extends StatefulWidget {
@@ -99,7 +100,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
               "My Orders",
               style: TextStyle(
                   color: ThemeColoursSeva().dkGreen,
-                  fontSize: 25.0,
+                  fontSize: 3.30 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.w500),
             ),
             Container(
