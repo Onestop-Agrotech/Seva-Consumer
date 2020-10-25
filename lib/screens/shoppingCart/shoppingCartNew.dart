@@ -371,73 +371,70 @@ class _ShoppingCartNewState extends State<ShoppingCartNew> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    size: 25.0,
-                    color: ThemeColoursSeva().dkGreen,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Text(
-                  "My Shopping Cart",
-                  style: TextStyle(
-                      color: ThemeColoursSeva().dkGreen,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
-                ),
-                returnIconOrContainer(cart),
-              ],
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              "My Shopping Cart",
+              style: TextStyle(
+                  color: ThemeColoursSeva().pallete1,
+                  fontWeight: FontWeight.w500),
             ),
-            SizedBox(
-              height: 20,
+            backgroundColor: Colors.transparent,
+            centerTitle: true,
+            elevation: 0.0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black54,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            Consumer<NewCartModel>(
-              builder: (context, newCart, child) {
-                if (newCart.totalItems == 0) {
-                  return Center(
-                    child: Text(
-                      "No items in your cart!",
-                      style: TextStyle(
-                          color: ThemeColoursSeva().pallete1,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w600),
+            actions: [returnIconOrContainer(cart)],
+          ),
+          body: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 20,
+              ),
+              Consumer<NewCartModel>(
+                builder: (context, newCart, child) {
+                  if (newCart.totalItems == 0) {
+                    return Center(
+                      child: Text(
+                        "No items in your cart!",
+                        style: TextStyle(
+                            color: ThemeColoursSeva().pallete1,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    );
+                  }
+                  return Expanded(
+                    child: StaggeredGridView.countBuilder(
+                      crossAxisCount: 4,
+                      itemCount: newCart.totalItems,
+                      staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 0.0,
+                      itemBuilder: (BuildContext categories, int index) {
+                        return Row(
+                          children: <Widget>[
+                            SizedBox(width: 12.0),
+                            Expanded(
+                                child: AnimatedCard(
+                              shopping: true,
+                              product: newCart.items[index],
+                            )),
+                            SizedBox(width: 9.0)
+                          ],
+                        );
+                      },
                     ),
                   );
-                }
-                return Expanded(
-                  child: StaggeredGridView.countBuilder(
-                    crossAxisCount: 4,
-                    itemCount: newCart.totalItems,
-                    staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
-                    mainAxisSpacing: 10.0,
-                    crossAxisSpacing: 0.0,
-                    itemBuilder: (BuildContext categories, int index) {
-                      return Row(
-                        children: <Widget>[
-                          SizedBox(width: 12.0),
-                          Expanded(
-                              child: AnimatedCard(
-                            shopping: true,
-                            product: newCart.items[index],
-                          )),
-                          SizedBox(width: 9.0)
-                        ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: cart.totalItems > 0 && _allowedDeliveries
