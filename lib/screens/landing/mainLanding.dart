@@ -287,8 +287,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 child: SafeArea(
                   child: SmartRefresher(
                     enablePullDown: true,
-                    enablePullUp: true,
-                    // header: WaterDropHeader(),
+                    // enablePullUp: true,
                     footer: CustomFooter(
                       builder: (BuildContext context, LoadStatus mode) {
                         if (mode == LoadStatus.loading) {
@@ -332,11 +331,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                       texts,
                                       (index, item) => Builder(
                                             builder: (BuildContext context) {
-                                             return FeaturedCards(
-                                              textToDisplay: item,
-                                              index: index,
-                                              referralCode:_referralCode
-                                            );
+                                              return FeaturedCards(
+                                                  textToDisplay: item,
+                                                  index: index,
+                                                  referralCode: _referralCode);
                                             },
                                           )).toList(),
                                   options: CarouselOptions(
