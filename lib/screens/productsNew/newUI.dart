@@ -333,7 +333,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                   /// This [if] condition exists because we have only 3 types
                                   /// of categories in the DB, as we add them up, this should be
                                   /// dynamic, for now it is static
-                                  if (index < catArray.length-1) {
+                                  if (index < catArray.length - 1) {
                                     setState(() {
                                       tag = index;
                                       for (int i = 0;

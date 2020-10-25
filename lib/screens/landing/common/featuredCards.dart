@@ -15,16 +15,16 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 typedef ShowDialog = void Function();
 
-class FeaturedCards extends StatelessWidget { 
+class FeaturedCards extends StatelessWidget {
   final String textToDisplay;
   final int index;
   final String referralCode;
   // final ShowDialog showInstructions;
-  FeaturedCards({this.textToDisplay, this.index,this.referralCode});
+  FeaturedCards({this.textToDisplay, this.index, this.referralCode});
 
 // referral dialog
   showInstructions(context) {
-    Sidenav().showReferralInstructions(context,referralCode);
+    Sidenav().showReferralInstructions(context, referralCode);
   }
 
   @override
