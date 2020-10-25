@@ -22,14 +22,14 @@ import 'package:shimmer/shimmer.dart';
 
 class Category {
   final String name;
-  final String categoryname;
+  final String categoryName;
   Color backgroundColor;
   Color textColor;
   final bool hasData;
 
   Category(
       {@required this.name,
-      @required this.categoryname,
+      @required this.categoryName,
       @required this.backgroundColor,
       @required this.textColor,
       @required this.hasData});
@@ -69,7 +69,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
     catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
     catArray[tag].textColor = Colors.white;
-    apiBloc.add(GetProducts(type: catArray[tag].categoryname));
+    apiBloc.add(GetProducts(type: catArray[tag].categoryName));
   }
 
   @override
@@ -100,25 +100,25 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void makeArray() {
     final a = Category(
         name: "Vegetables",
-        categoryname: "vegetable",
+        categoryName: "vegetable",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final b = Category(
         name: "Fruits",
-        categoryname: "fruit",
+        categoryName: "fruit",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final c = Category(
         name: "Milk, Eggs & Bread",
-        categoryname: "dailyEssential",
+        categoryName: "dailyEssential",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: true);
     final d = Category(
         name: "More Coming soon!",
-        categoryname: "",
+        categoryName: "",
         backgroundColor: Colors.white,
         textColor: ThemeColoursSeva().pallete1,
         hasData: false);
@@ -321,7 +321,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                       }
                                     });
                                     apiBloc.add(GetProducts(
-                                        type: catArray[index].categoryname));
+                                        type: catArray[index].categoryName));
                                   }
                                 },
                               ),
