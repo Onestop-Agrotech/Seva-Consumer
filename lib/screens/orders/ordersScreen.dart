@@ -86,21 +86,19 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          iconSize: 27.0,
-          color: Colors.black,
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black54,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+           Text(
               "My Orders",
               style: TextStyle(
-                  color: ThemeColoursSeva().dkGreen,
-                  fontSize: 3.30 * SizeConfig.textMultiplier,
+                  color: ThemeColoursSeva().pallete1,
                   fontWeight: FontWeight.w500),
             ),
             Container(
