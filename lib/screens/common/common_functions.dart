@@ -18,7 +18,7 @@ import 'package:mvp/constants/themeColours.dart';
 
 class HelperFunctions {
   static void helper(int index, NewCartModel newCart, bool addToCart,
-      StoreProduct product, String mainUnit, String clickedUnit) {
+      StoreProduct product, String mainUnit, int value, String clickedUnit) {
     double p, q;
 
     // Kg, Kgs, Gms, Pc - Types of Quantities
@@ -26,10 +26,14 @@ class HelperFunctions {
     // For Kg & Pc
 
     for (var i in product.details[0].quantity.allowedQuantities) {
-      if (i.metric == clickedUnit && !clickedUnit.contains(mainUnit)) {
+      if (i.metric == clickedUnit &&
+          !clickedUnit.contains(mainUnit) &&
+          i.value == value) {
         q = 1 * (i.value) / 1000.0;
         p = q * double.parse("${product.details[0].price}");
-      } else if (i.metric.contains(clickedUnit)) {
+        break;
+      } else if (i.metric.contains(clickedUnit) &&
+          clickedUnit.contains(mainUnit)) {
         q = double.parse("${i.value}" * 1);
         p = q * double.parse("${product.details[0].price}");
         break;

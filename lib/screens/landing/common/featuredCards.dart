@@ -10,22 +10,30 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/common/sidenavbar.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 typedef ShowDialog = void Function();
 
-class FeaturedCards extends StatelessWidget {
+class FeaturedCards extends StatelessWidget { 
   final String textToDisplay;
   final int index;
-  final ShowDialog showInstructions;
-  FeaturedCards({this.textToDisplay, this.index, this.showInstructions});
+  final String referralCode;
+  // final ShowDialog showInstructions;
+  FeaturedCards({this.textToDisplay, this.index,this.referralCode});
+
+// referral dialog
+  showInstructions(context) {
+    Sidenav().showReferralInstructions(context,referralCode);
+  }
+
   @override
   Widget build(BuildContext context) {
     // double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        if (index == 1) showInstructions();
+        if (index == 1) showInstructions(context);
       },
       child: Container(
         // fallback height

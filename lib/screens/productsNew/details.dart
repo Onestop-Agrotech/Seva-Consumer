@@ -143,6 +143,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       false,
                       widget.p,
                       widget.p.details[0].quantity.quantityMetric,
+                      widget
+                          .p.details[0].quantity.allowedQuantities[index].value,
                       widget.p.details[0].quantity.allowedQuantities[index]
                           .metric);
                 },
@@ -164,6 +166,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       true,
                       widget.p,
                       widget.p.details[0].quantity.quantityMetric,
+                      widget
+                          .p.details[0].quantity.allowedQuantities[index].value,
                       widget.p.details[0].quantity.allowedQuantities[index]
                           .metric);
                 },

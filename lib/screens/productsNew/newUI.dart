@@ -381,7 +381,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                           state.msg,
                           style: TextStyle(
                               color: ThemeColoursSeva().dkGreen,
-                              fontSize: 2.2 * SizeConfig.textMultiplier),
+                              fontSize: 2 * SizeConfig.textMultiplier),
                         ));
                       } else
                         return CircularProgressIndicator();

@@ -70,7 +70,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
       // user=
     } on SocketException {
-      throw FetchDataException("No Internet");
+      throw FetchDataException('No Internet Connection!');
     }
   }
 
