@@ -404,7 +404,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
                         // enclosed gridview in refresher
                         return SmartRefresher(
                             enablePullDown: true,
-                            enablePullUp: true,
                             footer: CustomFooter(
                               builder: (BuildContext context, LoadStatus mode) {
                                 if (mode == LoadStatus.loading) {
