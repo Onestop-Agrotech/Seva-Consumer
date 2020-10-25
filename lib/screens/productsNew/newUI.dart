@@ -359,7 +359,13 @@ class _ProductsUINewState extends State<ProductsUINew> {
                           }).toList(),
                         );
                       } else if (state is ProductsapiError) {
-                        return Text(state.msg);
+                        return Center(
+                            child: Text(
+                          state.msg,
+                          style: TextStyle(
+                              color: ThemeColoursSeva().dkGreen,
+                              fontSize: 2 * SizeConfig.textMultiplier),
+                        ));
                       } else
                         return CircularProgressIndicator();
                     },
