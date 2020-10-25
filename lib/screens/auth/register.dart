@@ -199,6 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Column(
             children: <Widget>[
               InputTextField(
+                  key: Key("username"),
                   labelText: "Username",
                   controller: _username,
                   textInputType: TextInputType.text),
@@ -206,6 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 1.5 * SizeConfig.textMultiplier,
               ),
               InputTextField(
+                  key: Key("emailkey"),
                   labelText: "Email",
                   controller: _emailAddress,
                   textInputType: TextInputType.emailAddress),
@@ -218,6 +220,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Column(
             children: <Widget>[
               InputTextField(
+                key: Key("mobilekey"),
                 labelText: "Mobile",
                 controller: _mobile,
                 textInputType: TextInputType.number,

@@ -27,7 +27,7 @@ class Sidenav extends StatelessWidget {
 
   /// show referral instructions with an
   /// Alert dialog
-  showReferralInstructions(context) {
+  showReferralInstructions(context, referralCode) {
     showDialog(
         context: context,
         builder: (context) {
@@ -228,7 +228,7 @@ class Sidenav extends StatelessWidget {
                 style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
               ),
               onTap: () {
-                showReferralInstructions(context);
+                showReferralInstructions(context, referralCode);
               },
             ),
             ListTile(
@@ -261,7 +261,7 @@ class Sidenav extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text('App version - Beta'),
-                    subtitle: Text("0.5.2+2"),
+                    subtitle: Text("0.5.2+3"),
                     onTap: null,
                   ),
                 ),

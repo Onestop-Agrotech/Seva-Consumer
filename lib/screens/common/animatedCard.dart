@@ -289,6 +289,13 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                                     .quantity
                                                                     .allowedQuantities[
                                                                         i]
+                                                                    .value,
+                                                                widget
+                                                                    .product
+                                                                    .details[0]
+                                                                    .quantity
+                                                                    .allowedQuantities[
+                                                                        i]
                                                                     .metric);
                                                           },
                                                         ),
@@ -312,6 +319,14 @@ class _AnimatedCardState extends State<AnimatedCard>
                                                                           0]
                                                                       .quantity
                                                                       .quantityMetric,
+                                                                  widget
+                                                                      .product
+                                                                      .details[
+                                                                          0]
+                                                                      .quantity
+                                                                      .allowedQuantities[
+                                                                          i]
+                                                                      .value,
                                                                   widget
                                                                       .product
                                                                       .details[

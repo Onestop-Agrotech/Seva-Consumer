@@ -3,8 +3,7 @@ part of 'productsapi_bloc.dart';
 @immutable
 abstract class ProductsapiEvent {}
 
-class GetVegetables extends ProductsapiEvent {}
-
-class GetFruits extends ProductsapiEvent {}
-
-class GetDailyEssentials extends ProductsapiEvent {}
+class GetProducts extends ProductsapiEvent {
+  final String type;
+  GetProducts({@required this.type}) : assert(type != null);
+}

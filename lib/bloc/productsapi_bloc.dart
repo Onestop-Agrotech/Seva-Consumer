@@ -17,31 +17,19 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
   Stream<ProductsapiState> mapEventToState(
     ProductsapiEvent event,
   ) async* {
-    if (event is GetVegetables) {
-      yield* _loadProducts(_productRepository.fetchVegetables);
-    } else if (event is GetFruits) {
-      yield* _loadProducts(_productRepository.fetchFruits);
-    } else if (event is GetDailyEssentials) {
-      yield* _loadProducts(_productRepository.fetchDailyEssentials);
+    if (event is GetProducts) {
+      try {
+        yield ProductsapiLoading();
+        final products = await _productRepository.fetchProducts(event.type);
+        yield ProductsapiLoaded(products);
+      } on UnauthorisedException {
+        yield ProductsapiLoading();
+        await _productRepository.refreshToken();
+        final products = await _productRepository.fetchProducts(event.type);
+        yield ProductsapiLoaded(products);
+      } catch (err) {
+        yield ProductsapiError(err.toString());
+      }
     }
-  }
-
-  Stream<ProductsapiState> _loadProducts(func) async* {
-    try {
-      yield ProductsapiLoading();
-      final products = await func();
-      yield ProductsapiLoaded(products);
-    } on UnauthorisedException {
-      yield* _exceptionHandler(func);
-    } catch (err) {
-      yield ProductsapiError(err.toString());
-    }
-  }
-
-  Stream<ProductsapiState> _exceptionHandler(func) async* {
-    yield ProductsapiLoading();
-    await _productRepository.refreshToken();
-    final products = await func();
-    yield ProductsapiLoaded(products);
   }
 }
