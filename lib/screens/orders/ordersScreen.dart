@@ -5,7 +5,7 @@
 // Date-{02-09-2020}
 
 ///
-/// @fileoverview OrderScreen Widget : .
+/// @fileoverview OrderScreen Widget :
 ///
 
 import 'dart:async';
@@ -85,12 +85,11 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          iconSize: 27.0,
-          color: Colors.black,
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black54,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,8 +97,7 @@ class _NewOrdersScreenState extends State<NewOrdersScreen> {
             Text(
               "My Orders",
               style: TextStyle(
-                  color: ThemeColoursSeva().dkGreen,
-                  fontSize: 25.0,
+                  color: ThemeColoursSeva().pallete1,
                   fontWeight: FontWeight.w500),
             ),
             Container(

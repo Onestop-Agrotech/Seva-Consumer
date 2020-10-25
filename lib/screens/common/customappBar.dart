@@ -1,3 +1,13 @@
+// Copyright 2020 SEVA AUTHORS. All Rights Reserved.
+//
+// (change the version and the date whenver anyone worked upon this file)
+// Version-0.5.2
+// Date-{02-10-2020}
+///
+/// @fileoverview Custom Appbar : Customized Appbar used in Main Landing
+///  files.
+///
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -94,6 +104,7 @@ class CustomAppBar extends PreferredSize {
   //To get the address of the user address on clicking the
   // location icon
   Future<String> _fetchUserAddress() async {
+    // ignore: unused_local_variable
     var mail = email;
     final p = await Preferences.getInstance();
     String token = await p.getData("token");
