@@ -9,13 +9,12 @@ import 'package:mvp/models/storeProducts.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ProductRepository {
-  Future<List<StoreProduct>> fetchVegetables();
-  Future<List<StoreProduct>> fetchFruits();
-  Future<List<StoreProduct>> fetchDailyEssentials();
+  Future<List<StoreProduct>> fetchProducts(String type);
 }
 
 class ProductRepositoryImpl implements ProductRepository {
-  Future _fetch(String type) async {
+  @override
+  Future<List<StoreProduct>> fetchProducts(type) async {
     final SPBox spBox = await SPBox.getSPBoxInstance();
     final List<StoreProduct> sp = spBox.getFromSPBox(type);
     if (sp.length == 0) {
@@ -35,21 +34,7 @@ class ProductRepositoryImpl implements ProductRepository {
     } else if (sp.length > 0) {
       return sp;
     }
-  }
-
-  @override
-  Future<List<StoreProduct>> fetchVegetables() async {
-    return await _fetch("vegetable");
-  }
-
-  @override
-  Future<List<StoreProduct>> fetchFruits() async {
-    return await _fetch("fruit");
-  }
-
-  @override
-  Future<List<StoreProduct>> fetchDailyEssentials() async {
-    return await _fetch("dailyEssential");
+    return null;
   }
 
   refreshToken() async {
