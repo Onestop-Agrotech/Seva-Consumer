@@ -15,8 +15,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
+import 'package:mvp/bloc/orders_bloc/orders_bloc.dart';
+import 'package:mvp/bloc/products_bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/domain/bestsellers_repository.dart';
+import 'package:mvp/domain/orders_repository.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
@@ -31,8 +34,6 @@ import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-
-import 'bloc/productsapi_bloc.dart';
 
 Future main() async {
   await DotEnv().load('.env');
@@ -89,6 +90,9 @@ class _SevaAppState extends State<SevaApp> {
           create: (BuildContext context) =>
               BestsellersBloc(BestSellerRepositoryImpl()),
         ),
+        BlocProvider(
+            create: (BuildContext context) =>
+                OrdersBloc(OrdersRepositoryImpl())),
       ],
       child: LayoutBuilder(
         builder: (context, constraints) {
