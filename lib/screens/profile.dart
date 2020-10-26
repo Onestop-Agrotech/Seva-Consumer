@@ -8,6 +8,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -118,7 +119,7 @@ class _ProfileState extends State<Profile> {
         ),
         backgroundColor: ThemeColoursSeva().pallete3,
         centerTitle: true,
-        elevation: 0.0,
+        elevation: 1.0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -128,6 +129,7 @@ class _ProfileState extends State<Profile> {
         ),
         actions: [CartIcon()],
       ),
+      // This is for the scrolling effect
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -150,7 +152,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "Name",
                       style: TextStyle(
-                          fontSize: 20, color: ThemeColoursSeva().pallete1),
+                          fontSize: 2.4 * SizeConfig.textMultiplier,
+                          color: ThemeColoursSeva().pallete1),
                     ),
                     SizedBox(
                       height: 20,
@@ -158,7 +161,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "Mobile",
                       style: TextStyle(
-                          fontSize: 14, color: ThemeColoursSeva().pallete1),
+                          fontSize: 2.1 * SizeConfig.textMultiplier,
+                          color: ThemeColoursSeva().pallete1),
                     ),
                     SizedBox(
                       height: 10,
@@ -166,7 +170,8 @@ class _ProfileState extends State<Profile> {
                     Text(
                       "Phone",
                       style: TextStyle(
-                          fontSize: 14, color: ThemeColoursSeva().pallete1),
+                          fontSize: 2.1 * SizeConfig.textMultiplier,
+                          color: ThemeColoursSeva().pallete1),
                     )
                   ],
                 )),
