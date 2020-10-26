@@ -1,0 +1,27 @@
+[
+    {
+        "name":"Vegetables",
+        "categoryName":"vegetable",
+        "hasData":true
+    },
+    {
+        "name":"Fruits",
+        "categoryName":"fruit",
+        "hasData":true
+    },
+    {
+        "name":"Milk, Eggs & Bread",
+        "categoryName":"dailyEssential",
+        "hasData":true
+    },
+    {
+        "name":"Groceries",
+        "categoryName":"groceries",
+        "hasData":true
+    },
+    {
+        "name":"More Coming Soon!",
+        "categoryName":"",
+        "hasData":false
+    }
+]
