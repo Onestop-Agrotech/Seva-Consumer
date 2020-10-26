@@ -11,7 +11,7 @@ class Category {
   Category(
       {@required this.name,
       @required this.categoryName,
-      @required this.backgroundColor,
+      this.backgroundColor = Colors.white,
       this.textColor,
       @required this.hasData}) {
     this.textColor = ThemeColoursSeva().pallete1;

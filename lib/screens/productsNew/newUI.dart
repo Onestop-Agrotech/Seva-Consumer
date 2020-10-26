@@ -22,7 +22,6 @@ import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:mvp/static-data/categories.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-// import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductsUINew extends StatefulWidget {
