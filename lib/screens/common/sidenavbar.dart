@@ -14,6 +14,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
+import 'package:mvp/screens/profile.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,8 +23,16 @@ class Sidenav extends StatelessWidget {
   final double height;
   final double width;
   final String username;
+  final String mobile;
+  final String email;
   final String referralCode;
-  Sidenav({this.height, this.width, this.username, this.referralCode});
+  Sidenav(
+      {this.height,
+      this.width,
+      this.username,
+      this.referralCode,
+      this.mobile,
+      this.email});
 
   /// show referral instructions with an
   /// Alert dialog
@@ -125,10 +134,21 @@ class Sidenav extends StatelessWidget {
                 SizedBox(
                   width: 8.0,
                 ),
-                Text(
-                  username != null ? username : "Username",
-                  style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                ),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(CupertinoPageRoute<Null>(
+                        builder: (BuildContext context) {
+                      return Profile(
+                          username: this.username,
+                          mobile: this.mobile,
+                          email: this.email);
+                    }));
+                  },
+                  child: Text(
+                    "My Account",
+                  ),
+                )
               ],
             )),
             ListTile(

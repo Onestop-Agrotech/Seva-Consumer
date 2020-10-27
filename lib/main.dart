@@ -99,7 +99,7 @@ class _SevaAppState extends State<SevaApp> {
               SizeConfig().init(constraints, orientation);
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: Profile(),
+                home: LoadingScreen(),
                 routes: {
                   "/register": (context) => RegisterScreen(),
                   "/login": (context) => LoginScreen(),

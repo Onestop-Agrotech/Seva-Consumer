@@ -149,11 +149,13 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     final preferences = await Preferences.getInstance();
     final username = preferences.getData("username");
     final mobile = preferences.getData("mobile");
+    final email = preferences.getData("email");
     setState(() {
       _username = username;
       _mobileNumber = mobile;
       _referralCode =
           "${_username[0].toUpperCase()}${_mobileNumber.substring(5, 10)}${_username[_username.length - 1].toUpperCase()}";
+      _email = email;
     });
   }
 
@@ -377,6 +379,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             width: width,
             username: _username,
             referralCode: _referralCode,
+            mobile: _mobileNumber,
+            email: _email,
           )),
       body: Stack(
         children: <Widget>[

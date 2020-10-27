@@ -11,6 +11,10 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class Profile extends StatefulWidget {
+  final String username;
+  final String mobile;
+  final String email;
+  Profile({this.username, this.mobile, this.email});
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -150,7 +154,7 @@ class _ProfileState extends State<Profile> {
                       height: 10,
                     ),
                     Text(
-                      "Name",
+                      widget.username,
                       style: TextStyle(
                           fontSize: 2.4 * SizeConfig.textMultiplier,
                           color: ThemeColoursSeva().pallete1),
@@ -159,7 +163,7 @@ class _ProfileState extends State<Profile> {
                       height: 20,
                     ),
                     Text(
-                      "Mobile",
+                      widget.mobile,
                       style: TextStyle(
                           fontSize: 2.1 * SizeConfig.textMultiplier,
                           color: ThemeColoursSeva().pallete1),
@@ -168,7 +172,7 @@ class _ProfileState extends State<Profile> {
                       height: 10,
                     ),
                     Text(
-                      "Phone",
+                      widget.email,
                       style: TextStyle(
                           fontSize: 2.1 * SizeConfig.textMultiplier,
                           color: ThemeColoursSeva().pallete1),
