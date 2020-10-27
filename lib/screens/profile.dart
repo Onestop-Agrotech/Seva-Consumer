@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:http/http.dart' as http;
@@ -196,7 +198,13 @@ class _ProfileState extends State<Profile> {
                         const SizedBox(width: 8),
                         TextButton(
                           child: const Text('VIEW ALL ORDERS'),
-                          onPressed: () {/* ... */},
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.of(context).push(CupertinoPageRoute<Null>(
+                                builder: (BuildContext context) {
+                              return LoginScreen();
+                            }));
+                          },
                         ),
                         const SizedBox(width: 8),
                       ],
@@ -226,6 +234,31 @@ class _ProfileState extends State<Profile> {
                         ),
                         const SizedBox(width: 8),
                       ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      title: Center(
+                        child: TextButton(
+                          child: const Text('Logout'),
+                          onPressed: () async {
+                            // clearing the data from hive
+                            await Hive.deleteFromDisk();
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/login', (Route<dynamic> route) => false);
+                          },
+
+                          /* ... */
+                        ),
+                      ),
                     ),
                   ],
                 ),
