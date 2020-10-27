@@ -17,6 +17,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
+import 'package:mvp/screens/landing/mainLanding.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -288,7 +289,12 @@ class _ProductsUINewState extends State<ProductsUINew> {
                 Icons.arrow_back,
                 color: Colors.black54,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainLandingScreen(),
+                ),
+              ),
             ),
             actions: [CartIcon()],
           ),

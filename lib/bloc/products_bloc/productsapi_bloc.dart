@@ -30,6 +30,19 @@ class ProductsapiBloc extends Bloc<ProductsapiEvent, ProductsapiState> {
       } catch (err) {
         yield ProductsapiError(err.toString());
       }
+    } else if (event is GetBestSellers) {
+      try {
+        yield ProductsapiLoading();
+        final prod = await _productRepository.fetchBestSellers();
+        yield BestSellerLoaded(prod);
+      } on UnauthorisedException {
+        yield ProductsapiLoading();
+        await _productRepository.refreshToken();
+        final prod = await _productRepository.fetchBestSellers();
+        yield BestSellerLoaded(prod);
+      } catch (err) {
+        yield ProductsapiError(err.toString());
+      }
     }
   }
 }

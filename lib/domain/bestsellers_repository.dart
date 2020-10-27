@@ -3,15 +3,17 @@ import 'dart:io';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/domain/exceptions.dart';
+import 'package:mvp/models/ordersModel.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:http/http.dart' as http;
 
 abstract class BestSellerRepository {
   Future<List<StoreProduct>> fetchBestSellers();
+  Future<List<OrderModel>> fetchOrders();
 }
 
 class BestSellerRepositoryImpl implements BestSellerRepository {
-  Future _fetch() async {
+  Future _fetchBestSellers() async {
     try {
       final p = await Preferences.getInstance();
       String token = await p.getData("token");
@@ -19,7 +21,22 @@ class BestSellerRepositoryImpl implements BestSellerRepository {
       Map<String, String> requestHeaders = {'x-auth-token': token};
       String url = APIService.getBestSellers(hub);
       var response = await http.get(url, headers: requestHeaders);
-      var responseJson = await _returnResponse(response);
+      var responseJson = await _returnResponse(response, "bestsellers");
+      return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection!');
+    }
+  }
+
+  Future _fetchOrders() async {
+    try {
+      final p = await Preferences.getInstance();
+      String id = await p.getData("id");
+      String token = await p.getData("token");
+      String url = APIService.ordersAPI + "$id";
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      var response = await http.get(url, headers: requestHeaders);
+      var responseJson = await _returnResponse(response, "orders");
       return responseJson;
     } on SocketException {
       throw FetchDataException('No Internet Connection!');
@@ -28,7 +45,12 @@ class BestSellerRepositoryImpl implements BestSellerRepository {
 
   @override
   Future<List<StoreProduct>> fetchBestSellers() async {
-    return await _fetch();
+    return await _fetchBestSellers();
+  }
+
+  @override
+  Future<List<OrderModel>> fetchOrders() async {
+    return await _fetchOrders();
   }
 
   refreshToken() async {
@@ -53,11 +75,21 @@ class BestSellerRepositoryImpl implements BestSellerRepository {
     }
   }
 
-  Future<List<StoreProduct>> _returnResponse(http.Response response) async {
+  _returnResponse(http.Response response, String api) async {
+    print(api);
     switch (response.statusCode) {
       case 200:
-        final List<StoreProduct> sp = jsonToStoreProductModel(response.body);
-        return sp;
+        if (api == "bestsellers") {
+          print("if");
+          final List<StoreProduct> sp = jsonToStoreProductModel(response.body);
+          return sp;
+        } else {
+          print("else");
+          final List<OrderModel> orders =
+              toOrdersFromJson(json.decode(response.body)["orders"]);
+          return orders;
+        }
+        return null;
       case 401:
         throw UnauthorisedException(response.statusCode.toString());
       case 500:

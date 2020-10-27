@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 abstract class ProductRepository {
   Future<List<StoreProduct>> fetchProducts(String type);
+  Future<List<StoreProduct>> fetchBestSellers();
 }
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -26,7 +27,7 @@ class ProductRepositoryImpl implements ProductRepository {
         Map<String, String> requestHeaders = {'x-auth-token': token};
         String url = APIService.getCategorywiseProducts(hub, type);
         final response = await http.get(url, headers: requestHeaders);
-        responseJson = await _returnResponse(response);
+        responseJson = await _returnResponse(response, "products");
         return responseJson;
       } on SocketException {
         throw FetchDataException('No Internet connection');
@@ -35,6 +36,21 @@ class ProductRepositoryImpl implements ProductRepository {
       return sp;
     }
     return null;
+  }
+
+  Future<List<StoreProduct>> fetchBestSellers() async {
+    try {
+      final p = await Preferences.getInstance();
+      String token = await p.getData("token");
+      String hub = await p.getData("hub");
+      Map<String, String> requestHeaders = {'x-auth-token': token};
+      String url = APIService.getBestSellers(hub);
+      var response = await http.get(url, headers: requestHeaders);
+      var responseJson = await _returnResponse(response, "bestsellers");
+      return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection!');
+    }
   }
 
   refreshToken() async {
@@ -59,14 +75,23 @@ class ProductRepositoryImpl implements ProductRepository {
     }
   }
 
-  Future<List<StoreProduct>> _returnResponse(http.Response response) async {
+  Future<List<StoreProduct>> _returnResponse(
+      http.Response response, String api) async {
     switch (response.statusCode) {
       case 200:
-        final List<StoreProduct> sp =
-            jsonToCateogrywiseProductModel(response.body);
-        final SPBox spBox = await SPBox.getSPBoxInstance();
-        spBox.addSPList(sp);
-        return sp;
+        if (api == "products") {
+          print("if");
+          final List<StoreProduct> sp =
+              jsonToCateogrywiseProductModel(response.body);
+          final SPBox spBox = await SPBox.getSPBoxInstance();
+          spBox.addSPList(sp);
+          return sp;
+        } else {
+          print("else");
+          final List<StoreProduct> bestsellers = jsonToStoreProductModel(response.body);
+          return bestsellers;
+        }
+        return null;
       case 401:
         throw UnauthorisedException(response.statusCode.toString());
       case 500:

@@ -13,6 +13,11 @@ class ProductsapiLoaded extends ProductsapiState {
   ProductsapiLoaded(this.products);
 }
 
+class BestSellerLoaded extends ProductsapiState {
+  final List<StoreProduct> bestSellers;
+  BestSellerLoaded(this.bestSellers);
+}
+
 class ProductsapiError extends ProductsapiState {
   final String msg;
 

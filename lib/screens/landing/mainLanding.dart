@@ -11,9 +11,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
+import 'package:mvp/bloc/products_bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/prefrenses.dart';
-import 'package:mvp/domain/bestsellers_repository.dart';
+import 'package:mvp/domain/product_repository.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
@@ -39,7 +39,7 @@ class MainLandingScreen extends StatefulWidget {
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  BestsellersBloc apiBloc;
+  ProductsapiBloc apiBloc;
   //Todo: Screen Visible after login
 
   // This Array is populated by the data that is visible on
@@ -71,7 +71,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    apiBloc = BlocProvider.of<BestsellersBloc>(context);
+    apiBloc = BlocProvider.of<ProductsapiBloc>(context);
     apiBloc.add(GetBestSellers());
   }
 
@@ -81,6 +81,16 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       super.setState(fn);
     }
   }
+//   @override
+// Widget build(BuildContext context) {
+//     return WillPopScope(
+//         onWillPop: () async {
+//     apiBloc.add(GetBestSellers());
+//             return false;
+//         }, 
+//         child: Scaffold(),
+//     );
+// }
 
   @override
   initState() {
@@ -246,7 +256,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   Widget build(BuildContext context) {
     BlocProvider(
       create: (BuildContext context) =>
-          BestsellersBloc(BestSellerRepositoryImpl()),
+          ProductsapiBloc(ProductRepositoryImpl()),
     );
     // height and width if the device
     double height = MediaQuery.of(context).size.height;
@@ -384,10 +394,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         HelperFunctions.commonText(
                             height, "Best Sellers", "", context),
                         SizedBox(height: 9.0),
-                        BlocBuilder<BestsellersBloc, BestsellersState>(
+                        BlocBuilder<ProductsapiBloc, ProductsapiState>(
                           builder: (context, state) {
-                            if (state is BestSellersInitial ||
-                                state is BestSellersLoading) {
+                            if (state is ProductsapiInitial ||
+                                state is ProductsapiLoading) {
                               return Shimmer.fromColors(
                                 highlightColor: Colors.white,
                                 baseColor: Colors.grey[300],
@@ -395,11 +405,11 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                   child: _shimmerLayout(height, width),
                                 ),
                               );
-                            } else if (state is BestSellersLoaded) {
-                              List<StoreProduct> arr = state.bestsellers;
+                            } else if (state is BestSellerLoaded) {
+                              List<StoreProduct> arr = state.bestSellers;
                               arr.sort((a, b) => a.name.compareTo(b.name));
                               return commonWidget(height, arr, true);
-                            } else if (state is BestSellersError) {
+                            } else if (state is ProductsapiError) {
                               return Center(
                                   child: Text(
                                 state.msg,
