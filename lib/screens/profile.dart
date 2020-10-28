@@ -10,6 +10,7 @@ import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class Profile extends StatefulWidget {
@@ -199,10 +200,9 @@ class _ProfileState extends State<Profile> {
                         TextButton(
                           child: const Text('VIEW ALL ORDERS'),
                           onPressed: () {
-                            Navigator.pop(context);
                             Navigator.of(context).push(CupertinoPageRoute<Null>(
                                 builder: (BuildContext context) {
-                              return LoginScreen();
+                              return NewOrdersScreen();
                             }));
                           },
                         ),
