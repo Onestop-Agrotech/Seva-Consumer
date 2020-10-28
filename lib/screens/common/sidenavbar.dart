@@ -124,33 +124,34 @@ class Sidenav extends StatelessWidget {
               ),
             ),
             ListTile(
-                title: Row(
-              children: [
-                Icon(
-                  Icons.account_circle,
-                  color: Colors.green,
-                  size: SizeConfig.widthMultiplier * 4.3,
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                FlatButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(CupertinoPageRoute<Null>(
-                        builder: (BuildContext context) {
-                      return Profile(
-                          username: this.username,
-                          mobile: this.mobile,
-                          email: this.email);
-                    }));
-                  },
-                  child: Text(
-                    "My Account",
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.account_circle,
+                    color: Colors.green,
+                    size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                )
-              ],
-            )),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Text(
+                    'My Account',
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                  ),
+                ],
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.of(context).push(
+                    CupertinoPageRoute<Null>(builder: (BuildContext context) {
+                  return Profile(
+                      username: this.username,
+                      mobile: this.mobile,
+                      email: this.email);
+                }));
+              },
+            ),
             ListTile(
               title: Row(
                 children: [
