@@ -180,29 +180,6 @@ class Sidenav extends StatelessWidget {
               title: Row(
                 children: [
                   Icon(
-                    Icons.logout,
-                    color: Colors.green,
-                    size: SizeConfig.widthMultiplier * 4.3,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Logout',
-                    style:
-                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                  ),
-                ],
-              ),
-              onTap: () async {
-                // clearing the data from hive
-                await Hive.deleteFromDisk();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login', (Route<dynamic> route) => false);
-              },
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(
                     Icons.help,
                     size: SizeConfig.widthMultiplier * 4.3,
                     color: Colors.green,
