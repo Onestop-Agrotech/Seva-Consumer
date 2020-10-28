@@ -149,7 +149,7 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                   children: [
                     Icon(
-                      Icons.supervised_user_circle_outlined,
+                      Icons.account_circle,
                       color: Colors.black54,
                       size: 70,
                     ),
