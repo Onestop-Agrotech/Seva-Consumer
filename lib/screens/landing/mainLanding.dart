@@ -180,7 +180,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   //Common Card widget for both the best sellers and Categories
   Widget commonWidget(height, itemsList, store) {
     return Container(
-      height: height * 0.22,
+      height: height * 0.15,
       child: Row(
         children: <Widget>[
           Expanded(
