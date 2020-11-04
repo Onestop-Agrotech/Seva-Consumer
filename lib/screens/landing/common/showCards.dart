@@ -12,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/category.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
@@ -19,9 +20,10 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
   final StoreProduct sp;
+  final Category cat;
   final bool store;
   final int index;
-  ShowCards({this.sp, this.store, @required this.index});
+  ShowCards({this.sp,@required this.store, @required this.index, this.cat});
 
   @override
   _ShowCardsState createState() => _ShowCardsState();
@@ -93,12 +95,12 @@ class _ShowCardsState extends State<ShowCards> {
                 : SizedBox.shrink(),
             // Hero animation on clicking any bestseller card
             Hero(
-              tag: widget.sp.name,
+              tag: this.widget.store ? widget.sp.name : this.widget.cat.name,
               transitionOnUserGestures: true,
               child: Container(
                 height: height * 0.1,
                 child: CachedNetworkImage(
-                  imageUrl: widget.sp.pictureURL,
+                  imageUrl: this.widget.store ? widget.sp.pictureURL : this.widget.cat.imgURL,
                   placeholder: (context, url) =>
                       Container(height: 50.0, child: Text("Loading...")),
                   errorWidget: (context, url, error) => Icon(Icons.error),
@@ -119,7 +121,7 @@ class _ShowCardsState extends State<ShowCards> {
                         fontWeight: FontWeight.w700),
                   )
                 : Text(
-                    "${widget.sp.name}",
+                    "${widget.cat.name}",
                     overflow: TextOverflow.clip,
                     style: TextStyle(
                         color: ThemeColoursSeva().pallete1,

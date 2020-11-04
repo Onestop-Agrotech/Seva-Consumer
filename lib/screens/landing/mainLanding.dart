@@ -17,6 +17,7 @@ import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:mvp/static-data/categories.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -86,23 +87,23 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   initState() {
     super.initState();
     // Populating the categories array
-    d = new StoreProduct(
-      name: "Vegetables",
-      pictureURL:
-          "https://storepictures.theonestop.co.in/products/all-vegetables.jpg",
-    );
-    e = new StoreProduct(
-      name: "Fruits",
-      pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
-    );
-    f = new StoreProduct(
-      name: "Daily Essentials",
-      pictureURL:
-          "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
-    );
-    categories.add(d);
-    categories.add(e);
-    categories.add(f);
+    // d = new StoreProduct(
+    //   name: "Vegetables",
+    //   pictureURL:
+    //       "https://storepictures.theonestop.co.in/products/all-vegetables.jpg",
+    // );
+    // e = new StoreProduct(
+    //   name: "Fruits",
+    //   pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
+    // );
+    // f = new StoreProduct(
+    //   name: "Daily Essentials",
+    //   pictureURL:
+    //       "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
+    // );
+    // categories.add(d);
+    // categories.add(e);
+    // categories.add(f);
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
@@ -194,9 +195,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 6.0),
                             child: ShowCards(
-                              sp: itemsList[index],
+                              sp: store ? itemsList[index] : null,
                               store: store,
                               index: index,
+                              cat: !store ? itemsList[index] : null 
                             ),
                           ),
                         ],
@@ -417,7 +419,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         HelperFunctions.commonText(
                             height, "Categories", "", "SEE ALL"),
                         SizedBox(height: 9.0),
-                        commonWidget(height, categories, false),
+                        commonWidget(height, catArray, false),
                         SizedBox(height: 9.0)
                       ],
                     ),
