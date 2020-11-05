@@ -17,6 +17,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
@@ -75,11 +76,7 @@ class CustomAppBar extends PreferredSize {
                     height: 120.0,
                     width: 100.0,
                     child: Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: ThemeColoursSeva().pallete1,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            ThemeColoursSeva().vlgColor),
-                      ),
+                      child: CommonGreenIndicator(),
                     ),
                   );
               }),

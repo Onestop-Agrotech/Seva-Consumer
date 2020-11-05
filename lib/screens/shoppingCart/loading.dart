@@ -13,6 +13,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/constants/apiCalls.dart';
@@ -104,7 +105,7 @@ class _OrderLoaderState extends State<OrderLoader> {
     return Material(
       child: Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: CommonGreenIndicator(),
         ),
       ),
     );

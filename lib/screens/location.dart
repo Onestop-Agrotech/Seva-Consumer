@@ -24,6 +24,8 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
+import 'common/progressIndicator.dart';
+
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
 
@@ -308,11 +310,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                             constraints: BoxConstraints(
                                 maxHeight: MediaQuery.of(context).size.height),
                             child: Center(
-                              child: CircularProgressIndicator(
-                                backgroundColor: ThemeColoursSeva().pallete1,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    ThemeColoursSeva().vlgColor),
-                              ),
+                              child: CommonGreenIndicator(),
                             ),
                           ),
                       ],
