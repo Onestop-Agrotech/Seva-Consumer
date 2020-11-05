@@ -249,8 +249,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         await p.setEmail(json.decode(response.body)["email"]);
         await p.setMobile(json.decode(response.body)["mobile"]);
         if (!far) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/main', ModalRoute.withName('/main'));
+          Navigator.pushReplacementNamed(context, "/main");
         } else {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {

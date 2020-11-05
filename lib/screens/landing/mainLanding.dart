@@ -69,7 +69,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   initState() {
     super.initState();
-    catArray.removeLast();
+    if (catArray[catArray.length - 1].imgURL == "") catArray.removeLast();
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
