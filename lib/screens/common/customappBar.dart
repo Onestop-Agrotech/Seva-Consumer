@@ -124,7 +124,7 @@ class CustomAppBar extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ThemeColoursSeva().pallete3,
+      color: ThemeColoursSeva().pallete4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

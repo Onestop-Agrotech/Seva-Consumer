@@ -171,11 +171,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 6.0),
                             child: ShowCards(
-                              sp: store ? itemsList[index] : null,
-                              store: store,
-                              index: index,
-                              cat: !store ? itemsList[index] : null 
-                            ),
+                                sp: store ? itemsList[index] : null,
+                                store: store,
+                                index: index,
+                                cat: !store ? itemsList[index] : null),
                           ),
                         ],
                       ),
@@ -254,10 +253,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               painter: LightBlueBG(),
               child: Container(),
             ),
-            CustomPaint(
-              painter: DarkColourBG(),
-              child: Container(),
-            ),
+            // CustomPaint(
+            //   painter: DarkColourBG(),
+            //   child: Container(),
+            // ),
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -290,7 +289,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 style: TextStyle(
                                     color: ThemeColoursSeva().dkGreen,
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 2.7 * SizeConfig.textMultiplier),
+                                    fontSize: 2.3 * SizeConfig.textMultiplier),
                               ),
                             ),
                           ],
@@ -396,7 +395,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             height, "Categories", "", context),
                         SizedBox(height: 9.0),
                         commonWidget(height, catArray, false),
-                        SizedBox(height: 9.0)
+                        SizedBox(height: 25.0),
+                        Center(
+                            child: Text(
+                          "More Coming Soon!",
+                          style: TextStyle(
+                              color: ThemeColoursSeva().black,
+                              fontSize: 2.2 * SizeConfig.textMultiplier),
+                        ))
                       ],
                     ),
                   ),
