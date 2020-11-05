@@ -4,7 +4,7 @@ import 'package:mvp/screens/location.dart';
 
 void main() {
   testWidgets('Location screen test', (WidgetTester tester) async {
-    await tester.pumpWidget(buildTestableWidget(GoogleLocationScreen()));
+    await tester.pumpWidget(buildTestableWidget(GoogleLocationScreen(userEmail: "vk.rahul318@gmail.com",)));
 
     final houseNoText = find.text('House No/Flat No:');
     expect(houseNoText, findsOneWidget);

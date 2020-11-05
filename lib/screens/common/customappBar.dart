@@ -25,7 +25,7 @@ class CustomAppBar extends PreferredSize {
   final double height;
   final String email;
   CustomAppBar(
-      {@required this.scaffoldKey, this.height = kToolbarHeight, this.email});
+      {@required this.scaffoldKey, this.height = kToolbarHeight, @required this.email});
 
   @override
   Size get preferredSize => Size.fromHeight(height);
@@ -71,7 +71,17 @@ class CustomAppBar extends PreferredSize {
                     );
                   });
                 } else
-                  return Container(child: Text("Loading Address ..."));
+                  return Container(
+                    height: 120.0,
+                    width: 100.0,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: ThemeColoursSeva().pallete1,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            ThemeColoursSeva().vlgColor),
+                      ),
+                    ),
+                  );
               }),
           actions: <Widget>[
             FutureBuilder(

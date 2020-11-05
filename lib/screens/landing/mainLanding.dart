@@ -135,7 +135,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     final preferences = await Preferences.getInstance();
     final username = preferences.getData("username");
     final mobile = preferences.getData("mobile");
+    final email = preferences.getData("email");
     setState(() {
+      _email = email;
       _username = username;
       _mobileNumber = mobile;
       _referralCode =
@@ -229,6 +231,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         ),
         drawer: SizedBox(
             width: width * 0.5,
+
             /// Side Drawer visible after login
             child: Sidenav(
               height: height,
