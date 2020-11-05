@@ -52,13 +52,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     "Order Now and support your local stores."
   ];
 
-  // This Array is populated by the categories card data
-  List<StoreProduct> categories = [];
-
-  // static categories
-  StoreProduct d;
-  StoreProduct e;
-  StoreProduct f;
   String _email;
   String _username;
   Timer x;
@@ -86,24 +79,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   initState() {
     super.initState();
-    // Populating the categories array
-    // d = new StoreProduct(
-    //   name: "Vegetables",
-    //   pictureURL:
-    //       "https://storepictures.theonestop.co.in/products/all-vegetables.jpg",
-    // );
-    // e = new StoreProduct(
-    //   name: "Fruits",
-    //   pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
-    // );
-    // f = new StoreProduct(
-    //   name: "Daily Essentials",
-    //   pictureURL:
-    //       "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
-    // );
-    // categories.add(d);
-    // categories.add(e);
-    // categories.add(f);
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
