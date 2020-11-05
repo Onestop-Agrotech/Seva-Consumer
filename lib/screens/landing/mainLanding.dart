@@ -41,16 +41,6 @@ class MainLandingScreen extends StatefulWidget {
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   BestsellersBloc apiBloc;
-  //Todo: Screen Visible after login
-
-  // This Array is populated by the data that is visible on
-  // each caraousel
-  var texts = [
-    // "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
-    // "Share your referral code with friends to get Rs 25 cashback",
-    "Super fast delivery within 45 minutes!",
-    "Order Now and support your local stores."
-  ];
 
   String _email;
   String _username;
@@ -239,7 +229,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         ),
         drawer: SizedBox(
             width: width * 0.5,
-
             /// Side Drawer visible after login
             child: Sidenav(
               height: height,
@@ -253,10 +242,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               painter: LightBlueBG(),
               child: Container(),
             ),
-            // CustomPaint(
-            //   painter: DarkColourBG(),
-            //   child: Container(),
-            // ),
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -326,7 +311,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                     enableInfiniteScroll: true,
                                     reverse: false,
                                     autoPlay: true,
-                                    autoPlayInterval: Duration(seconds: 4),
+                                    autoPlayInterval: Duration(seconds: 6),
                                     autoPlayAnimationDuration:
                                         Duration(milliseconds: 600),
                                     autoPlayCurve: Curves.fastOutSlowIn,
@@ -335,12 +320,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                   ),
                                 ),
                               ),
-
-                              /// text visible in the carousel card
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: texts.map((url) {
-                                  int index = texts.indexOf(url);
+                                children:
+                                    mapIndexed(featuredArr, (index, item) {
                                   return Container(
                                     width: 8.0,
                                     height: 8.0,

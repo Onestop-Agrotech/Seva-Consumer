@@ -69,15 +69,15 @@ class _ShowCardsState extends State<ShowCards> {
             border: !this.widget.store
                 ? Border.all(
                     color: ThemeColoursSeva().pallete3,
-                    width: 0.7,
+                    width: 0.9,
                   )
                 : Border.all(
                     color: !this.widget.sp.details[0].outOfStock
                         ? ThemeColoursSeva().pallete3
                         : ThemeColoursSeva().grey,
-                    width: !this.widget.sp.details[0].outOfStock ? 0.7 : 0.2,
+                    width: !this.widget.sp.details[0].outOfStock ? 0.9 : 0.2,
                   ),
-            borderRadius: BorderRadius.circular(10.0)),
+            borderRadius: BorderRadius.circular(2.0)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
