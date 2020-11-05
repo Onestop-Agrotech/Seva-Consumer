@@ -33,7 +33,7 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   bool _showLoginScreen;
   String _showText;
-  bool _connected = false;
+  bool _connected;
   CIBox _ciBox;
 
   @override
@@ -63,11 +63,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        _connected = true;
+        setState(() {
+          _connected = true;
+        });
         _checkForUserToken();
       }
     } on SocketException catch (_) {
       setState(() {
+        _connected = false;
         _showText = "Oops! No internet connection.";
       });
     }
@@ -163,7 +166,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_connected) _checkConnection();
+    if (_connected != null) {
+      if (!_connected) _checkConnection();
+    }
     return Scaffold(
       body: Container(
         child: Center(

@@ -79,6 +79,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   initState() {
     super.initState();
+    catArray.removeLast();
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
@@ -392,7 +393,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           },
                         ),
                         HelperFunctions.commonText(
-                            height, "Categories", "", "SEE ALL"),
+                            height, "Categories", "", context),
                         SizedBox(height: 9.0),
                         commonWidget(height, catArray, false),
                         SizedBox(height: 9.0)
