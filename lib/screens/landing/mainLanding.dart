@@ -18,6 +18,7 @@ import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
 import 'package:mvp/static-data/categories.dart';
+import 'package:mvp/static-data/featured.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -28,7 +29,6 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
-import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
 import 'graphics/lightBG.dart';
@@ -46,8 +46,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   // This Array is populated by the data that is visible on
   // each caraousel
   var texts = [
-    "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
-    "Share your referral code with friends to get Rs 25 cashback",
+    // "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
+    // "Share your referral code with friends to get Rs 25 cashback",
     "Super fast delivery within 45 minutes!",
     "Order Now and support your local stores."
   ];
@@ -304,11 +304,11 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               Expanded(
                                 child: CarouselSlider(
                                   items: mapIndexed(
-                                      texts,
+                                      featuredArr,
                                       (index, item) => Builder(
                                             builder: (BuildContext context) {
                                               return FeaturedCards(
-                                                  textToDisplay: item,
+                                                  featuredItem: item,
                                                   index: index,
                                                   referralCode: _referralCode);
                                             },
