@@ -26,7 +26,9 @@ class CustomAppBar extends PreferredSize {
   final double height;
   final String email;
   CustomAppBar(
-      {@required this.scaffoldKey, this.height = kToolbarHeight, @required this.email});
+      {@required this.scaffoldKey,
+      this.height = kToolbarHeight,
+      @required this.email});
 
   @override
   Size get preferredSize => Size.fromHeight(height);

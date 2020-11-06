@@ -106,26 +106,26 @@ class _OrderLoaderState extends State<OrderLoader> {
     return Material(
       child: Scaffold(
         body: Container(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CommonGreenIndicator(),
-                SizedBox(height: 20.0),
-                Text(
-                  "Placing your order",
-                  style: TextStyle(
-                      color: ThemeColoursSeva().dkGreen,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CommonGreenIndicator(),
+                  SizedBox(height: 20.0),
+                  Text(
+                    "Placing your order",
+                    style: TextStyle(
+                        color: ThemeColoursSeva().dkGreen,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }

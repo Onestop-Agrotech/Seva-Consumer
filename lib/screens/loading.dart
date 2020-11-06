@@ -170,11 +170,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
-  _showloading(){
-    if(_connected==null)return CommonGreenIndicator();
-    else if(_connected!=null){
-      if(_connected==true)return CommonGreenIndicator();
-      else return Container();
+  _showloading() {
+    if (_connected == null)
+      return CommonGreenIndicator();
+    else if (_connected != null) {
+      if (_connected == true)
+        return CommonGreenIndicator();
+      else
+        return Container();
     }
   }
 
