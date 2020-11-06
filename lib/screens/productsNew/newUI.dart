@@ -232,7 +232,13 @@ class _ProductsUINewState extends State<ProductsUINew> {
                 Icons.arrow_back,
                 color: Colors.black54,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: (){
+                catArray.forEach((i) {
+                  i.backgroundColor=Colors.white;
+                  i.textColor=ThemeColoursSeva().pallete1;
+                });
+                Navigator.of(context).pop();
+              },
             ),
             actions: [CartIcon()],
           ),
@@ -276,7 +282,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                                   /// This [if] condition exists because we have only 3 types
                                   /// of categories in the DB, as we add them up, this should be
                                   /// dynamic, for now it is static
-                                  if (index < catArray.length - 1) {
+                                  if (index < catArray.length) {
                                     setState(() {
                                       tag = index;
                                       for (int i = 0;
