@@ -10,6 +10,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
@@ -104,9 +105,27 @@ class _OrderLoaderState extends State<OrderLoader> {
     if (_postOnce) _postDataToServer(this.widget.paymentId, cart);
     return Material(
       child: Scaffold(
-        body: Center(
-          child: CommonGreenIndicator(),
+        body: Container(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CommonGreenIndicator(),
+                SizedBox(height: 20.0),
+                Text(
+                  "Placing your order",
+                  style: TextStyle(
+                      color: ThemeColoursSeva().dkGreen,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
         ),
+      ),
       ),
     );
   }
