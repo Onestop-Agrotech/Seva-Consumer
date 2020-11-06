@@ -187,5 +187,22 @@ class MainActivity: FlutterActivity() {
         return message?.filter { it.isDigit() } ?: ""
     }
 
+    // New - SMS Retriever API - AUTO-FILL
+    private fun startSMSListener(){
+        val client = SmsRetriever.getClient(this)
+        val task = client.startSmsRetriever()
+
+        task.addOnSuccessListener {
+            // Successfully started retriever, expect broadcast intent
+            // ...
+        }
+
+        task.addOnFailureListener {
+            // Failed to start retriever, inspect Exception for more details
+            // ...
+        }
+    }
+
+
 
 }
