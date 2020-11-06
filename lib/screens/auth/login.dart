@@ -184,13 +184,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // verifies the mobile
   _verifyMobile() async {
-    if (Platform.isAndroid) {
-      platform.invokeMethod("getSMS");
-    }
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
-    var response = await http.post(url, body: getJson, headers: headers);
+    var response = await http.post(
+        "http://localhost:8000/api/users/loginMobile",
+        body: getJson,
+        headers: headers);
     if (response.statusCode == 200) {
       // successfully verified phone number
       var bdy = json.decode(response.body);
@@ -213,6 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _loading = false;
       });
+    } else {
+      print("ALL conditions failed");
     }
   }
 
@@ -228,20 +230,9 @@ class _LoginScreenState extends State<LoginScreen> {
     };
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
-      if (Platform.isAndroid) {
-        /// unregister the receiver after a [sms] case is invoked
-        /// it will not listen again
-        platform.invokeMethod("unregisterReceiver");
-      }
       final preferences = await Preferences.getInstance();
       var jsonBdy = json.decode(response.body);
-      // await p.setUsername(jsonBdy["username"]);
-      // await p.setToken(jsonBdy["token"]);
-      // await p.setId(jsonBdy["id"]);
-      // await p.sethub(jsonBdy["hub"]);
-      // await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
-      // await p.setFarStatus(far);
       String hub = jsonBdy["hub"].toString();
       String email = jsonBdy["email"].toString();
       await preferences.setUsername(jsonBdy["username"]);
