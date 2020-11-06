@@ -16,6 +16,7 @@ import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
+import 'package:mvp/models/category.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
@@ -232,11 +233,14 @@ class _ProductsUINewState extends State<ProductsUINew> {
                 Icons.arrow_back,
                 color: Colors.black54,
               ),
-              onPressed: (){
-                catArray.forEach((i) {
-                  i.backgroundColor=Colors.white;
-                  i.textColor=ThemeColoursSeva().pallete1;
-                });
+              onPressed: () {
+                Category item = catArray.singleWhere(
+                    (i) => i.backgroundColor != Colors.white,
+                    orElse: () => null);
+                if (item != null) {
+                  item.backgroundColor = Colors.white;
+                  item.textColor = ThemeColoursSeva().pallete1;
+                }
                 Navigator.of(context).pop();
               },
             ),
