@@ -17,6 +17,8 @@ import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:mvp/static-data/categories.dart';
+import 'package:mvp/static-data/featured.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -27,7 +29,6 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
-import 'package:mvp/screens/landing/graphics/darkBG.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
 import 'graphics/lightBG.dart';
@@ -40,24 +41,7 @@ class MainLandingScreen extends StatefulWidget {
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   BestsellersBloc apiBloc;
-  //Todo: Screen Visible after login
 
-  // This Array is populated by the data that is visible on
-  // each caraousel
-  var texts = [
-    "Free Deliveries and no minimum order!\n" + "\nOrder Now.",
-    "Share your referral code with friends to get Rs 25 cashback",
-    "Super fast delivery within 45 minutes!",
-    "Order Now and support your local stores."
-  ];
-
-  // This Array is populated by the categories card data
-  List<StoreProduct> categories = [];
-
-  // static categories
-  StoreProduct d;
-  StoreProduct e;
-  StoreProduct f;
   String _email;
   String _username;
   Timer x;
@@ -85,24 +69,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   @override
   initState() {
     super.initState();
-    // Populating the categories array
-    d = new StoreProduct(
-      name: "Vegetables",
-      pictureURL:
-          "https://storepictures.theonestop.co.in/products/all-vegetables.jpg",
-    );
-    e = new StoreProduct(
-      name: "Fruits",
-      pictureURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg",
-    );
-    f = new StoreProduct(
-      name: "Daily Essentials",
-      pictureURL:
-          "https://storepictures.theonestop.co.in/illustrations/supermarket.png",
-    );
-    categories.add(d);
-    categories.add(e);
-    categories.add(f);
+    if (catArray[catArray.length - 1].imgURL == "") catArray.removeLast();
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
@@ -168,7 +135,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     final preferences = await Preferences.getInstance();
     final username = preferences.getData("username");
     final mobile = preferences.getData("mobile");
+    final email = preferences.getData("email");
     setState(() {
+      _email = email;
       _username = username;
       _mobileNumber = mobile;
       _referralCode =
@@ -179,7 +148,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   //Common Card widget for both the best sellers and Categories
   Widget commonWidget(height, itemsList, store) {
     return Container(
-      height: height * 0.22,
+      height: height * 0.15,
       child: Row(
         children: <Widget>[
           Expanded(
@@ -194,10 +163,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           Padding(
                             padding: const EdgeInsets.only(left: 6.0),
                             child: ShowCards(
-                              sp: itemsList[index],
-                              store: store,
-                              index: index,
-                            ),
+                                sp: store ? itemsList[index] : null,
+                                store: store,
+                                index: index,
+                                cat: !store ? itemsList[index] : null),
                           ),
                         ],
                       ),
@@ -221,7 +190,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey,
               ),
-              height: height * 0.20,
+              height: height * 0.12,
               width: width * 0.27,
             )
         ],
@@ -276,10 +245,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               painter: LightBlueBG(),
               child: Container(),
             ),
-            CustomPaint(
-              painter: DarkColourBG(),
-              child: Container(),
-            ),
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -312,7 +277,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                 style: TextStyle(
                                     color: ThemeColoursSeva().dkGreen,
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 2.7 * SizeConfig.textMultiplier),
+                                    fontSize: 2.3 * SizeConfig.textMultiplier),
                               ),
                             ),
                           ],
@@ -327,11 +292,11 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                               Expanded(
                                 child: CarouselSlider(
                                   items: mapIndexed(
-                                      texts,
+                                      featuredArr,
                                       (index, item) => Builder(
                                             builder: (BuildContext context) {
                                               return FeaturedCards(
-                                                  textToDisplay: item,
+                                                  featuredItem: item,
                                                   index: index,
                                                   referralCode: _referralCode);
                                             },
@@ -349,7 +314,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                     enableInfiniteScroll: true,
                                     reverse: false,
                                     autoPlay: true,
-                                    autoPlayInterval: Duration(seconds: 4),
+                                    autoPlayInterval: Duration(seconds: 6),
                                     autoPlayAnimationDuration:
                                         Duration(milliseconds: 600),
                                     autoPlayCurve: Curves.fastOutSlowIn,
@@ -358,12 +323,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                                   ),
                                 ),
                               ),
-
-                              /// text visible in the carousel card
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: texts.map((url) {
-                                  int index = texts.indexOf(url);
+                                children:
+                                    mapIndexed(featuredArr, (index, item) {
                                   return Container(
                                     width: 8.0,
                                     height: 8.0,
@@ -415,10 +378,17 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           },
                         ),
                         HelperFunctions.commonText(
-                            height, "Categories", "", "SEE ALL"),
+                            height, "Categories", "", context),
                         SizedBox(height: 9.0),
-                        commonWidget(height, categories, false),
-                        SizedBox(height: 9.0)
+                        commonWidget(height, catArray, false),
+                        SizedBox(height: 25.0),
+                        Center(
+                            child: Text(
+                          "More Coming Soon!",
+                          style: TextStyle(
+                              color: ThemeColoursSeva().black,
+                              fontSize: 2.2 * SizeConfig.textMultiplier),
+                        ))
                       ],
                     ),
                   ),

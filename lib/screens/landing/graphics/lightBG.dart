@@ -29,7 +29,7 @@ class LightBlueBG extends CustomPainter {
     ovalPath.close();
 
     // paint
-    paint.color = ThemeColoursSeva().vlgColor;
+    paint.color = ThemeColoursSeva().pallete4;
     canvas.drawPath(ovalPath, paint);
   }
 

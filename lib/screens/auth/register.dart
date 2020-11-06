@@ -14,6 +14,7 @@ import 'package:mvp/graphics/greenAuth.dart';
 import 'package:mvp/models/users.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/inputTextField.dart';
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/errors/errorfile.dart';
 import 'package:mvp/screens/location.dart';
@@ -55,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_loading == true) {
       return Container(
         child: Center(
-          child: CircularProgressIndicator(),
+          child: CommonGreenIndicator(),
         ),
       );
     } else {

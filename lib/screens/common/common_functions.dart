@@ -58,7 +58,7 @@ class HelperFunctions {
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
                 fontWeight: FontWeight.w900,
-                fontSize: 2.3 * SizeConfig.textMultiplier),
+                fontSize: 1.9 * SizeConfig.textMultiplier),
           ),
           GestureDetector(
             onTap: () {

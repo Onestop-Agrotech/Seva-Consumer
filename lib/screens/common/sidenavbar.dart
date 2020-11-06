@@ -261,7 +261,7 @@ class Sidenav extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text('App version - Beta'),
-                    subtitle: Text("0.5.2+3"),
+                    subtitle: Text("0.5.3"),
                     onTap: null,
                   ),
                 ),

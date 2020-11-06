@@ -19,6 +19,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/graphics/greenAuth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/auth/register.dart';
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/errors/errorfile.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/location.dart';
@@ -124,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_otpLoader)
       return Padding(
         padding: const EdgeInsets.only(top: 8.0),
-        child: CircularProgressIndicator(),
+        child: CommonGreenIndicator(),
       );
     else
       return Container();
@@ -133,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // basic loader
   _showLoader() {
     if (_loading) {
-      return CircularProgressIndicator();
+      return CommonGreenIndicator();
     } else
       return showOTPField
           ? Padding(

@@ -12,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
+import 'package:mvp/models/category.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/productsNew/details.dart';
 import 'package:mvp/screens/productsNew/newUI.dart';
@@ -19,9 +20,10 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class ShowCards extends StatefulWidget {
   final StoreProduct sp;
+  final Category cat;
   final bool store;
   final int index;
-  ShowCards({this.sp, this.store, @required this.index});
+  ShowCards({this.sp, @required this.store, @required this.index, this.cat});
 
   @override
   _ShowCardsState createState() => _ShowCardsState();
@@ -53,79 +55,54 @@ class _ShowCardsState extends State<ShowCards> {
           }));
         else {
           // open the modal container
-          // this.widget.sp.details.forEach((element) {
-          //   if (!element.outOfStock) onClickProduct();
-          // });
           if (!this.widget.sp.details[0].outOfStock) onClickProduct();
         }
       },
       child: Container(
         // fallback height
-        height: height * 0.22,
-        width: width * 0.4,
+        height: height * 0.12,
+        width: width * 0.24,
         decoration: BoxDecoration(
             border: !this.widget.store
                 ? Border.all(
                     color: ThemeColoursSeva().pallete3,
-                    width: 1.5,
+                    width: 0.7,
                   )
                 : Border.all(
                     color: !this.widget.sp.details[0].outOfStock
                         ? ThemeColoursSeva().pallete3
                         : ThemeColoursSeva().grey,
-                    width: !this.widget.sp.details[0].outOfStock ? 1.5 : 0.2,
+                    width: !this.widget.sp.details[0].outOfStock ? 0.7 : 0.2,
                   ),
-            borderRadius: BorderRadius.circular(20.0)),
+            borderRadius: BorderRadius.circular(2.0)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            widget.store
-                ? Text(
-                    "${widget.sp.name}",
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        color: !this.widget.sp.details[0].outOfStock
-                            ? ThemeColoursSeva().pallete1
-                            : ThemeColoursSeva().grey,
-                        fontSize: 3.4 * SizeConfig.widthMultiplier,
-                        fontWeight: FontWeight.w700),
-                  )
-                : SizedBox.shrink(),
             // Hero animation on clicking any bestseller card
             Hero(
-              tag: widget.sp.name,
+              tag: this.widget.store ? widget.sp.name : this.widget.cat.name,
               transitionOnUserGestures: true,
               child: Container(
-                height: height * 0.1,
+                height: height * 0.06,
                 child: CachedNetworkImage(
-                  imageUrl: widget.sp.pictureURL,
+                  imageUrl: this.widget.store
+                      ? widget.sp.pictureURL
+                      : this.widget.cat.imgURL,
                   placeholder: (context, url) =>
-                      Container(height: 50.0, child: Text("Loading...")),
+                      Container(height: 20.0, child: Text("")),
                   errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
             ),
-            widget.store
-                ? Text(
-                    !this.widget.sp.details[0].outOfStock
-                        ? "₹ ${widget.sp.details[0].price} - ${widget.sp.details[0].quantity.quantityValue} ${widget.sp.details[0].quantity.quantityMetric}"
-                        : "Out of Stock",
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        color: !this.widget.sp.details[0].outOfStock
-                            ? ThemeColoursSeva().pallete1
-                            : ThemeColoursSeva().grey,
-                        fontSize: 3.4 * SizeConfig.widthMultiplier,
-                        fontWeight: FontWeight.w700),
-                  )
-                : Text(
-                    "${widget.sp.name}",
-                    overflow: TextOverflow.clip,
-                    style: TextStyle(
-                        color: ThemeColoursSeva().pallete1,
-                        fontSize: 3.4 * SizeConfig.widthMultiplier,
-                        fontWeight: FontWeight.w700),
-                  )
+            Text(
+              !this.widget.store ? "${widget.cat.name}" : "${widget.sp.name}",
+              overflow: TextOverflow.clip,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: ThemeColoursSeva().pallete1,
+                  fontSize: 3.1 * SizeConfig.widthMultiplier,
+                  fontWeight: FontWeight.w700),
+            )
           ],
         ),
       ),

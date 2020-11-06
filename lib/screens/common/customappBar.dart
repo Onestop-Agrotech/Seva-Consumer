@@ -17,6 +17,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
@@ -25,7 +26,7 @@ class CustomAppBar extends PreferredSize {
   final double height;
   final String email;
   CustomAppBar(
-      {@required this.scaffoldKey, this.height = kToolbarHeight, this.email});
+      {@required this.scaffoldKey, this.height = kToolbarHeight, @required this.email});
 
   @override
   Size get preferredSize => Size.fromHeight(height);
@@ -71,7 +72,13 @@ class CustomAppBar extends PreferredSize {
                     );
                   });
                 } else
-                  return Container(child: Text("Loading Address ..."));
+                  return Container(
+                    height: 120.0,
+                    width: 100.0,
+                    child: Center(
+                      child: CommonGreenIndicator(),
+                    ),
+                  );
               }),
           actions: <Widget>[
             FutureBuilder(
@@ -124,7 +131,7 @@ class CustomAppBar extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ThemeColoursSeva().pallete3,
+      color: ThemeColoursSeva().pallete4,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

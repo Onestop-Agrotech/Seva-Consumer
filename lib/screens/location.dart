@@ -24,10 +24,12 @@ import 'package:http/http.dart' as http;
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
+import 'common/progressIndicator.dart';
+
 class GoogleLocationScreen extends StatefulWidget {
   final String userEmail;
 
-  GoogleLocationScreen({this.userEmail});
+  GoogleLocationScreen({@required this.userEmail});
   @override
   _GoogleLocationScreenState createState() => _GoogleLocationScreenState();
 }
@@ -91,9 +93,12 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
       }
     }
     Fluttertoast.showToast(
-        msg: "Getting your location, just a moment!",
+        msg: "Getting your location. Please wait 3 seconds ...",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER);
+    setState(() {
+      _loader = true;
+    });
     Future.delayed(const Duration(seconds: 3), () async {
       _locationData = await location.getLocation();
       getCurrentLocation(_locationData);
@@ -190,7 +195,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     var subLocality;
-
+    print(first.addressLine);
     if (first.subLocality != null) {
       subLocality = first.subLocality;
     } else if (first.subAdminArea != null) {
@@ -200,11 +205,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     } else {
       subLocality = "None";
     }
-    final subArea = first.subAdminArea;
-    final state = first.adminArea;
-    final pincode = first.postalCode;
-    final country = first.countryName;
-    final address = "$subArea,$state,$pincode,$country";
+    final address = first.addressLine;
     this.setState(() {
       _markerAddress = address;
       _subLocality = subLocality;
@@ -218,8 +219,8 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
     String houseno = _houseno.text.trim();
     String landmark = _landmark.text.trim();
     String geocodedaddress = _markerAddress;
-    user.email = widget.userEmail;
-    user.address = '$houseno,$landmark,$geocodedaddress';
+    user.email = this.widget.userEmail;
+    user.address = '$houseno, $landmark, $geocodedaddress';
     user.latitude = _lat.toString();
     user.longitude = _lng.toString();
 
@@ -250,8 +251,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
         await p.setEmail(json.decode(response.body)["email"]);
         await p.setMobile(json.decode(response.body)["mobile"]);
         if (!far) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/main', ModalRoute.withName('/main'));
+          Navigator.pushReplacementNamed(context, "/main");
         } else {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
@@ -310,7 +310,7 @@ class _GoogleLocationScreenState extends State<GoogleLocationScreen> {
                             constraints: BoxConstraints(
                                 maxHeight: MediaQuery.of(context).size.height),
                             child: Center(
-                              child: CircularProgressIndicator(),
+                              child: CommonGreenIndicator(),
                             ),
                           ),
                       ],

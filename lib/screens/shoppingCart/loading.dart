@@ -10,9 +10,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/ordersModel.dart';
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvp/constants/apiCalls.dart';
@@ -75,7 +77,7 @@ class _OrderLoaderState extends State<OrderLoader> {
         await http.post(url, headers: requestHeaders, body: jsonBody);
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-          msg: "Order posted!",
+          msg: "Order placed!",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM);
       // clear the cart here
@@ -103,9 +105,27 @@ class _OrderLoaderState extends State<OrderLoader> {
     if (_postOnce) _postDataToServer(this.widget.paymentId, cart);
     return Material(
       child: Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
+        body: Container(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CommonGreenIndicator(),
+                SizedBox(height: 20.0),
+                Text(
+                  "Placing your order",
+                  style: TextStyle(
+                      color: ThemeColoursSeva().dkGreen,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+          ),
         ),
+      ),
       ),
     );
   }

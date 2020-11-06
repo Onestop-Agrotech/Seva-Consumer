@@ -18,6 +18,7 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/models/newCart.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/auth/login.dart';
+import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'dart:io';
@@ -33,8 +34,9 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   bool _showLoginScreen;
   String _showText;
-  bool _connected = false;
+  bool _connected;
   CIBox _ciBox;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void setState(fn) {
@@ -63,13 +65,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        _connected = true;
+        setState(() {
+          _connected = true;
+        });
         _checkForUserToken();
       }
     } on SocketException catch (_) {
       setState(() {
+        _connected = false;
         _showText = "Oops! No internet connection.";
       });
+      final snackBar = SnackBar(
+        content: Text("Please connect to the internet and try again"),
+      );
+      _scaffoldKey.currentState.showSnackBar(snackBar);
     }
   }
 
@@ -161,20 +170,38 @@ class _LoadingScreenState extends State<LoadingScreen> {
     }
   }
 
+  _showloading(){
+    if(_connected==null)return CommonGreenIndicator();
+    else if(_connected!=null){
+      if(_connected==true)return CommonGreenIndicator();
+      else return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (!_connected) _checkConnection();
+    if (_connected != null) {
+      if (!_connected) _checkConnection();
+    }
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Text(
-              _showText,
-              style: TextStyle(
-                  color: ThemeColoursSeva().dkGreen,
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _showloading(),
+                SizedBox(height: 20.0),
+                Text(
+                  _showText,
+                  style: TextStyle(
+                      color: ThemeColoursSeva().dkGreen,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
             ),
           ),
         ),
