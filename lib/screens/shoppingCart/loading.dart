@@ -77,7 +77,7 @@ class _OrderLoaderState extends State<OrderLoader> {
         await http.post(url, headers: requestHeaders, body: jsonBody);
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-          msg: "Order posted!",
+          msg: "Order placed!",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM);
       // clear the cart here
