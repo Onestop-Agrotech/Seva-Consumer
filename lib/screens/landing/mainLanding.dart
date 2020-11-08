@@ -384,9 +384,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         SizedBox(height: 25.0),
                         Center(
                             child: Text(
-                          "More Coming Soon!",
+                          "Groceries Coming Soon!",
                           style: TextStyle(
-                              color: ThemeColoursSeva().black,
+                              color: ThemeColoursSeva().lgGreen,
                               fontSize: 2.2 * SizeConfig.textMultiplier),
                         ))
                       ],

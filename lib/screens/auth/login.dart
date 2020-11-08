@@ -274,7 +274,8 @@ class _LoginScreenState extends State<LoginScreen> {
   _onOtpCallBack(String otpCode, bool isAutofill) {
     FocusScope.of(context).unfocus();
     setState(() {
-      if (otpCode.length == _otpCodeLength && isAutofill) {
+      if ((otpCode.length == _otpCodeLength && isAutofill) ||
+          (otpCode.length == _otpCodeLength && !isAutofill)) {
         _verifyOTP(otpCode);
       }
     });
