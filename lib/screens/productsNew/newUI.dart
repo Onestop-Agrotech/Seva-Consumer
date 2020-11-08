@@ -340,36 +340,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
-  // Widget appBarContent() {
-  //   return AppBar(
-  //     title: Text(
-  //       "Products",
-  //       style: TextStyle(
-  //           color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
-  //     ),
-  //     backgroundColor: Colors.transparent,
-  //     centerTitle: true,
-  //     elevation: 0.0,
-  //   leading: IconButton(
-  //     icon: Icon(
-  //       Icons.arrow_back,
-  //       color: Colors.black54,
-  //     ),
-  //     onPressed: () {
-  //       Category item = catArray.singleWhere(
-  //           (i) => i.backgroundColor != Colors.white,
-  //           orElse: () => null);
-  //       if (item != null) {
-  //         item.backgroundColor = Colors.white;
-  //         item.textColor = ThemeColoursSeva().pallete1;
-  //       }
-  //       Navigator.of(context).pop();
-  //     },
-  //   ),
-  //   actions: [CartIcon()],
-  // );
-  // }
-
   Widget buildLayout() {
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
@@ -442,7 +412,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
-          // appBar: appBarContent(),
           body: Stack(
             children: [
               Padding(
