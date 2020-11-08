@@ -99,6 +99,8 @@ class Details extends HiveObject {
   bool outOfStock;
   @HiveField(5)
   bool bestseller;
+  @HiveField(6)
+  String notes;
 
   Details(
       {this.quantity,
@@ -106,7 +108,8 @@ class Details extends HiveObject {
       this.hubid,
       this.price,
       this.outOfStock,
-      this.bestseller});
+      this.bestseller,
+      this.notes});
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
         quantity: Quantity.fromJson(json['quantity']),
@@ -115,6 +118,7 @@ class Details extends HiveObject {
         price: json['price'],
         outOfStock: json['outOfStock'],
         bestseller: json['bestseller'],
+        notes: json["notes"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -124,6 +128,7 @@ class Details extends HiveObject {
         'price': price,
         'outOfStock': outOfStock,
         'bestseller': bestseller,
+        "notes": notes
       };
 }
 

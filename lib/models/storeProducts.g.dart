@@ -81,13 +81,14 @@ class DetailsAdapter extends TypeAdapter<Details> {
       price: fields[3] as int,
       outOfStock: fields[4] as bool,
       bestseller: fields[5] as bool,
+      notes: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Details obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.quantity)
       ..writeByte(1)
@@ -99,7 +100,9 @@ class DetailsAdapter extends TypeAdapter<Details> {
       ..writeByte(4)
       ..write(obj.outOfStock)
       ..writeByte(5)
-      ..write(obj.bestseller);
+      ..write(obj.bestseller)
+      ..writeByte(6)
+      ..write(obj.notes);
   }
 
   @override
