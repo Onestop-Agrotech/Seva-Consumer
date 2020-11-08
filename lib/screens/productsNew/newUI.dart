@@ -354,8 +354,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
-      margins: EdgeInsets.only(
-          top: 40.0, right: MediaQuery.of(context).size.width * 0.16),
+      // margins: EdgeInsets.only(
+      //     top: 40.0, right: MediaQuery.of(context).size.width * 0.16),
       controller: controller,
       hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
@@ -364,7 +364,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       physics: const BouncingScrollPhysics(),
       axisAlignment: isPortrait ? 0.0 : -1.0,
       openAxisAlignment: 0.0,
-      maxWidth: MediaQuery.of(context).size.width * 0.8,
+      maxWidth: MediaQuery.of(context).size.width * 1.1,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
         // Call your model, bloc, controller here.
@@ -418,8 +418,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
                 child: buildLayout(),
               ),
               Positioned(
-                right: 7.0,
-                top: 35.0,
+                bottom: 30.0,
+                left: 25.0,
                 child: CartIcon(),
               ),
               customFloatSearchBar()
