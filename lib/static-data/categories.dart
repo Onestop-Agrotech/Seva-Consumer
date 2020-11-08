@@ -24,7 +24,12 @@ final List<Category> catArray = [
       hasData: true,
       imgURL:
           "https://storepictures.theonestop.co.in/illustrations/nonVeg.jpg"),
-  // Category(name: "Groceries", categoryName: "groceries", hasData: true),
+  Category(
+      name: "Groceries",
+      categoryName: "groceries",
+      hasData: true,
+      imgURL:
+          "https://storepictures.theonestop.co.in/illustrations/groceries.jpg"),
   Category(
       name: "More Coming soon!", categoryName: "", hasData: false, imgURL: "")
 ];
