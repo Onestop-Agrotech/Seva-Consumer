@@ -25,7 +25,7 @@ import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
-import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
   bool _otpLoader = false;
+  int _otpCodeLength = 6;
   // bool _readonly = true;
   FocusNode _mobileFocus;
   final _mobileController = TextEditingController();
@@ -187,10 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
-    var response = await http.post(
-        "http://localhost:8000/api/users/loginMobile",
-        body: getJson,
-        headers: headers);
+    var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
       // successfully verified phone number
       var bdy = json.decode(response.body);
@@ -213,13 +211,11 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _loading = false;
       });
-    } else {
-      print("ALL conditions failed");
     }
   }
 
   //verifies the otp
-  _verifyOTP(otp) async {
+  _verifyOTP(String otp) async {
     final preferences = await Preferences.getInstance();
     String token = await preferences.getData("token");
     var getJson = json.encode({"phone": _mobileController.text, "otp": otp});
@@ -273,6 +269,15 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (response.statusCode == 500) {
       // internal server error
     }
+  }
+
+  _onOtpCallBack(String otpCode, bool isAutofill) {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      if (otpCode.length == _otpCodeLength && isAutofill) {
+        _verifyOTP(otpCode);
+      }
+    });
   }
 
   @override
@@ -384,43 +389,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Center(
-                                    child: PinCodeTextField(
-                                      autofocus: false,
-                                      controller: _otpEditingController,
-                                      hideCharacter: false,
-                                      highlight: true,
-                                      highlightColor: Colors.blue,
-                                      defaultBorderColor: Colors.black,
-                                      hasTextBorderColor: Colors.green,
-                                      maxLength: 6,
-                                      onTextChanged: (text) {
-                                        if (text.length == 6) {
-                                          setState(() {
-                                            _otpLoader = true;
-                                            _invalidOTP = false;
-                                          });
-                                          _verifyOTP(text);
-                                        }
-                                      },
-                                      onDone: (text) {},
-                                      pinBoxWidth: 25,
-                                      pinBoxHeight: 40,
-                                      hasUnderline: false,
-                                      wrapAlignment: WrapAlignment.spaceAround,
-                                      pinBoxDecoration: ProvidedPinBoxDecoration
-                                          .underlinedPinBoxDecoration,
-                                      pinTextStyle: TextStyle(fontSize: 15.0),
-                                      pinTextAnimatedSwitcherTransition:
-                                          ProvidedPinBoxTextAnimation
-                                              .scalingTransition,
-                                      pinTextAnimatedSwitcherDuration:
-                                          Duration(milliseconds: 300),
-                                      highlightAnimationBeginColor:
-                                          Colors.black,
-                                      highlightAnimationEndColor:
-                                          Colors.white12,
-                                      keyboardType: TextInputType.number,
-                                    ),
+                                    child: Container(
+                                        width: 320.0,
+                                        child: TextFieldPin(
+                                          textStyle: TextStyle(
+                                              fontSize: 1.7 *
+                                                  SizeConfig.textMultiplier),
+                                          filled: true,
+                                          filledColor: Colors.grey[100],
+                                          codeLength: _otpCodeLength,
+                                          boxSize: 40,
+                                          onOtpCallback: (code, isAutofill) =>
+                                              _onOtpCallBack(code, isAutofill),
+                                        )),
                                   ),
                                 ],
                               )

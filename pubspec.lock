@@ -632,13 +632,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
-  pin_code_text_field:
-    dependency: "direct main"
-    description:
-      name: pin_code_text_field
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.7.1"
   platform:
     dependency: transitive
     description:
@@ -763,6 +756,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0"
+  sms_otp_auto_verify:
+    dependency: "direct main"
+    description:
+      name: sms_otp_auto_verify
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.2"
   source_gen:
     dependency: transitive
     description:
