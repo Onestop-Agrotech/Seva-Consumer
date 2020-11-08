@@ -12,6 +12,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
@@ -50,6 +51,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// and tag value is not mutated but same value can be
   /// used by multiple instances, so we can use - static
   static int tag;
+
+  final controller = FloatingSearchBarController();
 
   /// safer way to intialise the bloc
   /// and also dispose it properly
@@ -331,33 +334,91 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
-  Widget appBarContent() {
-    return AppBar(
-      title: Text(
-        "Products",
-        style: TextStyle(
-            color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
-      ),
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      elevation: 0.0,
-      leading: IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: Colors.black54,
+  // Widget appBarContent() {
+  //   return AppBar(
+  //     title: Text(
+  //       "Products",
+  //       style: TextStyle(
+  //           color: ThemeColoursSeva().pallete1, fontWeight: FontWeight.w500),
+  //     ),
+  //     backgroundColor: Colors.transparent,
+  //     centerTitle: true,
+  //     elevation: 0.0,
+  //     leading: IconButton(
+  //       icon: Icon(
+  //         Icons.arrow_back,
+  //         color: Colors.black54,
+  //       ),
+  //       onPressed: () {
+  //         Category item = catArray.singleWhere(
+  //             (i) => i.backgroundColor != Colors.white,
+  //             orElse: () => null);
+  //         if (item != null) {
+  //           item.backgroundColor = Colors.white;
+  //           item.textColor = ThemeColoursSeva().pallete1;
+  //         }
+  //         Navigator.of(context).pop();
+  //       },
+  //     ),
+  //     actions: [CartIcon()],
+  //   );
+  // }
+
+  Widget buildLayout() {
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        // height of screen
+        double h = MediaQuery.of(context).size.height;
+        return mainContent(h);
+      });
+    });
+  }
+
+  Widget customFloatSearchBar() {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    return FloatingSearchBar(
+      controller: controller,
+      hint: 'Search...',
+      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+      transitionDuration: const Duration(milliseconds: 800),
+      transitionCurve: Curves.easeInOut,
+      physics: const BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      openAxisAlignment: 0.0,
+      maxWidth: isPortrait ? 600 : 500,
+      debounceDelay: const Duration(milliseconds: 500),
+      onQueryChanged: (query) {
+        // Call your model, bloc, controller here.
+      },
+      // Specify a custom transition to be used for
+      // animating between opened and closed stated.
+      transition: CircularFloatingSearchBarTransition(),
+      actions: [
+        FloatingSearchBarAction(
+          showIfOpened: false,
+          child: CartIcon(),
         ),
-        onPressed: () {
-          Category item = catArray.singleWhere(
-              (i) => i.backgroundColor != Colors.white,
-              orElse: () => null);
-          if (item != null) {
-            item.backgroundColor = Colors.white;
-            item.textColor = ThemeColoursSeva().pallete1;
-          }
-          Navigator.of(context).pop();
-        },
-      ),
-      actions: [CartIcon()],
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
+      ],
+      builder: (context, transition) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            color: Colors.white,
+            elevation: 4.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: Colors.accents.map((color) {
+                return Container(height: 112, color: color);
+              }).toList(),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -370,13 +431,17 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
-        // width of screen
-        double width = MediaQuery.of(context).size.height;
         return Scaffold(
-            key: _scaffoldKey,
-            backgroundColor: Colors.white,
-            appBar: appBarContent(),
-            body: mainContent(width));
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          // appBar: appBarContent(),
+          body: Stack(
+            children: [Padding(
+              padding: const EdgeInsets.only(top: 68.0),
+              child: buildLayout(),
+            ), customFloatSearchBar()],
+          ),
+        );
       });
     });
   }
