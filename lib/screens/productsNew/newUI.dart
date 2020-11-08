@@ -17,7 +17,6 @@ import 'package:mvp/bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
-import 'package:mvp/models/category.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
