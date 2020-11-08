@@ -344,24 +344,24 @@ class _ProductsUINewState extends State<ProductsUINew> {
   //     backgroundColor: Colors.transparent,
   //     centerTitle: true,
   //     elevation: 0.0,
-  //     leading: IconButton(
-  //       icon: Icon(
-  //         Icons.arrow_back,
-  //         color: Colors.black54,
-  //       ),
-  //       onPressed: () {
-  //         Category item = catArray.singleWhere(
-  //             (i) => i.backgroundColor != Colors.white,
-  //             orElse: () => null);
-  //         if (item != null) {
-  //           item.backgroundColor = Colors.white;
-  //           item.textColor = ThemeColoursSeva().pallete1;
-  //         }
-  //         Navigator.of(context).pop();
-  //       },
+  //   leading: IconButton(
+  //     icon: Icon(
+  //       Icons.arrow_back,
+  //       color: Colors.black54,
   //     ),
-  //     actions: [CartIcon()],
-  //   );
+  //     onPressed: () {
+  //       Category item = catArray.singleWhere(
+  //           (i) => i.backgroundColor != Colors.white,
+  //           orElse: () => null);
+  //       if (item != null) {
+  //         item.backgroundColor = Colors.white;
+  //         item.textColor = ThemeColoursSeva().pallete1;
+  //       }
+  //       Navigator.of(context).pop();
+  //     },
+  //   ),
+  //   actions: [CartIcon()],
+  // );
   // }
 
   Widget buildLayout() {
@@ -379,15 +379,16 @@ class _ProductsUINewState extends State<ProductsUINew> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
+      margins: EdgeInsets.only(top: 40.0, right: MediaQuery.of(context).size.width*0.16),
       controller: controller,
-      hint: 'Search...',
+      hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
       transitionCurve: Curves.easeInOut,
       physics: const BouncingScrollPhysics(),
       axisAlignment: isPortrait ? 0.0 : -1.0,
       openAxisAlignment: 0.0,
-      maxWidth: isPortrait ? 600 : 500,
+      maxWidth: MediaQuery.of(context).size.width*0.8,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
         // Call your model, bloc, controller here.
@@ -398,7 +399,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       actions: [
         FloatingSearchBarAction(
           showIfOpened: false,
-          child: CartIcon(),
+          child: Icon(Icons.list_alt_rounded),
         ),
         FloatingSearchBarAction.searchToClear(
           showIfClosed: false,
@@ -436,10 +437,18 @@ class _ProductsUINewState extends State<ProductsUINew> {
           backgroundColor: Colors.white,
           // appBar: appBarContent(),
           body: Stack(
-            children: [Padding(
-              padding: const EdgeInsets.only(top: 68.0),
-              child: buildLayout(),
-            ), customFloatSearchBar()],
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 68.0),
+                child: buildLayout(),
+              ),
+              Positioned(
+                right: 7.0,
+                top: 35.0,
+                child: CartIcon(),
+              ),
+              customFloatSearchBar()
+            ],
           ),
         );
       });
