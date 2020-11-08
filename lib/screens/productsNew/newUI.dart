@@ -215,6 +215,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
   Widget mainContent(double width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
       /// This is the main row that seperates 2 cols
       children: [
         /// The first column to the left side
@@ -387,9 +388,18 @@ class _ProductsUINewState extends State<ProductsUINew> {
             elevation: 4.0,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: Colors.accents.map((color) {
-                return Container(height: 112, color: color);
-              }).toList(),
+              children: catArray
+                  .map(
+                    (item) => Container(
+                      height: 50.0,
+                      width: MediaQuery.of(context).size.width,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 13.0, top: 10.0),
+                        child: Text(item.name),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         );
