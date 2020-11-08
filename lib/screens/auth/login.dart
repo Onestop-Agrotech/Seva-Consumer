@@ -25,7 +25,7 @@ import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
-import 'package:pin_code_text_field/pin_code_text_field.dart';
+import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _inavlidMobile = false;
   bool _invalidOTP = false;
   bool _otpLoader = false;
+  int _otpCodeLength = 6;
   // bool _readonly = true;
   FocusNode _mobileFocus;
   final _mobileController = TextEditingController();
@@ -184,9 +185,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // verifies the mobile
   _verifyMobile() async {
-    if (Platform.isAndroid) {
-      platform.invokeMethod("getSMS");
-    }
     var getJson = json.encode({"phone": _mobileController.text});
     String url = APIService.loginMobile;
     Map<String, String> headers = {"Content-Type": "application/json"};
@@ -217,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   //verifies the otp
-  _verifyOTP(otp) async {
+  _verifyOTP(String otp) async {
     final preferences = await Preferences.getInstance();
     String token = await preferences.getData("token");
     var getJson = json.encode({"phone": _mobileController.text, "otp": otp});
@@ -228,20 +226,9 @@ class _LoginScreenState extends State<LoginScreen> {
     };
     var response = await http.post(url, body: getJson, headers: headers);
     if (response.statusCode == 200) {
-      if (Platform.isAndroid) {
-        /// unregister the receiver after a [sms] case is invoked
-        /// it will not listen again
-        platform.invokeMethod("unregisterReceiver");
-      }
       final preferences = await Preferences.getInstance();
       var jsonBdy = json.decode(response.body);
-      // await p.setUsername(jsonBdy["username"]);
-      // await p.setToken(jsonBdy["token"]);
-      // await p.setId(jsonBdy["id"]);
-      // await p.sethub(jsonBdy["hub"]);
-      // await p.setEmail(jsonBdy["email"]);
       String far = jsonBdy["far"].toString();
-      // await p.setFarStatus(far);
       String hub = jsonBdy["hub"].toString();
       String email = jsonBdy["email"].toString();
       await preferences.setUsername(jsonBdy["username"]);
@@ -282,6 +269,16 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (response.statusCode == 500) {
       // internal server error
     }
+  }
+
+  _onOtpCallBack(String otpCode, bool isAutofill) {
+    FocusScope.of(context).unfocus();
+    setState(() {
+      if ((otpCode.length == _otpCodeLength && isAutofill) ||
+          (otpCode.length == _otpCodeLength && !isAutofill)) {
+        _verifyOTP(otpCode);
+      }
+    });
   }
 
   @override
@@ -393,43 +390,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Center(
-                                    child: PinCodeTextField(
-                                      autofocus: false,
-                                      controller: _otpEditingController,
-                                      hideCharacter: false,
-                                      highlight: true,
-                                      highlightColor: Colors.blue,
-                                      defaultBorderColor: Colors.black,
-                                      hasTextBorderColor: Colors.green,
-                                      maxLength: 6,
-                                      onTextChanged: (text) {
-                                        if (text.length == 6) {
-                                          setState(() {
-                                            _otpLoader = true;
-                                            _invalidOTP = false;
-                                          });
-                                          _verifyOTP(text);
-                                        }
-                                      },
-                                      onDone: (text) {},
-                                      pinBoxWidth: 25,
-                                      pinBoxHeight: 40,
-                                      hasUnderline: false,
-                                      wrapAlignment: WrapAlignment.spaceAround,
-                                      pinBoxDecoration: ProvidedPinBoxDecoration
-                                          .underlinedPinBoxDecoration,
-                                      pinTextStyle: TextStyle(fontSize: 15.0),
-                                      pinTextAnimatedSwitcherTransition:
-                                          ProvidedPinBoxTextAnimation
-                                              .scalingTransition,
-                                      pinTextAnimatedSwitcherDuration:
-                                          Duration(milliseconds: 300),
-                                      highlightAnimationBeginColor:
-                                          Colors.black,
-                                      highlightAnimationEndColor:
-                                          Colors.white12,
-                                      keyboardType: TextInputType.number,
-                                    ),
+                                    child: Container(
+                                        width: 320.0,
+                                        child: TextFieldPin(
+                                          margin: 8.0,
+                                          textStyle: TextStyle(
+                                              fontSize: 1.7 *
+                                                  SizeConfig.textMultiplier),
+                                          filled: true,
+                                          filledColor: Colors.grey[100],
+                                          codeLength: _otpCodeLength,
+                                          boxSize: 40,
+                                          onOtpCallback: (code, isAutofill) =>
+                                              _onOtpCallBack(code, isAutofill),
+                                        )),
                                   ),
                                 ],
                               )

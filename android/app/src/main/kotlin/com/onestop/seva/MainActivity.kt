@@ -35,8 +35,7 @@ class MainActivity: FlutterActivity() {
 
     // For request hint code
     private val CREDENTIAL_PICKER_REQUEST = 1  // Set to an unused request code
-    // For getting back the SMS
-    private val SMS_CONSENT_REQUEST = 2
+
     // For in app update call back
     private val IN_APP_UPDATE = 3
 
@@ -50,13 +49,6 @@ class MainActivity: FlutterActivity() {
                     when(call.method){
                         "getPhoneNumber" ->
                             requestHint()
-                        "getSMS" ->
-                            {
-                                val senderPhoneNumber=null
-                                SmsRetriever.getClient(context).startSmsUserConsent(senderPhoneNumber /* or null */)
-                                registerReceiver(smsVerificationReceiver, IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION))
-                            }
-                        "unregisterReceiver" -> unregisterReceiver(smsVerificationReceiver)
 
                     }
 
@@ -102,33 +94,6 @@ class MainActivity: FlutterActivity() {
         }
     }
 
-    private val smsVerificationReceiver = object : BroadcastReceiver(){
-        override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent != null) {
-                if(SmsRetriever.SMS_RETRIEVED_ACTION == intent.action){
-                    val extras = intent.extras
-                    val smsRetrieverStatus = extras?.get(SmsRetriever.EXTRA_STATUS) as Status
-                    when(smsRetrieverStatus.statusCode){
-                        CommonStatusCodes.SUCCESS -> {
-                            // Get consent intent
-                            val consentIntent = extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT)
-                            try {
-                                // Start activity to show consent dialog to user, activity must be started in
-                                // 5 minutes,
-                                startActivityForResult(consentIntent, SMS_CONSENT_REQUEST)
-                            } catch (e: ActivityNotFoundException) {
-                                // Handle the exception ...
-                            }
-                        }
-                        CommonStatusCodes.TIMEOUT -> {
-                            // Time out occurred, handle the error.
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     // Open up the request hint box to pick the phone
     private fun requestHint(){
         val hintRequest = HintRequest.Builder()
@@ -158,22 +123,6 @@ class MainActivity: FlutterActivity() {
                     // none of the above
                     channel.invokeMethod("phone",null)
                 }
-            SMS_CONSENT_REQUEST ->
-                // Obtain the phone number from the result
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    // Get SMS message content
-                    val message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
-                    // Extract one-time code from the message and complete verification
-                    // `message` contains the entire text of the SMS message, so you will need
-                    // to parse the string.
-
-                    val oneTimeCode = parseOneTimeCode(message) // define this function
-                    channel.invokeMethod("sms",oneTimeCode.toString())
-
-                    // send one time code to the server
-                } else {
-                    // Consent denied. User can type OTC manually.
-                }
             IN_APP_UPDATE ->
                 if(resultCode != Activity.RESULT_OK){
                     // update has failed
@@ -181,11 +130,5 @@ class MainActivity: FlutterActivity() {
                 }
         }
     }
-
-    // Parse the message and return the code only
-    private fun parseOneTimeCode(message: String?): Any {
-        return message?.filter { it.isDigit() } ?: ""
-    }
-
 
 }

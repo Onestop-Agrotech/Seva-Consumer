@@ -87,50 +87,25 @@ class Sidenav extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 14.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.home,
-                          color: Colors.green,
-                          size: SizeConfig.widthMultiplier * 4.3,
-                        ),
-                        SizedBox(width: 8.0),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              fontSize: SizeConfig.widthMultiplier * 3.65),
-                        )
-                      ],
+                    Icon(
+                      Icons.account_circle,
+                      color: Colors.black,
+                      size: SizeConfig.widthMultiplier * 4.3,
                     ),
+                    SizedBox(width: 8.0),
                     Text(
-                      "Seva",
+                      username != null ? username : "Username",
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: SizeConfig.widthMultiplier * 3.65),
                     )
                   ],
                 ),
               ),
             ),
-            ListTile(
-                title: Row(
-              children: [
-                Icon(
-                  Icons.account_circle,
-                  color: Colors.green,
-                  size: SizeConfig.widthMultiplier * 4.3,
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  username != null ? username : "Username",
-                  style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                ),
-              ],
-            )),
             ListTile(
               title: Row(
                 children: [
@@ -141,7 +116,7 @@ class Sidenav extends StatelessWidget {
                   ),
                   SizedBox(width: 8.0),
                   Text(
-                    'My orders',
+                    'Orders',
                     style:
                         TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
@@ -159,65 +134,13 @@ class Sidenav extends StatelessWidget {
               title: Row(
                 children: [
                   Icon(
-                    Icons.logout,
-                    color: Colors.green,
-                    size: SizeConfig.widthMultiplier * 4.3,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Logout',
-                    style:
-                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                  ),
-                ],
-              ),
-              onTap: () async {
-                // clearing the data from hive
-                await Hive.deleteFromDisk();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login', (Route<dynamic> route) => false);
-              },
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(
-                    Icons.help,
-                    size: SizeConfig.widthMultiplier * 4.3,
-                    color: Colors.green,
-                  ),
-                  SizedBox(width: 8),
-                  Text(
-                    'Help',
-                    style:
-                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                  ),
-                ],
-              ),
-              subtitle: Text(
-                "Reach us on whatsapp",
-                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 2.3),
-              ),
-              onTap: () async {
-                var url = DotEnv().env['MSG_URL'];
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(
                     Icons.supervised_user_circle,
                     color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
                   Text(
-                    'Referral code',
+                    'Referral',
                     style:
                         TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
@@ -254,6 +177,58 @@ class Sidenav extends StatelessWidget {
                 Share.share(msg);
               },
             ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.help,
+                    size: SizeConfig.widthMultiplier * 4.3,
+                    color: Colors.green,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'Help',
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                  ),
+                ],
+              ),
+              subtitle: Text(
+                "Reach us on whatsapp",
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 2.3),
+              ),
+              onTap: () async {
+                var url = DotEnv().env['MSG_URL'];
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.logout,
+                    color: Colors.green,
+                    size: SizeConfig.widthMultiplier * 4.3,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    'Logout',
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                  ),
+                ],
+              ),
+              onTap: () async {
+                // clearing the data from hive
+                await Hive.deleteFromDisk();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login', (Route<dynamic> route) => false);
+              },
+            ),
             Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -261,7 +236,7 @@ class Sidenav extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text('App version - Beta'),
-                    subtitle: Text("0.5.3"),
+                    subtitle: Text("0.5.4"),
                     onTap: null,
                   ),
                 ),

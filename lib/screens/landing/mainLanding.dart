@@ -380,15 +380,22 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         HelperFunctions.commonText(
                             height, "Categories", "", context),
                         SizedBox(height: 9.0),
-                        commonWidget(height, catArray, false),
-                        SizedBox(height: 25.0),
-                        Center(
-                            child: Text(
-                          "More Coming Soon!",
-                          style: TextStyle(
-                              color: ThemeColoursSeva().black,
-                              fontSize: 2.2 * SizeConfig.textMultiplier),
-                        ))
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: GridView.extent(
+                            maxCrossAxisExtent:
+                                MediaQuery.of(context).size.width * 0.32,
+                            mainAxisSpacing: 2.0,
+                            crossAxisSpacing: 7.0,
+                            children: mapIndexed(
+                                catArray,
+                                (index, item) => ShowCards(
+                                    store: false,
+                                    index: index,
+                                    sp: null,
+                                    cat: item)).toList(),
+                          ),
+                        ),
                       ],
                     ),
                   ),

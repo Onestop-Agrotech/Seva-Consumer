@@ -62,19 +62,16 @@ class _ShowCardsState extends State<ShowCards> {
         // fallback height
         height: height * 0.12,
         width: width * 0.24,
-        decoration: BoxDecoration(
-            border: !this.widget.store
-                ? Border.all(
-                    color: ThemeColoursSeva().pallete3,
-                    width: 0.7,
-                  )
-                : Border.all(
-                    color: !this.widget.sp.details[0].outOfStock
-                        ? ThemeColoursSeva().pallete3
-                        : ThemeColoursSeva().grey,
-                    width: !this.widget.sp.details[0].outOfStock ? 0.7 : 0.2,
-                  ),
-            borderRadius: BorderRadius.circular(2.0)),
+        margin: !this.widget.store ? EdgeInsets.all(10.0) : EdgeInsets.all(0.0),
+        decoration: this.widget.store
+            ? BoxDecoration(
+                border: Border.all(
+                color: !this.widget.sp.details[0].outOfStock
+                    ? ThemeColoursSeva().pallete3
+                    : ThemeColoursSeva().grey,
+                width: !this.widget.sp.details[0].outOfStock ? 0.7 : 0.2,
+              ))
+            : BoxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[

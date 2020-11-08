@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+21
+version: 1.0.0+22
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -47,8 +47,6 @@ dependencies:
   flutter_staggered_grid_view: "^0.3.1"
   # for getting locations address from lat/long
   geocoder: ^0.2.1
-  # For otp fields
-  pin_code_text_field: ^1.7.1
   # shimmer view - loading
   shimmer: ^1.1.1
   # for featured cards
@@ -67,7 +65,10 @@ dependencies:
   hive_flutter: ^0.3.0+2
   # slide bar
   slider_button: ^0.6.0
+  # for getting data 
   pull_to_refresh: ^1.6.1
+  # for sms auto fill
+  sms_otp_auto_verify: ^1.2.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -79,11 +80,11 @@ dev_dependencies:
   # splash screen
   flutter_native_splash: ^0.1.9
   # hive generator
-  hive_generator: ^0.7.2+1
-  build_runner:
+  hive_generator: 0.8.1
+  build_runner: 1.10.3
 
 dependency_overrides:
-  analyzer: 0.39.14
+  analyzer: 0.40.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
