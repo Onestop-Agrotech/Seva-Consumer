@@ -13,7 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-import 'package:mvp/bloc/productsapi_bloc.dart';
+import 'package:mvp/bloc/products_bloc/productsapi_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';

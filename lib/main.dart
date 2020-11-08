@@ -32,7 +32,7 @@ import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
-import 'bloc/productsapi_bloc.dart';
+import 'bloc/products_bloc/productsapi_bloc.dart';
 
 Future main() async {
   await DotEnv().load('.env');
