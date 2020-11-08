@@ -393,6 +393,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: Container(
                                         width: 320.0,
                                         child: TextFieldPin(
+                                          margin: 8.0,
                                           textStyle: TextStyle(
                                               fontSize: 1.7 *
                                                   SizeConfig.textMultiplier),
