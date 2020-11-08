@@ -6,12 +6,12 @@ final List<Category> catArray = [
       categoryName: "vegetable",
       hasData: true,
       imgURL:
-          "https://storepictures.theonestop.co.in/products/all-vegetables.jpg"),
+          "https://storepictures.theonestop.co.in/illustrations/veggies-animated-2.jpg"),
   Category(
       name: "Fruits",
       categoryName: "fruit",
       hasData: true,
-      imgURL: "https://storepictures.theonestop.co.in/new2/AllFruits.jpg"),
+      imgURL: "https://storepictures.theonestop.co.in/illustrations/fruits-animated-2.jpg"),
   Category(
       name: "Milk, Eggs & Bread",
       categoryName: "dailyEssential",
@@ -23,7 +23,7 @@ final List<Category> catArray = [
       categoryName: "nonVeg",
       hasData: true,
       imgURL:
-          "https://storepictures.theonestop.co.in/illustrations/nonVeg.jpg"),
+          "https://storepictures.theonestop.co.in/illustrations/nonVeg-animated-2.jpg"),
   Category(
       name: "Groceries",
       categoryName: "grocery",
