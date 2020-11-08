@@ -215,7 +215,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
   Widget mainContent(double width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
       /// This is the main row that seperates 2 cols
       children: [
         /// The first column to the left side
@@ -280,7 +279,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
         ),
         // Using Bloc to change the state as per the State Set
         Padding(
-          padding: const EdgeInsets.only(top: 5.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: SizedBox(
             width: 69 * SizeConfig.widthMultiplier,
             child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
@@ -305,7 +304,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
                           if (mode == LoadStatus.loading) {
                             CupertinoActivityIndicator();
                           } else if (mode == LoadStatus.failed) {
-                            Text("Load Failed!Please retry!");
+                            Text("Load Failed! Please retry!");
                           }
                           return Container();
                         },
@@ -354,8 +353,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
-      // margins: EdgeInsets.only(
-      //     top: 40.0, right: MediaQuery.of(context).size.width * 0.16),
       controller: controller,
       hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
@@ -368,6 +365,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
         // Call your model, bloc, controller here.
+        print(query);
       },
       // Specify a custom transition to be used for
       // animating between opened and closed stated.
