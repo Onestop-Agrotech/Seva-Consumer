@@ -11,7 +11,8 @@ final List<Category> catArray = [
       name: "Fruits",
       categoryName: "fruit",
       hasData: true,
-      imgURL: "https://storepictures.theonestop.co.in/illustrations/fruits-animated-2.jpg"),
+      imgURL:
+          "https://storepictures.theonestop.co.in/illustrations/fruits-animated-2.jpg"),
   Category(
       name: "Milk, Eggs & Bread",
       categoryName: "dailyEssential",
