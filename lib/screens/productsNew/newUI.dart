@@ -76,6 +76,12 @@ class _ProductsUINewState extends State<ProductsUINew> {
       tag = widget.tagFromMain;
     else
       tag = 0;
+    for (int i = 0; i < catArray.length; i++) {
+      if (i != tag) {
+        catArray[i].backgroundColor = Colors.white;
+        catArray[i].textColor = ThemeColoursSeva().pallete1;
+      }
+    }
   }
 
   @override
@@ -379,7 +385,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
-      margins: EdgeInsets.only(top: 40.0, right: MediaQuery.of(context).size.width*0.16),
+      margins: EdgeInsets.only(
+          top: 40.0, right: MediaQuery.of(context).size.width * 0.16),
       controller: controller,
       hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
@@ -388,7 +395,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       physics: const BouncingScrollPhysics(),
       axisAlignment: isPortrait ? 0.0 : -1.0,
       openAxisAlignment: 0.0,
-      maxWidth: MediaQuery.of(context).size.width*0.8,
+      maxWidth: MediaQuery.of(context).size.width * 0.8,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
         // Call your model, bloc, controller here.
