@@ -40,7 +40,6 @@ class ProductRepositoryImpl implements ProductRepository {
   refreshToken() async {
     try {
       final p = await Preferences.getInstance();
-      // String token = await p.getData("token");
       String refreshToken = await p.getData("refreshToken");
       String url = APIService.getRefreshToken;
       var body = jsonEncode(<String, String>{
@@ -52,8 +51,6 @@ class ProductRepositoryImpl implements ProductRepository {
       var jsonBdy = json.decode(response.body);
       await p.setToken(jsonBdy["token"]);
       await p.setRefreshToken(jsonBdy["refreshToken"]);
-
-      // user=
     } on SocketException {
       throw FetchDataException('No Internet Connection!');
     }

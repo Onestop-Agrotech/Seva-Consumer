@@ -381,9 +381,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             height, "Categories", "", context),
                         SizedBox(height: 9.0),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height*0.3,
+                          height: MediaQuery.of(context).size.height * 0.3,
                           child: GridView.extent(
-                            maxCrossAxisExtent: MediaQuery.of(context).size.width*0.32,
+                            maxCrossAxisExtent:
+                                MediaQuery.of(context).size.width * 0.32,
                             mainAxisSpacing: 2.0,
                             crossAxisSpacing: 7.0,
                             children: mapIndexed(
