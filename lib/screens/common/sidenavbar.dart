@@ -87,50 +87,25 @@ class Sidenav extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 14.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.home,
-                          color: Colors.green,
-                          size: SizeConfig.widthMultiplier * 4.3,
-                        ),
-                        SizedBox(width: 8.0),
-                        Text(
-                          "Home",
-                          style: TextStyle(
-                              fontSize: SizeConfig.widthMultiplier * 3.65),
-                        )
-                      ],
+                    Icon(
+                      Icons.account_circle,
+                      color: Colors.black,
+                      size: SizeConfig.widthMultiplier * 4.3,
                     ),
+                    SizedBox(width: 8.0),
                     Text(
-                      "Seva",
+                      username != null ? username : "Username",
+                      overflow: TextOverflow.clip,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: SizeConfig.widthMultiplier * 3.65),
                     )
                   ],
                 ),
               ),
             ),
-            ListTile(
-                title: Row(
-              children: [
-                Icon(
-                  Icons.account_circle,
-                  color: Colors.green,
-                  size: SizeConfig.widthMultiplier * 4.3,
-                ),
-                SizedBox(
-                  width: 8.0,
-                ),
-                Text(
-                  username != null ? username : "Username",
-                  style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                ),
-              ],
-            )),
             ListTile(
               title: Row(
                 children: [
@@ -141,7 +116,7 @@ class Sidenav extends StatelessWidget {
                   ),
                   SizedBox(width: 8.0),
                   Text(
-                    'My orders',
+                    'Orders',
                     style:
                         TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
@@ -159,23 +134,47 @@ class Sidenav extends StatelessWidget {
               title: Row(
                 children: [
                   Icon(
-                    Icons.logout,
+                    Icons.supervised_user_circle,
                     color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(width: 8.0),
                   Text(
-                    'Logout',
+                    'Referral',
                     style:
                         TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
-              onTap: () async {
-                // clearing the data from hive
-                await Hive.deleteFromDisk();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login', (Route<dynamic> route) => false);
+              subtitle: Text(
+                referralCode == null ? "" : referralCode,
+                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+              ),
+              onTap: () {
+                showReferralInstructions(context, referralCode);
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.share,
+                    color: Colors.green,
+                    size: SizeConfig.widthMultiplier * 4.3,
+                  ),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'Share app',
+                    style:
+                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
+                  ),
+                ],
+              ),
+              onTap: () {
+                String msg = ''' 
+                    Order Fresh Fruits 🍎 🍐 🍊, Vegetables 🥦 🥕 🧅 and Daily Essentials 🥚 🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
+                    ''';
+                Share.share(msg);
               },
             ),
             ListTile(
@@ -211,47 +210,23 @@ class Sidenav extends StatelessWidget {
               title: Row(
                 children: [
                   Icon(
-                    Icons.supervised_user_circle,
+                    Icons.logout,
                     color: Colors.green,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
-                  SizedBox(width: 8.0),
+                  SizedBox(width: 8),
                   Text(
-                    'Referral code',
+                    'Logout',
                     style:
                         TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
                 ],
               ),
-              subtitle: Text(
-                referralCode == null ? "" : referralCode,
-                style: TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-              ),
-              onTap: () {
-                showReferralInstructions(context, referralCode);
-              },
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(
-                    Icons.share,
-                    color: Colors.green,
-                    size: SizeConfig.widthMultiplier * 4.3,
-                  ),
-                  SizedBox(width: 8.0),
-                  Text(
-                    'Share app',
-                    style:
-                        TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
-                  ),
-                ],
-              ),
-              onTap: () {
-                String msg = ''' 
-                    Order Fresh Fruits 🍎 🍐 🍊, Vegetables 🥦 🥕 🧅 and Daily Essentials 🥚 🥛 only on Seva.\nIf you don't like what we bring, we assure you 100% instant refund.\nDownload the app now for free delivery within 45 minutes.\nAndroid app available now:\nhttps://bit.ly/Seva_Android_App
-                    ''';
-                Share.share(msg);
+              onTap: () async {
+                // clearing the data from hive
+                await Hive.deleteFromDisk();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login', (Route<dynamic> route) => false);
               },
             ),
             Expanded(
