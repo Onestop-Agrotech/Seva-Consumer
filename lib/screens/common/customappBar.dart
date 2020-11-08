@@ -145,10 +145,10 @@ class CustomAppBar extends PreferredSize {
             iconSize: 28.0,
           ),
           Text(
-            "Welcome",
+            "Welcome to Seva",
             style: TextStyle(
                 color: ThemeColoursSeva().dkGreen,
-                fontSize: 3.30 * SizeConfig.textMultiplier,
+                fontSize: 2.30 * SizeConfig.textMultiplier,
                 fontWeight: FontWeight.bold),
           ),
           Row(
