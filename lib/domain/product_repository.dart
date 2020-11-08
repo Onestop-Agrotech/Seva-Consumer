@@ -72,8 +72,7 @@ class ProductRepositoryImpl implements ProductRepository {
       case 500:
         throw InternalServerError();
       default:
-        throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+        throw FetchDataException('Items are Coming Soon!');
     }
   }
 }

@@ -26,7 +26,7 @@ final List<Category> catArray = [
           "https://storepictures.theonestop.co.in/illustrations/nonVeg.jpg"),
   Category(
       name: "Groceries",
-      categoryName: "groceries",
+      categoryName: "grocery",
       hasData: true,
       imgURL:
           "https://storepictures.theonestop.co.in/illustrations/groceries.jpg"),
