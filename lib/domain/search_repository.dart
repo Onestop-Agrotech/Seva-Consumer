@@ -18,7 +18,7 @@ class SearchRepositoryImpl extends SearchRepository {
       String token = await p.getData("token");
       String hub = await p.getData("hub");
       Map<String, String> requestHeaders = {'x-auth-token': token};
-      String url = "http://localhost:8000/api/products/search/$query/$hub";
+      String url = APIService.searchAPI + "/$query/$hub";
       var response = await http.get(url, headers: requestHeaders);
       var responseJson = await _returnResponse(response);
       return responseJson;
