@@ -36,7 +36,6 @@ class ProductsUINew extends StatefulWidget {
 
 class _ProductsUINewState extends State<ProductsUINew> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _progress;
   ProductsapiBloc apiBloc;
   SearchBloc searchBloc;
   // Todo: Need to convert this static array to dynamic
@@ -69,9 +68,15 @@ class _ProductsUINewState extends State<ProductsUINew> {
   }
 
   @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   initState() {
     super.initState();
-    _progress = false;
 
     /// Intialize it to 0 - by default to get Vegetables
     /// as it is on the first List Tile
@@ -355,12 +360,21 @@ class _ProductsUINewState extends State<ProductsUINew> {
     });
   }
 
+  Widget buildSearchContainer(String textToDisplay) {
+    return Container(
+        height: 50.0,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 13.0, top: 10.0),
+          child: Text(textToDisplay),
+        ));
+  }
+
   Widget customFloatSearchBar() {
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
       controller: controller,
-      progress: _progress,
       hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
@@ -371,8 +385,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
       maxWidth: MediaQuery.of(context).size.width * 1.1,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
-        // Call your model, bloc, controller here.
-        print(query);
         searchBloc.add(SearchProduct(name: query));
       },
       // Specify a custom transition to be used for
@@ -399,63 +411,24 @@ class _ProductsUINewState extends State<ProductsUINew> {
                 BlocBuilder<SearchBloc, SearchState>(
                   builder: (context, state) {
                     if (state is SearchInitial) {
-                      _progress = false;
-                      return Container(
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 13.0, top: 10.0),
-                            child: Text("Product results"),
-                          ));
+                      return buildSearchContainer(
+                          "Search for vegetables, fruits, bread, milk etc.");
                     } else if (state is SearchLoading) {
-                      _progress = true;
-                      return Container(
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 13.0, top: 10.0),
-                            child: Text("Loading ..."),
-                          ));
+                      return LinearProgressIndicator();
                     } else if (state is SearchLoaded) {
-                      _progress = false;
                       List<StoreProduct> arr = state.searchResults;
                       if (arr.length > 0) {
                         return Column(
                           children: arr.map((item) {
-                            print(item.name);
-                            return Container(
-                              height: 50.0,
-                              width: MediaQuery.of(context).size.width,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 13.0, top: 10.0),
-                                child: Text("${item.name}"),
-                              ),
-                            );
+                            return buildSearchContainer("${item.name}");
                           }).toList(),
                         );
                       } else {
-                        return Container(
-                            height: 50.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 13.0, top: 10.0),
-                              child: Text("No Products found !"),
-                            ));
+                        return buildSearchContainer("No products found");
                       }
                     } else {
-                      _progress = false;
-                      return Container(
-                          height: 50.0,
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 13.0, top: 10.0),
-                            child: Text("Search!"),
-                          ));
+                      return buildSearchContainer(
+                          "Search for vegetables, fruits, bread, milk etc.");
                     }
                   },
                 ),
