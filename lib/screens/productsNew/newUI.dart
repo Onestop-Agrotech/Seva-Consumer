@@ -408,11 +408,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
               children: [
                 BlocBuilder<SearchBloc, SearchState>(
                   builder: (context, state) {
-                    if (state is SearchInitial) {
-                      return buildSearchContainer(
-                          "Search for vegetables, fruits, bread, milk etc.",
-                          null);
-                    } else if (state is SearchLoading) {
+                    if (state is SearchLoading) {
                       return LinearProgressIndicator();
                     } else if (state is SearchLoaded) {
                       List<StoreProduct> arr = state.searchResults;
