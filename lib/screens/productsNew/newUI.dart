@@ -389,7 +389,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       maxWidth: MediaQuery.of(context).size.width * 1.1,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
-        searchBloc.add(SearchProduct(name: query));
+        if (query != "") searchBloc.add(SearchProduct(name: query));
       },
       transition: CircularFloatingSearchBarTransition(),
       actions: [
@@ -413,7 +413,11 @@ class _ProductsUINewState extends State<ProductsUINew> {
                 BlocBuilder<SearchBloc, SearchState>(
                   builder: (context, state) {
                     if (state is SearchLoading) {
-                      return LinearProgressIndicator();
+                      return LinearProgressIndicator(
+                        backgroundColor: ThemeColoursSeva().vlgColor,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            ThemeColoursSeva().pallete1),
+                      );
                     } else if (state is SearchLoaded) {
                       List<StoreProduct> arr = state.searchResults;
                       if (arr.length > 0) {
