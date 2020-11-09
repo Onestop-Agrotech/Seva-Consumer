@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/domain/exceptions.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:http/http.dart' as http;
@@ -9,7 +10,7 @@ abstract class SearchRepository {
   Future<List<StoreProduct>> fetch(String query);
 }
 
-class SearchRepositoryImpl extends SearchRepository{
+class SearchRepositoryImpl extends SearchRepository {
   @override
   Future<List<StoreProduct>> fetch(String query) async {
     try {
@@ -21,6 +22,25 @@ class SearchRepositoryImpl extends SearchRepository{
       var response = await http.get(url, headers: requestHeaders);
       var responseJson = await _returnResponse(response);
       return responseJson;
+    } on SocketException {
+      throw FetchDataException('No Internet Connection!');
+    }
+  }
+
+  refreshToken() async {
+    try {
+      final p = await Preferences.getInstance();
+      String refreshToken = await p.getData("refreshToken");
+      String url = APIService.getRefreshToken;
+      var body = jsonEncode(<String, String>{
+        'refreshToken': refreshToken,
+      });
+      Map<String, String> requestHeaders = {'x-auth-token': refreshToken};
+      final response =
+          await http.post(url, body: body, headers: requestHeaders);
+      var jsonBdy = json.decode(response.body);
+      await p.setToken(jsonBdy["token"]);
+      await p.setRefreshToken(jsonBdy["refreshToken"]);
     } on SocketException {
       throw FetchDataException('No Internet Connection!');
     }
