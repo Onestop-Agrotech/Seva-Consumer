@@ -360,12 +360,12 @@ class _ProductsUINewState extends State<ProductsUINew> {
     });
   }
 
-  Widget buildSearchContainer(String textToDisplay) {
+  Widget buildSearchContainer(String textToDisplay, double width) {
     return Container(
         height: 50.0,
-        width: MediaQuery.of(context).size.width,
+        width: width != null ? width : MediaQuery.of(context).size.width,
         child: Padding(
-          padding: const EdgeInsets.only(left: 13.0, top: 10.0),
+          padding: const EdgeInsets.only(left: 5.0, top: 17.0),
           child: Text(textToDisplay),
         ));
   }
@@ -387,8 +387,6 @@ class _ProductsUINewState extends State<ProductsUINew> {
       onQueryChanged: (query) {
         searchBloc.add(SearchProduct(name: query));
       },
-      // Specify a custom transition to be used for
-      // animating between opened and closed stated.
       transition: CircularFloatingSearchBarTransition(),
       actions: [
         FloatingSearchBarAction(
@@ -412,7 +410,8 @@ class _ProductsUINewState extends State<ProductsUINew> {
                   builder: (context, state) {
                     if (state is SearchInitial) {
                       return buildSearchContainer(
-                          "Search for vegetables, fruits, bread, milk etc.");
+                          "Search for vegetables, fruits, bread, milk etc.",
+                          null);
                     } else if (state is SearchLoading) {
                       return LinearProgressIndicator();
                     } else if (state is SearchLoaded) {
@@ -420,15 +419,39 @@ class _ProductsUINewState extends State<ProductsUINew> {
                       if (arr.length > 0) {
                         return Column(
                           children: arr.map((item) {
-                            return buildSearchContainer("${item.name}");
+                            return Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 40.0,
+                                      width: 50.0,
+                                      child: CachedNetworkImage(
+                                          imageUrl: item.pictureURL),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: buildSearchContainer(
+                                          "${item.name}",
+                                          MediaQuery.of(context).size.width *
+                                              0.7),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 1.0),
+                              ],
+                            );
                           }).toList(),
                         );
                       } else {
-                        return buildSearchContainer("No products found");
+                        return buildSearchContainer("No products found", null);
                       }
                     } else {
                       return buildSearchContainer(
-                          "Search for vegetables, fruits, bread, milk etc.");
+                          "Search for vegetables, fruits, bread, milk etc.",
+                          null);
                     }
                   },
                 ),
