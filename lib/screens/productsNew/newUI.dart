@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:mvp/bloc/products_bloc/productsapi_bloc.dart';
+import 'package:mvp/bloc/search_bloc/search_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
@@ -35,7 +36,9 @@ class ProductsUINew extends StatefulWidget {
 
 class _ProductsUINewState extends State<ProductsUINew> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _progress;
   ProductsapiBloc apiBloc;
+  SearchBloc searchBloc;
   // Todo: Need to convert this static array to dynamic
   // will receive from server
   /// This Array is populated by the ListView Builder to show on
@@ -59,6 +62,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
+    searchBloc = BlocProvider.of<SearchBloc>(context);
     catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
     catArray[tag].textColor = Colors.white;
     apiBloc.add(GetProducts(type: catArray[tag].categoryName));
@@ -67,6 +71,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
   @override
   initState() {
     super.initState();
+    _progress = false;
 
     /// Intialize it to 0 - by default to get Vegetables
     /// as it is on the first List Tile
@@ -355,7 +360,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
       controller: controller,
-      // progress: true,
+      progress: _progress,
       hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
@@ -368,6 +373,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       onQueryChanged: (query) {
         // Call your model, bloc, controller here.
         print(query);
+        searchBloc.add(SearchProduct(name: query));
       },
       // Specify a custom transition to be used for
       // animating between opened and closed stated.
@@ -389,18 +395,71 @@ class _ProductsUINewState extends State<ProductsUINew> {
             elevation: 4.0,
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: catArray
-                  .map(
-                    (item) => Container(
-                      height: 50.0,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 13.0, top: 10.0),
-                        child: Text(item.name),
-                      ),
-                    ),
-                  )
-                  .toList(),
+              children: [
+                BlocBuilder<SearchBloc, SearchState>(
+                  builder: (context, state) {
+                    if (state is SearchInitial) {
+                      _progress = false;
+                      return Container(
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 13.0, top: 10.0),
+                            child: Text("Product results"),
+                          ));
+                    } else if (state is SearchLoading) {
+                      _progress = true;
+                      return Container(
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 13.0, top: 10.0),
+                            child: Text("Loading ..."),
+                          ));
+                    } else if (state is SearchLoaded) {
+                      _progress = false;
+                      List<StoreProduct> arr = state.searchResults;
+                      if (arr.length > 0) {
+                        return Column(
+                          children: arr.map((item) {
+                            print(item.name);
+                            return Container(
+                              height: 50.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 13.0, top: 10.0),
+                                child: Text("${item.name}"),
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      } else {
+                        return Container(
+                            height: 50.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 13.0, top: 10.0),
+                              child: Text("No Products found !"),
+                            ));
+                      }
+                    } else {
+                      _progress = false;
+                      return Container(
+                          height: 50.0,
+                          width: MediaQuery.of(context).size.width,
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(left: 13.0, top: 10.0),
+                            child: Text("Search!"),
+                          ));
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         );
