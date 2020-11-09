@@ -54,15 +54,25 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
                       labelText: "Landmark:",
                       controller: _landmark,
                       textInputType: TextInputType.text),
-                  RaisedButton(
-                    onPressed: () {},
-                    child: Text("Save Address"),
-                    color: ThemeColoursSeva().pallete1,
-                    textColor: Colors.white,
-                  ),
                 ],
               ),
             ),
+            actions: [
+              RaisedButton(
+                onPressed: () {},
+                child: Text("Save Address"),
+                color: ThemeColoursSeva().pallete1,
+                textColor: Colors.white,
+              ),
+              // RaisedButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //   },
+              //   child: Icon(Icons.close),
+              //   color: Colors.red,
+              //   textColor: Colors.white,
+              // ),
+            ],
           );
         });
   }
@@ -76,51 +86,45 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
           hintText: "Search for your address",
           enableMapTypeButton: false,
           region: "in",
-          // selectedPlaceWidgetBuilder:
-          //     (_, selectedPlace, state, isSearchBarFocused) {
-          //   return FloatingCard(
-          //     bottomPosition: 0.0,
-          //     leftPosition: 0.0,
-          //     rightPosition: 0.0,
-          //     width: 400,
-          //     height: 350.0,
-          //     borderRadius: BorderRadius.circular(12.0),
-          //     child: state == SearchingState.Searching
-          //         ? Center(child: CommonGreenIndicator())
-          //         : Container(
-          //             width: 400.0,
-          //             height: 350.0,
-          // child: Column(
-          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //   children: [
-          //     Padding(
-          //       padding:
-          //           const EdgeInsets.only(left: 25.0, top: 7.0),
-          //       child: Text(selectedPlace.formattedAddress,
-          //           style: TextStyle(
-          //               color: Colors.black,
-          //               fontSize: 1.7 * SizeConfig.textMultiplier,
-          //               fontWeight: FontWeight.w400)),
-          //     ),
-          //     InputTextField(
-          //         labelText: "House No/Flat No:",
-          //         controller: _houseno,
-          //         textInputType: TextInputType.text),
-          //     InputTextField(
-          //         labelText: "Landmark:",
-          //         controller: _landmark,
-          //         textInputType: TextInputType.text),
-          //     RaisedButton(
-          //       onPressed: () {},
-          //       child: Text("Save Address"),
-          //       color: ThemeColoursSeva().pallete1,
-          //       textColor: Colors.white,
-          //     ),
-          //   ],
-          // ),
-          //           ),
-          //   );
-          // },
+          selectedPlaceWidgetBuilder:
+              (_, selectedPlace, state, isSearchBarFocused) {
+            return FloatingCard(
+              bottomPosition: 40.0,
+              leftPosition: 10.0,
+              rightPosition: 60.0,
+              width: 60,
+              height: 135.0,
+              borderRadius: BorderRadius.circular(12.0),
+              child: state == SearchingState.Searching
+                  ? Center(child: CommonGreenIndicator())
+                  : Container(
+                      width: 60.0,
+                      height: 135.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 20.0, right: 10.0),
+                child: Text(selectedPlace.formattedAddress,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 1.9 * SizeConfig.textMultiplier,
+                        fontWeight: FontWeight.w400)),
+              ),
+              RaisedButton(
+                onPressed: () {
+                  _showAddressDialog();
+                },
+                child: Icon(Icons.check),
+                color: ThemeColoursSeva().pallete1,
+                textColor: Colors.white,
+              ),
+            ],
+          ),
+                    ),
+            );
+          },
           onPlacePicked: (result) {
             print(result.formattedAddress);
             // Navigator.of(context).pop();
