@@ -355,6 +355,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
       controller: controller,
+      // progress: true,
       hint: 'Search for products',
       scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
       transitionDuration: const Duration(milliseconds: 800),
