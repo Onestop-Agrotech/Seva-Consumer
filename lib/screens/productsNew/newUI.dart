@@ -142,6 +142,19 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text("Item is Out of stock!"),
+      action: SnackBarAction(
+          textColor: ThemeColoursSeva().pallete1,
+          label: "OK",
+          onPressed: () {
+            _scaffoldKey.currentState.hideCurrentSnackBar();
+          }),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
 // Check whether the product is outOfStock and show according
   Widget _returnFilteredImage(StoreProduct p) {
     if (p.details[0].outOfStock) {
@@ -175,16 +188,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
             );
           }));
         } else {
-          final snackBar = SnackBar(
-            content: Text("Item is Out of stock!"),
-            action: SnackBarAction(
-                textColor: ThemeColoursSeva().pallete1,
-                label: "OK",
-                onPressed: () {
-                  _scaffoldKey.currentState.hideCurrentSnackBar();
-                }),
-          );
-          _scaffoldKey.currentState.showSnackBar(snackBar);
+          _showSnackBar();
         }
       },
       child: Container(
@@ -415,29 +419,44 @@ class _ProductsUINewState extends State<ProductsUINew> {
                       if (arr.length > 0) {
                         return Column(
                           children: arr.map((item) {
-                            return Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 40.0,
-                                      width: 50.0,
-                                      child: CachedNetworkImage(
-                                          imageUrl: item.pictureURL),
-                                    ),
-                                    SizedBox(width: 10.0),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: buildSearchContainer(
-                                          "${item.name}",
-                                          MediaQuery.of(context).size.width *
-                                              0.7),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 1.0),
-                              ],
+                            return GestureDetector(
+                              onTap: () {
+                                if (!item.details[0].outOfStock) {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ProductDetails(
+                                      p: item,
+                                    );
+                                  }));
+                                } else {
+                                  _showSnackBar();
+                                }
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 40.0,
+                                        width: 50.0,
+                                        child: CachedNetworkImage(
+                                            imageUrl: item.pictureURL),
+                                      ),
+                                      SizedBox(width: 10.0),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: buildSearchContainer(
+                                            "${item.name}",
+                                            MediaQuery.of(context).size.width *
+                                                0.7),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 1.0),
+                                ],
+                              ),
                             );
                           }).toList(),
                         );
