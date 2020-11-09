@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:mvp/constants/themeColours.dart';
@@ -80,6 +81,9 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
               child: state == SearchingState.Searching
                   ? Center(child: CommonGreenIndicator())
                   : Container(
+                    decoration: BoxDecoration(
+                      color: ThemeColoursSeva().pallete1
+                    ),
                       width: 60.0,
                       height: 135.0,
                       child: Column(
@@ -90,7 +94,7 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
                                 const EdgeInsets.only(left: 20.0, right: 10.0),
                             child: Text(selectedPlace.formattedAddress,
                                 style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.white,
                                     fontSize: 1.9 * SizeConfig.textMultiplier,
                                     fontWeight: FontWeight.w400)),
                           ),
@@ -99,8 +103,8 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
                               _showAddressDialog();
                             },
                             child: Icon(Icons.check),
-                            color: ThemeColoursSeva().pallete1,
-                            textColor: Colors.white,
+                            color: Colors.white,
+                            textColor: ThemeColoursSeva().pallete1,
                           ),
                         ],
                       ),
