@@ -17,16 +17,6 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
   TextEditingController _houseno = new TextEditingController();
   TextEditingController _landmark = new TextEditingController();
   String _apiKey;
-  // Dark Theme
-  final ThemeData darkTheme = ThemeData.dark().copyWith(
-    // Background color of the FloatingCard
-    cardColor: Colors.grey,
-    buttonTheme: ButtonThemeData(
-      // Select here's button color
-      buttonColor: Colors.yellow,
-      textTheme: ButtonTextTheme.primary,
-    ),
-  );
 
   @override
   void initState() {
@@ -64,14 +54,6 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
                 color: ThemeColoursSeva().pallete1,
                 textColor: Colors.white,
               ),
-              // RaisedButton(
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //   },
-              //   child: Icon(Icons.close),
-              //   color: Colors.red,
-              //   textColor: Colors.white,
-              // ),
             ],
           );
         });
@@ -100,35 +82,30 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
                   : Container(
                       width: 60.0,
                       height: 135.0,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 20.0, right: 10.0),
-                child: Text(selectedPlace.formattedAddress,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 1.9 * SizeConfig.textMultiplier,
-                        fontWeight: FontWeight.w400)),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  _showAddressDialog();
-                },
-                child: Icon(Icons.check),
-                color: ThemeColoursSeva().pallete1,
-                textColor: Colors.white,
-              ),
-            ],
-          ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 20.0, right: 10.0),
+                            child: Text(selectedPlace.formattedAddress,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 1.9 * SizeConfig.textMultiplier,
+                                    fontWeight: FontWeight.w400)),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              _showAddressDialog();
+                            },
+                            child: Icon(Icons.check),
+                            color: ThemeColoursSeva().pallete1,
+                            textColor: Colors.white,
+                          ),
+                        ],
+                      ),
                     ),
             );
-          },
-          onPlacePicked: (result) {
-            print(result.formattedAddress);
-            // Navigator.of(context).pop();
-            _showAddressDialog();
           },
           initialPosition: _center,
           useCurrentLocation: true,
