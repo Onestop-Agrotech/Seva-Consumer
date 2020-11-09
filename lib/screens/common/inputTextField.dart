@@ -34,7 +34,7 @@ class InputTextField extends StatelessWidget {
           child: Text(labelText,
               style: TextStyle(
                   color: ThemeColoursSeva().black,
-                  fontSize: 2.1 * SizeConfig.textMultiplier,
+                  fontSize: 1.7 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.w500)),
         ),
         Padding(

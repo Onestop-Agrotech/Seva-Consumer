@@ -9,6 +9,7 @@
 ///
 
 import 'dart:convert';
+import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,7 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
@@ -155,8 +157,14 @@ class CustomAppBar extends PreferredSize {
             children: [
               IconButton(
                 icon: Icon(Icons.location_on),
-                onPressed: () {
-                  _showLocation(context);
+                onPressed: () async {
+                  // _showLocation(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GoogleMapsPicker(),
+                    ),
+                  );
                 },
                 iconSize: 28.0,
               ),
