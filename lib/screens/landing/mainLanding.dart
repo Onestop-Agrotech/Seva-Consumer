@@ -31,6 +31,7 @@ import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'graphics/lightBG.dart';
 
 class MainLandingScreen extends StatefulWidget {
@@ -73,6 +74,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
+    initFCM();
     x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
   }
 
@@ -125,7 +127,41 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         /// ("SUCCESS");
       } else {
         /// ("FAILURE TO SET");
+        /// must retry here
       }
+    }
+  }
+
+  initFCM() {
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        // _serialiseAndNavigate(message);
+        // show alert box
+        print("SO something here");
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        // _serialiseAndNavigate(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        _serialiseAndNavigate(message);
+      },
+    );
+  }
+
+  void _serialiseAndNavigate(Map<String, dynamic> message) async {
+    var notificationData = message['data'];
+    var view = notificationData['view'];
+    if (view != null) {
+      if (view == 'new_update') {
+        String url =
+            "https://play.google.com/store/apps/details?id=com.onestop.seva";
+        if (await canLaunch(url)) {
+          await launch(url);
+        } else {
+          throw 'Could not launch $url';
+        }
+      }
+      // If there's no view it'll just open the app on the first view
     }
   }
 
