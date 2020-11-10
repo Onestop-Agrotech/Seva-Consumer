@@ -64,55 +64,78 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
-        body: PlacePicker(
-          apiKey: _apiKey,
-          hintText: "Search for your address",
-          enableMapTypeButton: false,
-          region: "in",
-          selectedPlaceWidgetBuilder:
-              (_, selectedPlace, state, isSearchBarFocused) {
-            return FloatingCard(
-              bottomPosition: 40.0,
-              leftPosition: 10.0,
-              rightPosition: 60.0,
-              width: 60,
-              height: 135.0,
-              borderRadius: BorderRadius.circular(12.0),
-              child: state == SearchingState.Searching
-                  ? Center(child: CommonGreenIndicator())
-                  : Container(
-                    decoration: BoxDecoration(
-                      color: ThemeColoursSeva().pallete1
-                    ),
-                      width: 60.0,
-                      height: 135.0,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, right: 10.0),
-                            child: Text(selectedPlace.formattedAddress,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 1.9 * SizeConfig.textMultiplier,
-                                    fontWeight: FontWeight.w400)),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            PlacePicker(
+              apiKey: _apiKey,
+              hintText: "Search",
+              enableMapTypeButton: false,
+              selectedPlaceWidgetBuilder:
+                  (_, selectedPlace, state, isSearchBarFocused) {
+                return FloatingCard(
+                  bottomPosition: 40.0,
+                  leftPosition: 10.0,
+                  rightPosition: 60.0,
+                  width: 60,
+                  height: 135.0,
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: state == SearchingState.Searching
+                      ? Center(child: CommonGreenIndicator())
+                      : Container(
+                          decoration:
+                              BoxDecoration(color: ThemeColoursSeva().pallete1),
+                          width: 60.0,
+                          height: 135.0,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20.0, right: 10.0),
+                                child: Text(selectedPlace.formattedAddress,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize:
+                                            1.9 * SizeConfig.textMultiplier,
+                                        fontWeight: FontWeight.w400)),
+                              ),
+                              RaisedButton(
+                                onPressed: () {
+                                  _showAddressDialog();
+                                },
+                                child: Icon(Icons.check),
+                                color: Colors.white,
+                                textColor: ThemeColoursSeva().pallete1,
+                              ),
+                            ],
                           ),
-                          RaisedButton(
-                            onPressed: () {
-                              _showAddressDialog();
-                            },
-                            child: Icon(Icons.check),
-                            color: Colors.white,
-                            textColor: ThemeColoursSeva().pallete1,
-                          ),
-                        ],
-                      ),
-                    ),
-            );
-          },
-          initialPosition: _center,
-          useCurrentLocation: true,
+                        ),
+                );
+              },
+              initialPosition: _center,
+              useCurrentLocation: true,
+            ),
+            Positioned(
+              top: 100.0,
+              left: 20.0,
+              child: Container(
+                height: 50.0,
+                width: 300.0,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                child: Center(
+                    child: Text(
+                  "Move the map or Search to get address",
+                  style: TextStyle(
+                      color: ThemeColoursSeva().pallete1,
+                      fontWeight: FontWeight.bold),
+                )),
+              ),
+            ),
+          ],
         ),
       ),
     );
