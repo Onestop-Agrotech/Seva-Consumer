@@ -37,7 +37,7 @@ class APIService {
 // Refreshtoken
   static final String getRefreshToken = "$_api/token/refreshToken/fetch";
 
- // Search API
+  // Search API
   static final String searchAPI = "$_api/products/search/";
 
   // OTHERS

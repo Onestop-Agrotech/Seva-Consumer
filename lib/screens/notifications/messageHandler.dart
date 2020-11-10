@@ -9,7 +9,6 @@ class InAppMessageHandler {
   InAppMessageHandler({@required this.message, @required this.context});
 
   void newUpdate() async {
-   
     String url =
         "https://play.google.com/store/apps/details?id=com.onestop.seva";
     if (await canLaunch(url)) {
@@ -39,6 +38,4 @@ class InAppMessageHandler {
       x.showAlertBox();
     }
   }
-
-  
 }

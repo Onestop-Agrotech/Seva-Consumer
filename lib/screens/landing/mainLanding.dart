@@ -32,7 +32,6 @@ import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'graphics/lightBG.dart';
 
 class MainLandingScreen extends StatefulWidget {
