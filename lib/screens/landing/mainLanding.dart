@@ -137,10 +137,42 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       onMessage: (Map<String, dynamic> message) async {
         // _serialiseAndNavigate(message);
         // show alert box
-        print("SO something here");
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text("New App Update!"),
+                content: Text(
+                    "We have released a new app update. Download it for the best experience!"),
+                actions: <Widget>[
+                  RaisedButton(
+                      onPressed: () async {
+                        // Navigator.pop(context);
+                        String url =
+                            "https://play.google.com/store/apps/details?id=com.onestop.seva";
+                        if (await canLaunch(url)) {
+                          await launch(url);
+                        } else {
+                          throw 'Could not launch $url';
+                        }
+                        Navigator.pop(context);
+                      },
+                      color: ThemeColoursSeva().pallete1,
+                      textColor: Colors.white,
+                      child: Text("Download")),
+                  RaisedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      color: Colors.white,
+                      textColor: ThemeColoursSeva().pallete1,
+                      child: Text("Not now"))
+                ],
+              );
+            });
       },
       onLaunch: (Map<String, dynamic> message) async {
-        // _serialiseAndNavigate(message);
+        _serialiseAndNavigate(message);
       },
       onResume: (Map<String, dynamic> message) async {
         _serialiseAndNavigate(message);
