@@ -389,7 +389,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
       maxWidth: MediaQuery.of(context).size.width * 1.1,
       debounceDelay: const Duration(milliseconds: 500),
       onQueryChanged: (query) {
-        if (query != "") searchBloc.add(SearchProduct(name: query));
+        searchBloc.add(SearchProduct(name: query));
       },
       transition: CircularFloatingSearchBarTransition(),
       actions: [

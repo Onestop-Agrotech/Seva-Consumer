@@ -21,9 +21,9 @@ class LightBlueBG extends CustomPainter {
     Path ovalPath = Path();
 
     // very light colour bg
-    ovalPath.moveTo(0, height * 0.31);
+    ovalPath.moveTo(0, height * 0.30);
     ovalPath.quadraticBezierTo(
-        width * 0.5, height * 0.38, width, height * 0.345);
+        width * 0.6, height * 0.35, width, height * 0.325);
     ovalPath.lineTo(width, 0);
     ovalPath.lineTo(0, 0);
     ovalPath.close();
