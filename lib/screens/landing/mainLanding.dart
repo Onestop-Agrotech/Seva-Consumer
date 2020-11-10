@@ -146,7 +146,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       onResume: (Map<String, dynamic> message) async {
         InAppMessageHandler m =
             new InAppMessageHandler(message: message, context: context);
-        m.newUpdate();
+        var notificationData = message['data'];
+        var view = notificationData['view'];
+        if (view == "new_update") m.newUpdate();
       },
     );
   }
