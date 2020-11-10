@@ -17,6 +17,7 @@ import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:mvp/screens/notifications/inAppNotification.dart';
 import 'package:mvp/static-data/categories.dart';
 import 'package:mvp/static-data/featured.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -137,39 +138,59 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       onMessage: (Map<String, dynamic> message) async {
         // _serialiseAndNavigate(message);
         // show alert box
-        showDialog(
+        // showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return AlertDialog(
+        //         title: Text("New App Update!"),
+        //         content: Text(
+        //             "We have released a new app update. Download it for the best experience!"),
+        //         actions: <Widget>[
+        //           RaisedButton(
+        //               onPressed: () async {
+        //                 // Navigator.pop(context);
+        //                 String url =
+        //                     "https://play.google.com/store/apps/details?id=com.onestop.seva";
+        //                 if (await canLaunch(url)) {
+        //                   await launch(url);
+        //                 } else {
+        //                   throw 'Could not launch $url';
+        //                 }
+        //                 Navigator.pop(context);
+        //               },
+        //               color: ThemeColoursSeva().pallete1,
+        //               textColor: Colors.white,
+        //               child: Text("Download")),
+        //           RaisedButton(
+        //               onPressed: () {
+        //                 Navigator.pop(context);
+        //               },
+        //               color: Colors.white,
+        //               textColor: ThemeColoursSeva().pallete1,
+        //               child: Text("Not now"))
+        //         ],
+        //       );
+        //     });
+        InAppNotificationHandler x = new InAppNotificationHandler(
             context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text("New App Update!"),
-                content: Text(
-                    "We have released a new app update. Download it for the best experience!"),
-                actions: <Widget>[
-                  RaisedButton(
-                      onPressed: () async {
-                        // Navigator.pop(context);
-                        String url =
-                            "https://play.google.com/store/apps/details?id=com.onestop.seva";
-                        if (await canLaunch(url)) {
-                          await launch(url);
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                        Navigator.pop(context);
-                      },
-                      color: ThemeColoursSeva().pallete1,
-                      textColor: Colors.white,
-                      child: Text("Download")),
-                  RaisedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      color: Colors.white,
-                      textColor: ThemeColoursSeva().pallete1,
-                      child: Text("Not now"))
-                ],
-              );
+            title: "New App Update!",
+            contentText: "We have release!",
+            okButtonText: "Download",
+            noButtonText: "Not now",
+            okBtn: () async {
+              String url =
+                  "https://play.google.com/store/apps/details?id=com.onestop.seva";
+              if (await canLaunch(url)) {
+                await launch(url);
+              } else {
+                throw 'Could not launch $url';
+              }
+              Navigator.pop(context);
+            },
+            noBtn: () {
+              Navigator.pop(context);
             });
+        x.showAlertBox();
       },
       onLaunch: (Map<String, dynamic> message) async {
         _serialiseAndNavigate(message);
