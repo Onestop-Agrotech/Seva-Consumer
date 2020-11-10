@@ -9,7 +9,6 @@
 ///
 
 import 'dart:convert';
-import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/cupertino.dart';
@@ -20,7 +19,6 @@ import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/googleMapsPicker.dart';
-import 'package:mvp/screens/location.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class CustomAppBar extends PreferredSize {
@@ -91,12 +89,14 @@ class CustomAppBar extends PreferredSize {
                 if (data.hasData) {
                   return RaisedButton(
                     onPressed: () {
-                      Navigator.of(context).push(CupertinoPageRoute<Null>(
-                          builder: (BuildContext context) {
-                        return GoogleLocationScreen(
-                          userEmail: email,
-                        );
-                      }));
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<Null>(
+                          builder: (context) => GoogleMapsPicker(
+                            userEmail: email,
+                          ),
+                        ),
+                      );
                     },
                     child: Text("Change"),
                     color: ThemeColoursSeva().pallete1,
@@ -158,13 +158,7 @@ class CustomAppBar extends PreferredSize {
               IconButton(
                 icon: Icon(Icons.location_on),
                 onPressed: () async {
-                  // _showLocation(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => GoogleMapsPicker(),
-                    ),
-                  );
+                  _showLocation(context);
                 },
                 iconSize: 28.0,
               ),

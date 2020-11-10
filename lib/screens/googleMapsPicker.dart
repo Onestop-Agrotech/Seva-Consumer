@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:mvp/constants/themeColours.dart';
@@ -9,6 +8,9 @@ import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
 class GoogleMapsPicker extends StatefulWidget {
+  final String userEmail;
+
+  const GoogleMapsPicker({Key key, @required this.userEmail}) : super(key: key);
   @override
   _GoogleMapsPickerState createState() => _GoogleMapsPickerState();
 }
@@ -22,6 +24,7 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
   @override
   void initState() {
     super.initState();
+    print(this.widget.userEmail);
     _apiKey = DotEnv().env["GOOGLE_MAPS_API_KEY"];
   }
 
@@ -31,14 +34,14 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
         builder: (context) {
           return AlertDialog(
             contentPadding: EdgeInsets.all(0.0),
-            title: Text("For doorstep convenience :)"),
+            title: Text("For doorstep convenience"),
             content: Container(
               height: 300.0,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InputTextField(
-                      labelText: "House No/Flat No:",
+                      labelText: "House No:",
                       controller: _houseno,
                       textInputType: TextInputType.text),
                   InputTextField(
