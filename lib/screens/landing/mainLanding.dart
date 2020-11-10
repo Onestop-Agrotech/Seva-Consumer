@@ -17,6 +17,7 @@ import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/common_functions.dart';
 import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:mvp/screens/notifications/messageHandler.dart';
 import 'package:mvp/static-data/categories.dart';
 import 'package:mvp/static-data/featured.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -73,6 +74,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     getUsername();
     _fcm = new FirebaseMessaging();
     _saveDeviceToken();
+    initFCM();
     x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
   }
 
@@ -125,8 +127,29 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         /// ("SUCCESS");
       } else {
         /// ("FAILURE TO SET");
+        /// must retry here
       }
     }
+  }
+
+  initFCM() {
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        InAppMessageHandler m =
+            new InAppMessageHandler(message: message, context: context);
+        m.newUpdateAlert();
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        // _serialiseAndNavigate(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        InAppMessageHandler m =
+            new InAppMessageHandler(message: message, context: context);
+        var notificationData = message['data'];
+        var view = notificationData['view'];
+        if (view == "new_update") m.newUpdate();
+      },
+    );
   }
 
   // To get the username of the person logged in

@@ -3,8 +3,6 @@ part of 'bestsellers_bloc.dart';
 @immutable
 abstract class BestsellersState {}
 
-class BestsellersInitial extends BestsellersState {}
-
 class BestSellersInitial extends BestsellersState {}
 
 class BestSellersLoading extends BestsellersState {}

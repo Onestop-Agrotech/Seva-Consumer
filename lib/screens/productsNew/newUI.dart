@@ -12,11 +12,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mvp/bloc/productsapi_bloc.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:mvp/bloc/products_bloc/productsapi_bloc.dart';
+import 'package:mvp/bloc/search_bloc/search_bloc.dart';
 import 'package:mvp/classes/storeProducts_box.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/domain/product_repository.dart';
-import 'package:mvp/models/category.dart';
 import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
@@ -36,6 +37,7 @@ class ProductsUINew extends StatefulWidget {
 class _ProductsUINewState extends State<ProductsUINew> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   ProductsapiBloc apiBloc;
+  SearchBloc searchBloc;
   // Todo: Need to convert this static array to dynamic
   // will receive from server
   /// This Array is populated by the ListView Builder to show on
@@ -51,15 +53,25 @@ class _ProductsUINewState extends State<ProductsUINew> {
   /// used by multiple instances, so we can use - static
   static int tag;
 
+  final controller = FloatingSearchBarController();
+
   /// safer way to intialise the bloc
   /// and also dispose it properly
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     apiBloc = BlocProvider.of<ProductsapiBloc>(context);
+    searchBloc = BlocProvider.of<SearchBloc>(context);
     catArray[tag].backgroundColor = ThemeColoursSeva().vlgGreen;
     catArray[tag].textColor = Colors.white;
     apiBloc.add(GetProducts(type: catArray[tag].categoryName));
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
@@ -73,6 +85,12 @@ class _ProductsUINewState extends State<ProductsUINew> {
       tag = widget.tagFromMain;
     else
       tag = 0;
+    for (int i = 0; i < catArray.length; i++) {
+      if (i != tag) {
+        catArray[i].backgroundColor = Colors.white;
+        catArray[i].textColor = ThemeColoursSeva().pallete1;
+      }
+    }
   }
 
   @override
@@ -124,6 +142,19 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text("Item is Out of stock!"),
+      action: SnackBarAction(
+          textColor: ThemeColoursSeva().pallete1,
+          label: "OK",
+          onPressed: () {
+            _scaffoldKey.currentState.hideCurrentSnackBar();
+          }),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
 // Check whether the product is outOfStock and show according
   Widget _returnFilteredImage(StoreProduct p) {
     if (p.details[0].outOfStock) {
@@ -157,16 +188,7 @@ class _ProductsUINewState extends State<ProductsUINew> {
             );
           }));
         } else {
-          final snackBar = SnackBar(
-            content: Text("Item is Out of stock!"),
-            action: SnackBarAction(
-                textColor: ThemeColoursSeva().pallete1,
-                label: "OK",
-                onPressed: () {
-                  _scaffoldKey.currentState.hideCurrentSnackBar();
-                }),
-          );
-          _scaffoldKey.currentState.showSnackBar(snackBar);
+          _showSnackBar();
         }
       },
       child: Container(
@@ -204,6 +226,262 @@ class _ProductsUINewState extends State<ProductsUINew> {
     );
   }
 
+  Widget mainContent(double width) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+      /// This is the main row that seperates 2 cols
+      children: [
+        /// The first column to the left side
+        Expanded(
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: SizedBox(
+              width: width * 0.17,
+              child: Container(
+                decoration: BoxDecoration(color: Colors.grey.shade100),
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: catArray.length,
+                    itemBuilder: (context, index) {
+                      return AnimatedContainer(
+                        duration: Duration(milliseconds: 600),
+                        curve: Curves.fastOutSlowIn,
+                        decoration: BoxDecoration(
+                          color: catArray[index].backgroundColor,
+                          border: Border(
+                            bottom: BorderSide(
+                                width: 0.2, color: Colors.greenAccent),
+                          ),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            catArray[index].name,
+                            style: TextStyle(
+                                fontSize: 1.65 * SizeConfig.textMultiplier,
+                                color: catArray[index].textColor,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          onTap: () {
+                            /// This [if] condition exists because we have only 3 types
+                            /// of categories in the DB, as we add them up, this should be
+                            /// dynamic, for now it is static
+                            if (index < catArray.length) {
+                              setState(() {
+                                tag = index;
+                                for (int i = 0; i < catArray.length; i++) {
+                                  if (i == index) {
+                                    catArray[i].backgroundColor =
+                                        ThemeColoursSeva().vlgGreen;
+                                    catArray[i].textColor = Colors.white;
+                                  } else {
+                                    catArray[i].backgroundColor = Colors.white;
+                                    catArray[i].textColor =
+                                        ThemeColoursSeva().pallete1;
+                                  }
+                                }
+                              });
+                              apiBloc.add(GetProducts(
+                                  type: catArray[index].categoryName));
+                            }
+                          },
+                        ),
+                      );
+                    }),
+              ),
+            ),
+          ),
+        ),
+        // Using Bloc to change the state as per the State Set
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: SizedBox(
+            width: 69 * SizeConfig.widthMultiplier,
+            child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
+              builder: (context, state) {
+                if (state is ProductsapiInitial ||
+                    state is ProductsapiLoading) {
+                  return Shimmer.fromColors(
+                    highlightColor: Colors.white,
+                    baseColor: Colors.grey[300],
+                    child: Container(
+                      child: _shimmerLayout(),
+                    ),
+                  );
+                } else if (state is ProductsapiLoaded) {
+                  List<StoreProduct> arr = state.products;
+                  arr.sort((a, b) => a.name.compareTo(b.name));
+                  // enclosed gridview in refresher
+                  return SmartRefresher(
+                      enablePullDown: true,
+                      footer: CustomFooter(
+                        builder: (BuildContext context, LoadStatus mode) {
+                          if (mode == LoadStatus.loading) {
+                            CupertinoActivityIndicator();
+                          } else if (mode == LoadStatus.failed) {
+                            Text("Load Failed! Please retry!");
+                          }
+                          return Container();
+                        },
+                      ),
+                      controller: _refreshController,
+                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
+                      child: GridView.count(
+                        // Create a grid with 2 columns. If you change the scrollDirection to
+                        // horizontal, this produces 2 rows.
+                        crossAxisCount: 2,
+                        children: arr.map((e) {
+                          return getCard(e);
+                        }).toList(),
+                      ));
+                } else if (state is ProductsapiError) {
+                  return Center(
+                      child: Text(
+                    state.msg,
+                    style: TextStyle(
+                        color: ThemeColoursSeva().dkGreen,
+                        fontSize: 2 * SizeConfig.textMultiplier),
+                  ));
+                } else
+                  return CommonGreenIndicator();
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildLayout() {
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(builder: (context, orientation) {
+        SizeConfig().init(constraints, orientation);
+        // height of screen
+        double h = MediaQuery.of(context).size.height;
+        return mainContent(h);
+      });
+    });
+  }
+
+  Widget buildSearchContainer(String textToDisplay, double width) {
+    return Container(
+        height: 50.0,
+        width: width != null ? width : MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 5.0, top: 17.0),
+          child: Text(textToDisplay),
+        ));
+  }
+
+  Widget customFloatSearchBar() {
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
+    return FloatingSearchBar(
+      controller: controller,
+      hint: 'Search for products',
+      scrollPadding: const EdgeInsets.only(top: 16, bottom: 56),
+      transitionDuration: const Duration(milliseconds: 800),
+      transitionCurve: Curves.easeInOut,
+      physics: const BouncingScrollPhysics(),
+      axisAlignment: isPortrait ? 0.0 : -1.0,
+      openAxisAlignment: 0.0,
+      maxWidth: MediaQuery.of(context).size.width * 1.1,
+      debounceDelay: const Duration(milliseconds: 500),
+      onQueryChanged: (query) {
+        searchBloc.add(SearchProduct(name: query));
+      },
+      transition: CircularFloatingSearchBarTransition(),
+      actions: [
+        FloatingSearchBarAction(
+          showIfOpened: false,
+          child: Icon(Icons.list_alt_rounded),
+        ),
+        FloatingSearchBarAction.searchToClear(
+          showIfClosed: false,
+        ),
+      ],
+      builder: (context, transition) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Material(
+            color: Colors.white,
+            elevation: 4.0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                BlocBuilder<SearchBloc, SearchState>(
+                  builder: (context, state) {
+                    if (state is SearchLoading) {
+                      return LinearProgressIndicator(
+                        backgroundColor: ThemeColoursSeva().vlgColor,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            ThemeColoursSeva().pallete1),
+                      );
+                    } else if (state is SearchLoaded) {
+                      List<StoreProduct> arr = state.searchResults;
+                      if (arr.length > 0) {
+                        return Column(
+                          children: arr.map((item) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (!item.details[0].outOfStock) {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ProductDetails(
+                                      p: item,
+                                    );
+                                  }));
+                                } else {
+                                  _showSnackBar();
+                                }
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 40.0,
+                                        width: 50.0,
+                                        child: CachedNetworkImage(
+                                            imageUrl: item.pictureURL),
+                                      ),
+                                      SizedBox(width: 10.0),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 8.0),
+                                        child: buildSearchContainer(
+                                            "${item.name}",
+                                            MediaQuery.of(context).size.width *
+                                                0.7),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 1.0),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      } else {
+                        return buildSearchContainer("No products found", null);
+                      }
+                    } else {
+                      return buildSearchContainer(
+                          "Search for vegetables, fruits, bread, milk etc.",
+                          null);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider(
@@ -213,165 +491,21 @@ class _ProductsUINewState extends State<ProductsUINew> {
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
-        // width of screen
-        double width = MediaQuery.of(context).size.height;
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            title: Text(
-              "Products",
-              style: TextStyle(
-                  color: ThemeColoursSeva().pallete1,
-                  fontWeight: FontWeight.w500),
-            ),
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            elevation: 0.0,
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black54,
-              ),
-              onPressed: () {
-                Category item = catArray.singleWhere(
-                    (i) => i.backgroundColor != Colors.white,
-                    orElse: () => null);
-                if (item != null) {
-                  item.backgroundColor = Colors.white;
-                  item.textColor = ThemeColoursSeva().pallete1;
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-            actions: [CartIcon()],
-          ),
-          body: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-            /// This is the main row that seperates 2 cols
+          body: Stack(
             children: [
-              /// The first column to the left side
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: SizedBox(
-                    width: width * 0.17,
-                    child: Container(
-                      decoration: BoxDecoration(color: Colors.grey.shade100),
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: catArray.length,
-                          itemBuilder: (context, index) {
-                            return AnimatedContainer(
-                              duration: Duration(milliseconds: 600),
-                              curve: Curves.fastOutSlowIn,
-                              decoration: BoxDecoration(
-                                color: catArray[index].backgroundColor,
-                                border: Border(
-                                  bottom: BorderSide(
-                                      width: 0.2, color: Colors.greenAccent),
-                                ),
-                              ),
-                              child: ListTile(
-                                title: Text(
-                                  catArray[index].name,
-                                  style: TextStyle(
-                                      fontSize:
-                                          1.65 * SizeConfig.textMultiplier,
-                                      color: catArray[index].textColor,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                onTap: () {
-                                  /// This [if] condition exists because we have only 3 types
-                                  /// of categories in the DB, as we add them up, this should be
-                                  /// dynamic, for now it is static
-                                  if (index < catArray.length) {
-                                    setState(() {
-                                      tag = index;
-                                      for (int i = 0;
-                                          i < catArray.length;
-                                          i++) {
-                                        if (i == index) {
-                                          catArray[i].backgroundColor =
-                                              ThemeColoursSeva().vlgGreen;
-                                          catArray[i].textColor = Colors.white;
-                                        } else {
-                                          catArray[i].backgroundColor =
-                                              Colors.white;
-                                          catArray[i].textColor =
-                                              ThemeColoursSeva().pallete1;
-                                        }
-                                      }
-                                    });
-                                    apiBloc.add(GetProducts(
-                                        type: catArray[index].categoryName));
-                                  }
-                                },
-                              ),
-                            );
-                          }),
-                    ),
-                  ),
-                ),
-              ),
-              // Using Bloc to change the state as per the State Set
               Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: SizedBox(
-                  width: 69 * SizeConfig.widthMultiplier,
-                  child: BlocBuilder<ProductsapiBloc, ProductsapiState>(
-                    builder: (context, state) {
-                      if (state is ProductsapiInitial ||
-                          state is ProductsapiLoading) {
-                        return Shimmer.fromColors(
-                          highlightColor: Colors.white,
-                          baseColor: Colors.grey[300],
-                          child: Container(
-                            child: _shimmerLayout(),
-                          ),
-                        );
-                      } else if (state is ProductsapiLoaded) {
-                        List<StoreProduct> arr = state.products;
-                        arr.sort((a, b) => a.name.compareTo(b.name));
-                        // enclosed gridview in refresher
-                        return SmartRefresher(
-                            enablePullDown: true,
-                            footer: CustomFooter(
-                              builder: (BuildContext context, LoadStatus mode) {
-                                if (mode == LoadStatus.loading) {
-                                  CupertinoActivityIndicator();
-                                } else if (mode == LoadStatus.failed) {
-                                  Text("Load Failed!Please retry!");
-                                }
-                                return Container();
-                              },
-                            ),
-                            controller: _refreshController,
-                            onRefresh: _onRefresh,
-                            onLoading: _onLoading,
-                            child: GridView.count(
-                              // Create a grid with 2 columns. If you change the scrollDirection to
-                              // horizontal, this produces 2 rows.
-                              crossAxisCount: 2,
-                              children: arr.map((e) {
-                                return getCard(e);
-                              }).toList(),
-                            ));
-                      } else if (state is ProductsapiError) {
-                        return Center(
-                            child: Text(
-                          state.msg,
-                          style: TextStyle(
-                              color: ThemeColoursSeva().dkGreen,
-                              fontSize: 2 * SizeConfig.textMultiplier),
-                        ));
-                      } else
-                        return CommonGreenIndicator();
-                    },
-                  ),
-                ),
+                padding: const EdgeInsets.only(top: 68.0),
+                child: buildLayout(),
               ),
+              Positioned(
+                bottom: 30.0,
+                left: 25.0,
+                child: CartIcon(),
+              ),
+              customFloatSearchBar()
             ],
           ),
         );

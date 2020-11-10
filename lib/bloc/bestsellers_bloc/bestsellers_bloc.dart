@@ -9,7 +9,7 @@ part 'bestsellers_state.dart';
 
 class BestsellersBloc extends Bloc<BestsellersEvent, BestsellersState> {
   final BestSellerRepositoryImpl _bestSellerRepository;
-  BestsellersBloc(this._bestSellerRepository) : super(BestsellersInitial());
+  BestsellersBloc(this._bestSellerRepository) : super(BestSellersInitial());
 
   @override
   Stream<BestsellersState> mapEventToState(

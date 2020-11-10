@@ -293,11 +293,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                         child: Text(
-                          "",
+                          this.widget.p.details[0].notes != null
+                              ? this.widget.p.details[0].notes
+                              : "",
                           style: TextStyle(
-                              fontSize: SizeConfig.textMultiplier * 2.2,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w300),
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              color: ThemeColoursSeva().dkGreen,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                     ),

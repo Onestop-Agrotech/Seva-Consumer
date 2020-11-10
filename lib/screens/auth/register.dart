@@ -4,6 +4,8 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
+import 'package:flutter/cupertino.dart';
+
 ///
 /// @fileoverview Register Widget : to register a new user.
 ///
@@ -17,7 +19,7 @@ import 'package:mvp/screens/common/inputTextField.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/common/topText.dart';
 import 'package:mvp/screens/errors/errorfile.dart';
-import 'package:mvp/screens/location.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 
@@ -130,8 +132,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (response.statusCode == 200) {
           Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => GoogleLocationScreen(
+              CupertinoPageRoute<Null>(
+                  builder: (context) => GoogleMapsPicker(
                         userEmail: user.email,
                       )));
           return;

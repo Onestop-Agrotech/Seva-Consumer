@@ -7,7 +7,7 @@ import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 import 'package:mvp/screens/common/cartIcon.dart';
-import 'package:mvp/screens/location.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
@@ -95,7 +95,7 @@ class _ProfileState extends State<Profile> {
                       Navigator.pop(context);
                       Navigator.of(context).push(CupertinoPageRoute<Null>(
                           builder: (BuildContext context) {
-                        return GoogleLocationScreen(
+                        return GoogleMapsPicker(
                           userEmail: _email,
                         );
                       }));

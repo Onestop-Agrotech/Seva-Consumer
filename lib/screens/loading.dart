@@ -4,6 +4,8 @@
 // Version-0.4.8
 // Date-{03-09-2020}
 
+import 'package:flutter/cupertino.dart';
+
 ///
 /// @fileoverview Loadingscreen : Check if user is connected to internet and route as per their login status.
 ///
@@ -20,10 +22,9 @@ import 'package:mvp/models/storeProducts.dart';
 import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/errors/notServing.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:mvp/screens/introScreen.dart';
 import 'dart:io';
-
-import 'package:mvp/screens/location.dart';
 import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -152,8 +153,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
       } else if (far == "false" && hub == "0") {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => GoogleLocationScreen(
+          CupertinoPageRoute<Null>(
+            builder: (context) => GoogleMapsPicker(
               userEmail: email,
             ),
           ),
