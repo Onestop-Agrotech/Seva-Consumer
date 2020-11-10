@@ -22,7 +22,7 @@ import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/common/progressIndicator.dart';
 import 'package:mvp/screens/errors/errorfile.dart';
 import 'package:mvp/screens/errors/notServing.dart';
-import 'package:mvp/screens/location.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'dart:convert';
 import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
@@ -245,8 +245,8 @@ class _LoginScreenState extends State<LoginScreen> {
       else if (hub == "0" && (far == "false" || far == null)) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-            builder: (context) => GoogleLocationScreen(
+          CupertinoPageRoute<Null>(
+            builder: (context) => GoogleMapsPicker(
               userEmail: email,
             ),
           ),

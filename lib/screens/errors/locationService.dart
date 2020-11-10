@@ -4,13 +4,15 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
+import 'package:flutter/cupertino.dart';
+
 ///
 ///@fileoverview Error @ LocationService Widget : Ask for location if not able to fetch.
 ///
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/screens/location.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 
 class EnableLocationPage extends StatelessWidget {
   final String userEmail;
@@ -40,11 +42,13 @@ class EnableLocationPage extends StatelessWidget {
               onPressed: () {
                 // back to page
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GoogleLocationScreen(
-                              userEmail: userEmail,
-                            )));
+                  context,
+                  CupertinoPageRoute<Null>(
+                    builder: (context) => GoogleMapsPicker(
+                      userEmail: userEmail,
+                    ),
+                  ),
+                );
               },
               child: Text(
                 "Try Again",

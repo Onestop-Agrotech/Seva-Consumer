@@ -4,6 +4,7 @@
 // Version-0.4.8
 // Date-{02-09-2020}
 
+import 'package:flutter/cupertino.dart';
 ///
 /// @fileoverview error @ NotServing Widget : Gives message if service not
 /// available in the region.
@@ -11,7 +12,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mvp/constants/themeColours.dart';
-import 'package:mvp/screens/location.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 
 class NotServing extends StatelessWidget {
   final String userEmail;
@@ -42,8 +43,8 @@ class NotServing extends StatelessWidget {
                 // back to page
                 Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => GoogleLocationScreen(
+                    CupertinoPageRoute<Null>(
+                        builder: (context) => GoogleMapsPicker(
                               userEmail: userEmail,
                             )));
               },
