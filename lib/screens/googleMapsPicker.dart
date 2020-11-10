@@ -24,7 +24,6 @@ class _GoogleMapsPickerState extends State<GoogleMapsPicker> {
   @override
   void initState() {
     super.initState();
-    print(this.widget.userEmail);
     _apiKey = DotEnv().env["GOOGLE_MAPS_API_KEY"];
   }
 

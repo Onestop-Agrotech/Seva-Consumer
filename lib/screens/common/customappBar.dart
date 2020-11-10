@@ -46,7 +46,7 @@ class CustomAppBar extends PreferredSize {
             "Delivery Address:",
             style: TextStyle(
                 fontSize: 17.0,
-                color: Colors.black,
+                color: ThemeColoursSeva().dkGreen,
                 fontWeight: FontWeight.w500),
           ),
           content: FutureBuilder(
@@ -55,20 +55,40 @@ class CustomAppBar extends PreferredSize {
                 if (data.hasData) {
                   return StatefulBuilder(builder: (context, setState) {
                     return Container(
-                      height: 120.0,
-                      width: double.infinity,
+                      height: 160.0,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          SizedBox(height: 10.0),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.6,
                             child: Text(
                               data.data,
                               overflow: TextOverflow.clip,
+                              style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: ThemeColoursSeva().pallete1,
+                                  fontWeight: FontWeight.w400,
+                                  letterSpacing: 0.25),
                             ),
                           ),
-                          SizedBox(height: 30.0),
+                          Center(
+                            child: RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute<Null>(
+                                    builder: (context) => GoogleMapsPicker(
+                                      userEmail: email,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text("Change"),
+                              color: ThemeColoursSeva().pallete1,
+                              textColor: Colors.white,
+                            ),
+                          )
                         ],
                       ),
                     );
@@ -82,31 +102,6 @@ class CustomAppBar extends PreferredSize {
                     ),
                   );
               }),
-          actions: <Widget>[
-            FutureBuilder(
-              future: _fetchUserAddress(),
-              builder: (context, data) {
-                if (data.hasData) {
-                  return RaisedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<Null>(
-                          builder: (context) => GoogleMapsPicker(
-                            userEmail: email,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Text("Change"),
-                    color: ThemeColoursSeva().pallete1,
-                    textColor: Colors.white,
-                  );
-                } else
-                  return Container();
-              },
-            ),
-          ],
         );
       },
     );
