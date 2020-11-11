@@ -408,7 +408,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                             height, "Best Sellers", "", context),
                         SizedBox(height: 9.0),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
+                          padding: const EdgeInsets.only(bottom: 20.0),
                           child: BlocBuilder<BestsellersBloc, BestsellersState>(
                             builder: (context, state) {
                               if (state is BestSellersInitial ||
@@ -443,21 +443,27 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         HelperFunctions.commonText(
                             height, "Categories", "", context),
                         SizedBox(height: 9.0),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          child: GridView.extent(
-                            maxCrossAxisExtent:
-                                MediaQuery.of(context).size.width * 0.32,
-                            mainAxisSpacing: 2.0,
-                            crossAxisSpacing: 7.0,
-                            children: mapIndexed(
-                                catArray,
-                                (index, item) => ShowCards(
-                                    store: false,
-                                    index: index,
-                                    sp: null,
-                                    cat: item)).toList(),
+                        Row(
+                          children: List.generate(
+                            3,
+                            (index) => ShowCards(
+                              store: false,
+                              index: 0,
+                              sp: null,
+                              cat: catArray[index],
+                            ),
                           ),
+                        ),
+                        Row(
+                          children: List.generate(
+                            2,
+                            (index) => ShowCards(
+                              store: false,
+                              index: 0,
+                              sp: null,
+                              cat: catArray[index+3],
+                            ),
+                          )
                         ),
                       ],
                     ),
