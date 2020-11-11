@@ -2,44 +2,14 @@
 
 # Seva Consumer App ![CI](https://github.com/Onestop-Agrotech/Seva-Consumer/workflows/CI/badge.svg)
 
-A MVP for Consumer to order Fruits/Vegetables easily from stores
+App for buying vegetables, fruits, groceries, etc from nearby stores
 
-## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+### Current version @ master - 0.5.5
 
-### Prerequisites(For windows)
-```
-* Flutter
-* VS Code (IDE)
-* Android/IOS emulator
+### version 0.5.6 - TODO
 
-```
-
-### Installing and Running the project locally
-```
-* git clone https://github.com/Onestop-Agrotech/Seva-Consumer.git
-* cd Seva-Consumer
-* flutter pub get
-* Open the project in VS Code and Run without Debugging 
-
-```
-
-## Contributing
-The Seva is built by the community for the community. We welcome contributions from each and everyone, especially new contributors.
-```
-* Developers: chekout the [wiki](https://www.wiki.com) page for instructions on how to set things up and commit changes.
-* All other contributors: please see our general [contributor] guidelines.
-```
-For contributers it is recommended to go throught the [Wiki](https://github.com/Onestop-Agrotech/Seva-Consumer/wiki) page once.
-
-
-## Support.
-For any type of security issues please report directly to info@theonestop.co.in.
-
-## Connect with us
-
-* [Instagram](https://www.instagram.com/seva_india)
-* [Slack](https://app.slack.com/client/T0177HS48UC/C017R7M6AU8)
-
-```
-
+- Floating address bar at Main Landing page
+- Bottom navigation bar
+- Promocodes, Referrals, Discounted prices UI
+- Shopping Cart redesign --> List instead of animated cards
+- Orders page - simple order tracking and UI redesign
