@@ -28,14 +28,11 @@ class MainLandingScreen extends StatefulWidget {
 
 class _MainLandingScreenState extends State<MainLandingScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  
 
   String _email;
   String _address;
   String _username;
   String _referralCode;
-
-  
 
   @override
   void setState(fn) {
@@ -43,28 +40,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       super.setState(fn);
     }
   }
-
-  @override
-  initState() {
-    super.initState();
-    // if (catArray[catArray.length - 1].imgURL == "") catArray.removeLast();
-    // getUsername();
-    // _fcm = new FirebaseMessaging();
-    // _saveDeviceToken();
-    // initFCM();
-    // x = new Timer.periodic(Duration(seconds: 10), (Timer t) => setState(() {}));
-  }
-
-  // @override
-  // void dispose() async {
-  //   super.dispose();
-  //   x.cancel();
-  // }
-
-//  pull to refresh
-  
-
-  
 
   //This function shows the user's address in a dialog box
   // and the user can edit the address from their also
@@ -125,11 +100,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-  
-  
-
-
-
   //To get the address of the user address on clicking the
   // location icon
   Future<String> _fetchUserAddress() async {
@@ -155,53 +125,53 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: ThemeColoursSeva().pallete4,
-          elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            color: ThemeColoursSeva().dkGreen,
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
-            },
-            iconSize: 28.0,
-          ),
-          title: FutureBuilder(
-              future: _fetchUserAddress(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  _address = snapshot.data;
-                  return Text(
-                    snapshot.data,
-                    style: TextStyle(color: ThemeColoursSeva().black, fontSize: 13.0),
-                    overflow: TextOverflow.ellipsis,
-                  );
-                } else
-                  return Container();
-              }),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.location_on_sharp),
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: ThemeColoursSeva().pallete4,
+            elevation: 0.0,
+            leading: IconButton(
+              icon: Icon(Icons.menu),
               color: ThemeColoursSeva().dkGreen,
               onPressed: () {
-                _showLocation(context);
+                _scaffoldKey.currentState.openDrawer();
               },
               iconSize: 28.0,
-            )
-          ],
-        ),
-        drawer: SizedBox(
-            width: width * 0.5,
-            child: Sidenav(
-              height: height,
-              width: width,
-              username: _username,
-              referralCode: _referralCode,
-            )),
-        body: MainLandingContent()
-      ),
+            ),
+            title: FutureBuilder(
+                future: _fetchUserAddress(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    _address = snapshot.data;
+                    return Text(
+                      snapshot.data,
+                      style: TextStyle(
+                          color: ThemeColoursSeva().black, fontSize: 13.0),
+                      overflow: TextOverflow.ellipsis,
+                    );
+                  } else
+                    return Container();
+                }),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.location_on_sharp),
+                color: ThemeColoursSeva().dkGreen,
+                onPressed: () {
+                  _showLocation(context);
+                },
+                iconSize: 28.0,
+              )
+            ],
+          ),
+          drawer: SizedBox(
+              width: width * 0.5,
+              child: Sidenav(
+                height: height,
+                width: width,
+                username: _username,
+                referralCode: _referralCode,
+              )),
+          body: MainLandingContent()),
     );
   }
 }
