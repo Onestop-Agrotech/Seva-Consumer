@@ -8,6 +8,7 @@
 ///@fileoverview MainLanding Widget : This is the main landing screen after the user
 ///is logged in.
 ///
+import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -234,6 +235,24 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
+  //To get the address of the user address on clicking the
+  // location icon
+  Future<String> _fetchUserAddress() async {
+    final p = await Preferences.getInstance();
+    String token = await p.getData("token");
+    String id = await p.getData("id");
+    Map<String, String> requestHeaders = {'x-auth-token': token};
+    String url = APIService.getAddressAPI + "$id";
+    var response = await http.get(url, headers: requestHeaders);
+    if (response.statusCode == 200) {
+      // got address
+      _email = json.decode(response.body)["email"];
+      return (json.decode(response.body)["address"]);
+    } else {
+      throw Exception('something is wrong');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     BlocProvider(
@@ -247,10 +266,42 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
-        appBar: CustomAppBar(
-          height: 120,
-          scaffoldKey: _scaffoldKey,
-          email: _email,
+        // appBar: CustomAppBar(
+        //   height: 120,
+        //   scaffoldKey: _scaffoldKey,
+        //   email: _email,
+        // ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1.9,
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            color: ThemeColoursSeva().dkGreen,
+            onPressed: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
+            iconSize: 28.0,
+          ),
+          title: FutureBuilder(
+              future: _fetchUserAddress(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data,
+                    style: TextStyle(color: Colors.black, fontSize: 13.0),
+                    overflow: TextOverflow.ellipsis,
+                  );
+                } else
+                  return Container();
+              }),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.location_on_sharp),
+              color: ThemeColoursSeva().dkGreen,
+              onPressed: () {},
+              iconSize: 28.0,
+            )
+          ],
         ),
         drawer: SizedBox(
             width: width * 0.5,
@@ -264,10 +315,10 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             )),
         body: Stack(
           children: <Widget>[
-            CustomPaint(
-              painter: LightBlueBG(),
-              child: Container(),
-            ),
+            // CustomPaint(
+            //   painter: LightBlueBG(),
+            //   child: Container(),
+            // ),
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -290,21 +341,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     onLoading: _onLoading,
                     child: ListView(
                       children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(11.0),
-                              child: Text(
-                                "Featured",
-                                style: TextStyle(
-                                    color: ThemeColoursSeva().dkGreen,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 2.3 * SizeConfig.textMultiplier),
-                              ),
-                            ),
-                          ],
-                        ),
+                        SizedBox(height: 20.0),
 
                         // carousel with indicator
                         Container(
@@ -370,35 +407,38 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                         HelperFunctions.commonText(
                             height, "Best Sellers", "", context),
                         SizedBox(height: 9.0),
-                        BlocBuilder<BestsellersBloc, BestsellersState>(
-                          builder: (context, state) {
-                            if (state is BestSellersInitial ||
-                                state is BestSellersLoading) {
-                              return Shimmer.fromColors(
-                                highlightColor: Colors.white,
-                                baseColor: Colors.grey[300],
-                                child: Container(
-                                  child: _shimmerLayout(height, width),
-                                ),
-                              );
-                            } else if (state is BestSellersLoaded) {
-                              List<StoreProduct> arr = state.bestsellers;
-                              arr.sort((a, b) => a.name.compareTo(b.name));
-                              return commonWidget(height, arr, true);
-                            } else if (state is BestSellersError) {
-                              return Center(
-                                  child: Text(
-                                state.msg,
-                                style: TextStyle(
-                                    color: ThemeColoursSeva().dkGreen,
-                                    fontSize: 2 * SizeConfig.textMultiplier),
-                              ));
-                            } else
-                              return Container(
-                                child:
-                                    Center(child: Text("No products found!")),
-                              );
-                          },
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: BlocBuilder<BestsellersBloc, BestsellersState>(
+                            builder: (context, state) {
+                              if (state is BestSellersInitial ||
+                                  state is BestSellersLoading) {
+                                return Shimmer.fromColors(
+                                  highlightColor: Colors.white,
+                                  baseColor: Colors.grey[300],
+                                  child: Container(
+                                    child: _shimmerLayout(height, width),
+                                  ),
+                                );
+                              } else if (state is BestSellersLoaded) {
+                                List<StoreProduct> arr = state.bestsellers;
+                                arr.sort((a, b) => a.name.compareTo(b.name));
+                                return commonWidget(height, arr, true);
+                              } else if (state is BestSellersError) {
+                                return Center(
+                                    child: Text(
+                                  state.msg,
+                                  style: TextStyle(
+                                      color: ThemeColoursSeva().dkGreen,
+                                      fontSize: 2 * SizeConfig.textMultiplier),
+                                ));
+                              } else
+                                return Container(
+                                  child:
+                                      Center(child: Text("No products found!")),
+                                );
+                            },
+                          ),
                         ),
                         HelperFunctions.commonText(
                             height, "Categories", "", context),
