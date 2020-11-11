@@ -35,6 +35,7 @@ class _MainLandingContentState extends State<MainLandingContent> {
   int _current = 0;
   String _mobileNumber;
   String _referralCode;
+
   /// safer way to intialise the bloc
   /// and also dispose it properly
   @override
@@ -107,7 +108,6 @@ class _MainLandingContentState extends State<MainLandingContent> {
       },
     );
   }
-
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -209,7 +209,6 @@ class _MainLandingContentState extends State<MainLandingContent> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     BlocProvider(
@@ -220,168 +219,165 @@ class _MainLandingContentState extends State<MainLandingContent> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Stack(
-          children: <Widget>[
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SmartRefresher(
-                    enablePullDown: true,
-                    // enablePullUp: true,
-                    footer: CustomFooter(
-                      builder: (BuildContext context, LoadStatus mode) {
-                        if (mode == LoadStatus.loading) {
-                          CupertinoActivityIndicator();
-                        } else if (mode == LoadStatus.failed) {
-                          Text("Load Failed!Please retry!");
-                        }
-                        return Container();
-                      },
-                    ),
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    onLoading: _onLoading,
-                    child: ListView(
-                      children: <Widget>[
-                        // carousel with indicator
-                        Container(
-                          height: 26.0 * SizeConfig.heightMultiplier,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: ThemeColoursSeva().pallete4,
-                              borderRadius: BorderRadius.only(
-                                bottomRight:Radius.elliptical(30.0, 20.0),
-                                bottomLeft:Radius.elliptical(30.0, 20.0),
-                              )),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: Column(
-                              children: <Widget>[
-                                Expanded(
-                                  child: CarouselSlider(
-                                    items: mapIndexed(
-                                        featuredArr,
-                                        (index, item) => Builder(
-                                              builder: (BuildContext context) {
-                                                return FeaturedCards(
-                                                    featuredItem: item,
-                                                    index: index,
-                                                    referralCode:
-                                                        _referralCode);
-                                              },
-                                            )).toList(),
-                                    options: CarouselOptions(
-                                      onPageChanged: (index, reason) {
-                                        setState(() {
-                                          _current = index;
-                                        });
-                                      },
-                                      height: SizeConfig.heightMultiplier * 24,
-                                      aspectRatio: 16 / 9,
-                                      viewportFraction: 0.8,
-                                      initialPage: 0,
-                                      enableInfiniteScroll: true,
-                                      reverse: false,
-                                      autoPlay: true,
-                                      autoPlayInterval: Duration(seconds: 6),
-                                      autoPlayAnimationDuration:
-                                          Duration(milliseconds: 600),
-                                      autoPlayCurve: Curves.fastOutSlowIn,
-                                      enlargeCenterPage: false,
-                                      scrollDirection: Axis.horizontal,
-                                    ),
-                                  ),
+      children: <Widget>[
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: SafeArea(
+              child: SmartRefresher(
+                enablePullDown: true,
+                // enablePullUp: true,
+                footer: CustomFooter(
+                  builder: (BuildContext context, LoadStatus mode) {
+                    if (mode == LoadStatus.loading) {
+                      CupertinoActivityIndicator();
+                    } else if (mode == LoadStatus.failed) {
+                      Text("Load Failed!Please retry!");
+                    }
+                    return Container();
+                  },
+                ),
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                onLoading: _onLoading,
+                child: ListView(
+                  children: <Widget>[
+                    // carousel with indicator
+                    Container(
+                      height: 26.0 * SizeConfig.heightMultiplier,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: ThemeColoursSeva().pallete4,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.elliptical(30.0, 20.0),
+                            bottomLeft: Radius.elliptical(30.0, 20.0),
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: CarouselSlider(
+                                items: mapIndexed(
+                                    featuredArr,
+                                    (index, item) => Builder(
+                                          builder: (BuildContext context) {
+                                            return FeaturedCards(
+                                                featuredItem: item,
+                                                index: index,
+                                                referralCode: _referralCode);
+                                          },
+                                        )).toList(),
+                                options: CarouselOptions(
+                                  onPageChanged: (index, reason) {
+                                    setState(() {
+                                      _current = index;
+                                    });
+                                  },
+                                  height: SizeConfig.heightMultiplier * 24,
+                                  aspectRatio: 16 / 9,
+                                  viewportFraction: 0.8,
+                                  initialPage: 0,
+                                  enableInfiniteScroll: true,
+                                  reverse: false,
+                                  autoPlay: true,
+                                  autoPlayInterval: Duration(seconds: 6),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 600),
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enlargeCenterPage: false,
+                                  scrollDirection: Axis.horizontal,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children:
-                                      mapIndexed(featuredArr, (index, item) {
-                                    return Container(
-                                      width: 8.0,
-                                      height: 8.0,
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 2.0),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: _current == index
-                                            ? Color.fromRGBO(0, 0, 0, 0.9)
-                                            : Color.fromRGBO(0, 0, 0, 0.4),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 12.0),
-                        HelperFunctions.commonText(
-                            height, "Best Sellers", "", context),
-                        SizedBox(height: 9.0),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: BlocBuilder<BestsellersBloc, BestsellersState>(
-                            builder: (context, state) {
-                              if (state is BestSellersInitial ||
-                                  state is BestSellersLoading) {
-                                return Shimmer.fromColors(
-                                  highlightColor: Colors.white,
-                                  baseColor: Colors.grey[300],
-                                  child: Container(
-                                    child: _shimmerLayout(height, width),
-                                  ),
-                                );
-                              } else if (state is BestSellersLoaded) {
-                                List<StoreProduct> arr = state.bestsellers;
-                                arr.sort((a, b) => a.name.compareTo(b.name));
-                                return commonWidget(height, arr, true);
-                              } else if (state is BestSellersError) {
-                                return Center(
-                                    child: Text(
-                                  state.msg,
-                                  style: TextStyle(
-                                      color: ThemeColoursSeva().dkGreen,
-                                      fontSize: 2 * SizeConfig.textMultiplier),
-                                ));
-                              } else
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: mapIndexed(featuredArr, (index, item) {
                                 return Container(
-                                  child:
-                                      Center(child: Text("No products found!")),
+                                  width: 8.0,
+                                  height: 8.0,
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 2.0),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: _current == index
+                                        ? Color.fromRGBO(0, 0, 0, 0.9)
+                                        : Color.fromRGBO(0, 0, 0, 0.4),
+                                  ),
                                 );
-                            },
-                          ),
-                        ),
-                        HelperFunctions.commonText(
-                            height, "Categories", "", context),
-                        SizedBox(height: 9.0),
-                        Row(
-                          children: List.generate(
-                            3,
-                            (index) => ShowCards(
-                              store: false,
-                              index: 0,
-                              sp: null,
-                              cat: catArray[index],
+                              }).toList(),
                             ),
-                          ),
+                          ],
                         ),
-                        Row(
-                            children: List.generate(
-                          2,
-                          (index) => ShowCards(
-                            store: false,
-                            index: 0,
-                            sp: null,
-                            cat: catArray[index + 3],
-                          ),
-                        )),
-                      ],
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 12.0),
+                    HelperFunctions.commonText(
+                        height, "Best Sellers", "", context),
+                    SizedBox(height: 9.0),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: BlocBuilder<BestsellersBloc, BestsellersState>(
+                        builder: (context, state) {
+                          if (state is BestSellersInitial ||
+                              state is BestSellersLoading) {
+                            return Shimmer.fromColors(
+                              highlightColor: Colors.white,
+                              baseColor: Colors.grey[300],
+                              child: Container(
+                                child: _shimmerLayout(height, width),
+                              ),
+                            );
+                          } else if (state is BestSellersLoaded) {
+                            List<StoreProduct> arr = state.bestsellers;
+                            arr.sort((a, b) => a.name.compareTo(b.name));
+                            return commonWidget(height, arr, true);
+                          } else if (state is BestSellersError) {
+                            return Center(
+                                child: Text(
+                              state.msg,
+                              style: TextStyle(
+                                  color: ThemeColoursSeva().dkGreen,
+                                  fontSize: 2 * SizeConfig.textMultiplier),
+                            ));
+                          } else
+                            return Container(
+                              child: Center(child: Text("No products found!")),
+                            );
+                        },
+                      ),
+                    ),
+                    HelperFunctions.commonText(
+                        height, "Categories", "", context),
+                    SizedBox(height: 9.0),
+                    Row(
+                      children: List.generate(
+                        3,
+                        (index) => ShowCards(
+                          store: false,
+                          index: 0,
+                          sp: null,
+                          cat: catArray[index],
+                        ),
+                      ),
+                    ),
+                    Row(
+                        children: List.generate(
+                      2,
+                      (index) => ShowCards(
+                        store: false,
+                        index: 0,
+                        sp: null,
+                        cat: catArray[index + 3],
+                      ),
+                    )),
+                  ],
                 ),
               ),
             ),
-          ],
-        );
+          ),
+        ),
+      ],
+    );
   }
 }
