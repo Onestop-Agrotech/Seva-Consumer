@@ -326,8 +326,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1.9,
+          backgroundColor: ThemeColoursSeva().pallete4,
+          elevation: 0.0,
           leading: IconButton(
             icon: Icon(Icons.menu),
             color: ThemeColoursSeva().dkGreen,
@@ -343,7 +343,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                   _address = snapshot.data;
                   return Text(
                     snapshot.data,
-                    style: TextStyle(color: Colors.black, fontSize: 13.0),
+                    style: TextStyle(color: ThemeColoursSeva().black, fontSize: 13.0),
                     overflow: TextOverflow.ellipsis,
                   );
                 } else
@@ -362,8 +362,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         ),
         drawer: SizedBox(
             width: width * 0.5,
-
-            /// Side Drawer visible after login
             child: Sidenav(
               height: height,
               width: width,
@@ -372,10 +370,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             )),
         body: Stack(
           children: <Widget>[
-            // CustomPaint(
-            //   painter: LightBlueBG(),
-            //   child: Container(),
-            // ),
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topCenter,
@@ -398,69 +392,78 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                     onLoading: _onLoading,
                     child: ListView(
                       children: <Widget>[
-                        SizedBox(height: 20.0),
-
                         // carousel with indicator
                         Container(
-                          height: 23.0 * SizeConfig.heightMultiplier,
+                          height: 26.0 * SizeConfig.heightMultiplier,
                           width: double.infinity,
-                          child: Column(
-                            children: <Widget>[
-                              Expanded(
-                                child: CarouselSlider(
-                                  items: mapIndexed(
-                                      featuredArr,
-                                      (index, item) => Builder(
-                                            builder: (BuildContext context) {
-                                              return FeaturedCards(
-                                                  featuredItem: item,
-                                                  index: index,
-                                                  referralCode: _referralCode);
-                                            },
-                                          )).toList(),
-                                  options: CarouselOptions(
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _current = index;
-                                      });
-                                    },
-                                    height: SizeConfig.heightMultiplier * 24,
-                                    aspectRatio: 16 / 9,
-                                    viewportFraction: 0.8,
-                                    initialPage: 0,
-                                    enableInfiniteScroll: true,
-                                    reverse: false,
-                                    autoPlay: true,
-                                    autoPlayInterval: Duration(seconds: 6),
-                                    autoPlayAnimationDuration:
-                                        Duration(milliseconds: 600),
-                                    autoPlayCurve: Curves.fastOutSlowIn,
-                                    enlargeCenterPage: false,
-                                    scrollDirection: Axis.horizontal,
+                          decoration: BoxDecoration(
+                              color: ThemeColoursSeva().pallete4,
+                              borderRadius: BorderRadius.only(
+                                bottomRight:Radius.elliptical(30.0, 20.0),
+                                bottomLeft:Radius.elliptical(30.0, 20.0),
+                              )),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                Expanded(
+                                  child: CarouselSlider(
+                                    items: mapIndexed(
+                                        featuredArr,
+                                        (index, item) => Builder(
+                                              builder: (BuildContext context) {
+                                                return FeaturedCards(
+                                                    featuredItem: item,
+                                                    index: index,
+                                                    referralCode:
+                                                        _referralCode);
+                                              },
+                                            )).toList(),
+                                    options: CarouselOptions(
+                                      onPageChanged: (index, reason) {
+                                        setState(() {
+                                          _current = index;
+                                        });
+                                      },
+                                      height: SizeConfig.heightMultiplier * 24,
+                                      aspectRatio: 16 / 9,
+                                      viewportFraction: 0.8,
+                                      initialPage: 0,
+                                      enableInfiniteScroll: true,
+                                      reverse: false,
+                                      autoPlay: true,
+                                      autoPlayInterval: Duration(seconds: 6),
+                                      autoPlayAnimationDuration:
+                                          Duration(milliseconds: 600),
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      enlargeCenterPage: false,
+                                      scrollDirection: Axis.horizontal,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children:
-                                    mapIndexed(featuredArr, (index, item) {
-                                  return Container(
-                                    width: 8.0,
-                                    height: 8.0,
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 2.0),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _current == index
-                                          ? Color.fromRGBO(0, 0, 0, 0.9)
-                                          : Color.fromRGBO(0, 0, 0, 0.4),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children:
+                                      mapIndexed(featuredArr, (index, item) {
+                                    return Container(
+                                      width: 8.0,
+                                      height: 8.0,
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 2.0),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: _current == index
+                                            ? Color.fromRGBO(0, 0, 0, 0.9)
+                                            : Color.fromRGBO(0, 0, 0, 0.4),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                        SizedBox(height: 12.0),
                         HelperFunctions.commonText(
                             height, "Best Sellers", "", context),
                         SizedBox(height: 9.0),
