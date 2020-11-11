@@ -16,8 +16,8 @@ import 'package:mvp/bloc/bestsellers_bloc/bestsellers_bloc.dart';
 import 'package:mvp/classes/prefrenses.dart';
 import 'package:mvp/domain/bestsellers_repository.dart';
 import 'package:mvp/screens/common/common_functions.dart';
-import 'package:mvp/screens/common/customappBar.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
+import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:mvp/screens/notifications/messageHandler.dart';
 import 'package:mvp/static-data/categories.dart';
 import 'package:mvp/static-data/featured.dart';
@@ -33,7 +33,6 @@ import 'package:mvp/screens/landing/common/featuredCards.dart';
 import 'package:mvp/screens/landing/common/showCards.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
 import 'package:shimmer/shimmer.dart';
-import 'graphics/lightBG.dart';
 
 class MainLandingScreen extends StatefulWidget {
   @override
@@ -45,6 +44,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   BestsellersBloc apiBloc;
 
   String _email;
+  String _address;
   String _username;
   Timer x;
   FirebaseMessaging _fcm;
@@ -149,6 +149,65 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
         var notificationData = message['data'];
         var view = notificationData['view'];
         if (view == "new_update") m.newUpdate();
+      },
+    );
+  }
+
+  //This function shows the user's address in a dialog box
+  // and the user can edit the address from their also
+  _showLocation(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          title: Text(
+            "Delivery Address:",
+            style: TextStyle(
+                fontSize: 17.0,
+                color: ThemeColoursSeva().dkGreen,
+                fontWeight: FontWeight.w500),
+          ),
+          content: Container(
+            height: 160.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  child: Text(
+                    _address,
+                    overflow: TextOverflow.clip,
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        color: ThemeColoursSeva().pallete1,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.25),
+                  ),
+                ),
+                Center(
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<Null>(
+                          builder: (context) => GoogleMapsPicker(
+                            userEmail: _email,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text("Change"),
+                    color: ThemeColoursSeva().pallete1,
+                    textColor: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
       },
     );
   }
@@ -266,11 +325,6 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
-        // appBar: CustomAppBar(
-        //   height: 120,
-        //   scaffoldKey: _scaffoldKey,
-        //   email: _email,
-        // ),
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 1.9,
@@ -286,6 +340,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               future: _fetchUserAddress(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  _address = snapshot.data;
                   return Text(
                     snapshot.data,
                     style: TextStyle(color: Colors.black, fontSize: 13.0),
@@ -298,7 +353,9 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             IconButton(
               icon: Icon(Icons.location_on_sharp),
               color: ThemeColoursSeva().dkGreen,
-              onPressed: () {},
+              onPressed: () {
+                _showLocation(context);
+              },
               iconSize: 28.0,
             )
           ],
@@ -455,16 +512,15 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                           ),
                         ),
                         Row(
-                          children: List.generate(
-                            2,
-                            (index) => ShowCards(
-                              store: false,
-                              index: 0,
-                              sp: null,
-                              cat: catArray[index+3],
-                            ),
-                          )
-                        ),
+                            children: List.generate(
+                          2,
+                          (index) => ShowCards(
+                            store: false,
+                            index: 0,
+                            sp: null,
+                            cat: catArray[index + 3],
+                          ),
+                        )),
                       ],
                     ),
                   ),
