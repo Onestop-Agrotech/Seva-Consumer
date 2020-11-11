@@ -273,8 +273,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.grey,
               ),
-              height: height * 0.12,
-              width: width * 0.27,
+              height: height * 0.11,
+              width: width * 0.26,
             )
         ],
       ),
