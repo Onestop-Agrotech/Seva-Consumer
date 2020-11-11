@@ -164,13 +164,26 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             ],
           ),
           drawer: SizedBox(
-              width: width * 0.5,
-              child: Sidenav(
-                height: height,
-                width: width,
-                username: _username,
-                referralCode: _referralCode,
-              )),
+            width: width * 0.5,
+            child: Sidenav(
+              height: height,
+              width: width,
+              username: _username,
+              referralCode: _referralCode,
+            ),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor: ThemeColoursSeva().pallete1,
+            elevation: 25.0,
+            backgroundColor: Colors.white,
+            currentIndex: 0,
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(icon: Icon(Icons.mail), label: "Notifs"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: "Referral")
+            ],
+          ),
           body: MainLandingContent()),
     );
   }
