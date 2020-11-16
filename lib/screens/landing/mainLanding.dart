@@ -12,6 +12,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:mvp/classes/prefrenses.dart';
+import 'package:mvp/screens/common/cartIcon.dart';
 import 'package:mvp/screens/common/sidenavbar.dart';
 import 'package:mvp/screens/googleMapsPicker.dart';
 import 'package:mvp/screens/landing/mainLandingContent.dart';
@@ -159,7 +160,8 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             _showLocation(context);
           },
           iconSize: 28.0,
-        )
+        ),
+        CartIcon(),
       ],
     );
   }

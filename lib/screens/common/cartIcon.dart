@@ -75,7 +75,7 @@ class _CartIconState extends State<CartIcon> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
           child: IconButton(
-              color: ThemeColoursSeva().black,
+              color: ThemeColoursSeva().dkGreen,
               iconSize: 30.0,
               icon: Icon(Icons.shopping_basket),
               onPressed: () {
