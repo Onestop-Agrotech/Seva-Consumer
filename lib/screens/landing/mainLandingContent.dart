@@ -355,7 +355,7 @@ class _MainLandingContentState extends State<MainLandingContent> {
                         3,
                         (index) => ShowCards(
                           store: false,
-                          index: 0,
+                          index: index,
                           sp: null,
                           cat: catArray[index],
                         ),
@@ -366,7 +366,7 @@ class _MainLandingContentState extends State<MainLandingContent> {
                       2,
                       (index) => ShowCards(
                         store: false,
-                        index: 0,
+                        index: index + 3,
                         sp: null,
                         cat: catArray[index + 3],
                       ),
