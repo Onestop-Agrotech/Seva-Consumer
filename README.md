@@ -4,12 +4,11 @@
 
 App for buying vegetables, fruits, groceries, etc from nearby stores
 
-### Current version @ master - 0.5.5
+### Current version @ master - 0.5.6
 
-### version 0.5.6 - TODO
+### version 0.5.7 - TODO
 
-- Floating address bar at Main Landing page
-- Bottom navigation bar
-- Promocodes, Referrals, Discounted prices UI
-- Shopping Cart redesign --> List instead of animated cards
-- Orders page - simple order tracking and UI redesign
+- Orders Screen redesign
+- Shopping cart redesign 
+- Optimisation
+- Bug Fixes
