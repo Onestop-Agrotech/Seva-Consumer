@@ -44,7 +44,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   }
 
   @override
-  initState(){
+  initState() {
     super.initState();
     getUsername();
   }
