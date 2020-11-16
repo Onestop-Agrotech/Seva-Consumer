@@ -20,8 +20,6 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:mvp/screens/orders/ordersScreen.dart';
-import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 
 class MainLandingScreen extends StatefulWidget {
   @override
@@ -34,21 +32,20 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _email;
   String _address;
   String _username;
+  String _mobileNumber;
   String _referralCode;
-
-  // for bottom navigation bar
-  int _currentIndex = 0;
-  final List<Widget> _children = [
-    MainLandingContent(),
-    ShoppingCartNew(),
-    NewOrdersScreen(),
-  ];
 
   @override
   void setState(fn) {
     if (mounted) {
       super.setState(fn);
     }
+  }
+
+  @override
+  initState(){
+    super.initState();
+    getUsername();
   }
 
   //This function shows the user's address in a dialog box
@@ -167,9 +164,17 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     );
   }
 
-  onTabTapped(int index) {
+  // To get the username of the person logged in
+  // from local storage
+  getUsername() async {
+    final preferences = await Preferences.getInstance();
+    final username = preferences.getData("username");
+    final mobile = preferences.getData("mobile");
     setState(() {
-      _currentIndex = index;
+      _username = username;
+      _mobileNumber = mobile;
+      _referralCode =
+          "${_username[0].toUpperCase()}${_mobileNumber.substring(5, 10)}${_username[_username.length - 1].toUpperCase()}";
     });
   }
 
@@ -182,7 +187,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       child: Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
-          appBar: _currentIndex == 0 ? mainAppBar() : PreferredSize(child: SizedBox.shrink(), preferredSize: Size(0.0, 0.0)),
+          appBar: mainAppBar(),
           drawer: SizedBox(
             width: width * 0.5,
             child: Sidenav(
@@ -192,20 +197,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
               referralCode: _referralCode,
             ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: ThemeColoursSeva().pallete1,
-            elevation: 25.0,
-            backgroundColor: Colors.white,
-            currentIndex: _currentIndex,
-            onTap: onTabTapped,
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.shopping_basket), label: "Cart"),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: "Orders")
-            ],
-          ),
-          body: _children[_currentIndex]),
+          body: MainLandingContent()),
     );
   }
 }
