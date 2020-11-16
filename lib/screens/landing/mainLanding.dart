@@ -20,6 +20,8 @@ import 'package:mvp/constants/apiCalls.dart';
 import 'package:mvp/constants/themeColours.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:mvp/screens/orders/ordersScreen.dart';
+import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 
 class MainLandingScreen extends StatefulWidget {
   @override
@@ -33,6 +35,14 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
   String _address;
   String _username;
   String _referralCode;
+
+  // for bottom navigation bar
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    MainLandingContent(),
+    ShoppingCartNew(),
+    NewOrdersScreen(),
+  ];
 
   @override
   void setState(fn) {
@@ -118,6 +128,12 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
+  onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // height and width if the device
@@ -176,15 +192,16 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
             selectedItemColor: ThemeColoursSeva().pallete1,
             elevation: 25.0,
             backgroundColor: Colors.white,
-            currentIndex: 0,
+            currentIndex: _currentIndex,
+            onTap: onTabTapped,
             items: [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(icon: Icon(Icons.mail), label: "Notifs"),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: "Referral")
+                  icon: Icon(Icons.shopping_basket), label: "Cart"),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: "Orders")
             ],
           ),
-          body: MainLandingContent()),
+          body: _children[_currentIndex]),
     );
   }
 }
