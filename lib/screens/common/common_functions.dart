@@ -49,7 +49,10 @@ class HelperFunctions {
   // Common text widget for both bestsellers and categories
   static Widget commonText(height, leftText, rightText, context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, left: 20.0, right: 10.0),
+      padding: const EdgeInsets.only(
+        left: 20.0,
+        right: 10.0,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

@@ -83,14 +83,14 @@ class Sidenav extends StatelessWidget {
             Container(
               padding: EdgeInsets.zero,
               height: 50,
-              decoration: BoxDecoration(color: ThemeColoursSeva().borderColor),
+              decoration: BoxDecoration(color: ThemeColoursSeva().pallete1),
               child: Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 14.0),
                 child: Row(
                   children: [
                     Icon(
                       Icons.account_circle,
-                      color: Colors.black,
+                      color: Colors.white,
                       size: SizeConfig.widthMultiplier * 4.3,
                     ),
                     SizedBox(width: 8.0),
@@ -99,6 +99,7 @@ class Sidenav extends StatelessWidget {
                       overflow: TextOverflow.clip,
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: SizeConfig.widthMultiplier * 3.65),
                     )
@@ -111,7 +112,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.article,
-                    color: Colors.green,
+                    color: ThemeColoursSeva().pallete1,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
@@ -135,7 +136,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.supervised_user_circle,
-                    color: Colors.green,
+                    color: ThemeColoursSeva().pallete1,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
@@ -159,12 +160,12 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.share,
-                    color: Colors.green,
+                    color: ThemeColoursSeva().pallete1,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8.0),
                   Text(
-                    'Share app',
+                    'Share',
                     style:
                         TextStyle(fontSize: SizeConfig.widthMultiplier * 3.65),
                   ),
@@ -183,7 +184,7 @@ class Sidenav extends StatelessWidget {
                   Icon(
                     Icons.help,
                     size: SizeConfig.widthMultiplier * 4.3,
-                    color: Colors.green,
+                    color: ThemeColoursSeva().pallete1,
                   ),
                   SizedBox(width: 8),
                   Text(
@@ -211,7 +212,7 @@ class Sidenav extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.logout,
-                    color: Colors.green,
+                    color: ThemeColoursSeva().pallete1,
                     size: SizeConfig.widthMultiplier * 4.3,
                   ),
                   SizedBox(width: 8),
@@ -236,7 +237,7 @@ class Sidenav extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ListTile(
                     title: Text('App version - Beta'),
-                    subtitle: Text("0.5.5"),
+                    subtitle: Text("0.5.6"),
                     onTap: null,
                   ),
                 ),
