@@ -128,6 +128,45 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
     }
   }
 
+  AppBar mainAppBar() {
+    return AppBar(
+      backgroundColor: ThemeColoursSeva().pallete4,
+      elevation: 0.0,
+      leading: IconButton(
+        icon: Icon(Icons.menu),
+        color: ThemeColoursSeva().dkGreen,
+        onPressed: () {
+          _scaffoldKey.currentState.openDrawer();
+        },
+        iconSize: 28.0,
+      ),
+      title: FutureBuilder(
+          future: _fetchUserAddress(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              _address = snapshot.data;
+              return Text(
+                snapshot.data,
+                style:
+                    TextStyle(color: ThemeColoursSeva().black, fontSize: 13.0),
+                overflow: TextOverflow.ellipsis,
+              );
+            } else
+              return Container();
+          }),
+      actions: [
+        IconButton(
+          icon: Icon(Icons.location_on_sharp),
+          color: ThemeColoursSeva().dkGreen,
+          onPressed: () {
+            _showLocation(context);
+          },
+          iconSize: 28.0,
+        )
+      ],
+    );
+  }
+
   onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
@@ -143,42 +182,7 @@ class _MainLandingScreenState extends State<MainLandingScreen> {
       child: Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: ThemeColoursSeva().pallete4,
-            elevation: 0.0,
-            leading: IconButton(
-              icon: Icon(Icons.menu),
-              color: ThemeColoursSeva().dkGreen,
-              onPressed: () {
-                _scaffoldKey.currentState.openDrawer();
-              },
-              iconSize: 28.0,
-            ),
-            title: FutureBuilder(
-                future: _fetchUserAddress(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    _address = snapshot.data;
-                    return Text(
-                      snapshot.data,
-                      style: TextStyle(
-                          color: ThemeColoursSeva().black, fontSize: 13.0),
-                      overflow: TextOverflow.ellipsis,
-                    );
-                  } else
-                    return Container();
-                }),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.location_on_sharp),
-                color: ThemeColoursSeva().dkGreen,
-                onPressed: () {
-                  _showLocation(context);
-                },
-                iconSize: 28.0,
-              )
-            ],
-          ),
+          appBar: _currentIndex == 0 ? mainAppBar() : PreferredSize(child: SizedBox.shrink(), preferredSize: Size(0.0, 0.0)),
           drawer: SizedBox(
             width: width * 0.5,
             child: Sidenav(
