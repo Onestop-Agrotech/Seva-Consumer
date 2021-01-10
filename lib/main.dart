@@ -27,10 +27,10 @@ import 'package:mvp/screens/auth/login.dart';
 import 'package:mvp/screens/auth/register.dart';
 import 'package:mvp/screens/errors/notServing.dart';
 import 'package:mvp/screens/landing/mainLanding.dart';
-import 'package:mvp/screens/loading.dart';
 import 'package:mvp/screens/orders/ordersScreen.dart';
 import 'package:mvp/screens/shoppingCart/shoppingCartNew.dart';
 import 'package:mvp/sizeconfig/sizeconfig.dart';
+import 'package:mvp/static_page.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
@@ -102,7 +102,8 @@ class _SevaAppState extends State<SevaApp> {
               SizeConfig().init(constraints, orientation);
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: LoadingScreen(),
+                // home: LoadingScreen(),
+                home: StaticPage(),
                 routes: {
                   "/register": (context) => RegisterScreen(),
                   "/login": (context) => LoginScreen(),
